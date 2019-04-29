@@ -14,13 +14,13 @@ return [
     'type'            => 'mysql',
     // 内网数据库
     // 服务器地址
-    'hostname'        => '119.23.100.252',
+    'hostname'        => 'rm-wz9972dr3ipe61148go.mysql.rds.aliyuncs.com',
     // 数据库名
-    'database'        => 'zfwl123',
+    'database'        => 'redpacket_db',
     // 用户名
-    'username'        => 'zfwl123',
+    'username'        => 'zf8008',
     // 密码
-    'password'        => 'Zfwl123456@',
+    'password'        => 'Zfwl123456',
     // 端口
     'hostport'        => '3306',
 
