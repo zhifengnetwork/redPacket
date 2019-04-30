@@ -519,6 +519,23 @@ return [
                     ],
                 ],
             ],
+            [
+                'id'    => 210400,
+                'title' => '规则设置',
+                'sort'  => 4,
+                'url'   => 'rule/index',
+                'hide'  => 1,
+                'icon'  => 'fa-th-large',
+                'child' => [
+                    [
+                        'id'    => 210401,
+                        'title' => '玩法规则',
+                        'sort'  => 1,
+                        'url'   => 'rule/setting',
+                        'hide'  => 1,
+                    ],
+                ],
+            ],
         ],
      ],
 

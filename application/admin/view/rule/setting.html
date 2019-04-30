@@ -1,0 +1,538 @@
+{extend name="common:base" /}
+{block name="content"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>发包返水</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="POST" target="ajaxR">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">层级</th>
+                                <th width="50%">返水比例（百分比）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>一级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_one]" value="{$info.out_one ? $info.out_one : 0}"/>
+                                    <input type="hidden" name="desc[out_one]" value="发包返水：一级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>二级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_two]" value="{$info.out_two ? $info.out_two : 0}"/>
+                                    <input type="hidden" name="desc[out_two]" value="发包返水：二级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>三级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_three]" value="{$info.out_three ? $info.out_three : 0}"/>
+                                    <input type="hidden" name="desc[out_three]" value="发包返水：三级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>四级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_four]" value="{$info.out_four ? $info.out_four : 0}"/>
+                                    <input type="hidden" name="desc[out_four]" value="发包返水：四级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>五级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_five]" value="{$info.out_five ? $info.out_five : 0}"/>
+                                    <input type="hidden" name="desc[out_five]" value="发包返水：五级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>六级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_six]" value="{$info.out_six ? $info.out_six : 0}"/>
+                                    <input type="hidden" name="desc[out_six]" value="发包返水：六级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7 - 10级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_between_7_10]" value="{$info.out_between_7_10 ? $info.out_between_7_10 : 0}"/>
+                                    <input type="hidden" name="desc[out_between_7_10]" value="发包返水：7 - 10级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11 - 15级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_between_11_15]" value="{$info.out_between_11_15 ? $info.out_between_11_15 : 0}"/>
+                                    <input type="hidden" name="desc[out_between_11_15]" value="发包返水：11 - 15级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>16 - 20级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_between_16_20]" value="{$info.out_between_16_20 ? $info.out_between_16_20 : 0}"/>
+                                    <input type="hidden" name="desc[out_between_16_20]" value="发包返水：16 - 20级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>21 - 25级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_between_21_25]" value="{$info.out_between_21_25 ? $info.out_between_21_25 : 0}"/>
+                                    <input type="hidden" name="desc[out_between_21_25]" value="发包返水：21 - 25级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>26 - 30级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[out_between_26_30]" value="{$info.out_between_26_30 ? $info.out_between_26_30 : 0}"/>
+                                    <input type="hidden" name="desc[out_between_26_30]" value="发包返水：26 - 30级">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <button type="submit" class="btn btn-success" style="color:#fff; margin-left:75%;">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>抢包返水</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="POST" target="ajaxR">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">层级</th>
+                                <th width="50%">返水金额（元）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1 - 6级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[rob_between_1_6]" value="{$info.rob_between_1_6 ? $info.rob_between_1_6 : 0}"/>
+                                    <input type="hidden" name="desc[rob_between_1_6]" value="抢包返水：1 - 6级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7 - 10级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[rob_between_7_10]" value="{$info.rob_between_7_10 ? $info.rob_between_7_10 : 0}"/>
+                                    <input type="hidden" name="desc[rob_between_7_10]" value="抢包返水：7 - 10级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11 - 15级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[rob_between_11_15]" value="{$info.rob_between_11_15 ? $info.rob_between_11_15 : 0}"/>
+                                    <input type="hidden" name="desc[rob_between_11_15]" value="抢包返水：11 - 15级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>16 - 20级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[rob_between_16_20]" value="{$info.rob_between_16_20 ? $info.rob_between_16_20 : 0}"/>
+                                    <input type="hidden" name="desc[rob_between_16_20]" value="抢包返水：16 - 20级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>21 - 25级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[rob_between_21_25]" value="{$info.rob_between_21_25 ? $info.rob_between_21_25 : 0}"/>
+                                    <input type="hidden" name="desc[rob_between_21_25]" value="抢包返水：21 - 25级">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>26 - 30级</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[rob_between_26_30]" value="{$info.rob_between_26_30 ? $info.rob_between_26_30 : 0}"/>
+                                    <input type="hidden" name="desc[rob_between_26_30]" value="抢包返水：26 - 30级">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <button type="submit" class="btn btn-success" style="color:#fff; margin-left:75%;">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>踩雷设置</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="POST" target="ajaxR">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">踩雷</th>
+                                <th width="50%">倍数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>7包单雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[thunder_7_one]" value="{$info.thunder_7_one ? $info.thunder_7_one : 0}"/>
+                                    <input type="hidden" name="desc[thunder_7_one]" value="踩雷设置：7包单雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9包单雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[thunder_9_one]" value="{$info.thunder_9_one ? $info.thunder_9_one : 0}"/>
+                                    <input type="hidden" name="desc[thunder_9_one]" value="踩雷设置：9包单雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9包双雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[thunder_9_two]" value="{$info.thunder_9_two ? $info.thunder_9_two : 0}"/>
+                                    <input type="hidden" name="desc[thunder_9_two]" value="踩雷设置：9包双雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9包三雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[thunder_9_three]" value="{$info.thunder_9_three ? $info.thunder_9_three : 0}"/>
+                                    <input type="hidden" name="desc[thunder_9_three]" value="踩雷设置：9包三雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9包四雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[thunder_9_four]" value="{$info.thunder_9_four ? $info.thunder_9_four : 0}"/>
+                                    <input type="hidden" name="desc[thunder_9_four]" value="踩雷设置：9包四雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9包五雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[thunder_9_five]" value="{$info.thunder_9_five ? $info.thunder_9_five : 0}"/>
+                                    <input type="hidden" name="desc[thunder_9_five]" value="踩雷设置：9包五雷">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <button type="submit" class="btn btn-success" style="color:#fff; margin-left:75%;">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>抢包奖励</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="POST" target="ajaxR">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">抢包</th>
+                                <th width="50%">奖励金额（元）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.23 - 7.89</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m1_23to7_89]" value="{$info.robbery_m1_23to7_89 ? $info.robbery_m1_23to7_89 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m1_23to7_89]" value="抢包奖励：1.23 - 7.89">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>11.11 - 55.55</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m11_11to55_55]" value="{$info.robbery_m11_11to55_55 ? $info.robbery_m11_11to55_55 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m11_11to55_55]" value="抢包奖励：11.11 - 55.55">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>9.87 - 3.21</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m9_87to3_21]" value="{$info.robbery_m9_87to3_21 ? $info.robbery_m9_87to3_21 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m9_87to3_21]" value="抢包奖励：9.87 - 3.21">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>66.66 - 99.99</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m66_66to99_99]" value="{$info.robbery_m66_66to99_99 ? $info.robbery_m66_66to99_99 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m66_66to99_99]" value="抢包奖励：66.66 - 99.99">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1.11 - 9.99</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m1_11to9_99]" value="{$info.robbery_m1_11to9_99 ? $info.robbery_m1_11to9_99 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m1_11to9_99]" value="抢包奖励：1.11 - 9.99">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>12.34 - 67.89</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m12_34to67_89]" value="{$info.robbery_m12_34to67_89 ? $info.robbery_m12_34to67_89 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m12_34to67_89]" value="抢包奖励：12.34 - 67.89">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5.20</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m5_20]" value="{$info.robbery_m5_20 ? $info.robbery_m5_20 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m5_20]" value="抢包奖励：5.20">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>13.14</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m13_14]" value="{$info.robbery_m13_14 ? $info.robbery_m13_14 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m13_14]" value="抢包奖励：13.14">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>001</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m001]" value="{$info.robbery_m001 ? $info.robbery_m001 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m001]" value="抢包奖励：001">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>123.45 - 345.67</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m123_45to345_56]" value="{$info.robbery_m123_45to345_56 ? $info.robbery_m123_45to345_56 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m123_45to345_56]" value="抢包奖励：123.45 - 345.67">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>111.11 - 444.44</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[robbery_m111_11to444_44]" value="{$info.robbery_m111_11to444_44 ? $info.robbery_m111_11to444_44 : 0}"/>
+                                    <input type="hidden" name="desc[robbery_m111_11to444_44]" value="抢包奖励：111.11 - 444.44">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <button type="submit" class="btn btn-success" style="color:#fff; margin-left:75%;">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>7包发包奖励</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="POST" target="ajaxR">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">雷数</th>
+                                <th width="50%">奖励金额（元）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack7_3]" value="{$info.pack7_3 ? $info.pack7_3 : 0}"/>
+                                    <input type="hidden" name="desc[pack7_3]" value="7包发包奖励：3雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack7_4]" value="{$info.pack7_4 ? $info.pack7_4 : 0}"/>
+                                    <input type="hidden" name="desc[pack7_4]" value="7包发包奖励：4雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack7_5]" value="{$info.pack7_5 ? $info.pack7_5 : 0}"/>
+                                    <input type="hidden" name="desc[pack7_5]" value="7包发包奖励：5雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack7_6]" value="{$info.pack7_6 ? $info.pack7_6 : 0}"/>
+                                    <input type="hidden" name="desc[pack7_6]" value="7包发包奖励：6雷">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <button type="submit" class="btn btn-success" style="color:#fff; margin-left:75%;">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>9包发包奖励(不含免死)</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="POST" target="ajaxR">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="50%">雷数</th>
+                                <th width="50%">倍数（50以下没有奖励）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>单雷：4雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_4_one]" value="{$info.pack9_4_one ? $info.pack9_4_one : 0}"/>
+                                    <input type="hidden" name="desc[pack9_4_one]" value="9包发包奖励（不含免死，50以下没有奖励）单雷：4雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>单雷：5雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_5_one]" value="{$info.pack9_5_one ? $info.pack9_5_one : 0}"/>
+                                    <input type="hidden" name="desc[pack9_5_one]" value="9包发包奖励（不含免死，50以下没有奖励）单雷：5雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>单雷：6雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_6_one]" value="{$info.pack9_6_one ? $info.pack9_6_one : 0}"/>
+                                    <input type="hidden" name="desc[pack9_6_one]" value="9包发包奖励（不含免死，50以下没有奖励）单雷：6雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>单雷：7雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_7_one]" value="{$info.pack9_7_one ? $info.pack9_7_one : 0}"/>
+                                    <input type="hidden" name="desc[pack9_7_one]" value="9包发包奖励（不含免死，50以下没有奖励）单雷：7雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>多雷：6雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_6_two]" value="{$info.pack9_6_two ? $info.pack9_6_two : 0}"/>
+                                    <input type="hidden" name="desc[pack9_6_two]" value="9包发包奖励（不含免死，50以下没有奖励）多雷：6雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>多雷：7雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_7_two]" value="{$info.pack9_7_two ? $info.pack9_7_two : 0}"/>
+                                    <input type="hidden" name="desc[pack9_7_two]" value="9包发包奖励（不含免死，50以下没有奖励）多雷：7雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>多雷：8雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_8_two]" value="{$info.pack9_8_two ? $info.pack9_8_two : 0}"/>
+                                    <input type="hidden" name="desc[pack9_8_two]" value="9包发包奖励（不含免死，50以下没有奖励）多雷：8雷">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>多雷：9雷</td>
+                                <td>
+                                    <input class="form-control" type="text" name="rebate[pack9_9_two]" value="{$info.pack9_9_two ? $info.pack9_9_two : 0}"/>
+                                    <input type="hidden" name="desc[pack9_9_two]" value="9包发包奖励（不含免死，50以下没有奖励）多雷：9雷">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <button type="submit" class="btn btn-success" style="color:#fff; margin-left:75%;">保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<iframe name="ajaxR" style="display:none;width:100%;height:500px;"></iframe>
+{/block}
+{block name="script"}
+<script>
+$(function() {
+
+    $('#add_virtual_num').click(function() {
+        $('#myModal4').find('input').val('');
+    });
+    $('.editxz').click(function() {
+        var id = $(this).data('id');
+        $.get('{:url("get_config")}', { id: id }, function(data) {
+            var data = data.data;
+            $('[name="name"]').val(data.name);
+            $('[name="title"]').val(data.title);
+            $('[name="module"]').eq(1).val(data.module);
+            $('[name="value"]').val(data.value);
+            $('[name="remark"]').val(data.remark);
+            $('[name="id"]').val(data.id);
+            $('[name="sort"]').val(data.sort);
+            $('#myModal4').modal();
+        });
+    });
+});
+
+function success(){
+    layer.open({
+        title:'操作提示！',
+        icon:6,
+        content:'保存成功！',
+        btn:['确定'],
+        btnAlign:'c',
+        shade:0.5,
+    });
+}
+</script>
+{/block}
