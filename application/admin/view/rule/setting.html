@@ -503,26 +503,6 @@
 {/block}
 {block name="script"}
 <script>
-$(function() {
-
-    $('#add_virtual_num').click(function() {
-        $('#myModal4').find('input').val('');
-    });
-    $('.editxz').click(function() {
-        var id = $(this).data('id');
-        $.get('{:url("get_config")}', { id: id }, function(data) {
-            var data = data.data;
-            $('[name="name"]').val(data.name);
-            $('[name="title"]').val(data.title);
-            $('[name="module"]').eq(1).val(data.module);
-            $('[name="value"]').val(data.value);
-            $('[name="remark"]').val(data.remark);
-            $('[name="id"]').val(data.id);
-            $('[name="sort"]').val(data.sort);
-            $('#myModal4').modal();
-        });
-    });
-});
 
 function success(){
     layer.open({
