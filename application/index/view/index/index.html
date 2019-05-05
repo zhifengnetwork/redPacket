@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>通讯录</title>
+
+		<link href="__INSPINIA__/css/bootstrap.min.css?v=20170801" rel="stylesheet">
+		<link href="__INSPINIA__/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+		<link href="__INSPINIA__/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+		<!-- Toastr style -->
+		<link href="__INSPINIA__/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+		<!-- Gritter -->
+		<link href="__INSPINIA__/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+		<link href="__INSPINIA__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+		<link href="__INSPINIA__/css/animate.css" rel="stylesheet">
+	  <!-- <link href="__INSPINIA__/fonts/fontStyle.css" rel="stylesheet"> -->
+		
+		<link href="__INSPINIA__/css/style.css?v=20170510" rel="stylesheet"> 
+		
+    </head>
+    <body>
+        <div style="text-align: center;">
+            <ul class="list-group">
+                <li class="list-group-item">通讯录</li>
+                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">我的上级</li></a>
+                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">群主</li></a>
+                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">充值客服</li></a>
+                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">群1</li></a>
+            </ul>
+        </div>
+    </body>
+    <!-- <script>
+        $(".list-group-item").click(function () {
+            var _this   =  $(this);
+            var fromUid =  _this.attr("fromUid");
+            var toUid   =  _this.attr("toUid");
+            var roomId  =  _this.attr("roomId");
+            $.post(
+                "{:url('index/index/chatMessage')}",
+                {fromUid:fromUid,toUid:toUid,roomId:roomId},
+                function(data){
+                    
+            })
+        });
+    </script> -->
+</html>
