@@ -4,6 +4,9 @@
     .table thead tr th{
         text-align: center;
     }
+    .red{
+        color:red;
+    }
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -37,9 +40,9 @@
                                 </td>
                                 <td class="operation" item="{$vo.id}">
                                     {if condition="$vo.is_lock eq 0"}
-                                    <a title="拉黑会员 - 拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign"></i></a>
+                                    <a title="拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>
                                     {else/}
-                                    <a title="取消拉黑 - 取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>
+                                    <a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>
                                     {/if}
                                 </td>
                             </tr>
@@ -62,7 +65,7 @@
                     if(res.status == 1){
                         layer.msg('操作成功！',{icon:6});
                         $(obj).parents('tr').find('.is_lock').html('已拉黑');
-                        $(obj).before(`<a class="btn btn-success btn-sm" onclick="user_start(this)">取消拉黑</a>`);
+                        $(obj).before(`<a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>`);
                         $(obj).remove();
                     }else{
                         layer.msg('操作失败，请重试！',{icon:5});
@@ -81,7 +84,7 @@
                     if(res.status == 1){
                         layer.msg('操作成功！',{icon:6});
                         $(obj).parents('tr').find('.is_lock').html('正常');
-                        $(obj).before(`<a class="btn btn-danger btn-sm" onclick="user_stop(this)">拉黑</a>`);
+                        $(obj).before(`<a title="拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>`);
                         $(obj).remove();
                     }else{
                         layer.msg('操作失败，请重试！',{icon:5});
