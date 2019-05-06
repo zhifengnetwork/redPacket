@@ -5,12 +5,12 @@ class Index extends Base
 {
     public function index()
     {
-        $fromUid = 110;  // 当前用户uid
-        $toUid   = 201;    // 接收信息方uid  
-        $roomId  = 301;    // 群id
-        $this->assign('fromUid',$fromUid);
-        $this->assign('toUid',$toUid);
-        $this->assign('roomId',$roomId);
+        $fromid = 110;  // 当前用户uid
+        $toid   = 201;    // 接收信息方uid  
+        $room_id  = 301;    // 群id
+        $this->assign('fromid',$fromid);
+        $this->assign('toid',$toid);
+        $this->assign('room_id',$room_id);
         return $this->fetch();
 
     }
@@ -19,11 +19,11 @@ class Index extends Base
     public function chatMessage(){
 
         $param = $this->request->param();
-        $from_uid = intval($param['from_uid']); 
-        $to_uid = intval($param['to_uid']);
+        $fromid = intval($param['fromid']); 
+        $toid = intval($param['toid']);
         $room_id = intval($param['room_id']);
-        $this->assign('from_uid',$from_uid);
-        $this->assign('to_uid',$to_uid);
+        $this->assign('fromid',$fromid);
+        $this->assign('toid',$toid);
         $this->assign('room_id',$room_id);
         return $this->fetch('message/message');
 

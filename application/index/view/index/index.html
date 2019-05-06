@@ -27,19 +27,19 @@
         <div style="text-align: center;">
             <ul class="list-group">
                 <li class="list-group-item">通讯录</li>
-                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">我的上级</li></a>
-                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">群主</li></a>
-                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">充值客服</li></a>
-                <a href="{:url('index/index/chatMessage',['from_uid'=>1,'to_uid'=>0,'room_id'=>0])}"><li class="list-group-item">群1</li></a>
+                <a href="{:url('index/index/chatMessage',['fromid'=>$fromid,'toid'=>1,'room_id'=>0])}"><li class="list-group-item">我的上级</li></a>
+                <a href="{:url('index/index/chatMessage',['fromid'=>$fromid,'toid'=>2,'room_id'=>0])}"><li class="list-group-item">群主</li></a>
+                <a href="{:url('index/index/chatMessage',['fromid'=>$fromid,'toid'=>3,'room_id'=>0])}"><li class="list-group-item">充值客服</li></a>
+                <a href="{:url('index/index/chatMessage',['fromid'=>$fromid,'toid'=>0,'room_id'=>310])}"><li class="list-group-item">群1</li></a>
             </ul>
         </div>
     </body>
     <!-- <script>
         $(".list-group-item").click(function () {
             var _this   =  $(this);
-            var fromUid =  _this.attr("fromUid");
-            var toUid   =  _this.attr("toUid");
-            var roomId  =  _this.attr("roomId");
+            var from_uid =  _this.attr("from_uid");
+            var to_uid   =  _this.attr("to_uid");
+            var root_id  =  _this.attr("root_id");
             $.post(
                 "{:url('index/index/chatMessage')}",
                 {fromUid:fromUid,toUid:toUid,roomId:roomId},
