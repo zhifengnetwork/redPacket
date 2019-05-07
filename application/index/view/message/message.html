@@ -11,12 +11,12 @@
     <script src="__STATIC__/newcj/js/dist/flexible/flexible_css.debug.js"></script>
     <script src="__STATIC__/newcj/js/dist/flexible/flexible.debug.js"></script>
 </head>
-<body ontouchstart>
+<body ontouchstart onload="connect();">
 <div class='fui-page-group'>
 <div class='fui-page chatDetail-page'>
     <div class="chat-header flex">
         <i class="icon icon-toleft t-48"></i>
-        <span class="shop-titlte t-30">商店</span>
+        <span class="shop-titlte t-30">沟通中</span>
         <span class="shop-online t-26"></span>
         <!-- <span class="into-shop">进店</span> -->
     </div>
@@ -48,43 +48,113 @@
 
 <script>
 
-    var fromid = {$fromid};
-    var toid = {$toid};
+    var fromid = {$fromid}; // 当前用户uid
+    var toid = {$toid}; // 聊天对象用户uid
+    // var API_URL = document.domain+"/index.php/api/chat/"; // api请求地址
+    var API_URL = "/index.php/api/chat/"; // api请求地址
     
     // 创建websocket
-    var ws =  new WebSocket("ws://139.199.70.250:8282");
+    // var ws =  new WebSocket("ws://139.199.70.250:8282");
 
-    ws.onmessage = function(e){
+    // 连接服务端
+    function connect() {
+       // 创建全局websocket
+       ws =  new WebSocket("ws://139.199.70.250:8282");
+       // 当socket连接打开时
+       ws.onopen = login;
+       // 
+       // 当有消息时根据消息类型显示不同信息
+       ws.onmessage = onmessage; 
+       ws.onclose = function() {
+          console.log("连接关闭，定时重连...");
+          connect();
+       };
+       ws.onerror = function() {
+          console.log("出现错误");
+       };
+    }
 
-       var message =  eval("("+e.data+")");
+    function login(){
+         // 登录
+        var login_data = '{"type":"login","fromid":'+fromid+'}';
+        console.log("websocket握手成功，发送登录数据:"+login_data);
+        ws.send(login_data);
+    }
 
+    // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
+    // ws.onmessage = function(e){
+    function onmessage(e){
+
+        console.log(e.data);
+        var message =  eval("("+e.data+")"); //json数据转换为数据对象
         switch (message.type){
             // 服务端ping客户端
             case 'ping':
                 ws.send('{"type":"pong"}');
                 break;
+
+            // 收到服务器推送过来的init后,发送bind信息到服务器端进行uid和客户端id绑定
             case "init":
                 var bind = '{"type":"bind","fromid":"'+fromid+'"}';
                 ws.send(bind);
                 return;
-            case "text":
-                $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url(__STATIC__/newcj/img/123.jpg)"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
-            return;
+            // 登录 更新用户列表
+            // case 'login':
+            //     //{"type":"login","client_id":xxx,"client_name":"xxx","client_list":"[...]","time":"xxx"}
+            //     say(data['client_id'], data['client_name'],  data['client_name']+' 加入了聊天室', data['time']);
+            //     if(data['client_list'])
+            //     {
+            //         client_list = data['client_list'];
+            //     }
+            //     else
+            //     {
+            //         client_list[data['client_id']] = data['client_name']; 
+            //     }
+            //     flush_client_list();
+            //     console.log(data['client_name']+"登录成功");
+            //     break;
+
+            //  向当前页面追加内容并显示
+            // case "text":
+            //     $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url(__STATIC__/newcj/img/123.jpg)"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
+            //     return;
+
+            // 保存数据持久化
+            case "save":
+                save_message(message);
+                add_chat_content(message)
+                return;
+
         }
     }
 
-     $(".send-btn").click(function(){
+    // 客户端点击发送按钮是触发发送,并且把发送内容追加到当前页面中
+    $(".send-btn").click(function(){
 
-         var text = $(".send-input").val();
+        // send_type=1普通文本,2图片
+        var text = $(".send-input").val();
+        var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
 
-         var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
+        // 向当前页面追加发送的内容并显示
+        $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+text+'</span> <span class="char-img" style="background-image: url(__STATIC__/newcj/img/132.jpg)"></span> </div>');
 
-         $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+text+'</span> <span class="char-img" style="background-image: url(__STATIC__/newcj/img/132.jpg)"></span> </div>');
+        ws.send(message); // 向服务器发送信息
+        $(".send-input").val(""); // 发送后置空输入框
+    });
 
-         ws.send(message);
-
-         $(".send-input").val("");
-     })
+    // 请求api数据入库
+    function save_message(message){
+        console.log('111');
+        $.post(
+            API_URL+"save_message", message,function(){
+                // 返回无需操作
+            },'json'
+        )
+    }
+    // 向页面追加内容并显示
+    function add_chat_content(message){
+        $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url(__STATIC__/newcj/img/123.jpg)"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
+    }
 
 </script>
 </body>
