@@ -10,6 +10,11 @@
     <script src="__STATIC__/newcj/js/jquery.min.js"></script>
     <script src="__STATIC__/newcj/js/dist/flexible/flexible_css.debug.js"></script>
     <script src="__STATIC__/newcj/js/dist/flexible/flexible.debug.js"></script>
+    <script src="__STATIC__/qqFace/js/jquery.qqFace.js"></script>
+    <script src="__STATIC__/layer_mobile/layer.js"></script>
+
+    
+
 </head>
 <body ontouchstart onload="connect();">
 <div class='fui-page-group'>
@@ -40,7 +45,9 @@
     <div class="fix-send flex footer-bar">
         <i class="icon icon-emoji1 t-50"></i>
         <input class="send-input t-28" maxlength="200">
-        <i class="icon icon-add t-50" style="color: #888;"></i>
+        <input type="file" name="pic" id="file" style="display: none">
+        <i class="icon icon-add image_up t-50" style="color: #888;"></i>
+        
         <span class="send-btn">发送</span>
     </div>
 </div>
@@ -49,7 +56,13 @@
 <script>
 
     var fromid = {$fromid}; // 当前用户uid
-    var toid = {$toid}; // 聊天对象用户uid
+    var toid   = {$toid};   // 聊天对象用户ui
+    var from_head  = '';    // 当前用户头像
+    var to_head    = '';    // 聊天对象头像
+    var to_name    = '';    // 聊天对象昵称
+    var online     = 0;     // 是否在线
+
+
     // var API_URL = document.domain+"/index.php/api/chat/"; // api请求地址
     var API_URL = "/index.php/api/chat/"; // api请求地址
     
@@ -93,10 +106,19 @@
                 ws.send('{"type":"pong"}');
                 break;
 
-            // 收到服务器推送过来的init后,发送bind信息到服务器端进行uid和客户端id绑定
+            // 收到服务器推送过来的init初始化后,发送bind信息到服务器端进行uid和客户端id绑定
             case "init":
                 var bind = '{"type":"bind","fromid":"'+fromid+'"}';
                 ws.send(bind);
+               
+                // 获取用户头像及昵称
+                get_head(fromid,toid);
+                get_name(toid);
+                // 加载聊天记录
+                message_load();
+                // 获取对方是否在线
+                var online = '{"type":"online","toid":"'+toid+'","fromid":"'+fromid+'"}';
+                ws.send(online);
                 return;
             // 登录 更新用户列表
             // case 'login':
@@ -114,17 +136,40 @@
             //     console.log(data['client_name']+"登录成功");
             //     break;
 
-            //  向当前页面追加内容并显示
-            // case "text":
-            //     $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url(__STATIC__/newcj/img/123.jpg)"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
-            //     return;
+            // 向当前页面追加普通文本内容并显示
+            case "text":
+                // 判断是否属于当前聊天对象,向页面追加内容并显示
+                // 当前页面和对方聊天的toid,fromid另外一个页面发送者uid
+                if(toid==message.fromid) {
+                    $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
+
+                    $(".chat-content").scrollTop(3000);
+                }
+                return;
+            case "say_img":
+
+              $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i><img width="120em" height="120em" src="__ROOT__/uploads/'+message.img_name+'"></span> </div>');
+
+                $(".chat-content").scrollTop(3000);
+              return;
 
             // 保存数据持久化
             case "save":
                 save_message(message);
-                add_chat_content(message)
+                // 根据服务端返回的状态判断用户是否在线
+                if(message.isread==1){
+                    $(".shop-online").text("在线");
+                }else{
+                    $(".shop-online").text("不在线");
+                }
+                // add_chat_content(message);
                 return;
-
+            case "online":
+              if(message.status==1){
+                  $(".shop-online").text("在线");
+              }else{
+                  $(".shop-online").text("不在线");
+              }
         }
     }
 
@@ -133,10 +178,22 @@
 
         // send_type=1普通文本,2图片
         var text = $(".send-input").val();
+        if(text==''){
+            //提示
+            layer.open({
+                content: '不能发送空白内容'
+                ,skin: 'msg'
+                ,time: 2 //2秒后自动关闭
+            });
+            return;
+        }
         var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
 
         // 向当前页面追加发送的内容并显示
-        $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+text+'</span> <span class="char-img" style="background-image: url(__STATIC__/newcj/img/132.jpg)"></span> </div>');
+        $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+text+'</span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+
+        //  返回 chat-content 元素的垂直滚动条位置
+        $(".chat-content").scrollTop(3000);
 
         ws.send(message); // 向服务器发送信息
         $(".send-input").val(""); // 发送后置空输入框
@@ -144,17 +201,136 @@
 
     // 请求api数据入库
     function save_message(message){
-        console.log('111');
         $.post(
-            API_URL+"save_message", message,function(){
+            API_URL+"save_message", message,function(data){
                 // 返回无需操作
+                console.log(data);
             },'json'
         )
     }
-    // 向页面追加内容并显示
-    function add_chat_content(message){
-        $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url(__STATIC__/newcj/img/123.jpg)"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
+
+    // 判断是否属于当前聊天对象,向页面追加内容并显示 // 待用..
+    // function add_chat_content(message){
+    //     // 当前页面和对方聊天的toid,fromid另外一个页面发送者uid
+    //     // 故：两者相等时，才显示对方发送过来的消息，证明两者是同一聊天对象。
+    //     if(toid==message.fromid) {
+    //         $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
+
+    //         $(".chat-content").scrollTop(3000);
+    //     }
+    // }
+
+    // 获取聊天双方头像
+    function get_head(fromid,toid){
+        $.post(
+            API_URL+"get_head",
+            {"fromid":fromid,"toid":toid},
+            function(e){
+                console.log(e);
+                from_head = e.data.from_head;
+                to_head = e.data.to_head;
+            },'json'
+        );
     }
+
+    // 获取聊天对方昵称
+    function  get_name(toid){
+        $.post(
+            API_URL+"get_name",
+            {"uid":toid},
+            function(e){
+                to_name = e.data.toname;
+                $(".shop-titlte").text("与"+to_name+"聊天中...");
+                console.log(e);
+            },'json'
+        );
+    }
+
+    // 页面加载返回聊天记录
+    function message_load(){
+        $.post(
+            API_URL +"load",
+            {"fromid":fromid,"toid":toid},
+            function(e){
+
+                $.each(e,function(index,content){
+
+                    if(fromid==content.fromid){
+                        $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+content.content+'</span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+                    }else{
+                        $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+content.content+'</span> </div>');
+                    }
+                })
+                
+                $(".chat-content").scrollTop(3000);
+            },'json'
+        );
+    }
+
+    $(function(){
+        $('.icon-emoji1').qqFace({
+            assign:'saytext',
+            path:'__STATIC__/qqFace/arclist/'   // 表情存放的路径
+        });
+        $(".sub_btn").click(function(){
+            var str = $("#saytext").val();
+            $("#show").html(replace_em(str));
+        });
+    });
+
+    // 查看结果
+    function replace_em(str){
+
+        str = str.replace(/\</g,'&lt;');
+        str = str.replace(/\>/g,'&gt;');
+        str = str.replace(/\n/g,'<br/>');
+        str = str.replace(/\[em_([0-9]*)\]/g,'<img src="__STATIC__/qqFace/arclist/$1.gif" border="0" />');
+        return str;
+    }
+
+    // qq表情发送
+    $(".image_up").click(function(){
+        console.log(112);
+        $("#file").click();
+    })
+
+    // 
+    $("#file").change(function(){
+
+        formdata = new FormData();
+        formdata.append('fromid',fromid);
+        formdata.append('toid',toid);
+        formdata.append('online',online);
+        formdata.append('file',$("#file")[0].files[0]);
+
+        $.ajax({
+            url:API_URL+"uploadimg",
+            type:'POST',
+            cache:false,
+            data:formdata,
+            dataType:'json',
+            processData:false,
+            contentType:false,
+            success:function(data,status,xhr){
+                console.log(data);
+
+                if(data.status=='ok'){
+
+                    $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i><img width="120em" height="120em" src="__ROOT__/uploads/'+data.img_name+'"></span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+
+                    $(".chat-content").scrollTop(3000);
+
+                    var message = '{"data":"'+data.img_name+'","fromid":"'+fromid+'","toid":"'+toid+'","type":"say_img"}';
+
+                    $("#file").val("");
+                    ws.send(message);
+
+                }else{
+                    console.log(data.status);
+                }
+            }
+        });
+    })
 
 </script>
 </body>
