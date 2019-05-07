@@ -5,9 +5,15 @@ class Index extends Base
 {
     public function index()
     {
-        $fromid = 110;  // 当前用户uid
-        $toid   = 201;    // 接收信息方uid  
-        $room_id  = 301;    // 群id
+        $fromid = 1;        // 当前用户uid
+        $toid   = 3;        // 接收信息方uid  
+        $room_id  = 4;      // 群id
+        // 获取当前用户的好友
+        // todo
+        
+        // 获取平台群以及客服列表
+        // todo
+        
         $this->assign('fromid',$fromid);
         $this->assign('toid',$toid);
         $this->assign('room_id',$room_id);
