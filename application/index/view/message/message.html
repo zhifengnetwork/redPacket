@@ -12,7 +12,13 @@
     <script src="__STATIC__/newcj/js/dist/flexible/flexible.debug.js"></script>
     <script src="__STATIC__/qqFace/js/jquery.qqFace.js"></script>
     <script src="__STATIC__/layer_mobile/layer.js"></script>
-
+    <style>
+        /*qq表情框样式*/
+        .qqFace { margin-top: -180px; background: #fff; padding: 2px; border: 1px #dfe6f6 solid; }
+        .qqFace table td { padding: 0px; }
+        .qqFace table td img { cursor: pointer; border: 1px #fff solid; }
+        .qqFace table td img:hover { border: 1px #0066cc solid; }
+    </style>
     
 
 </head>
@@ -44,7 +50,7 @@
     </div>
     <div class="fix-send flex footer-bar">
         <i class="icon icon-emoji1 t-50"></i>
-        <input class="send-input t-28" maxlength="200">
+        <input class="send-input t-28" maxlength="200" id="saytext">
         <input type="file" name="pic" id="file" style="display: none">
         <i class="icon icon-add image_up t-50" style="color: #888;"></i>
         
@@ -141,14 +147,14 @@
                 // 判断是否属于当前聊天对象,向页面追加内容并显示
                 // 当前页面和对方聊天的toid,fromid另外一个页面发送者uid
                 if(toid==message.fromid) {
-                    $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+message.data+'</span> </div>');
+                    $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+replace_em(message.data)+'</span> </div>');
 
                     $(".chat-content").scrollTop(3000);
                 }
                 return;
             case "say_img":
 
-              $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i><img width="120em" height="120em" src="__ROOT__/uploads/'+message.img_name+'"></span> </div>');
+              $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i><img width="120em" height="120em" src="__ROOT__/upload/'+message.img_name+'"></span> </div>');
 
                 $(".chat-content").scrollTop(3000);
               return;
@@ -157,7 +163,7 @@
             case "save":
                 save_message(message);
                 // 根据服务端返回的状态判断用户是否在线
-                if(message.isread==1){
+                if(message.is_read==1){
                     $(".shop-online").text("在线");
                 }else{
                     $(".shop-online").text("不在线");
@@ -190,7 +196,7 @@
         var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
 
         // 向当前页面追加发送的内容并显示
-        $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+text+'</span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+        $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+replace_em(text)+'</span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
 
         //  返回 chat-content 元素的垂直滚动条位置
         $(".chat-content").scrollTop(3000);
@@ -256,9 +262,21 @@
                 $.each(e,function(index,content){
 
                     if(fromid==content.fromid){
-                        $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+content.content+'</span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+                        if(content.type==2){
+                            // 图片类型内容
+                            $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i><img width="120em" height="120em" src="__ROOT__/upload/'+content.content+'"></span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+                        }else{
+                            // 文本类型内容
+                            $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i>'+replace_em(content.content)+'</span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+                        }
                     }else{
-                        $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+content.content+'</span> </div>');
+                        if(content.type==2){
+
+                            $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i><img width="120em" height="120em" src="__ROOT__/upload/'+content.content+'"></span> </div>');
+                        }else{
+
+                            $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i>'+replace_em(content.content)+'</span> </div>');
+                        }
                     }
                 })
                 
@@ -267,9 +285,10 @@
         );
     }
 
+    // 获取表情到输入框
     $(function(){
         $('.icon-emoji1').qqFace({
-            assign:'saytext',
+            assign:'saytext', // 输入框绑定的id,把表情放入输入框
             path:'__STATIC__/qqFace/arclist/'   // 表情存放的路径
         });
         $(".sub_btn").click(function(){
@@ -278,7 +297,7 @@
         });
     });
 
-    // 查看结果
+    // 把内容替换,查看表情结果
     function replace_em(str){
 
         str = str.replace(/\</g,'&lt;');
@@ -290,13 +309,11 @@
 
     // qq表情发送
     $(".image_up").click(function(){
-        console.log(112);
         $("#file").click();
     })
 
     // 
     $("#file").change(function(){
-
         formdata = new FormData();
         formdata.append('fromid',fromid);
         formdata.append('toid',toid);
@@ -314,19 +331,24 @@
             success:function(data,status,xhr){
                 console.log(data);
 
-                if(data.status=='ok'){
-
-                    $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i><img width="120em" height="120em" src="__ROOT__/uploads/'+data.img_name+'"></span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
+                if(data.code==1){
+                    // 展示图片在发送者页面右下角上
+                    $(".chat-content").append('<div class="chat-text section-right flex"><span class="text"><i class="icon icon-sanjiao3 t-32"></i><img width="120em" height="120em" src="__ROOT__/upload/'+data.data.img_name+'"></span> <span class="char-img" style="background-image: url('+from_head+')"></span> </div>');
 
                     $(".chat-content").scrollTop(3000);
-
-                    var message = '{"data":"'+data.img_name+'","fromid":"'+fromid+'","toid":"'+toid+'","type":"say_img"}';
-
+                    var message = '{"data":"'+data.data.img_name+'","fromid":"'+fromid+'","toid":"'+toid+'","type":"say_img"}';
                     $("#file").val("");
+                    // 通过服务器发送图片到聊天对象
                     ws.send(message);
 
                 }else{
-                    console.log(data.status);
+                    layer.open({
+                        content: data.msg
+                        ,skin: 'msg'
+                        ,time: 2 //2秒后自动关闭
+                    });
+                    return;                    
+                    console.log(data);
                 }
             }
         });

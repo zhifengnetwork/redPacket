@@ -3,6 +3,7 @@ namespace app\index\controller;
 
 class Index extends Base
 {
+    // 聊天首页
     public function index()
     {
         $fromid = 1;        // 当前用户uid

@@ -18,6 +18,7 @@ class Chat extends Controller{
     //         return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
     //         exit;
     //     }
+    //     
     // }
 
     /**
@@ -129,34 +130,47 @@ class Chat extends Controller{
         $suffix =  strtolower(strrchr($file['name'],'.'));
         $type = ['.jpg','.jpeg','.gif','.png'];
         if(!in_array($suffix,$type)){
-            return ['status'=>'img type error'];
+            // return ['status'=>'img type error'];
+            return json(['code'=>0, 'msg'=>'图片类型错误', 'data'=>""]);
         }
 
         if($file['size']/1024>5120){
-            return ['status'=>'img is too large'];
+            // return ['status'=>'img is too large'];
+            return json(['code'=>0, 'msg'=>'图片过大', 'data'=>""]);
         }
 
+        $uploadpath = ROOT_PATH.'public\\upload';
+        $month = date("Y-m-d");
+        //如果文件夹不存在则建立; 
+        $fileNewPath = $uploadpath.'\\'.$month.'\\'; 
+        if(!file_exists($fileNewPath)){ 
+            mkdir($fileNewPath); 
+        } 
+
         $filename =  uniqid("chat_img_",false);
-        $uploadpath = ROOT_PATH.'public\\upload\\';
-        $file_up = $uploadpath.$filename.$suffix;
+        $file_up = $fileNewPath.$filename.$suffix;
         $re = move_uploaded_file($file['tmp_name'],$file_up);
 
         if($re){
-            $name = $filename.$suffix;
+            $name = $month.'/'.$filename.$suffix;
             $data['content'] = $name;
             $data['fromid'] = $fromid;
             $data['toid'] = $toid;
-            $data['fromname'] = $this->getName($data['fromid']);
-            $data['toname'] = $this->getName($data['toid']);
+            $data['from_name'] = $this->getName($data['fromid']);
+            $data['to_name'] = $this->getName($data['toid']);
             $data['time'] = time();
-            $data['isread'] = $online;
-            $data['type'] = 2;
+            $data['is_read'] = $online;
+            $data['type'] = 2; // 图片类型
             $message_id = Db::name('chat_info')->insertGetId($data);
             if($message_id){
-                return['status'=>'ok','img_name'=>$name];
+                // return['status'=>'ok','img_name'=>$name];
+                return json(['code'=>1, 'msg'=>'上传成功!', 'data'=>['img_name'=>$name]]);
             }else{
-                return ['status'=>'false'];
+                // return ['status'=>'false'];
+                return json(['code'=>0, 'msg'=>'上传入库失败!', 'data'=>""]);
             }
+        }else{
+            return json(['code'=>0, 'msg'=>'上传失败!', 'data'=>""]);
         }
     }
     
