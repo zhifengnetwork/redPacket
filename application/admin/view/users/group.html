@@ -1,0 +1,96 @@
+{extend name="common:base" /}
+{block name="content"}
+<style>
+    .table thead tr th{
+        text-align: center;
+    }
+    .red{
+        color:red;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>群组列表</h5>
+                    <!-- <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.href='/admin/users/groupList'"><i class="glyphicon glyphicon-refresh"></i></a> -->
+                    <!-- <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.href='/admin/users/groupList'"><i class="glyphicon glyphicon-plus"></i>添加群组</a> -->
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th width="60">ID</th>
+                                <th width="100">群名称</th>
+                                <th width="100">状态</th>
+                                <th width="100">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="$list" id="vo"}
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.name}</td>
+                                <td class="is_lock">
+                                    {$is_lock[$vo.is_lock]}
+                                </td>
+                                <td class="operation" item="{$vo.id}">
+                                    --
+                                    <!-- {if condition="$vo.is_lock eq 0"}
+                                    <a title="拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>
+                                    {else/}
+                                    <a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>
+                                    {/if} -->
+                                </td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+                    {$list->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        // 拉黑
+        // function user_stop(obj){
+        //     layer.confirm('确定要拉黑会员么?', {icon: 3, title:'敏感操作提醒'}, function(index){
+        //         //do something
+        //         var id = $(obj).parents('tr').find('.operation').attr('item');
+        //         $.post('/admin/users/edit_status',{id:id,is_lock:1},function(res){
+        //             if(res.status == 1){
+        //                 layer.msg('操作成功！',{icon:6});
+        //                 $(obj).parents('tr').find('.is_lock').html('已拉黑');
+        //                 $(obj).before(`<a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>`);
+        //                 $(obj).remove();
+        //             }else{
+        //                 layer.msg('操作失败，请重试！',{icon:5});
+        //             }
+        //         });
+        //         layer.close(index);
+        //     });
+        // }
+
+        // // 取消拉黑
+        // function user_start(obj,id){
+        //     layer.confirm('确定要取消拉黑会员么?', {icon: 3, title:'敏感操作提醒'}, function(index){
+        //         //do something
+        //         var id = $(obj).parents('tr').find('.operation').attr('item');
+        //         $.post('/admin/users/edit_status',{id:id,is_lock:0},function(res){
+        //             if(res.status == 1){
+        //                 layer.msg('操作成功！',{icon:6});
+        //                 $(obj).parents('tr').find('.is_lock').html('正常');
+        //                 $(obj).before(`<a title="拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>`);
+        //                 $(obj).remove();
+        //             }else{
+        //                 layer.msg('操作失败，请重试！',{icon:5});
+        //             }
+        //         });
+        //         layer.close(index);
+        //     });
+        // }
+</script>
+{/block}
+{block name="script"}

@@ -11,7 +11,8 @@
     <script src="__STATIC__/newcj/js/dist/flexible/flexible_css.debug.js"></script>
     <script src="__STATIC__/newcj/js/dist/flexible/flexible.debug.js"></script>
     <script src="__STATIC__/qqFace/js/jquery.qqFace.js"></script>
-    <script src="__STATIC__/layer_mobile/layer.js"></script>
+    <script src="__STATIC__/layer-v3.1.1/layer/layer.js"></script>
+
     <style>
         /*qq表情框样式*/
         .qqFace { margin-top: -180px; background: #fff; padding: 2px; border: 1px #dfe6f6 solid; }
@@ -186,11 +187,7 @@
         var text = $(".send-input").val();
         if(text==''){
             //提示
-            layer.open({
-                content: '不能发送空白内容'
-                ,skin: 'msg'
-                ,time: 2 //2秒后自动关闭
-            });
+            layer.msg('不能发送空白内容');
             return;
         }
         var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
@@ -342,11 +339,7 @@
                     ws.send(message);
 
                 }else{
-                    layer.open({
-                        content: data.msg
-                        ,skin: 'msg'
-                        ,time: 2 //2秒后自动关闭
-                    });
+                    layer.msg(data.msg);
                     return;                    
                     console.log(data);
                 }

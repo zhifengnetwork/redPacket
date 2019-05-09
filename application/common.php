@@ -1,5 +1,26 @@
 <?php
 use think\Db;
+use think\Request;
+
+
+// 判断是post请求
+function isPost(){
+    return Request::instance()->isPost();
+}
+
+// 判断当前手机号是否已注册
+function isMobileRegister($mobile){
+
+    if(!$mobile){return false;}
+    return Db::table('users')->where('mobile',$mobile)->find();
+}
+
+// 生成32位唯一邀请码
+function createInviteCode(){
+    return md5(time() . mt_rand(1,1000000));
+}
+
+
 
 function pre($data){
     echo '<pre>';

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title class="pageTopTitle" page-id="0">欢迎登录</title>
+		<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/login/login.css"/>
+	</head>
+	<body>
+		<div class="wrapper">
+			<!--头部-->
+			<div class="head">
+				<span>登录</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<!--头像-->
+            	<div class="photo_img">
+            		<!-- <img src="__STATIC__/chatWeb/img/login/touxiang.png" /> -->
+            	</div>
+            	<!--手机密码框-->
+            	<div class="word_box">
+            		<!--手机输入框-->
+            		<div class="mobile">
+            			<div class="mark">+86</div>
+            			<div class="inp">
+            				<input class="text name" id="mobile" value="" type="text" placeholder="请输入手机号码" />
+            			</div>
+            		</div>
+            		<!--密码输入框-->
+            		<div class="mobile">
+            			<div class="mark">密码</div>
+            			<div class="inp">
+            				<input class="text name password" value="" type="password" placeholder="请输入登录密码" />
+            			</div>
+            		</div>
+            	</div>
+            	<!--登录按钮-->
+            	<a class="last_btn">立即登录</a>
+            	<!--找回密码/注册跳转-->
+            	<div class="skip_wrap">
+            		<a href="__STATIC__/chatWeb/img/password/password.html" class="password">找回密码</a>
+            		<!-- <a href="__STATIC__/chatWeb/img/signin/signin.html" class="signin">立即注册</a> -->
+            	</div>
+            	
+            </div>
+		</div>
+		
+		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
+            <script src="__STATIC__/layer-v3.1.1/layer/layer.js"></script>
+		<script>
+			//input输入框失去焦点，页面视觉回弹
+			$(".name").blur(function(){
+			  	document.body.scrollTop = 0;
+				document.documentElement.scrollTop = 0;
+			});
+
+                  // 登录提交
+                  $(".last_btn").click(function(){
+
+                        var mobile = $("#mobile").val();
+                        var password = $(".password").val();
+                        if(!mobile){
+                              layer.msg('请输入手机号');
+                              return;
+                        }
+                        if(!password){
+                              layer.msg('请输入密码');
+                              return;
+                        }
+                        
+                        if(mobile&&password){
+
+                              $.post("{:url('index/login/userToLogin')}",
+                                    {mobile:mobile,password:password},
+                                    function(msg){
+                                    if(msg.code==1){
+                                          layer.msg(msg.msg,function(){
+
+                                                window.location.href = "index/message/messageList";
+                                          });
+                                    }else{
+                                          layer.msg(msg.msg);
+                                    }
+                              })
+                        }
+                  });
+		</script>
+	</body>
+</html>

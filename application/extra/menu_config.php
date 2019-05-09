@@ -3,15 +3,33 @@ return [
     # 会员管理
     'users' => [
         'id'    => 10000,
-        'title' => '会员管理',
+        'title' => '平台管理',
         'sort'  => 21,
         'url'   => 'users/index',
         'hide'  => 1,
         'icon'  => 'glyphicon glyphicon-user',
         'child' => [
+
+            [
+                'id'    => 210400,
+                'title' => '规则设置',
+                'sort'  => 4,
+                'url'   => 'rule/index',
+                'hide'  => 1,
+                'icon'  => 'fa-th-large',
+                'child' => [
+                    [
+                        'id'    => 210401,
+                        'title' => '玩法规则',
+                        'sort'  => 1,
+                        'url'   => 'rule/setting',
+                        'hide'  => 1,
+                    ],
+                ],
+            ],
             [
                 'id'    => 11000,
-                'title' => '会员管理',
+                'title' => '用户管理',
                 'sort'  => 1,
                 'url'   => 'users/index',
                 'hide'  => 1,
@@ -19,7 +37,7 @@ return [
                 'child' => [
                     [
                         'id'    => 11100,
-                        'title' => '会员列表',
+                        'title' => '用户列表',
                         'sort'  => 1,
                         'url'   => 'users/index',
                         'hide'  => 1,
@@ -27,8 +45,47 @@ return [
                     ],
                 ],
             ],
+            [
+                'id'    => 11001,
+                'title' => '群组管理',
+                'sort'  => 1,
+                'url'   => 'users/groupList',
+                'hide'  => 1,
+                'icon'  => 'fa-th-large',
+                'child' => [
+                    [
+                        'id'    => 11101,
+                        'title' => '群组列表',
+                        'sort'  => 1,
+                        'url'   => 'users/groupList',
+                        'hide'  => 1,
+                        'icon'  => 'fa-th-large',
+                    ],
+                    
+                ],
+            ],
+            [
+                'id'    => 11002,
+                'title' => '客服管理',
+                'sort'  => 1,
+                'url'   => 'users/serviceList',
+                'hide'  => 1,
+                'icon'  => 'fa-th-large',
+                'child' => [
+                    [
+                        'id'    => 11102,
+                        'title' => '客服列表',
+                        'sort'  => 1,
+                        'url'   => 'users/serviceList',
+                        'hide'  => 1,
+                        'icon'  => 'fa-th-large',
+                    ],
+                    
+                ],
+            ],
         ],
     ],
+
 
     //系统设置
     'sys_config'      => [
@@ -134,23 +191,7 @@ return [
                     ],
                 ],
             ],
-            [
-                'id'    => 210400,
-                'title' => '规则设置',
-                'sort'  => 4,
-                'url'   => 'rule/index',
-                'hide'  => 1,
-                'icon'  => 'fa-th-large',
-                'child' => [
-                    [
-                        'id'    => 210401,
-                        'title' => '玩法规则',
-                        'sort'  => 1,
-                        'url'   => 'rule/setting',
-                        'hide'  => 1,
-                    ],
-                ],
-            ],
+            
         ],
     ],
 
