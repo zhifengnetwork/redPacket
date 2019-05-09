@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\Db;
+use think\Session;
 
 class Login extends Base
 {
@@ -24,7 +25,7 @@ class Login extends Base
             return json(['code'=>0, 'msg'=>'密码不可为空', 'data'=>""]);
         }
         // 判断用户是否存在
-        $is_user = Db::table('users')->where('mobile',$param['mobile'])->find();
+        $is_user = getUserInfo($param['mobile'], 1); // 类型1
         if(!$is_user){
             return json(['code'=>0, 'msg'=>'用户不存在!', 'data'=>""]);
         }
@@ -32,13 +33,22 @@ class Login extends Base
         if($is_user['password'] !== minishop_md5($param['password'], $is_user['salt'])){
             return json(['code'=>0, 'msg'=>'密码错误!', 'data'=>""]);
         }
-         // 判断用户是否被禁用
+        // 判断用户是否被禁用
         if($is_user['is_lock']==1){
             return json(['code'=>0, 'msg'=>'用户被禁用!', 'data'=>""]);
         }
+        // 设置session
+        unset($is_user['password']);
+        unset($is_user['salt']);
+        session('user',$is_user);
         return json(['code'=>1, 'msg'=>'登录成功', 'data'=>""]);
     }
 
+    // 退出登录
+    public function outLogin(){
+        session('user',null);
+        $this->fetch('login');
+    }
     
 
 

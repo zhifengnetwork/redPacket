@@ -2,15 +2,15 @@
  *  *bottomTabArrOne.length来循环
  * **/
 var bottomTabArrOne = [
-	"../../img/public/bottom_nav/news@2x_1.png",
-	"../../img/public/bottom_nav/mail_list@2x_1.png",
-	"../../img/public/bottom_nav/find@2x_1.png",
+	"__STATIC__/chatWeb/img/public/bottom_nav/news@2x_1.png",
+	"__STATIC__/chatWeb/img/public/bottom_nav/mail_list@2x_1.png",
+	"__STATIC__/chatWeb/img/public/bottom_nav/find@2x_1.png",
 ];
 /*底部nav切换(已-点击)_按循序*/
 var bottomTabArrTwo = [
-	"../../img/public/bottom_nav/news@2x_2.png",
-	"../../img/public/bottom_nav/mail_list@2x_2.png",
-	"../../img/public/bottom_nav/find@2x_2.png",
+	"__STATIC__/chatWeb/img/public/bottom_nav/news@2x_2.png",
+	"__STATIC__/chatWeb/img/public/bottom_nav/mail_list@2x_2.png",
+	"__STATIC__/chatWeb/img/public/bottom_nav/find@2x_2.png",
 ];
 /*图标的大小_按循序（不设置默认）*/
 var iconWH = [

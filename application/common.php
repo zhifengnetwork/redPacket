@@ -20,6 +20,23 @@ function createInviteCode(){
     return md5(time() . mt_rand(1,1000000));
 }
 
+// 获取用户信息
+function getUserInfo($mobile,$type=2){
+
+    if(!$mobile){return false;}
+    if($type==2){
+        $user = Db::table('users')->where('mobile',$mobile)
+            ->field('id,pid,nickname,account,head_imgurl,mobile,invite_code,type,is_lock')
+            ->find();
+    }else{
+        $user = Db::table('users')->where('mobile',$mobile)
+            ->field('id,pid,nickname,account,head_imgurl,mobile,password,salt,invite_code,type,is_lock')
+            ->find();
+    }
+    return $user;
+    
+}
+
 
 
 function pre($data){
