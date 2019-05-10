@@ -14,7 +14,9 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>会员列表</h5>
-                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.href='/admin/users/index'"><i class="glyphicon glyphicon-refresh"></i></a>
+                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.href='/admin/users/servicelist'"><i class="glyphicon glyphicon-refresh"></i></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a onclick="edit_service(0);"><i class="glyphicon glyphicon-plus"></i>添加客服</a>
                 </div>
                 <div class="ibox-content" method="GET">
                     <form role="form" class="form-inline">
@@ -37,10 +39,9 @@
                         <thead>
                             <tr>
                                 <th width="60">ID</th>
-                                <th width="100">会员昵称</th>
+                                <th width="100">客服名称</th>
                                 <th width="100">手机号</th>
-                                <th width="100">上级昵称</th>
-                                <th width="100">注册时间</th>
+                                <th width="100">加入时间</th>
                                 <th width="100">状态</th>
                                 <th width="100">操作</th>
                             </tr>
@@ -51,17 +52,18 @@
                                 <td>{$vo.id}</td>
                                 <td>{$vo.nickname}</td>
                                 <td>{$vo.mobile}</td>
-                                <td>上级昵称</td>
                                 <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                                 <td class="is_lock">
                                     {$is_lock[$vo.is_lock]}
                                 </td>
                                 <td class="operation" item="{$vo.id}">
                                     {if condition="$vo.is_lock eq 0"}
-                                    <a title="拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>
+                                    <a title="拉黑客服" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>
                                     {else/}
                                     <a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>
                                     {/if}
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a onclick="edit_service('{$vo.id}');"><i class="glyphicon glyphicon-pencil"></i></a>
                                 </td>
                             </tr>
                             {/volist}
@@ -78,6 +80,25 @@
         $(obj).parents('form').find('input').val('');
         $(obj).parents('form').find('button').click();
     }
+
+    function edit_service(id){
+        var title = '添加客服';
+        if(id > 0){
+            title = '编辑客服';
+        }
+        layer.open({
+            type:2,
+            title:title,
+            content:'/admin/users/edit_service?id='+id,
+            area:['600px','500px'],
+        });
+    }
+
+    function openClose(){
+        layer.closeAll();
+        window.location.replace(location.href);
+    }
+
     // 拉黑
     function user_stop(obj){
         layer.confirm('确定要拉黑会员么?', {icon: 3, title:'敏感操作提醒'}, function(index){
@@ -97,7 +118,7 @@
         });
     }
 
-    // 取消拉黑
+        // 取消拉黑
     function user_start(obj,id){
         layer.confirm('确定要取消拉黑会员么?', {icon: 3, title:'敏感操作提醒'}, function(index){
             //do something
