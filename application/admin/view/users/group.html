@@ -33,15 +33,18 @@
                                 <td>{$vo.id}</td>
                                 <td>{$vo.name}</td>
                                 <td class="is_lock">
-                                    {$is_lock[$vo.is_lock]}
+                                   {if condition="$vo.status eq 0"}
+                                    正常
+                                    {else/}
+                                    禁用
+                                    {/if}
                                 </td>
                                 <td class="operation" item="{$vo.id}">
-                                    --
-                                    <!-- {if condition="$vo.is_lock eq 0"}
+                                    {if condition="$vo.status eq 0"}
                                     <a title="拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>
                                     {else/}
                                     <a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>
-                                    {/if} -->
+                                    {/if}
                                 </td>
                             </tr>
                             {/volist}

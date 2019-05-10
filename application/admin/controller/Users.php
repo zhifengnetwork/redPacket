@@ -55,7 +55,6 @@ class Users extends Common
     public function groupList(){
 
         $list = Db::name('chat_group')->order('id desc')->paginate(15);
-        // $this->assign('is_lock', [0=>'正常',1=>'已拉黑']);
         $this->assign('list', $list);
         return $this->fetch('group');
     }
