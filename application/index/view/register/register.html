@@ -40,7 +40,7 @@
             			</div>
             			<!--输入短信验证码-->
             			<div class="inp">
-            				<input class="put name code" type="number" placeholder="短信验证码" value="123456" autocomplete="off"/>
+            				<input class="put name code" type="text" placeholder="短信验证码" value="123456" autocomplete="off" oninput = "value=value.replace(/[^\d]/g,'')" maxlength="6" />
             			</div>
             			<!--发送短信验证码-->
             			<div class="btn_wrap">
@@ -55,7 +55,7 @@
             			</div>
             			<!--输入密码-->
             			<div class="inp">
-            				<input class="text name pwd" type="password" placeholder="设置密码" autocomplete="off"/>
+            				<input class="text name pwd" type="password" placeholder="设置6位数字密码" autocomplete="off" oninput = "value=value.replace(/[^\d]/g,'')" maxlength="6" />
             			</div>
                               <input type="hidden" name="invite_code" class="invite_code" value="cdd4586930afec0e1c6e177327c9c6f1">
             		</div>

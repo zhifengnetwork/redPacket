@@ -1,10 +1,11 @@
 <?php
 namespace app\index\controller;
 use think\Db;
-// 消息
-class Message extends Base
+// 通讯录
+class AddressList extends Base
 {
-    public function _initialize()
+
+   	public function _initialize()
     {   
         if (!is_user_login()) {
             //未登陆跳转到登陆
@@ -14,12 +15,13 @@ class Message extends Base
     }
 
     /**
-     * [消息页面]
+     * [通讯录页面]
      * @return json
      */
-    public function messageList()
+    public function addressList()
     {
-        return $this->fetch('messageList');
+
+        return $this->fetch('addressList');
     }
 
 

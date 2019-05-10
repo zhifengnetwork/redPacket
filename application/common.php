@@ -3,6 +3,17 @@ use think\Db;
 use think\Request;
 
 
+
+/**
+ * 判断前台用户是否登录
+ * @return boolean
+ */
+function is_user_login()
+{
+    $sessionUser = session('user');
+    return !empty($sessionUser);
+}
+
 // 判断是post请求
 function isPost(){
     return Request::instance()->isPost();

@@ -26,10 +26,21 @@ class Register extends Base
     	}
     	$param = input("post.");
     	$nivite_code = $param['invite_code'];
+        $password = trim($param['password']);
     	if(!isMobile($param['mobile'])){
     		return json(['code'=>0, 'msg'=>'手机号无效', 'data'=>""]);
     	}
-    	// 判断当前手机号是否已注册
+        $pw_len = strlen($password);
+        // 判断密码长度6位数字密码
+        if($pw_len<6 || $pw_len>6){
+            return json(['code'=>0, 'msg'=>'请输入6位数字密码', 'data'=>""]);
+        }
+        if(is_numeric($password)){
+            return json(['code'=>0, 'msg'=>'密码格式有误', 'data'=>""]);
+        }
+
+
+        // 判断当前手机号是否已注册
     	if(isMobileRegister($param['mobile'])){
     		return json(['code'=>0, 'msg'=>'手机号已注册过', 'data'=>""]);
     	}
@@ -45,7 +56,7 @@ class Register extends Base
 
     	// 密码处理
     	$salt = create_salt();
-    	$password = minishop_md5($param['password'],$salt);
+    	$password = minishop_md5($password,$salt);
     	
     	$insert_data = [
     		'pid' => $pid_invite_code['id'],
