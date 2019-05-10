@@ -14,11 +14,22 @@ class Users extends Common
 
 
         $where['type'] = ['=', 0];
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        if(isset($search['nickname']) && $search['nickname']){
+            $nickname = $search['nickname'];
+            $where['nickname'] = ['like', "%$nickname%"];
+        }
+        if(isset($search['mobile']) && $search['mobile']){
+            $mobile = $search['mobile'];
+            $where['mobile'] = ['like', "%$mobile%"];
+        }
+
         $list = Db::name('users')->where($where)->order('addtime desc')->paginate(15);
 
 
         $this->assign('is_lock', [0=>'正常',1=>'已拉黑']);
         $this->assign('list', $list);
+        $this->assign('search', $search);
         return $this->fetch();
     }
 
@@ -54,9 +65,20 @@ class Users extends Common
     public function servicelist(){
 
         $where['type'] = ['=', 400];
+
+        $search = isset($_GET['search']) ? $_GET['search'] : '';
+        if(isset($search['nickname']) && $search['nickname']){
+            $nickname = $search['nickname'];
+            $where['nickname'] = ['like', "%$nickname%"];
+        }
+        if(isset($search['mobile']) && $search['mobile']){
+            $mobile = $search['mobile'];
+            $where['mobile'] = ['like', "%$mobile%"];
+        }
+
         $list = Db::name('users')->where($where)->order('addtime desc')->paginate(15);
 
-
+        $this->assign('search', $search);
         $this->assign('is_lock', [0=>'正常',1=>'已拉黑']);
         $this->assign('list', $list);
         return $this->fetch();

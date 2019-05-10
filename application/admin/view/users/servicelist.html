@@ -18,13 +18,31 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a onclick="edit_service(0);"><i class="glyphicon glyphicon-plus"></i>添加客服</a>
                 </div>
+                <div class="ibox-content" method="GET">
+                    <form role="form" class="form-inline">
+                        <div class="form-group">
+                            <label for="exampleInputEmail2" class="sr-only">客服名称</label>
+                            <input type="text" placeholder="请输入客服名称" name="search[nickname]" id="exampleInputEmail2"
+                                    class="form-control" value="{$search.nickname ? $search.nickname : ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword2" class="sr-only">手机号</label>
+                            <input type="text" placeholder="请输入手机号" name="search[mobile]" id="exampleInputPassword2"
+                                    class="form-control" value="{$search.mobile ? $search.mobile : ''}">
+                        </div>
+                        <button class="btn btn-white" type="submit">搜索</button>
+                        <a class="btn btn-default" onclick="clear_search(this);">清空</a>
+                    </form>
+                </div>
                 <div class="ibox-content">
                     <table class="table table-hover table-bordered text-center">
                         <thead>
                             <tr>
                                 <th width="60">ID</th>
                                 <th width="100">客服名称</th>
+                                <th width="100">手机号</th>
                                 <th width="100">加入时间</th>
+                                <th width="100">状态</th>
                                 <th width="100">操作</th>
                             </tr>
                         </thead>
@@ -33,9 +51,19 @@
                             <tr>
                                 <td>{$vo.id}</td>
                                 <td>{$vo.nickname}</td>
+                                <td>{$vo.mobile}</td>
                                 <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+                                <td class="is_lock">
+                                    {$is_lock[$vo.is_lock]}
+                                </td>
                                 <td class="operation" item="{$vo.id}">
-                                    
+                                    {if condition="$vo.is_lock eq 0"}
+                                    <a title="拉黑客服" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>
+                                    {else/}
+                                    <a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>
+                                    {/if}
+                                    &nbsp;&nbsp;&nbsp;
+                                    <a onclick="edit_service('{$vo.id}');"><i class="glyphicon glyphicon-pencil"></i></a>
                                 </td>
                             </tr>
                             {/volist}
@@ -48,6 +76,11 @@
     </div>
 </div>
 <script>
+    function clear_search(obj){
+        $(obj).parents('form').find('input').val('');
+        $(obj).parents('form').find('button').click();
+    }
+
     function edit_service(id){
         var title = '添加客服';
         if(id > 0){
@@ -64,6 +97,44 @@
     function openClose(){
         layer.closeAll();
         window.location.replace(location.href);
+    }
+
+    // 拉黑
+    function user_stop(obj){
+        layer.confirm('确定要拉黑会员么?', {icon: 3, title:'敏感操作提醒'}, function(index){
+            //do something
+            var id = $(obj).parents('tr').find('.operation').attr('item');
+            $.post('/admin/users/edit_status',{id:id,is_lock:1},function(res){
+                if(res.status == 1){
+                    layer.msg('操作成功！',{icon:6});
+                    $(obj).parents('tr').find('.is_lock').html('已拉黑');
+                    $(obj).before(`<a title="取消拉黑" onclick="user_start(this)"><i class="glyphicon glyphicon-ok-sign"></i></a>`);
+                    $(obj).remove();
+                }else{
+                    layer.msg('操作失败，请重试！',{icon:5});
+                }
+            });
+            layer.close(index);
+        });
+    }
+
+        // 取消拉黑
+    function user_start(obj,id){
+        layer.confirm('确定要取消拉黑会员么?', {icon: 3, title:'敏感操作提醒'}, function(index){
+            //do something
+            var id = $(obj).parents('tr').find('.operation').attr('item');
+            $.post('/admin/users/edit_status',{id:id,is_lock:0},function(res){
+                if(res.status == 1){
+                    layer.msg('操作成功！',{icon:6});
+                    $(obj).parents('tr').find('.is_lock').html('正常');
+                    $(obj).before(`<a title="拉黑会员" onclick="user_stop(this)"><i class="glyphicon glyphicon-minus-sign red"></i></a>`);
+                    $(obj).remove();
+                }else{
+                    layer.msg('操作失败，请重试！',{icon:5});
+                }
+            });
+            layer.close(index);
+        });
     }
 </script>
 {/block}
