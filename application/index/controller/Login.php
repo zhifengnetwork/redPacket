@@ -14,34 +14,42 @@ class Login extends Base
      */
     public function userToLogin()
     {
+
     	if(!isPost()){
-            return json(['code'=>0, 'msg'=>'非法提交', 'data'=>""]);
+            return message(0, '非法提交');
         }
     	$param = input('post.');
+        $param['password'] = trim($param['password']);
         if(!isMobile($param['mobile'])){
-            return json(['code'=>0, 'msg'=>'手机号无效', 'data'=>""]);
-        }
-        if(!$param['password']){
-            return json(['code'=>0, 'msg'=>'密码不可为空', 'data'=>""]);
+            return message(0, '手机号无效');
         }
         // 判断用户是否存在
         $is_user = getUserInfo($param['mobile'], 1); // 类型1
         if(!$is_user){
-            return json(['code'=>0, 'msg'=>'用户不存在!', 'data'=>""]);
+            return message(0, '用户不存在');
+        }
+        if(!$param['password']){
+            return message(0, '密码不可为空');
+        }
+        // 判断密码长度6位数字密码
+        $pw_len = strlen($param['password']);
+        if($pw_len<6 || $pw_len>6){
+            return message(0, '请输入6位数字密码');
         }
         // 比对密码
         if($is_user['password'] !== minishop_md5($param['password'], $is_user['salt'])){
-            return json(['code'=>0, 'msg'=>'密码错误!', 'data'=>""]);
+            return message(0, '密码错误');
         }
         // 判断用户是否被禁用
         if($is_user['is_lock']==1){
-            return json(['code'=>0, 'msg'=>'用户被禁用!', 'data'=>""]);
+            return message(0, '用户被禁用');
         }
         // 设置session
         unset($is_user['password']);
         unset($is_user['salt']);
         session('user',$is_user);
-        return json(['code'=>1, 'msg'=>'登录成功', 'data'=>""]);
+        return message(1, '登录成功');
+
     }
 
     // 退出登录

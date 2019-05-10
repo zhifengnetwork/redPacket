@@ -3,6 +3,13 @@ use think\Db;
 use think\Request;
 
 
+/**
+ * 返回客户端信息
+ * @return json
+ */
+function message($code, $msg, $data=""){
+    return json(['code'=>$code, 'msg'=>$msg, 'data'=>$data]);
+}
 
 /**
  * 判断前台用户是否登录

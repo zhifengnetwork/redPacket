@@ -29,14 +29,14 @@
       		<div class="mobile">
       			<div class="mark">+86</div>
       			<div class="inp">
-      				<input class="text name" id="mobile" value="" type="text" placeholder="请输入手机号码" />
+      				<input class="text name" id="mobile" value="" type="text" placeholder="请输入手机号码" oninput = "value=value.replace(/[^\d]/g,'')" maxlength="11" />
       			</div>
       		</div>
       		<!--密码输入框-->
       		<div class="mobile">
       			<div class="mark">密码</div>
       			<div class="inp">
-      				<input class="text name password" value="" type="password" placeholder="请输入登录密码" />
+      				<input class="text name password" value="" type="password" placeholder="请输入6位数字密码" oninput = "value=value.replace(/[^\d]/g,'')" maxlength="6"/>
       			</div>
       		</div>
       	</div>
@@ -62,7 +62,6 @@
 
             // 登录提交
             $(".last_btn").click(function(){
-
                   var mobile = $("#mobile").val();
                   var password = $(".password").val();
                   if(!mobile){
@@ -73,14 +72,10 @@
                         layer.msg('请输入密码');
                         return;
                   }
-                  
                   if(mobile&&password){
-
-                        $.post("{:url('index/login/userToLogin')}",
-                              {mobile:mobile,password:password},
-                              function(msg){
+                        $.post("{:url('index/login/userToLogin')}",{mobile:mobile,password:password},function(msg){
                               if(msg.code==1){
-                                    console.log(111);
+                                    console.log(msg);
                                     layer.msg(msg.msg,function(){
                                           window.location.href = "index/message/messageList";
                                     });
@@ -88,6 +83,8 @@
                                     layer.msg(msg.msg);
                               }
                         })
+                  }else{
+                        layer.msg('缺少参数');
                   }
             });
 	</script>
