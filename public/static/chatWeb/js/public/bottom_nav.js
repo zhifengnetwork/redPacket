@@ -2,15 +2,15 @@
  *  *bottomTabArrOne.length来循环
  * **/
 var bottomTabArrOne = [
-	"__STATIC__/chatWeb/img/public/bottom_nav/news@2x_1.png",
-	"__STATIC__/chatWeb/img/public/bottom_nav/mail_list@2x_1.png",
-	"__STATIC__/chatWeb/img/public/bottom_nav/find@2x_1.png",
+	"../../img/public/bottom_nav/news@2x_1.png",
+	"../../img/public/bottom_nav/mail_list@2x_1.png",
+	"../../img/public/bottom_nav/find@2x_1.png",
 ];
 /*底部nav切换(已-点击)_按循序*/
 var bottomTabArrTwo = [
-	"__STATIC__/chatWeb/img/public/bottom_nav/news@2x_2.png",
-	"__STATIC__/chatWeb/img/public/bottom_nav/mail_list@2x_2.png",
-	"__STATIC__/chatWeb/img/public/bottom_nav/find@2x_2.png",
+	"../../img/public/bottom_nav/news@2x_2.png",
+	"../../img/public/bottom_nav/mail_list@2x_2.png",
+	"../../img/public/bottom_nav/find@2x_2.png",
 ];
 /*图标的大小_按循序（不设置默认）*/
 var iconWH = [
@@ -29,14 +29,12 @@ var buttonNavTitle = [
 var buttonNavUrl = [];
 /*未-登陆路径*/
 var loginFalse = [
-	"''",
-	"''",
-	"''",
-	"''",
+	"'../news/news.html'",
+	"'../mail_list/mail_list.html'",
+	"'../find/find.html'",
 ]
 /*已-登陆路径*/
 var loginTrue = [
-	"''",
 	"''",
 	"''",
 	"''",
@@ -66,9 +64,9 @@ for(var g = 0; g < bottomTabArrOne.length; g++) {
 		1、点击时 font-color：class="bNavYseFontColor";
 		2、（未点击时）字体颜色:class="bNavNoFontColor";
 	-->*/
-	botNavdStr += '<div class="bottomNavTerm">';
+	botNavdStr += '<div class="bottomNavTerm" onclick="window.location.href=' + buttonNavUrl[g] + '">';
 	/*<!--icon box-->*/
-	botNavdStr += '<p class="bottomNavIconBox" onclick="window.location.href=' + buttonNavUrl[g] + '">';
+	botNavdStr += '<p class="bottomNavIconBox">';
 		botNavdStr += '<img class="bottomNavIcon" style="'+ iconWH[g] +'" src="' + bottomTabArrOne[g] + '" />';
 	botNavdStr += '</p>';
 	/*<!--title

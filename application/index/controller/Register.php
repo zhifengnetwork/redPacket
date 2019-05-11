@@ -22,16 +22,26 @@ class Register extends Base
     public function addRegister()
     {
     	if(!isPost()){
-    		return json(['code'=>0, 'msg'=>'非法提交', 'data'=>""]);
+            return message(0, '非法提交');
     	}
     	$param = input("post.");
     	$nivite_code = $param['invite_code'];
+        $password = trim($param['password']);
     	if(!isMobile($param['mobile'])){
-    		return json(['code'=>0, 'msg'=>'手机号无效', 'data'=>""]);
+            return message(0, '手机号无效');
     	}
-    	// 判断当前手机号是否已注册
+        $pw_len = strlen($password);
+        // 判断密码长度6位数字密码
+        if($pw_len<6 || $pw_len>6){
+            return message(0, '请输入6位数字密码');
+        }
+        if(!is_numeric($password)){
+            return message(0, '密码格式有误');
+        }
+
+        // 判断当前手机号是否已注册
     	if(isMobileRegister($param['mobile'])){
-    		return json(['code'=>0, 'msg'=>'手机号已注册过', 'data'=>""]);
+            return message(0, '手机号已注册过');
     	}
 
     	// 判断手机验证码
@@ -40,12 +50,12 @@ class Register extends Base
     	// 判断上级注册码是否存在
     	$pid_invite_code = Db::table('users')->where('invite_code', $nivite_code)->field('id,invite_code')->find();
     	if(!$pid_invite_code){
-    		return json(['code'=>0, 'msg'=>'nivite-null', 'data'=>""]);
+            return message(0, 'nivite-null');
     	}
 
     	// 密码处理
     	$salt = create_salt();
-    	$password = minishop_md5($param['password'],$salt);
+    	$password = minishop_md5($password,$salt);
     	
     	$insert_data = [
     		'pid' => $pid_invite_code['id'],
@@ -54,7 +64,6 @@ class Register extends Base
     		'salt' => $salt,
     		'invite_code' => createInviteCode(), // 生成32位邀请码
     		'addtime' => time()
-
     	];
 
  	   	// 启动事务
@@ -77,12 +86,11 @@ class Register extends Base
 
 			// 提交事务
 		    Db::commit();
-    		return json(['code'=>1, 'msg'=>'注册成功', 'data'=>$insert_data]);
-
+            return message(1, '注册成功', $insert_data);
 		} catch (\Exception $e) {
 		    // 回滚事务
 		    Db::rollback();
-		    return json(['code'=>0, 'msg'=>'网络异常,稍后再试', 'data'=>""]);
+            return message(0, '网络异常,稍后再试');
 		}
     }
 
