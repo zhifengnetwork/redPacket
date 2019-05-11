@@ -1,0 +1,118 @@
+{extend name="common:cssjs" /}
+{block name="content"}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form method="POST" class="form-horizontal" target="ajaxR">
+                    <input type="hidden" name="id" value="{$info ? $info['id'] : 0}">
+                    <div class="form-group"><label class="col-sm-3 control-label">会员手机号：</label>
+                        <div class="col-sm-5"><input type="text" id="mobile" name="mobile" class="form-control" value="" placeholder="请输入会员手机号"></div>
+                        <a class="btn btn-success" onclick="search_user();">搜索</a>
+                    </div>
+                    <div class="form-group"><label class="col-sm-3 control-label">账户信息：</label>
+                        <div class="col-sm-6" id="user_info">
+                            <a>暂无会员信息，请先搜索</a>
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="col-sm-3 control-label">账户金额：</label>
+                        <div class="col-sm-6">
+                            <select id="type" style="height:35px;width:23%;display:inline-block;">
+                                <option value="0" checked>充值：</option>
+                                <option value="1">扣除：</option>
+                            </select>
+                            <input type="text" id="money" class="form-control" style="float:right;width:76%;">
+                        </div>
+                    </div>
+                    <div class="form-group"><label class="col-sm-3 control-label">备注：</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="3" id="desc" name=textarea></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-6 col-sm-offset-2" style="padding-left:20%;">
+                            <button class="btn btn-primary" type="button" onclick="save();">保存</button>
+                            <button class="btn btn-white" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+                <iframe name="ajaxR" style="display:none;width:100%;height:300px;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function save(){
+        var mobile = $('#mobile').val();
+        var type = $('#type').val();
+        var money = $('#money').val();
+        var desc = $('#desc').val();
+        var p = /^([1-9]\d*|0)(\.\d{1,2})?$/;
+
+        if(!mobile){
+            layer.msg('请输入会员手机号',{icon:5});
+            return false;
+        }
+        if(!p.test(money)){
+            layer.msg('请输入正确的金额',{icon:5});
+            return false;
+        }
+        if(!desc){
+            layer.msg('请输入备注',{icon:5});
+            false;
+        }
+
+        $.post('/admin/users/edit_account',{mobile:mobile,type:type,money:money,desc:desc},function(res){
+
+            if(res.status == 1){
+                layer.msg(res.msg,{icon:6});
+                setTimeout(function(){
+                    parent.openClose();
+                },1500);
+            }else{
+                layer.msg(res.msg,{icon:5});
+            }
+        });
+    }
+
+
+    function search_user(){
+        var mobile = $('#mobile').val();
+        
+        var _tpl = '<a>暂无会员信息，请先搜索</a>';
+        $('#user_info').empty().append(_tpl);
+
+        if(!mobile){
+            layer.msg('请输入会员手机号',{icon:5});
+            return false;
+        }
+        $.post('/admin/users/edit_account',{mobile:mobile,search:1},function(res){
+            if(res.status == 1){
+                var _html = '<p><a>会员ID：'+res.id+'</a></p>'+
+                            '<p><a>会员昵称：'+res.nickname+'</a></p>'+
+                            '<p><a>会员身份：'+res.typename+'</a></p>'+
+                            '<p><a>账户余额：'+res.account+'</a></p>';
+
+                $('#user_info').empty().append(_html);
+            }else{
+                layer.msg('查询失败，不存在的会员',{icon:5});
+            }
+        });
+    }
+
+    function error(msg){
+        layer.msg(msg,{icon:5});
+    }
+
+    function success(){
+        layer.msg('保存成功！正在跳转...',{icon:6});
+        setTimeout(function(){
+            parent.openClose();
+        },1000);
+    }
+
+</script>
+{/block}

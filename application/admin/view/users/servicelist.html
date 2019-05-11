@@ -14,9 +14,11 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>会员列表</h5>
-                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.href='/admin/users/servicelist'"><i class="glyphicon glyphicon-refresh"></i></a>
+                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a onclick="edit_service(0);"><i class="glyphicon glyphicon-plus"></i>添加客服</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a onclick="edit_account();"><i class="glyphicon glyphicon-usd"></i>账户充值</a>
                 </div>
                 <div class="ibox-content" method="GET">
                     <form role="form" class="form-inline">
@@ -41,6 +43,7 @@
                                 <th width="60">ID</th>
                                 <th width="100">客服名称</th>
                                 <th width="100">手机号</th>
+                                <th width="60">账户余额</th>
                                 <th width="100">加入时间</th>
                                 <th width="100">状态</th>
                                 <th width="100">操作</th>
@@ -52,6 +55,7 @@
                                 <td>{$vo.id}</td>
                                 <td>{$vo.nickname}</td>
                                 <td>{$vo.mobile}</td>
+                                <td>{$vo.account}</td>
                                 <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                                 <td class="is_lock">
                                     {$is_lock[$vo.is_lock]}
@@ -76,6 +80,16 @@
     </div>
 </div>
 <script>
+
+    function edit_account(){
+        layer.open({
+            title:'账户金额变动',
+            type:2,
+            content:'/admin/users/edit_account',
+            area:['850px','600px'],
+        });
+    }
+    
     function clear_search(obj){
         $(obj).parents('form').find('input').val('');
         $(obj).parents('form').find('button').click();

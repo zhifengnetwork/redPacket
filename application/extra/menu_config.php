@@ -28,6 +28,23 @@ return [
                 ],
             ],
             [
+                'id'    => 12000,
+                'title' => '财务管理',
+                'sort'  => 5,
+                'url'   => '',
+                'hide'  => 1,
+                'icon'  => 'fa-th-large',
+                'child' => [
+                    [
+                        'id'    => 12001,
+                        'title' => '余额记录',
+                        'sort'  => 1,
+                        'url'   => 'users/account_log',
+                        'hide'  => 1,
+                    ],
+                ],
+            ],
+            [
                 'id'    => 11000,
                 'title' => '用户管理',
                 'sort'  => 1,

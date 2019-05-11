@@ -1,0 +1,93 @@
+{extend name="common:base" /}
+{block name="content"}
+<style>
+    .table thead tr th{
+        text-align: center;
+    }
+    .red{
+        color:red;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>余额记录</h5>
+                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a onclick="edit_account();"><i class="glyphicon glyphicon-usd"></i>账户充值</a>
+                </div>
+                <div class="ibox-content" method="GET">
+                    <form role="form" class="form-inline">
+                        <div class="form-group">
+                            <label for="exampleInputEmail2" class="sr-only">会员昵称</label>
+                            <input type="text" placeholder="请输入会员昵称" name="search[nickname]" id="exampleInputEmail2"
+                                    class="form-control" value="{$search.nickname ? $search.nickname : ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword2" class="sr-only">手机号</label>
+                            <input type="text" placeholder="请输入手机号" name="search[mobile]" id="exampleInputPassword2"
+                                    class="form-control" value="{$search.mobile ? $search.mobile : ''}">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword2" class="sr-only">操作</label>
+                            <select style="height:35px;windith:150px;text-align:center;" name="search[action]" id="select">
+                                <option value="0" {if condition="!isset($search.action) or $search.action eq 0"}selected{/if}>操作类型</option>
+                                <option value="1" {if condition="isset($search.action) && $search.action eq 1"}selected{/if}>充值</option>
+                                <option value="2" {if condition="isset($search.action) && $search.action eq 2"}selected{/if}>扣除</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-white" type="submit">搜索</button>
+                        <a class="btn btn-default" onclick="clear_search(this);">清空</a>
+                    </form>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th width="40">ID</th>
+                                <th width="100">会员昵称</th>
+                                <th width="100">手机号</th>
+                                <th width="60">操作</th>
+                                <th width="60">金额</th>
+                                <th width="100">时间</th>
+                                <th width="100">操作前账户余额</th>
+                                <th width="100">操作后账户余额</th>
+                                <th width="120">备注</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="$list" id="vo"}
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.nickname}</td>
+                                <td>{$vo.mobile}</td>
+                                <td>{$action[$vo.action] ? $action[$vo.action] : '--'}</td>
+                                <td>{$vo.money}</td>
+                                <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
+                                <td>{$vo.account}</td>
+                                <td>{$vo.newaccount}</td>
+                                <td>{$vo.desc}</td>
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+                    {$list->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function clear_search(obj){
+        $(obj).parents('form').find('input').val('');
+        $('#select option').removeAttr('selected');
+        $('#select option[value=0]').attr('selected','selected');
+
+        $(obj).parents('form').find('button').click();
+    }
+</script>
+{/block}
+{block name="script"}

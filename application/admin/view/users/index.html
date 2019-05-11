@@ -14,13 +14,16 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>会员列表</h5>
-                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.href='/admin/users/index'"><i class="glyphicon glyphicon-refresh"></i></a>
+                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a onclick="edit_account();"><i class="glyphicon glyphicon-usd"></i>账户充值</a>
                 </div>
                 <div class="ibox-content" method="GET">
                     <form role="form" class="form-inline">
                         <div class="form-group">
-                            <label for="exampleInputEmail2" class="sr-only">客服名称</label>
-                            <input type="text" placeholder="请输入客服名称" name="search[nickname]" id="exampleInputEmail2"
+                            <label for="exampleInputEmail2" class="sr-only">会员昵称</label>
+                            <input type="text" placeholder="请输入会员昵称" name="search[nickname]" id="exampleInputEmail2"
                                     class="form-control" value="{$search.nickname ? $search.nickname : ''}">
                         </div>
                         <div class="form-group">
@@ -40,6 +43,7 @@
                                 <th width="100">会员昵称</th>
                                 <th width="100">手机号</th>
                                 <th width="100">上级昵称</th>
+                                <th width="60">账户余额</th>
                                 <th width="100">注册时间</th>
                                 <th width="100">状态</th>
                                 <th width="100">操作</th>
@@ -51,7 +55,8 @@
                                 <td>{$vo.id}</td>
                                 <td>{$vo.nickname}</td>
                                 <td>{$vo.mobile}</td>
-                                <td>上级昵称</td>
+                                <td>{$last_name[$vo.pid] ? $last_name[$vo.pid] : '--'}</td>
+                                <td>{$vo.account}</td>
                                 <td>{$vo.addtime|date="Y-m-d H:i:s",###}</td>
                                 <td class="is_lock">
                                     {$is_lock[$vo.is_lock]}
@@ -74,6 +79,20 @@
     </div>
 </div>
 <script>
+    function openClose(){
+        layer.closeAll();
+        window.location.replace(location.href);
+    }
+
+    function edit_account(){
+        layer.open({
+            title:'账户金额变动',
+            type:2,
+            content:'/admin/users/edit_account',
+            area:['850px','600px'],
+        });
+    }
+
     function clear_search(obj){
         $(obj).parents('form').find('input').val('');
         $(obj).parents('form').find('button').click();
