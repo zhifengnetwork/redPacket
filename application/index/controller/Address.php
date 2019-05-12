@@ -6,6 +6,7 @@ use think\Db;
 class Address extends Base
 {
 
+    protected $user;
    	public function _initialize()
     {   
         if (!is_user_login()) {
@@ -13,7 +14,7 @@ class Address extends Base
             $this->redirect('/index/index');
             exit;
         }
-        $user = session('user');
+        $this->user = session('user');
     }
 
     /**
@@ -24,16 +25,16 @@ class Address extends Base
     {
 
         // 获取所有好友数据
-        $list = Db::field('p.id,p.title')
-                ->name('chat_friends')
-                ->alias('f')
-                ->union('SELECT id,title FROM edu_product where deleted=1')
-                ->where('uid',$user['id'])
-                // ->page('1,10')
-                ->select();
+        // $list = Db::field('p.id,p.title')
+        //         ->name('chat_friends')
+        //         ->alias('f')
+        //         ->union('SELECT id,title FROM edu_product where deleted=1')
+        //         ->where('uid',$this->user['id'])
+        //         // ->page('1,10')
+        //         ->select();
 
-        $friends_list = Db::name('chat_')
-        return $this->fetch('/address/addressList');
+        // $friends_list = Db::name('chat_');
+        return $this->fetch('addressList');
     }
 
     /**

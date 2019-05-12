@@ -13,10 +13,10 @@ use think\View;
 class Base extends Controller
 {
     /*
-     * 初始化 (不要注释)
+     * 初始化 (保留不要注释)
      */
     public function _initialize()
-    {	
+    {
     	
     }
 

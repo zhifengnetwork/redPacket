@@ -29,15 +29,15 @@ var buttonNavTitle = [
 var buttonNavUrl = [];
 /*未-登陆路径*/
 var loginFalse = [
-	"'../news/news.html'",
-	"'../mail_list/mail_list.html'",
-	"'../find/find.html'",
+	"'/index/message/messageList'",
+	"'/index/address/addressList'",
+	"'/index/find/index'",
 ]
 /*已-登陆路径*/
 var loginTrue = [
-	"''",
-	"''",
-	"''",
+	"'/index/message/messageList'",
+	"'/index/address/addressList'",
+	"'/index/find/index'",
 ]
 
 /**对应登陆状态=>路径
