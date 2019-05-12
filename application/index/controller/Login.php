@@ -47,6 +47,7 @@ class Login extends Base
         // 设置session
         unset($is_user['password']);
         unset($is_user['salt']);
+        $is_user['uid'] = $is_user['id'];
         session('user',$is_user);
         return message(1, '登录成功');
 

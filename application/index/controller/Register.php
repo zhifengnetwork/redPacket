@@ -73,17 +73,21 @@ class Register extends Base
 			$friend_res = true;
 		    $last_id = Db::table('users')->insertGetId($insert_data);
 
-		    // 和上级绑定好友关系
-	    	$friend_data = [
-	    		'uid' => $last_id,
-	    		'friend_uid' => $pid_invite_code['id']
-	 	   	];
-	 	   	// 判断是否属于好友
-	 	   	$is_friend = Db::table('chat_friends')->where(['uid'=>$last_id,'friend_uid'=>$pid_invite_code['id']])->find();
-	 	   	if(!$is_friend){
-				$friend_res = Db::table('chat_friends')->insertGetId($friend_data);
-	 	   	}
+		    // 和上级绑定好友关系 并且上级uid<当前用户uid
+            if($pid_invite_code['id'] < $last_id){
+                
+                $friend_data = [
+                    'uid' => $pid_invite_code['id'], // 上级uid
+                    'friend_uid' => $last_id         // 当前用户uid
+                ];
 
+                // 判断是否属于好友
+                $is_friend = Db::table('chat_friends')->where(['uid'=>$last_id,'friend_uid'=>$pid_invite_code['id']])->find();
+                if(!$is_friend){
+                    $friend_res = Db::table('chat_friends')->insertGetId($friend_data);
+                }
+            }
+	    	
 			// 提交事务
 		    Db::commit();
             return message(1, '注册成功', $insert_data);
