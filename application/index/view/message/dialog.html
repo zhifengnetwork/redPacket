@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />    
+	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>    
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/dialog.css">
+    <title>对话框</title>
+</head>
+
+<body onload="connect();">
+   <div class="wrap_frame">
+        <!--public head-->
+        <div class="lb_headWrap">
+            <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/left.png"/>
+            </p>
+          <!--   <p class="lb_headWrap_dialog">
+                <span class="lb_headWrap_dialog_text">99+</span>
+            </p> -->
+            <span class="title_name"></span>
+            <p class="lb_headWrap_remove">
+                <img class="lb_headWrap_remove_img" src="__STATIC__/chatWeb/img/news/remove.png">
+            </p>
+        </div>
+        <!-- 聊天内容 -->
+        <div class="dialog_content">
+            <div class="dialog_content_time">
+                昨天 22:22
+            </div>
+            <!-- 对方消息 -->
+            
+            <!-- 本人消息 -->
+            <!-- append -->
+
+            <!-- 本人转账 -->
+            <!-- <div class="dialog_content_oneself clearfloat">
+                <div class="dialog_content_oneself_imgwrap">
+                    <img class="dialog_content_oneself_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
+                </div>
+                <div class="dialog_content_oneself_info">
+                    <p class="dialog_content_oneself_name">质检员</p>
+                    <div class="dialog_content_oneself_transfer">
+                        <div class="oneself_transfer_info">
+                            <div class="oneself_transfer_imgwrap">
+                                <img class="oneself_transfer_img" src="__STATIC__/chatWeb/img/news/transfer2.png" alt="">
+                            </div>
+                            <div class="oneself_transfer_price">
+                                <div>给神秘电波转账</div>
+                                <div>￥999.00</div>
+                            </div>
+                        </div>
+                        <p class="oneself_transfer_text">转让</p>
+                    </div>
+                </div>
+            </div> -->
+            <!-- 对方转账 -->
+          <!--   <div class="dialog_content_opposite clearfloat">
+                <div class="dialog_content_opposite_imgwrap">
+                    <img class="dialog_content_opposite_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
+                </div>
+                <div class="dialog_content_opposite_info">
+                    <p class="dialog_content_opposite_name">神秘电波</p>
+                    <div class="dialog_content_opposite_transfer">
+                        <div class="opposite_transfer_info">
+                            <div class="opposite_transfer_imgwrap">
+                                <img class="opposite_transfer_img" src="__STATIC__/chatWeb/img/news/transfer2.png" alt="">
+                            </div>
+                            <div class="opposite_transfer_price">
+                                <div>给质检员转账</div>
+                                <div>￥999.00</div>
+                            </div>
+                        </div>
+                        <p class="opposite_transfer_text">转让</p>
+                    </div>
+                </div>
+            </div> -->
+            <!-- 本人收款 -->
+            <!-- <div class="dialog_content_oneself clearfloat">
+                <div class="dialog_content_oneself_imgwrap">
+                    <img class="dialog_content_oneself_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
+                </div>
+                <div class="dialog_content_oneself_info">
+                    <p class="dialog_content_oneself_name">质检员</p>
+                    <div class="dialog_content_oneself_transfer gathering">
+                        <div class="oneself_transfer_info">
+                            <div class="oneself_transfer_imgwrap">
+                                <img class="oneself_transfer_img" src="__STATIC__/chatWeb/img/news/succeed.png" alt="">
+                            </div>
+                            <div class="oneself_transfer_price">
+                                <div>已收款</div>
+                                <div>￥999.00</div>
+                            </div>
+                        </div>
+                        <p class="oneself_transfer_text">收款</p>
+                    </div>
+                </div> 
+            </div>-->
+            <!-- 对方收款 -->
+          <!--   <div class="dialog_content_opposite clearfloat">
+                <div class="dialog_content_opposite_imgwrap">
+                    <img class="dialog_content_opposite_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
+                </div>
+                <div class="dialog_content_opposite_info">
+                    <p class="dialog_content_opposite_name">神秘电波</p>
+                    <div class="dialog_content_oneself_transfer gathering">
+                        <div class="opposite_transfer_info">
+                            <div class="opposite_transfer_imgwrap">
+                                <img class="opposite_transfer_img" src="__STATIC__/chatWeb/img/news/succeed.png" alt="">
+                            </div>
+                            <div class="opposite_transfer_price">
+                                <div>神秘电波已收款</div>
+                                <div>￥999.00</div>
+                            </div>
+                        </div>
+                        <p class="opposite_transfer_text">收款</p>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <!-- 底部菜单 -->
+        <div class="dialog_menu">
+            <div class="dialog_menu_inputwrap clearfloat">
+                <div class="dialog_menu_voice">
+                    <img class="dialog_menu_img" src="__STATIC__/chatWeb/img/news/voice.png" alt="">
+                </div>
+                <label class="dialog_menu_label">
+                    <div class="dialog_menu_input" contenteditable="true"></div>
+                </label>
+                <span class="dialog_menu_send">发送</span>
+            </div>
+            <div class="dialog_menu_submenu">
+                <p class="dialog_menu_submenu_item">
+                    <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/camera.png" alt="">
+                    <input type="file" class='camera' accept="image/*" capture='camera'>
+                </p>
+                <p class="dialog_menu_submenu_item">
+                    <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/picture.png" alt="">
+                    <input type="file" class="picture">
+                </p>
+                <p class="dialog_menu_submenu_item">
+                    <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/transfer.png" alt="">
+                </p>
+                <p class="dialog_menu_submenu_item">
+                    <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/transfer1.png" alt="">
+                </p>
+                <p class="dialog_menu_submenu_item">
+                    <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/smile.png" alt="">
+                </p>
+            </div>
+        </div>
+    </div>
+    {include file="common/footer_js"}
+    <script src="__STATIC__/chatWeb/js//news/dialog.js"></script>
+<script type="text/javascript">
+    // 一对一聊天
+    var fromid = {$fromid}; // 当前用户uid
+    var toid   = {$toid};   // 聊天对象用户uid
+    var from_head  = '';    // 当前用户头像
+    var to_head    = '';    // 聊天对象头像
+    var to_name    = '';    // 聊天对象昵称
+    var fromid_name =  '';  // 当前用户昵称
+    var online     = 0;     // 是否在线
+
+
+    var API_URL = "/index.php/api/chat/"; // 请求地址
+    // 连接服务端
+    function connect() {
+       // 创建全局websocket
+       ws =  new WebSocket("ws://139.199.70.250:8282");
+       // 当socket连接打开时
+       ws.onopen = login;
+       // 当有消息时根据消息类型显示不同信息
+       ws.onmessage = onmessage; 
+       ws.onclose = function() {
+          console.log("连接关闭，定时重连...");
+          connect();
+       };
+       ws.onerror = function() {
+          console.log("出现错误");
+       };
+    }
+
+    function login(){
+         // 登录
+        var login_data = '{"type":"login","fromid":'+fromid+'}';
+        console.log("websocket握手成功，发送登录数据:"+login_data);
+        ws.send(login_data);
+    }
+
+    // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
+    function onmessage(e){
+
+        console.log(e.data);
+        var message =  eval("("+e.data+")"); //json数据转换为数据对象
+        switch (message.type){
+            // 服务端ping客户端
+            case 'ping':
+                ws.send('{"type":"pong"}');
+                break;
+
+            // 收到服务器推送过来的init初始化后,发送bind信息到服务器端进行uid和客户端id绑定
+            case "init":
+                var bind = '{"type":"bind","fromid":"'+fromid+'"}';
+                ws.send(bind);
+               
+                // 获取用户头像及昵称
+                get_head(fromid,toid);
+                get_name(toid,fromid);
+                // 加载聊天记录
+                // message_load();
+                // 获取对方是否在线
+                var online = '{"type":"online","toid":"'+toid+'","fromid":"'+fromid+'"}';
+                ws.send(online);
+                return;
+
+            // 向当前页面追加普通文本内容并显示
+            case "text":
+                // 判断是否属于当前聊天对象,向页面追加内容并显示
+                // 当前页面和对方聊天的toid,fromid另外一个页面发送者uid
+                if(toid==message.fromid) {
+                    $(".dialog_content").append('<div class="dialog_content_opposite clearfloat"><div class="dialog_content_opposite_imgwrap"><img class="dialog_content_opposite_img" src="'+to_head+'" alt=""></div><div class="dialog_content_opposite_info"><div class="dialog_content_opposite_name">'+fromid_name+'</div><div class="dialog_content_opposite_text">'+message.data+'</div></div></div>');
+                    $(".dialog_content").scrollTop(3000);
+                }
+                return;
+
+            case "say_img":
+
+              $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i><img width="120em" height="120em" src="__ROOT__/upload/'+message.img_name+'"></span> </div>');
+
+                $(".chat-content").scrollTop(3000);
+              return;
+
+            // 保存数据持久化
+            case "save":
+                // save_message(message);
+                // 根据服务端返回的状态判断用户是否在线
+                if(message.is_read==1){
+                    $(".shop-online").text("在线");
+                }else{
+                    $(".shop-online").text("不在线");
+                }
+                // add_chat_content(message);
+                return;
+            case "online":
+              if(message.status==1){
+                  $(".shop-online").text("在线");
+              }else{
+                  $(".shop-online").text("不在线");
+              }
+        }
+    }
+
+    // 获取聊天双方头像
+    function get_head(fromid,toid){
+        $.post(
+            API_URL+"get_head",
+            {"fromid":fromid,"toid":toid},
+            function(e){
+                console.log(e);
+                from_head = e.data.from_head;
+                to_head = e.data.to_head;
+            },'json'
+        );
+    }
+
+    // 获取聊天对方昵称
+    function  get_name(toid,fromid){
+        $.post(
+            API_URL+"get_name",
+            {"uid":toid,"fromid":fromid},
+            function(e){
+                to_name = e.data.toname;
+                fromid_name = e.data.fromname;
+                $(".title_name").text(to_name);
+                console.log(e);
+            },'json'
+        );
+    }
+
+    // 客户端点击发送按钮是触发发送,并且把发送内容追加到当前页面中
+    $(".dialog_menu_send").click(function(){
+
+        // send_type=1普通文本,2图片
+        var text = $(".dialog_menu_input").text();
+        if(text==''){
+            //提示
+            layer.msg('不能发送空白内容');
+            return;
+        }
+        var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
+
+        // 向当前页面追加发送的内容并显示
+        $(".dialog_content").append('<div class="dialog_content_oneself clearfloat"><div class="dialog_content_oneself_imgwrap"><img class="dialog_content_oneself_img" src="'+from_head+'" alt=""></div><div class="dialog_content_oneself_info"> <div class="dialog_content_oneself_name">'+fromid_name+'</div><div class="dialog_content_oneself_text">'+text+'</div> </div></div>');
+
+        //  返回 chat-content 元素的垂直滚动条位置
+        // $(".chat-content").scrollTop(3000);
+
+        ws.send(message); // 向服务器发送信息
+        $(".dialog_menu_input").text(''); // 发送后置空输入框
+    });
+</script>
+</body>
+</html>

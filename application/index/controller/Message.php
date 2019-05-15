@@ -22,5 +22,17 @@ class Message extends Base
         return $this->fetch('messageList');
     }
 
+    /**
+     * [一对一聊天页面]
+     * @return toid [聊天对象uid]
+     */
+    public function oneToOnedialog(){
+
+        $toid = input('toid/d');
+        $this->assign('toid', $toid);
+        $this->assign('fromid', session('user.id'));
+        return $this->fetch('dialog');
+    }
+
 
 }

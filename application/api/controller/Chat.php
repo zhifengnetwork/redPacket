@@ -21,6 +21,7 @@ class Chat extends Controller{
     //     
     // }
 
+    protected $defaultName = 996; // 默认昵称
     /**
      *文本消息的数据持久化
      */
@@ -84,10 +85,13 @@ class Chat extends Controller{
         if(!Request::instance()->isAjax()){
             return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
         }
-        $uid = input('uid');
+        $uid = input('uid/d');
+        $fromid = input('fromid/d');
         $toinfo = Db::name('users')->where('id',$uid)->field('nickname')->find();
+        $frominfo = Db::name('users')->where('id',$fromid)->field('nickname')->find();
         $data = [
-            'toname' => $toinfo['nickname']
+            'toname' => $toinfo['nickname'],
+            'fromname' => $frominfo['nickname']?$frominfo['nickname']:$this->defaultName
         ];
         return json(['code'=>1, 'msg'=>'ok', 'data'=>$data]);
     }

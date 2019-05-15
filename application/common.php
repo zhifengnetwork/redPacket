@@ -2,6 +2,15 @@
 use think\Db;
 use think\Request;
 
+/**
+ * [获取用户所有好友]
+ * @param  int $uid [当前登录用户uid]
+ * @return array
+ */
+function getAllFriends($uid){
+    if(!$uid){return false;}
+    return Db::query("select id friend_uid,pid uid,nickname,head_imgurl,mobile from users where id in(select friend_uid from chat_friends where uid=$uid or friend_uid=$uid)");
+}
 
 /**
  * 返回客户端信息
@@ -58,6 +67,7 @@ function getUserInfo($mobile,$type=2){
 
 
 function pre($data){
+    header("Content-type: text/html; charset=utf-8");
     echo '<pre>';
     print_r($data);
 }

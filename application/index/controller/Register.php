@@ -78,7 +78,8 @@ class Register extends Base
                 
                 $friend_data = [
                     'uid' => $pid_invite_code['id'], // 上级uid
-                    'friend_uid' => $last_id         // 当前用户uid
+                    'friend_uid' => $last_id,         // 当前用户uid
+                    'create_time' => time()
                 ];
 
                 // 判断是否属于好友

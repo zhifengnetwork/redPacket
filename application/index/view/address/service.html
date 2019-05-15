@@ -19,18 +19,14 @@
             <span>人工客服</span>
         </div>
         <!-- 客服列表 -->
+        {volist name="$list" id="v"}
         <div class="service_list">
             <img class="service_list_img" src="__STATIC__/chatWeb/img/mail_list/service.png" alt="">
             <span class="service_list_text">
-                充值客服
+                {$v.nickname}
             </span>
         </div>
-        <div class="service_list">
-            <img class="service_list_img" src="__STATIC__/chatWeb/img/mail_list/game.png" alt="">
-            <span class="service_list_text">
-                游戏问题客服
-            </span>
-        </div>
+        {/volist}
     </div>
     <script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
     <script src="__STATIC__/chatWeb/js/public/public.js"></script>
