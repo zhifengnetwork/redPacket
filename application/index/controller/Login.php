@@ -56,7 +56,8 @@ class Login extends Base
     // 退出登录
     public function outLogin(){
         session('user',null);
-        $this->fetch('login');
+        $this->redirect('/index/index');
+        // $this->fetch('login');
     }
     
 

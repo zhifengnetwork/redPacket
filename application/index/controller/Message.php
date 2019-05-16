@@ -19,6 +19,7 @@ class Message extends Base
      */
     public function messageList()
     {
+        $this->assign('user', session('user'));
         return $this->fetch('messageList');
     }
 
@@ -32,6 +33,16 @@ class Message extends Base
         $this->assign('toid', $toid);
         $this->assign('fromid', session('user.id'));
         return $this->fetch('dialog');
+    }
+
+
+    /**
+     * [点击我的头像进入设置页面]
+     * @return json
+     */
+    public function mySet()
+    {
+        return $this->fetch('my/set_up');
     }
 
 

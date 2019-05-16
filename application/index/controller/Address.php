@@ -83,7 +83,8 @@ class Address extends Base
     public function chartSort($list){
         
         foreach ($list as $k => &$v) {
-            $v['chart']=$this->getFirstChart( $v['nickname'] );
+            $v['chart'] = $this->getFirstChart( $v['nickname'] );
+            $v['uid'] = $this->user['id'];
         }
         $data=[];
         foreach ($list as $ks => $vs) {

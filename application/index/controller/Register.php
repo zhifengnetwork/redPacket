@@ -77,7 +77,7 @@ class Register extends Base
             if($pid_invite_code['id'] < $last_id){
                 
                 $friend_data = [
-                    'uid' => $pid_invite_code['id'], // 上级uid
+                    'uid' => $pid_invite_code['id'],  // 上级uid
                     'friend_uid' => $last_id,         // 当前用户uid
                     'create_time' => time()
                 ];
