@@ -143,7 +143,7 @@ class Chat extends Controller{
             return json(['code'=>0, 'msg'=>'图片过大', 'data'=>""]);
         }
 
-        $uploadpath = ROOT_PATH.'public\\upload';
+        $uploadpath = ROOT_PATH.'public\\upload\\chat_img';
         $month = date("Y-m-d");
         //如果文件夹不存在则建立; 
         $fileNewPath = $uploadpath.'\\'.$month.'\\'; 

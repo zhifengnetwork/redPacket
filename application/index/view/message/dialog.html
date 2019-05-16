@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/dialog.css">
     <title>对话框</title>
+    <style>
+        /*qq表情框样式*/
+        .qqFace { margin-top: -180px; background: #fff; padding: 2px; border: 1px #dfe6f6 solid; }
+        .qqFace table td { padding: 0px; }
+        .qqFace table td img { cursor: pointer; border: 1px #fff solid; }
+        .qqFace table td img:hover { border: 1px #0066cc solid; }
+    </style>
 </head>
 
 <body onload="connect();">
@@ -127,7 +134,8 @@
                     <img class="dialog_menu_img" src="__STATIC__/chatWeb/img/news/voice.png" alt="">
                 </div>
                 <label class="dialog_menu_label">
-                    <div class="dialog_menu_input" contenteditable="true"></div>
+                    <!-- <div class="dialog_menu_input" contenteditable="true" id="saytext"></div> -->
+                    <textarea class="dialog_menu_input" id="saytext" name="saytext"></textarea>
                 </label>
                 <span class="dialog_menu_send">发送</span>
             </div>
@@ -138,7 +146,7 @@
                 </p>
                 <p class="dialog_menu_submenu_item">
                     <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/picture.png" alt="">
-                    <input type="file" class="picture">
+                    <input type="file" class="picture" name="pic" id="file">
                 </p>
                 <p class="dialog_menu_submenu_item">
                     <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/transfer.png" alt="">
@@ -147,13 +155,16 @@
                     <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/transfer1.png" alt="">
                 </p>
                 <p class="dialog_menu_submenu_item">
-                    <img class="dialog_menu_submenu_img" src="__STATIC__/chatWeb/img/news/smile.png" alt="">
+                    <img class="dialog_menu_submenu_img icon-emoji1" src="__STATIC__/chatWeb/img/news/smile.png" alt="">
                 </p>
             </div>
         </div>
     </div>
     {include file="common/footer_js"}
-    <script src="__STATIC__/chatWeb/js//news/dialog.js"></script>
+    <script src="__STATIC__/chatWeb/js/news/dialog.js"></script>
+    <script src="__STATIC__/qqFace/js/jquery.min.js"></script>
+    <script src="__STATIC__/qqFace/js/jquery.qqFace.js"></script>
+
 <script type="text/javascript">
     // 一对一聊天
     var fromid = {$fromid}; // 当前用户uid
@@ -188,6 +199,9 @@
         var login_data = '{"type":"login","fromid":'+fromid+'}';
         console.log("websocket握手成功，发送登录数据:"+login_data);
         ws.send(login_data);
+        // 获取用户头像及昵称
+        get_head(fromid,toid);
+        get_name(toid,fromid);
     }
 
     // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
@@ -205,12 +219,8 @@
             case "init":
                 var bind = '{"type":"bind","fromid":"'+fromid+'"}';
                 ws.send(bind);
-               
-                // 获取用户头像及昵称
-                get_head(fromid,toid);
-                get_name(toid,fromid);
                 // 加载聊天记录
-                // message_load();
+                message_load();
                 // 获取对方是否在线
                 var online = '{"type":"online","toid":"'+toid+'","fromid":"'+fromid+'"}';
                 ws.send(online);
@@ -221,21 +231,46 @@
                 // 判断是否属于当前聊天对象,向页面追加内容并显示
                 // 当前页面和对方聊天的toid,fromid另外一个页面发送者uid
                 if(toid==message.fromid) {
-                    $(".dialog_content").append('<div class="dialog_content_opposite clearfloat"><div class="dialog_content_opposite_imgwrap"><img class="dialog_content_opposite_img" src="'+to_head+'" alt=""></div><div class="dialog_content_opposite_info"><div class="dialog_content_opposite_name">'+fromid_name+'</div><div class="dialog_content_opposite_text">'+message.data+'</div></div></div>');
-                    $(".dialog_content").scrollTop(3000);
+                    let str = '';
+                    str += '<div class="dialog_content_opposite clearfloat">'
+                        + '<div class="dialog_content_opposite_imgwrap">'
+                        + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                        + '</div>'
+                        + '<div class="dialog_content_opposite_info">'
+                        + '<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                        + '<div class="dialog_content_opposite_text">'
+                        + replace_em(message.data)+'</div></div></div>'
+                    $('.dialog_content').append(str);
+                    $('html, body').animate({
+                        scrollTop: $('html, body').height()
+                    }, 'slow');
                 }
                 return;
 
             case "say_img":
-
-              $(".chat-content").append(' <div class="chat-text section-left flex"><span class="char-img" style="background-image: url('+to_head+')"></span> <span class="text"><i class="icon icon-sanjiao4 t-32"></i><img width="120em" height="120em" src="__ROOT__/upload/'+message.img_name+'"></span> </div>');
-
-                $(".chat-content").scrollTop(3000);
+                // 接收图片
+                let str = '';
+                str +='<div class="dialog_content_opposite clearfloat">'
+                    +'<div class="dialog_content_opposite_imgwrap">'
+                    +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                    +'</div>'
+                    +'<div class="dialog_content_opposite_info">'
+                    +'<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                    +'<div class="dialog_content_opposite_textimg">'
+                    +'<img class="dialog_content_opposite_img" src="__ROOT__/upload/chat_img/'+message.img_name+'" alt="">'
+                    +'</div>'
+                    +'</div>'
+                    +'</div>'
+                $('.dialog_content').append(str);
+                $('html, body').animate({
+                    scrollTop: $('html, body').height()
+                }, 'slow');
+              
               return;
 
             // 保存数据持久化
             case "save":
-                // save_message(message);
+                save_message(message);
                 // 根据服务端返回的状态判断用户是否在线
                 if(message.is_read==1){
                     $(".shop-online").text("在线");
@@ -244,12 +279,12 @@
                 }
                 // add_chat_content(message);
                 return;
-            case "online":
-              if(message.status==1){
-                  $(".shop-online").text("在线");
-              }else{
-                  $(".shop-online").text("不在线");
-              }
+            // case "online":
+            //   if(message.status==1){
+            //       $(".shop-online").text("在线");
+            //   }else{
+            //       $(".shop-online").text("不在线");
+            //   }
         }
     }
 
@@ -284,7 +319,7 @@
     $(".dialog_menu_send").click(function(){
 
         // send_type=1普通文本,2图片
-        var text = $(".dialog_menu_input").text();
+        var text = $(".dialog_menu_input").val();
         if(text==''){
             //提示
             layer.msg('不能发送空白内容');
@@ -293,14 +328,191 @@
         var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
 
         // 向当前页面追加发送的内容并显示
-        $(".dialog_content").append('<div class="dialog_content_oneself clearfloat"><div class="dialog_content_oneself_imgwrap"><img class="dialog_content_oneself_img" src="'+from_head+'" alt=""></div><div class="dialog_content_oneself_info"> <div class="dialog_content_oneself_name">'+fromid_name+'</div><div class="dialog_content_oneself_text">'+text+'</div> </div></div>');
-
-        //  返回 chat-content 元素的垂直滚动条位置
-        // $(".chat-content").scrollTop(3000);
+        let str = '';
+        str +='<div class="dialog_content_oneself clearfloat">'
+            +'<div class="dialog_content_oneself_imgwrap">'
+            +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
+            +'</div>'
+            +'<div class="dialog_content_oneself_info">'
+            +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
+            +'<div class="dialog_content_oneself_text">'+replace_em(text)+'</div>'
+            +'</div>'
+            +'</div>'
+        $('.dialog_content').append(str);
+        $('.dialog_menu_send').css('background','#c3f4ff')
+        $('html, body').animate({
+            scrollTop: $('html, body').height()
+        }, 'slow');
+        // 元素的垂直滚动条位置
 
         ws.send(message); // 向服务器发送信息
-        $(".dialog_menu_input").text(''); // 发送后置空输入框
+        $(".dialog_menu_input").val(''); // 发送后置空输入框
     });
+
+    // 请求api数据入库
+    function save_message(message){
+        $.post(
+            API_URL+"save_message", message,function(data){
+                // 返回无需操作
+                console.log(data);
+            },'json'
+        )
+    }
+
+    // 页面加载返回聊天记录
+    function message_load(){
+        $.post(
+            API_URL +"load",
+            {"fromid":fromid,"toid":toid},
+            function(e){
+                $.each(e,function(index,content){
+                    // 当前登录用户发送的消息放右边 type=1文本 2图片
+                    if(fromid==content.fromid){ 
+                        if(content.type==2){
+                            // 图片类型内容
+                            let str = '';
+                            str +='<div class="dialog_content_oneself clearfloat">'
+                                +'<div class="dialog_content_oneself_imgwrap">'
+                                +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
+                                +'</div>'
+                                +'<div class="dialog_content_oneself_info">'
+                                +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
+                                +'<div class="dialog_content_oneself_textimg">'
+                                +'<img class="dialog_content_oneself_img" src="__ROOT__/upload/chat_img/'+content.content+'" alt="">'
+                                +'</div>'
+                                +'</div>'
+                                +'</div>'
+                            $('.dialog_content').append(str);
+                            $('html, body').scrollTop($('html, body').height());
+                        }else{
+                            // 文本类型内容
+                            let str = '';
+                            str +='<div class="dialog_content_oneself clearfloat">'
+                                        +'<div class="dialog_content_oneself_imgwrap">'
+                                            +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
+                                        +'</div>'
+                                        +'<div class="dialog_content_oneself_info">'
+                                            +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
+                                            +'<div class="dialog_content_oneself_text">'+replace_em(content.content)+'</div>'
+                                        +'</div>'
+                                    +'</div>'
+                            $('.dialog_content').append(str);
+                            $('html, body').scrollTop($('html, body').height());
+                        }
+                    }else{
+                        // 页面左边
+                        if(content.type==2){
+
+                            let str = '';
+                            str +='<div class="dialog_content_opposite clearfloat">'
+                                +'<div class="dialog_content_opposite_imgwrap">'
+                                +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                                +'</div>'
+                                +'<div class="dialog_content_opposite_info">'
+                                +'<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                                +'<div class="dialog_content_opposite_textimg">'
+                                +'<img class="dialog_content_opposite_img" src="__ROOT__/upload/chat_img/'+content.content+'" alt="">'
+                                +'</div>'
+                                +'</div>'
+                                +'</div>'
+                            $('.dialog_content').append(str);
+                            $('html, body').scrollTop($('html, body').height());
+                        }else{
+                            let str = '';
+                            str += '<div class="dialog_content_opposite clearfloat">'
+                                + '<div class="dialog_content_opposite_imgwrap">'
+                                + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                                + '</div>'
+                                + '<div class="dialog_content_opposite_info">'
+                                + '<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                                + '<div class="dialog_content_opposite_text">'
+                                + replace_em(content.content)+'</div></div></div>'
+                            $('.dialog_content').append(str);
+                            $('html, body').scrollTop($('html, body').height());
+                        }
+                    }
+                })
+            },'json'
+        );
+    }
+
+
+    // 获取表情到输入框
+    $(function(){
+        $('.icon-emoji1').qqFace({
+            assign:'saytext', // 输入框绑定的id,把表情放入输入框
+            path:'__STATIC__/qqFace/arclist/'   // 表情存放的路径
+        });
+        // $(".sub_btn").click(function(){
+        //     var str = $("#saytext").val();
+        //     $("#show").html(replace_em(str));
+        // });
+    });
+
+    // 把内容替换,查看表情结果
+    function replace_em(str){
+        str = str.replace(/\</g,'&lt;');
+        str = str.replace(/\>/g,'&gt;');
+        str = str.replace(/\n/g,'<br/>');
+        str = str.replace(/\[em_([0-9]*)\]/g,'<img src="__STATIC__/qqFace/arclist/$1.gif" border="0" />');
+        return str;
+    }
+
+    // 发送图片
+    $(".image_up").click(function(){
+        $("#file").click();
+    })
+
+
+    // 发送图片
+    $("#file").change(function(){
+        formdata = new FormData();
+        formdata.append('fromid',fromid);
+        formdata.append('toid',toid);
+        formdata.append('online',online);
+        formdata.append('file',$("#file")[0].files[0]);
+        $.ajax({
+            url:API_URL+"uploadimg",
+            type:'POST',
+            cache:false,
+            data:formdata,
+            dataType:'json',
+            processData:false,
+            contentType:false,
+            success:function(data,status,xhr){
+                console.log(data);
+                if(data.code==1){
+                    // 展示图片在发送者页面右下角上
+                    let str = '';
+                    str +='<div class="dialog_content_oneself clearfloat">'
+                        +'<div class="dialog_content_oneself_imgwrap">'
+                        +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
+                        +'</div>'
+                        +'<div class="dialog_content_oneself_info">'
+                        +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
+                        +'<div class="dialog_content_oneself_textimg">'
+                        +'<img class="dialog_content_oneself_img" src="__ROOT__/upload/chat_img/'+data.data.img_name+'" alt="">'
+                        +'</div>'
+                        +'</div>'
+                        +'</div>'
+                    $('.dialog_content').append(str);
+                    $('html, body').animate({
+                        scrollTop: $('html, body').height()
+                    }, 'slow');
+
+                    var message = '{"data":"'+data.data.img_name+'","fromid":"'+fromid+'","toid":"'+toid+'","type":"say_img"}';
+                    $("#file").val("");
+                    // 通过服务器发送图片到聊天对象
+                    ws.send(message);
+
+                }else{
+                    layer.msg(data.msg);
+                    return;                    
+                    console.log(data);
+                }
+            }
+        });
+    })
 </script>
 </body>
 </html>

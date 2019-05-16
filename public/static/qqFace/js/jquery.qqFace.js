@@ -22,15 +22,16 @@
 			var strFace, labFace;
 			if($('#'+id).length<=0){
 				strFace = '<div id="'+id+'" style="position:absolute;display:none;z-index:1000;" class="qqFace">' +
-							  '<table border="0" cellspacing="0" cellpadding="0"><tr>';
+							  '<table style="width:100%" border="0" cellspacing="0" cellpadding="0"><tr>';
 				for(var i=1; i<=75; i++){
 					labFace = '['+tip+i+']';
-					strFace += '<td><img src="'+path+i+'.gif" onclick="$(\'#'+option.assign+'\').setCaret();$(\'#'+option.assign+'\').insertAtCaret(\'' + labFace + '\');" /></td>';
-					if( i % 15 == 0 ) strFace += '</tr><tr>';
+					strFace += '<td style="width:10%;text-align:center;"><img src="'+path+i+'.gif" onclick="$(\'#'+option.assign+'\').setCaret();$(\'#'+option.assign+'\').insertAtCaret(\'' + labFace + '\');" /></td>';
+					if( i % 10 == 0 ) strFace += '</tr><tr>';
 				}
 				strFace += '</tr></table></div>';
 			}
-			$(this).parent().append(strFace);
+
+			$('.dialog_menu_submenu').append(strFace);
 			var offset = $(this).position();
 			var top = offset.top + $(this).outerHeight();
 			$('#'+id).css('top',top);
@@ -94,7 +95,7 @@ jQuery.fn.extend({
 			var rangeEnd=textObj.selectionEnd; 
 			var tempStr1=textObj.value.substring(0,rangeStart); 
 			var tempStr2=textObj.value.substring(rangeEnd); 
-			textObj.value=tempStr1+textFeildValue+tempStr2; 
+			textObj.value= tempStr1+textFeildValue+tempStr2; 
 			textObj.focus(); 
 			var len=textFeildValue.length; 
 			textObj.setSelectionRange(rangeStart+len,rangeStart+len); 
@@ -104,3 +105,12 @@ jQuery.fn.extend({
 		} 
 	} 
 });
+
+// 把内容替换,查看表情结果
+function replace_em(str){
+	str = str.replace(/\</g,'&lt;');
+	str = str.replace(/\>/g,'&gt;');
+	str = str.replace(/\n/g,'<br/>');
+	str = str.replace(/\[em_([0-9]*)\]/g,'<img src="__STATIC__/qqFace/arclist/$1.gif" border="0" />');
+	return str;
+}
