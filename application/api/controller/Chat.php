@@ -32,17 +32,20 @@ class Chat extends Controller{
         }
 
         $message = input("post.");
-        $datas['fromid'] = intval($message['fromid']);
-        $datas['from_name'] = $this->getName($datas['fromid']);
-        $datas['toid'] = intval($message['toid']);
-        $datas['to_name'] = $this->getName($datas['toid']);
-        $datas['content'] = $message['data'];
-        $datas['time'] = $message['time'];
-        $datas['is_read'] = $message['is_read'];
-        $datas['type'] = $message['send_type'];
-        $res = Db::name("chat_info")->insert($datas);
-        if(!$res){
-            return json(['code'=>0, 'msg'=>'failed', 'data'=>'']);
+        // 判断当前session是否和发送者的uid一致
+        if(intval($message['fromid']) == session('user.id')){
+            $datas['fromid'] = intval($message['fromid']);
+            $datas['from_name'] = $this->getName($datas['fromid']);
+            $datas['toid'] = intval($message['toid']);
+            $datas['to_name'] = $this->getName($datas['toid']);
+            $datas['content'] = $message['data'];
+            $datas['time'] = $message['time'];
+            $datas['is_read'] = $message['is_read'];
+            $datas['type'] = $message['send_type'];
+            $res = Db::name("chat_info")->insert($datas);
+            if(!$res){
+                return json(['code'=>0, 'msg'=>'failed', 'data'=>'']);
+            }
         }
         return json(['code'=>1, 'msg'=>'save ok', 'data'=>'']);
         

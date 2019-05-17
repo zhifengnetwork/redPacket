@@ -18,6 +18,8 @@ class Login extends Base
     	if(!isPost()){
             return message(0, '非法提交');
         }
+
+        session('user',null); // 清空上一次session
     	$param = input('post.');
         $param['password'] = trim($param['password']);
         if(!isMobile($param['mobile'])){

@@ -16,6 +16,7 @@ class Address extends Base
             exit;
         }
         $this->user = session('user');
+        $this->assign('user', $this->user);
     }
 
     /**
@@ -45,7 +46,7 @@ class Address extends Base
         //     message(0, '你属于顶级用户');
         // }
         // 获取我的上级
-        $mySuperior = Db::name('users')->where('id',$this->user['pid'])->field('id,nickname,mobile,head_imgurl')->find();
+        $mySuperior = Db::name('users')->where('id',$this->user['pid'])->field('id friend_uid,nickname,mobile,head_imgurl,type')->find();
         // if(!$mySuperior){
         //     message(0, '获取上级失败!');
         // }
@@ -60,7 +61,7 @@ class Address extends Base
     public function service(){
         
         // 获取客服列表
-        $service_arr = Db::name('users')->where(['type'=>$this->type])->field('id,nickname,mobile,head_imgurl')->select();
+        $service_arr = Db::name('users')->where(['type'=>$this->type])->field('id friend_uid,nickname,mobile,head_imgurl,type')->select();
         $this->assign('list', $service_arr);
         return $this->fetch('service');
     }
@@ -80,7 +81,7 @@ class Address extends Base
     * 将数组按字母A-Z排序
     * @return [type] [description]
     */
-    public function chartSort($list){
+    protected function chartSort($list){
         
         foreach ($list as $k => &$v) {
             $v['chart'] = $this->getFirstChart( $v['nickname'] );
@@ -102,7 +103,7 @@ class Address extends Base
     * @param  [type] $str [string]
     * @return [type]      [strind]
     */
-    public function getFirstChart($str){
+    protected function getFirstChart($str){
         if( empty($str) ){
             return '';
         }
