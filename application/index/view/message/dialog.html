@@ -7,18 +7,14 @@
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/dialog.css">
-    <!-- Begin emoji-picker Stylesheets -->
-    <link href="__STATIC__/jqueryEmoji/lib/css/nanoscroller.css" rel="stylesheet">
-    <link href="__STATIC__/jqueryEmoji/lib/css/emoji.css" rel="stylesheet">
-    <!-- End emoji-picker Stylesheets -->
     <title>对话框</title>
-   <!--  <style>
+    <style>
         /*qq表情框样式*/
         .qqFace { margin-top: -180px; background: #fff; padding: 2px; border: 1px #dfe6f6 solid; }
         .qqFace table td { padding: 0px; }
         .qqFace table td img { cursor: pointer; border: 1px #fff solid; }
         .qqFace table td img:hover { border: 1px #0066cc solid; }
-    </style> -->
+    </style>
 </head>
 
 <body onload="connect();">
@@ -139,7 +135,7 @@
                 </div>
                 <label class="dialog_menu_label">
                     <!-- <div class="dialog_menu_input" contenteditable="true" id="saytext"></div> -->
-                    <textarea class="dialog_menu_input" id="saytext" name="saytext" data-emojiable="true"></textarea>
+                    <textarea class="dialog_menu_input" id="saytext" name="saytext"></textarea>
                 </label>
                 <span class="dialog_menu_send">发送</span>
             </div>
@@ -167,16 +163,7 @@
     {include file="common/footer_js"}
     <script src="__STATIC__/chatWeb/js/news/dialog.js"></script>
     <script src="__STATIC__/qqFace/js/jquery.min.js"></script>
-    <!-- <script src="__STATIC__/qqFace/js/jquery.qqFace.js"></script> -->
-    <!-- Begin emoji-picker JavaScript -->
-    <script src="__STATIC__/jqueryEmoji/lib/js/nanoscroller.min.js"></script>
-    <script src="__STATIC__/jqueryEmoji/lib/js/tether.min.js"></script>
-    <script src="__STATIC__/jqueryEmoji/lib/js/config.js"></script>
-    <script src="__STATIC__/jqueryEmoji/lib/js/util.js"></script>
-    <script src="__STATIC__/jqueryEmoji/lib/js/jquery.emojiarea.js"></script>
-    <script src="__STATIC__/jqueryEmoji/lib/js/emoji-picker.js"></script>
-    <!-- End emoji-picker JavaScript -->
-
+    <script src="__STATIC__/qqFace/js/jquery.qqFace.js"></script>
 
 <script type="text/javascript">
     // 一对一聊天
@@ -451,27 +438,15 @@
 
 
     // 获取表情到输入框
-    // $(function(){
-    //     $('.icon-emoji1').qqFace({
-    //         assign:'saytext', // 输入框绑定的id,把表情放入输入框
-    //         path:'__STATIC__/qqFace/arclist/'   // 表情存放的路径
-    //     });
-    //     // $(".sub_btn").click(function(){
-    //     //     var str = $("#saytext").val();
-    //     //     $("#show").html(replace_em(str));
-    //     // });
-    // });
-    $(function() {
-      // Initializes and creates emoji set from sprite sheet
-      window.emojiPicker = new EmojiPicker({
-        emojiable_selector: '[data-emojiable=true]',
-        assetsPath: 'lib/img/',
-        popupButtonClasses: 'fa fa-smile-o'
-      });
-      // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
-      // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
-      // It can be called as many times as necessary; previously converted input fields will not be converted again
-      window.emojiPicker.discover();
+    $(function(){
+        $('.icon-emoji1').qqFace({
+            assign:'saytext', // 输入框绑定的id,把表情放入输入框
+            path:'__STATIC__/qqFace/arclist/'   // 表情存放的路径
+        });
+        // $(".sub_btn").click(function(){
+        //     var str = $("#saytext").val();
+        //     $("#show").html(replace_em(str));
+        // });
     });
 
     // 把内容替换,查看表情结果
