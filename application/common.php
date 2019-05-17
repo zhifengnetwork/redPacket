@@ -12,11 +12,13 @@ function getAllFriends($uid){
     if(!$uid){return false;}
     //使用UNION ALL，因为不存在重复的(UNION会判重)
     $friends_arr = Db::query("SELECT friend_uid AS friends FROM chat_friends WHERE uid = $uid UNION ALL SELECT uid AS friends FROM chat_friends WHERE friend_uid = $uid");
+    $temp_array = [];
     foreach ($friends_arr as $val) {
         //把数组元素组合为一个字符串
         $val = join(",",$val);
         $temp_array[] = $val;
     }
+    // pre($temp_array);die;
     $friends = implode(",", $temp_array);
     // 获取好友信息 friend_uid
     $friends_info = Db::name('users')->field('id friend_uid,nickname,mobile,head_imgurl,type,is_lock')->where('id', 'in', $friends)->select();
