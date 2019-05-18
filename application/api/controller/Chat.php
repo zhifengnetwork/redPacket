@@ -256,7 +256,8 @@ class Chat extends Controller{
         }
         $fromid = input('toid/d');
         $toid = input('fromid/d');
-        Db::name('chat_info')->where(['fromid'=>$fromid,"toid"=>$toid])->update(['is_read'=>1]);
+        $res = Db::name('chat_info')->where(['fromid'=>$fromid,"toid"=>$toid])->update(['is_read'=>1]);
+        return json(['code'=>1, 'msg'=>$res, 'data'=>'']);
     }
 
 }
