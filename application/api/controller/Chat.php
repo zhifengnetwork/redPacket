@@ -23,9 +23,15 @@ class Chat extends Controller{
             return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
         }
 
+
+
         $message = input('post.');
         // 处理客户端发来的消息 data(文本类型消息)
         $text   = nl2br(htmlspecialchars($message['data']));
+        $order=array("\r\n","\n","\r");
+        $replace='<br/>';
+        $text=str_replace($order,$replace,$text); 
+        
         $fromid = intval($message['fromid']);
         $toid   = intval($message['toid']);
         $send_type = $message['type']=='say'?1:2;
