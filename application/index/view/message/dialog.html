@@ -334,7 +334,7 @@
                 // 获取对方是否在线
                 var online = '{"type":"online","toid":"'+toid+'","fromid":"'+fromid+'"}';
                 ws.send(online);
-                changeNoRead(from_id, to_id);
+                changeNoRead();
 
                 return;
 
@@ -356,7 +356,13 @@
                     $('html, body').animate({
                         scrollTop: $('html, body').height()
                     }, 'slow');
-                    changeNoRead(to_id,from_id);
+                    $.post(
+                        API_URL+"changeNoRead",
+                        {"fromid":toid,"toid":fromid},// 在当前页面中时,更新接收到的信息状态
+                        function(){
+                            console.log('update ok');
+                        },'json'
+                    )
 
                 }
                 return;
@@ -381,7 +387,7 @@
                 $('html, body').animate({
                     scrollTop: $('html, body').height()
                 }, 'slow');
-                changeNoRead(to_id,from_id);
+                changeNoRead();
               
               return;
         }
@@ -494,6 +500,7 @@
                         }else{
                             // 文本类型内容
                             let str = '';
+                            console.log(content.content)
                             str +='<div class="dialog_content_oneself clearfloat">'
                                         +'<div class="dialog_content_oneself_imgwrap">'
                                             +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
@@ -599,7 +606,7 @@
     })
 
     // 修改聊天状态
-    function changeNoRead(fromid,toid){
+    function changeNoRead(){
         $.post(
             API_URL+"changeNoRead",
             {"fromid":fromid,"toid":toid},
