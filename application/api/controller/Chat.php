@@ -28,9 +28,7 @@ class Chat extends Controller{
         $message = input('post.');
         // 处理客户端发来的消息 data(文本类型消息)
         $text   = nl2br(htmlspecialchars($message['data']));
-        $order=array("\r\n","\n","\r");
-        $replace='<br/>';
-        $text=str_replace($order,$replace,$text); 
+        $text = str_replace(PHP_EOL, '', $text);   
         
         $fromid = intval($message['fromid']);
         $toid   = intval($message['toid']);
