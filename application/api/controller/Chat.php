@@ -10,16 +10,8 @@ namespace app\api\controller;
 use think\Controller;
 use think\Db;
 use think\Request;
-
+//  聊天相关API数据处理
 class Chat extends Controller{
-
-    // protected function _initialize(){
-    //     if(!Request::instance()->isAjax()){
-    //         return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
-    //         exit;
-    //     }
-    //     
-    // }
 
     protected $defaultName = 996; // 默认昵称
     /**
@@ -198,19 +190,19 @@ class Chat extends Controller{
      */
     public function get_head_one($uid){
 
-        $fromhead = Db::name('user')->where('id',$uid)->field('headimgurl')->find();
+        $fromhead = Db::name('users')->where('id',$uid)->field('head_imgurl')->find();
 
-        return $fromhead['headimgurl'];
-   }
+        return $fromhead['head_imgurl'];
+    }
 
     /**
      * @param $fromid
      * @param $toid
-     * 根据fromid来获取fromid同toid发送的未读消息。
+     * 根据fromid来获取fromid与toid发送的未读消息。
      */
     public function getCountNoread($fromid,$toid){
 
-        return Db::name('communication')->where(['fromid'=>$fromid,'toid'=>$toid,'isread'=>0])->count('id');
+        return Db::name('chat_info')->where(['fromid'=>$fromid,'toid'=>$toid,'is_read'=>0])->count('id');
 
     }
 
@@ -221,32 +213,37 @@ class Chat extends Controller{
      */
     public function getLastMessage($fromid,$toid){
 
-        $info = Db::name('communication')->where('(fromid=:fromid&&toid=:toid)||(fromid=:fromid2&&toid=:toid2)',['fromid'=>$fromid,'toid'=>$toid,'fromid2'=>$toid,'toid2'=>$fromid])->order('id DESC')->limit(1)->find();
+        $info = Db::name('chat_info')->where('(fromid=:fromid&&toid=:toid)||(fromid=:fromid2&&toid=:toid2)',['fromid'=>$fromid,'toid'=>$toid,'fromid2'=>$toid,'toid2'=>$fromid])->order('id DESC')->limit(1)->find();
 
         return $info;
     }
+
 
     /**
      * 根据fromid来获取当前用户聊天列表
      */
     public function get_list(){
-        if(Request::instance()->isAjax()){
-            $fromid = input('id');
-            $info  = Db::name('communication')->field(['fromid','toid','fromname'])->where('toid',$fromid)->group('fromid')->select();
 
-            $rows = array_map(function($res){
-                return [
-                    'head_url'=>$this->get_head_one($res['fromid']),
-                    'username'=>$res['fromname'],
-                    'countNoread'=>$this->getCountNoread($res['fromid'],$res['toid']),
-                    'last_message'=>$this->getLastMessage($res['fromid'],$res['toid']),
-                    'chat_page'=>"http://chat.com/index.php/index/index/index?fromid={$res['toid']}&toid={$res['fromid']}"
-                ];
-
-            },$info);
-
-            return $rows;
+        if(!Request::instance()->isAjax()){
+            return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
         }
+        $fromid = input('id');
+        $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->where('toid',$fromid)->group('fromid')->select();
+
+        $rows = array_map(function($res){
+            return [
+                'head_url'=>$this->get_head_one($res['fromid']),
+                'username'=>$res['from_name'],
+                'countNoread'=>$this->getCountNoread($res['fromid'],$res['toid']),
+                'last_message'=>$this->getLastMessage($res['fromid'],$res['toid']),
+                'chat_page'=>'/index/message/onetoonedialog.html?fromid='.$res['toid'].'&toid='.$res['fromid']
+                // 'chat_page'=>"{:url('index/message/oneToOnedialog',['fromid'=>".$res['toid'].','."'toid'=>".$res['fromid']."])}"
+            ];
+
+        },$info);
+
+        return $rows;
+        
 
     }
     

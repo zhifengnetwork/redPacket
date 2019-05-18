@@ -173,21 +173,8 @@
 								</div>
 							</div>
 							{/foreach}
-							<!-- <div class="chat">
-
-								<div class="chat_img">
-									<img src="__STATIC__/chatWeb/img/news/Red@2x.png" />
-								</div>
-								<div class="chat_text">
-									<p class="chat_name publicEllipsis">福利群</p>
-									<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
-								</div>
-								<div class="chat_time">
-									<p class="chat_timer">2019-02-14</p>
-									<p class="chat_message gray">99+</p>
-								</div>
-							</div>
-							<div class="chat chat3">
+							
+							<!-- <div class="chat chat3">
 								<div class="chat_img">
 									<img src="__STATIC__/chatWeb/img/news/Announcement@2x.png" />
 								</div>
@@ -199,17 +186,10 @@
 									<p class="chat_timer">PM 10:00</p>
 								</div>
 							</div> -->
-							<div class="chat">
-								<div class="chat_img">
-									<img src="__STATIC__/chatWeb/img/1.jpg" />
-								</div>
-								<div class="chat_text">
-									<p class="chat_name publicEllipsis">张三</p>
-									<p class="chat_context">嗨</p>
-								</div>
-								<div class="chat_time">
-									<p class="chat_timer">PM 10:00</p>
-								</div>
+
+							<!-- 一对一聊天列表 -->
+							<div class="chat chat3 friendChat">
+								
 							</div>
 						</ul>
 						</div>
@@ -300,11 +280,39 @@
 						$.each(res,function(index,content){
 
 							if(content.countNoread==0){
-								$(".chat-fui-content").append('<div onclick=redi("'+content.chat_page+'") class="chat-list flex" ><div class="chat-img"  style="background-image: url('+content.head_url+')"></div> <div class="chat-info"> <p class="chat-merch flex"> <span class="title t-28">'+content.username+'</span> <span class="time">'+mydate(content.last_message.time)+'</span> </p> <p class="chat-text singleflow-ellipsis">'+content.last_message.content+'</p> </div></div>');
+								
+                				let str = '';
+                				str += '<a href="'+content.chat_page+'"><div class="chat_img">'
+									+ '<img src="'+content.head_url+'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+content.last_message.to_name+'</p>'
+									+ '<p class="chat_context">'+content.last_message.content+'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+									+ '</div></a>'
+                				$('.friendChat').append(str);
+                				console.log(content.chat_page,111);
 
 							}else{
-								$(".chat-fui-content").append('<div onclick=redi("'+content.chat_page+'") class="chat-list flex" ><div class="chat-img"  style="background-image: url('+content.head_url+')"> <span class="badge" style="top: -0.1rem;left: 80%;">'+content.countNoread+'</span> </div> <div class="chat-info"> <p class="chat-merch flex"> <span class="title t-28">'+content.username+'</span> <span class="time">'+mydate(content.last_message.time)+'</span> </p> <p class="chat-text singleflow-ellipsis">'+content.last_message.content+'</p> </div></div>');
 
+								// 有未读消息显示
+								let str = '';
+
+                				str += '<a href="'+content.chat_page+'"><div class="chat_img">'
+									+ '<img src="'+content.head_url+'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+content.last_message.to_name+'</p>'
+									+ '<p class="chat_context">'+content.last_message.content+'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+									+ '<p class="chat_message gray">'+content.countNoread+'</p>'
+									+ '</div></a>'
+                				$('.friendChat').append(str);
+                				console.log(content.chat_page,999);
 							}
 						})
 
@@ -319,8 +327,9 @@
 				return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
 			}
 
+			// 跳转到聊天页面
 			function redi(url){
-				window.location.href=url;
+				window.location.href = url;
 			}
 
 			//搜索框
