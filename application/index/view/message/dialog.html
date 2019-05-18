@@ -334,6 +334,8 @@
                 // 获取对方是否在线
                 var online = '{"type":"online","toid":"'+toid+'","fromid":"'+fromid+'"}';
                 ws.send(online);
+                changeNoRead();
+
                 return;
 
             // 向当前页面追加普通文本内容并显示
@@ -354,6 +356,8 @@
                     $('html, body').animate({
                         scrollTop: $('html, body').height()
                     }, 'slow');
+                    changeNoRead();
+
                 }
                 return;
 
@@ -377,6 +381,7 @@
                 $('html, body').animate({
                     scrollTop: $('html, body').height()
                 }, 'slow');
+                changeNoRead();
               
               return;
         }
@@ -593,6 +598,17 @@
             }
         });
     })
+
+    // 修改聊天状态
+    function changeNoRead(){
+        $.post(
+            API_URL+"changeNoRead",
+            {"fromid":fromid,"toid":toid},
+            function(){
+
+            },'json'
+        )
+    }
 
     // 输入密码
     $(function() {

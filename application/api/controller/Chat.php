@@ -243,9 +243,20 @@ class Chat extends Controller{
         },$info);
 
         return $rows;
-        
-
     }
     
+
+    /**
+     * 修改聊天状态
+     * 
+     */
+    public function changeNoRead(){
+        if(!Request::instance()->isAjax()){
+            return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
+        }
+        $fromid = input('toid/d');
+        $toid = input('fromid/d');
+        Db::name('chat_info')->where(['fromid'=>$fromid,"toid"=>$toid])->update(['is_read'=>1]);
+    }
 
 }
