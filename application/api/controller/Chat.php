@@ -122,8 +122,8 @@ class Chat extends Controller{
           $message = Db::name('chat_info')->where('(fromid=:fromid and toid=:toid) || (fromid=:toid1 and toid=:fromid1)',['fromid'=>$fromid,'toid'=>$toid,'toid1'=>$toid,'fromid1'=>$fromid])->order('id')->select();
         }
 
-        foreach ($message as $key => $value) {
-            $message['content'] = htmlspecialchars_decode($message['content']);
+        foreach ($message as &$item) {
+            $message = htmlspecialchars_decode($item['content']);
         }
 
         return $message;
