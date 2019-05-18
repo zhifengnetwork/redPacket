@@ -270,7 +270,6 @@
     {include file="common/footer_js"}
     <script src="__STATIC__/chatWeb/js/news/dialog.js"></script>
     <script src="__STATIC__/qqFace/js/jquery.min.js"></script>
-    <!-- <script src="__STATIC__/qqFace/js/jquery.qqFace.js"></script> -->
     <script type="text/javascript" src="__STATIC__/chatWeb/js/news/jquery.sinaEmotion.js"></script>
 
 
@@ -376,24 +375,6 @@
                 }, 'slow');
               
               return;
-
-            // 保存数据持久化
-            case "save":
-                save_message(message);
-                // 根据服务端返回的状态判断用户是否在线
-                // if(message.is_read==1){
-                //     $(".shop-online").text("在线");
-                // }else{
-                //     $(".shop-online").text("不在线");
-                // }
-                // add_chat_content(message);
-                return;
-            // case "online":
-            //   if(message.status==1){
-            //       $(".shop-online").text("在线");
-            //   }else{
-            //       $(".shop-online").text("不在线");
-            //   }
         }
     }
 
@@ -434,15 +415,13 @@
 
         // send_type=1普通文本,2图片
         var text = $(".dialog_menu_input").html();
-        console.log(text)
-        console.log(text);
+  
         if(text==''){
             //提示
             layer.msg('不能发送空白内容');
             return;
         }
         var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
-        
         // 向当前页面追加发送的内容并显示
         let str = '';
         str +='<div class="dialog_content_oneself clearfloat">'
@@ -463,12 +442,15 @@
 
         ws.send(message); // 向服务器发送信息
         $(".dialog_menu_input").html(''); // 发送后置空输入框
+
+        // 保存数据入库
+        save_message(text,type='say',fromid,toid);
     });
 
     // 请求api数据入库
-    function save_message(message){
+    function save_message(text,type,fromid,toid){
         $.post(
-            API_URL+"save_message", message,function(data){
+            API_URL+"save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
                 // 返回无需操作
                 console.log(data);
             },'json'
@@ -554,34 +536,12 @@
     }
 
 
-    // 获取表情到输入框
-    // $(function(){
-    //     $('.icon-emoji1').qqFace({
-    //         assign:'saytext', // 输入框绑定的id,把表情放入输入框
-    //         path:'__STATIC__/qqFace/arclist/'   // 表情存放的路径
-    //     });
-    //     // $(".sub_btn").click(function(){
-    //     //     var str = $("#saytext").val();
-    //     //     $("#show").html(replace_em(str));
-    //     // });
-    // });
-
-    // 把内容替换,查看表情结果
-    function replace_em(str){
-        str = str.replace(/\</g,'&lt;');
-        str = str.replace(/\>/g,'&gt;');
-        str = str.replace(/\n/g,'<br/>');
-        str = str.replace(/\[em_([0-9]*)\]/g,'<img src="__STATIC__/qqFace/arclist/$1.gif" border="0" />');
-        return str;
-    }
-
     // 发送图片
     $(".image_up").click(function(){
         $("#file").click();
     })
 
-
-    // 发送图片
+    // 发送图片并且保存数据入库
     $("#file").change(function(){
         formdata = new FormData();
         formdata.append('fromid',fromid);
@@ -621,7 +581,6 @@
                     $("#file").val("");
                     // 通过服务器发送图片到聊天对象
                     ws.send(message);
-
                 }else{
                     layer.msg(data.msg);
                     return;                    
@@ -745,6 +704,15 @@
             
         })
     });
+
+    // 把内容替换,查看表情结果
+    function replace_em(str){
+        str = str.replace(/\</g,'&lt;');
+        str = str.replace(/\>/g,'&gt;');
+        str = str.replace(/\n/g,'<br/>');
+        str = str.replace(/\[em_([0-9]*)\]/g,'<img src="__STATIC__/qqFace/arclist/$1.gif" border="0" />');
+        return str;
+    }
 </script>
 </body>
 </html>

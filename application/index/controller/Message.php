@@ -19,7 +19,12 @@ class Message extends Base
      */
     public function messageList()
     {
+        // 获取平台群列表
+        $group_list = Db::name('chat_group')->select();
+
+        $this->assign('group_list', $group_list);
         $this->assign('user', session('user'));
+        $this->assign('fromid', session('user.id'));
         return $this->fetch('messageList');
     }
 

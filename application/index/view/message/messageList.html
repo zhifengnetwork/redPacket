@@ -1,364 +1,445 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-		<title class="pageTopTitle" page-id="0"></title>
-		<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
-		<link href="__STATIC__/chatWeb/css/news/mui.min.css" rel="stylesheet">
-		<!--public-->
-		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
-		<!--头部-->
-		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
-		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/bottom_nav.css" />
-		<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/news.css" />
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<title class="pageTopTitle" page-id="0"></title>
+	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+	<link href="__STATIC__/chatWeb/css/news/mui.min.css" rel="stylesheet">
+	<!--public-->
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+	<!--头部-->
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/bottom_nav.css" />
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/news.css" />
+</head>
 
-	<body>
-		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
-			<!--侧滑菜单部分(我的-模块)-->
-			<aside id="offCanvasSide" class="mui-off-canvas-left">
-				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
-					<div class="mui-scroll">
+<body onload="connect();">
+	<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+		<!--侧滑菜单部分(我的-模块)-->
+		<aside id="offCanvasSide" class="mui-off-canvas-left">
+			<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
 
-						<li>
-							<div class="person_message">
+					<li>
+						<div class="person_message">
 
-								<div class="person_message_my">
+							<div class="person_message_my">
 
-									<span>我的</span>
+								<span>我的</span>
 
-									<img src="__STATIC__/chatWeb/img/news/close@2x.png" class="close" />
-
-								</div>
-								<div class="person_message_img">
-
-									<img src="{$user['head_imgurl']}" class="touxiang page_trrem" data-url="./my/personal_center/personal_center.html"/>
-									<span class="nickname">{$user['nickname']}</span><br/>
-									<span class="my_number">{$user['mobile']}</span>
-									<img src="__STATIC__/chatWeb/img/news/qr_code1@2x.png" class="my_qrcodeyf" data-url="./my/my_inviteCode.html" />
-
-								</div>
+								<img src="__STATIC__/chatWeb/img/news/close@2x.png" class="close" />
 
 							</div>
-							<!--列表区域-->
-							<div class="list_ear">
+							<div class="person_message_img">
 
-								<div class="first_ear page_trrem" data-url="./my/my_inviteCode.html">
+								<img src="{$user['head_imgurl']}" class="touxiang page_trrem" data-url="./my/personal_center/personal_center.html"/>
+								<span class="nickname">{$user['nickname']}</span><br/>
+								<span class="my_number">{$user['mobile']}</span>
+								<img src="__STATIC__/chatWeb/img/news/qr_code1@2x.png" class="my_qrcodeyf" data-url="./my/my_inviteCode.html" />
 
-									<img src="__STATIC__/chatWeb/img/news/wallet@2x.png" class="img_left" />
-									<span>我的钱包</span>
-									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-
-								</div>
-								<div class="second_ear page_trrem" data-url="./my/withdrawal/withdrawal.html">
-									<img src="__STATIC__/chatWeb/img/news/withdrawal@2x.png" class="img_left" />
-									<span>提现</span>
-									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-								</div>
-								<div class="three_ear">
-									<div class="three_ear_son page_trrem" data-url="./">
-										<img src="__STATIC__/chatWeb/img/news/account@2x.png" class="img_left" />
-										<span>账号管理</span>
-										<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-									</div>
-									<div class="three_ear_son page_trrem" data-url="./my/team/earnings.html">
-										<img src="__STATIC__/chatWeb/img/news/team@2x.png" class="img_left" />
-										<span>我的代理团队</span>
-										<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-									</div>
-									<div class="three_ear_son page_trrem" data-url="./my/my_inviteCode.html">
-										<img src="__STATIC__/chatWeb/img/news/Qr code3@2x.png" class="img_left" />
-										<span>邀请二维码</span>
-										<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-									</div>
-								</div>
-
-								<div class="four_ear">
-									<div class="four_ear_son page_trrem" data-url="./my/activity_center.html">
-
-										<img src="__STATIC__/chatWeb/img/news/activity@2x.png" class="img_left" />
-										<span>活动中心</span>
-										<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-
-									</div>
-									<div class="four_ear_son page_trrem" data-url='/index/my/mySet'">
-										<img src="__STATIC__/chatWeb/img/news/Set@2x.png" class="img_left" />
-										<span>设置</span>
-										<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-									</div>
-
-								</div>
-
-							</div>
-
-					</div>
-				</div>
-			</aside>
-			<!--主界面部分（信息-模块）-->
-			<div class="mui-inner-wrap" style="background: white;z-index: 40;position: absolute;left: 0;top: 0;bottom: 0;right: 0;">
-
-				<!--public head-->
-				<div class="lb_headWrap">
-					<p class="lb_headWrap_return" data-num="1">
-						<img class="lb_headWrap_return_img touxx" src="{$user['head_imgurl']}" />
-					</p>
-					<span>信息</span>
-					<p class="lb_headWrap_share" data-num="1">
-						<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
-					</p>
-				</div>
-
-				<!--mask遮罩层-->
-				<div class="mask">
-
-					<div class="mask_son">
-						<!--<img src="__STATIC__/chatWeb/img/news/d.png" class="jiantou" />-->
-
-						<div class="jiasaosao">
-							<!--向上-三角形-->
-							<p class="triangle_border_up"></p>
-							<div class="qunliao_item" onclick="">
-								<p class="qunliao_item_icon_box">
-									<img src="__STATIC__/chatWeb/img/news/qunliao@2x.png" class="qunliao_item_icon" />
-								</p>
-								<span class="qunliao_item_text">创建群聊</span>
-							</div>
-							<div class="qunliao_item" onclick="">
-								<p class="qunliao_item_icon_box">
-									<img src="__STATIC__/chatWeb/img/news/jiahaoyou@2x.png" class="qunliao_item_icon qunliao_item_icon2" />
-								</p>
-								<span class="qunliao_item_text">添加好友</span>
-							</div>
-							<div class="qunliao_item" onclick="">
-								<p class="qunliao_item_icon_box">
-									<img src="__STATIC__/chatWeb/img/news/saoyisao@2x.png" class="qunliao_item_icon qunliao_item_icon3" />
-								</p>
-								<span class="qunliao_item_text">扫一扫</span>
 							</div>
 
 						</div>
+						<!--列表区域-->
+						<div class="list_ear">
 
-					</div>
+							<div class="first_ear page_trrem" data-url="./my/my_inviteCode.html">
 
-				</div>
+								<img src="__STATIC__/chatWeb/img/news/wallet@2x.png" class="img_left" />
+								<span>我的钱包</span>
+								<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
 
-				<div class="mui-content">
-					<div id="scroll1" class="mui-scroll-wrapper" style="top:.88rem;bottom: 50px;">
-						<!--MUI默认是position是absolute-->
-						<div class="mui-scroll">
-
-							<ul class="mui-table-view">
-								<!-- 搜索 -->
-								<div class="search">
-									<form action="#">
-										<input class="search-input" type="text">
-										<span class="search-tip">搜索</span>
-									</form>
-								</div>
-								<div class="chat chat1">
-
-									<div class="chat_img">
-
-										<img src="__STATIC__/chatWeb/img/news/Welfare group@2x.png" />
-
-									</div>
-									<div class="chat_text">
-
-										<p class="chat_name publicEllipsis">福利群</p>
-										<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
-
-									</div>
-									<div class="chat_time">
-
-										<p class="chat_timer">2019-02-14</p>
-										<p class="chat_message">3</p>
-
-									</div>
-
-								</div>
-								<div class="chat">
-
-									<div class="chat_img">
-										<img src="__STATIC__/chatWeb/img/news/Red@2x.png" />
-									</div>
-									<div class="chat_text">
-										<p class="chat_name publicEllipsis">福利群</p>
-										<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
-									</div>
-									<div class="chat_time">
-										<p class="chat_timer">2019-02-14</p>
-										<p class="chat_message gray">99+</p>
-									</div>
-								</div>
-								<div class="chat chat3">
-									<div class="chat_img">
-										<img src="__STATIC__/chatWeb/img/news/Announcement@2x.png" />
-									</div>
-									<div class="chat_text">
-										<p class="chat_name publicEllipsis">平台公告</p>
-										<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
-									</div>
-									<div class="chat_time">
-										<p class="chat_timer">PM 10:00</p>
-									</div>
-								</div>
-								<div class="chat">
-									<div class="chat_img">
-										<img src="__STATIC__/chatWeb/img/1.jpg" />
-									</div>
-									<div class="chat_text">
-										<p class="chat_name publicEllipsis">张三</p>
-										<p class="chat_context">嗨</p>
-									</div>
-									<div class="chat_time">
-										<p class="chat_timer">PM 10:00</p>
-									</div>
-								</div>
-							</ul>
 							</div>
-						</div>
+							<div class="second_ear page_trrem" data-url="./my/withdrawal/withdrawal.html">
+								<img src="__STATIC__/chatWeb/img/news/withdrawal@2x.png" class="img_left" />
+								<span>提现</span>
+								<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+							</div>
+							<div class="three_ear">
+								<div class="three_ear_son page_trrem" data-url="./">
+									<img src="__STATIC__/chatWeb/img/news/account@2x.png" class="img_left" />
+									<span>账号管理</span>
+									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+								</div>
+								<div class="three_ear_son page_trrem" data-url="./my/team/earnings.html">
+									<img src="__STATIC__/chatWeb/img/news/team@2x.png" class="img_left" />
+									<span>我的代理团队</span>
+									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+								</div>
+								<div class="three_ear_son page_trrem" data-url="./my/my_inviteCode.html">
+									<img src="__STATIC__/chatWeb/img/news/Qr code3@2x.png" class="img_left" />
+									<span>邀请二维码</span>
+									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+								</div>
+							</div>
 
-					</div>
-					<div class="line" style="position: absolute;bottom: -10px; z-index: 10;">
-						<!--需要固定在底部，所以需要用到绝对定位，另外，由于MUI本身的组件的z-index要高于我们自己的div，所以，这里需要自定义z-index，一般10就足够。-->
-						<!-- 底部导航 -->
-						<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
-					</div>
+							<div class="four_ear">
+								<div class="four_ear_son page_trrem" data-url="./my/activity_center.html">
+
+									<img src="__STATIC__/chatWeb/img/news/activity@2x.png" class="img_left" />
+									<span>活动中心</span>
+									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+
+								</div>
+								<div class="four_ear_son page_trrem" data-url='/index/my/mySet'">
+									<img src="__STATIC__/chatWeb/img/news/Set@2x.png" class="img_left" />
+									<span>设置</span>
+									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+								</div>
+
+							</div>
+
+						</div>
 
 				</div>
 			</div>
+		</aside>
+		<!--主界面部分（信息-模块）-->
+		<div class="mui-inner-wrap" style="background: white;z-index: 40;position: absolute;left: 0;top: 0;bottom: 0;right: 0;">
 
-			<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
-			<script src="https://cdn.bootcss.com/mui/3.4.0/js/mui.min.js"></script>
-			<script src="__STATIC__/chatWeb/js/public/public.js"></script>
-			<!--公共底部导航栏-->
-			<script src="__STATIC__/chatWeb/js/public/bottom_nav.js"></script>
-			<!--<script src="__STATIC__/chatWeb/js/news/news.js"></script>-->
-			<script>
-				window.onload = function() {
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1">
+					<img class="lb_headWrap_return_img touxx" src="{$user['head_imgurl']}" />
+				</p>
+				<span>信息</span>
+				<p class="lb_headWrap_share" data-num="1">
+					<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
+				</p>
+			</div>
 
-					//搜索框
-					$(".search-input").focus(function() {
-						$(".search-tip").hide();
-					}).blur(function() {
-						var val = $(this).val();
-						if(val != "") {
-							$(".search-tip").hide();
-						} else {
-							$(".search-tip").show();
-						}
-					})
+			<!--mask遮罩层-->
+			<div class="mask">
 
-					mui('.mui-scroll-wrapper').scroll({
-						deceleration: 0.000000001 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-					});
+				<div class="mask_son">
+					<!--<img src="__STATIC__/chatWeb/img/news/d.png" class="jiantou" />-->
 
+					<div class="jiasaosao">
+						<!--向上-三角形-->
+						<p class="triangle_border_up"></p>
+						<div class="qunliao_item" onclick="">
+							<p class="qunliao_item_icon_box">
+								<img src="__STATIC__/chatWeb/img/news/qunliao@2x.png" class="qunliao_item_icon" />
+							</p>
+							<span class="qunliao_item_text">创建群聊</span>
+						</div>
+						<div class="qunliao_item" onclick="">
+							<p class="qunliao_item_icon_box">
+								<img src="__STATIC__/chatWeb/img/news/jiahaoyou@2x.png" class="qunliao_item_icon qunliao_item_icon2" />
+							</p>
+							<span class="qunliao_item_text">添加好友</span>
+						</div>
+						<div class="qunliao_item" onclick="">
+							<p class="qunliao_item_icon_box">
+								<img src="__STATIC__/chatWeb/img/news/saoyisao@2x.png" class="qunliao_item_icon qunliao_item_icon3" />
+							</p>
+							<span class="qunliao_item_text">扫一扫</span>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="mui-content">
+				<div id="scroll1" class="mui-scroll-wrapper" style="top:.88rem;bottom: 50px;">
+					<!--MUI默认是position是absolute-->
+					<div class="mui-scroll">
+
+						<ul class="mui-table-view">
+							<!-- 搜索 -->
+							<div class="search">
+								<form action="#">
+									<input class="search-input" type="text">
+									<span class="search-tip">搜索</span>
+								</form>
+							</div>
+							{foreach name="group_list" item="v" key="k"}
+							<div class="chat chat1">
+								<div class="chat_img">
+									<img src="__STATIC__/{$v.img}" />
+								</div>
+								<div class="chat_text">
+
+									<p class="chat_name publicEllipsis">{$v.name}</p>
+									<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
+								</div>
+								<div class="chat_time">
+									<!-- <p class="chat_timer">2019-02-14</p> -->
+									<p class="chat_message">3</p>
+								</div>
+							</div>
+							{/foreach}
+							<!-- <div class="chat">
+
+								<div class="chat_img">
+									<img src="__STATIC__/chatWeb/img/news/Red@2x.png" />
+								</div>
+								<div class="chat_text">
+									<p class="chat_name publicEllipsis">福利群</p>
+									<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
+								</div>
+								<div class="chat_time">
+									<p class="chat_timer">2019-02-14</p>
+									<p class="chat_message gray">99+</p>
+								</div>
+							</div>
+							<div class="chat chat3">
+								<div class="chat_img">
+									<img src="__STATIC__/chatWeb/img/news/Announcement@2x.png" />
+								</div>
+								<div class="chat_text">
+									<p class="chat_name publicEllipsis">平台公告</p>
+									<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
+								</div>
+								<div class="chat_time">
+									<p class="chat_timer">PM 10:00</p>
+								</div>
+							</div> -->
+							<div class="chat">
+								<div class="chat_img">
+									<img src="__STATIC__/chatWeb/img/1.jpg" />
+								</div>
+								<div class="chat_text">
+									<p class="chat_name publicEllipsis">张三</p>
+									<p class="chat_context">嗨</p>
+								</div>
+								<div class="chat_time">
+									<p class="chat_timer">PM 10:00</p>
+								</div>
+							</div>
+						</ul>
+						</div>
+					</div>
+
+				</div>
+				<div class="line" style="position: absolute;bottom: -10px; z-index: 10;">
+					<!--需要固定在底部，所以需要用到绝对定位，另外，由于MUI本身的组件的z-index要高于我们自己的div，所以，这里需要自定义z-index，一般10就足够。-->
+					<!-- 底部导航 -->
+					<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
+		<script src="https://cdn.bootcss.com/mui/3.4.0/js/mui.min.js"></script>
+		<script src="__STATIC__/chatWeb/js/public/public.js"></script>
+		<!--公共底部导航栏-->
+		<script src="__STATIC__/chatWeb/js/public/bottom_nav.js"></script>
+		<!--<script src="__STATIC__/chatWeb/js/news/news.js"></script>-->
+		<script>
+		
+		// window.onload = function() {
+
+			var API_URL = "/index.php/api/chat/"; // 请求地址
+			var fromid ={$fromid};
+
+			// 连接服务端
+			function connect() {
+				console.log('连接服务端1');
+				// 创建全局websocket
+				ws =  new WebSocket("ws://47.107.185.253:8282");
+				// 当socket连接打开时
+				ws.onopen = login;
+				// 当有消息时根据消息类型显示不同信息
+				ws.onmessage = onmessage;
+				ws.onclose = function() {
+					console.log("连接关闭，定时重连...");
+					connect();
+				};
+				ws.onerror = function() {
+					console.log("出现错误");
+				};
+			}
+		
+			function login(){
+				console.log('发送登录到ws');
+				// 登录
+				var login_data = '{"type":"login","fromid":'+fromid+'}';
+				console.log("websocket握手成功，发送登录数据:"+login_data);
+				ws.send(login_data);
+			}
+
+			// 服务端发来消息时,根据业务类型type处理客户端页面相应业务
+			function onmessage(e){
+
+				console.log(e.data);
+				var message = eval("("+ e.data+")");
+				switch (message.type){
+					// 服务端ping客户端
+					case 'ping':
+                		ws.send('{"type":"pong"}');
+                		break;
+					case  "init":
+						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
+						ws.send(bild);
+						list();
+						return;
+					case "text":
+						$(".chat-fui-content").html("");
+						list();
+						return;
+					case "say_img":
+						$(".chat-fui-content").html("");
+						list();
+					return;
 				}
-			</script>
-			<script>
-				mui.init();
-				//侧滑容器父节点
-				var offCanvasWrapper = mui('#offCanvasWrapper');
-				//主界面容器
-				var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
-				//菜单容器
-				var offCanvasSide = document.getElementById("offCanvasSide");
-				if(!mui.os.android) {
-					//				document.getElementById("move-togger").classList.remove('mui-hidden');
-					var spans = document.querySelectorAll('.android-only');
-					for(var i = 0, len = spans.length; i < len; i++) {
-						spans[i].style.display = "none";
+			}
+
+			function list(){
+
+				$.post(
+					API_URL+"get_list",
+					{id:fromid},
+					function(res){
+						console.log('1111ddd');
+						$.each(res,function(index,content){
+
+							if(content.countNoread==0){
+								$(".chat-fui-content").append('<div onclick=redi("'+content.chat_page+'") class="chat-list flex" ><div class="chat-img"  style="background-image: url('+content.head_url+')"></div> <div class="chat-info"> <p class="chat-merch flex"> <span class="title t-28">'+content.username+'</span> <span class="time">'+mydate(content.last_message.time)+'</span> </p> <p class="chat-text singleflow-ellipsis">'+content.last_message.content+'</p> </div></div>');
+
+							}else{
+								$(".chat-fui-content").append('<div onclick=redi("'+content.chat_page+'") class="chat-list flex" ><div class="chat-img"  style="background-image: url('+content.head_url+')"> <span class="badge" style="top: -0.1rem;left: 80%;">'+content.countNoread+'</span> </div> <div class="chat-info"> <p class="chat-merch flex"> <span class="title t-28">'+content.username+'</span> <span class="time">'+mydate(content.last_message.time)+'</span> </p> <p class="chat-text singleflow-ellipsis">'+content.last_message.content+'</p> </div></div>');
+
+							}
+						})
+
+					},'json'
+				)
+			}
+			/**
+			*根据时间戳格式化为日期形式
+			*/
+			function mydate(nS){
+
+				return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+			}
+
+			function redi(url){
+				window.location.href=url;
+			}
+
+			//搜索框
+			$(".search-input").focus(function() {
+				$(".search-tip").hide();
+			}).blur(function() {
+				var val = $(this).val();
+				if(val != "") {
+					$(".search-tip").hide();
+				} else {
+					$(".search-tip").show();
+				}
+			})
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.000000001 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			});
+		// }
+	
+			mui.init();
+			//侧滑容器父节点
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+			//主界面容器
+			var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+			//菜单容器
+			var offCanvasSide = document.getElementById("offCanvasSide");
+			if(!mui.os.android) {
+				//				document.getElementById("move-togger").classList.remove('mui-hidden');
+				var spans = document.querySelectorAll('.android-only');
+				for(var i = 0, len = spans.length; i < len; i++) {
+					spans[i].style.display = "none";
+				}
+			}
+			//移动效果是否为整体移动
+			var moveTogether = false;
+			//侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果；
+			var classList = offCanvasWrapper[0].classList;
+			//变换侧滑动画移动效果；
+			mui('.mui-input-group').on('change', 'input', function() {
+				if(this.checked) {
+					offCanvasSide.classList.remove('mui-transitioning');
+					offCanvasSide.setAttribute('style', '');
+					classList.remove('mui-slide-in');
+					classList.remove('mui-scalable');
+					switch(this.value) {
+						case 'main-move':
+							if(moveTogether) {
+								//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+								offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+							}
+							break;
+						case 'main-move-scalable':
+							if(moveTogether) {
+								//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+								offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+							}
+							classList.add('mui-scalable');
+							break;
+						case 'menu-move':
+							classList.add('mui-slide-in');
+							break;
+						case 'all-move':
+							moveTogether = true;
+							//整体滑动时，侧滑菜单在inner-wrap内
+							offCanvasInner.insertBefore(offCanvasSide, offCanvasInner.firstElementChild);
+							break;
 					}
+					offCanvasWrapper.offCanvas().refresh();
 				}
-				//移动效果是否为整体移动
-				var moveTogether = false;
-				//侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果；
-				var classList = offCanvasWrapper[0].classList;
-				//变换侧滑动画移动效果；
-				mui('.mui-input-group').on('change', 'input', function() {
-					if(this.checked) {
-						offCanvasSide.classList.remove('mui-transitioning');
-						offCanvasSide.setAttribute('style', '');
-						classList.remove('mui-slide-in');
-						classList.remove('mui-scalable');
-						switch(this.value) {
-							case 'main-move':
-								if(moveTogether) {
-									//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
-									offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
-								}
-								break;
-							case 'main-move-scalable':
-								if(moveTogether) {
-									//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
-									offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
-								}
-								classList.add('mui-scalable');
-								break;
-							case 'menu-move':
-								classList.add('mui-slide-in');
-								break;
-							case 'all-move':
-								moveTogether = true;
-								//整体滑动时，侧滑菜单在inner-wrap内
-								offCanvasInner.insertBefore(offCanvasSide, offCanvasInner.firstElementChild);
-								break;
-						}
-						offCanvasWrapper.offCanvas().refresh();
-					}
-				});
+			});
 
-				mui('#offCanvasSideScroll').scroll();
-				mui('#offCanvasContentScroll').scroll();
+			mui('#offCanvasSideScroll').scroll();
+			mui('#offCanvasContentScroll').scroll();
 
-				//实现ios平台原生侧滑关闭页面；
-				if(mui.os.plus && mui.os.ios) {
-					mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
-						plus.webview.currentWebview().setStyle({
-							'popGesture': 'none'
-						});
+			//实现ios平台原生侧滑关闭页面；
+			if(mui.os.plus && mui.os.ios) {
+				mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'none'
 					});
-				}
-				//点击头像,左侧出现
-				$(".touxx").on('tap', function(event) {
-					mui('.mui-off-canvas-wrap').offCanvas('show');
 				});
-				//点击关闭按钮,左侧消失
-				$(".close").on('tap', function(event) {
-					mui('.mui-off-canvas-wrap').offCanvas('show');
-				});
+			}
+			//点击头像,左侧出现
+			$(".touxx").on('tap', function(event) {
+				mui('.mui-off-canvas-wrap').offCanvas('show');
+			});
+			//点击关闭按钮,左侧消失
+			$(".close").on('tap', function(event) {
+				mui('.mui-off-canvas-wrap').offCanvas('show');
+			});
 
-				$(".lb_headWrap_share").on('tap', function(event) {
+			$(".lb_headWrap_share").on('tap', function(event) {
 
-					$(".mask").show();
-					$(".mask_son").slideDown()
+				$(".mask").show();
+				$(".mask_son").slideDown()
 
-				});
-				$(".mask").on('tap', function(event) {
+			});
+			$(".mask").on('tap', function(event) {
 
-					$(".mask").hide();
+				$(".mask").hide();
 
-				});
-				/*遍历--绑定页面跳转*/
-				$('.page_trrem').each(function(_index) {
-					$(".page_trrem").eq(_index).on('tap', function() {
-						/*$(location).attr('href', 'dialog.html');*/
-						window.location.href = $(this).attr('data-url');
-					});
-				})
-
-				/*底部导航-页面跳转*/
-				$(".bottomNavWrap .bottomNavTerm").on('tap', function() {
-					window.location.href = $(this).attr('onclick').split("'")[1];
-				})
-				/*跳转-二维码链接*/
-				$('.my_qrcodeyf').on('tap', function() {
+			});
+			/*遍历--绑定页面跳转*/
+			$('.page_trrem').each(function(_index) {
+				$(".page_trrem").eq(_index).on('tap', function() {
+					/*$(location).attr('href', 'dialog.html');*/
 					window.location.href = $(this).attr('data-url');
-				})
-			</script>
+				});
+			})
 
-	</body>
+			/*底部导航-页面跳转*/
+			$(".bottomNavWrap .bottomNavTerm").on('tap', function() {
+				window.location.href = $(this).attr('onclick').split("'")[1];
+			})
+			/*跳转-二维码链接*/
+			$('.my_qrcodeyf').on('tap', function() {
+				window.location.href = $(this).attr('data-url');
+			})
+		</script>
+
+</body>
 
 </html>
