@@ -28,8 +28,8 @@ class Chat extends Controller{
         $message = input('post.');
         // 处理客户端发来的消息 data(文本类型消息)
         $text   = nl2br(htmlspecialchars($message['data']));
-        $text = str_replace(PHP_EOL, '', $text);   
-        
+        $text = preg_replace('/($s*$)|(^s*^)/m', '',$text);  
+
         $fromid = intval($message['fromid']);
         $toid   = intval($message['toid']);
         $send_type = $message['type']=='say'?1:2;
