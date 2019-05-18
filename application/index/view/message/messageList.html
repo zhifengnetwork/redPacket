@@ -245,6 +245,7 @@
 					case  "init":
 						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
 						ws.send(bild);
+						$(".friendChat").html("");
 						list();
 						return;
 					case "text":
@@ -305,7 +306,7 @@
 					},'json'
 				)
 			}
-			
+
 			/**
 			*根据时间戳格式化为日期形式
 			*/
