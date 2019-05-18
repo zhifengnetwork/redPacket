@@ -269,7 +269,7 @@
 							if(content.countNoread==0){
 								// <a href="'+content.chat_page+'">
                 				let str = '';
-                				str += '<div class="chat chat3" onclick=redi("'+content.chat_page+'")><div class="chat_img">'
+                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
 									+ '<img src="'+content.head_url+'" />'
 									+ '</div>'
 									+ '<div class="chat_text">'
@@ -280,13 +280,14 @@
 									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
 									+ '</div></div>'
                 				$('.friendChat').append(str);
+                				bind_redurl($('.chat3'));
 
 							}else{
 
 								// 有未读消息显示
 								let str = '';
 
-                				str += '<div class="chat chat3" onclick=redi("'+content.chat_page+'")><div class="chat_img">'
+                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
 									+ '<img src="'+content.head_url+'" />'
 									+ '</div>'
 									+ '<div class="chat_text">'
@@ -298,12 +299,13 @@
 									+ '<p class="chat_message gray">'+content.countNoread+'</p>'
 									+ '</div></div>'
                 				$('.friendChat').append(str);
+                				bind_redurl($('.chat3'));
 							}
 						})
-
 					},'json'
 				)
 			}
+			
 			/**
 			*根据时间戳格式化为日期形式
 			*/
@@ -312,9 +314,14 @@
 				return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
 			}
 
-			// 跳转到聊天页面
-			function redi(url){
-				window.location.href = url;
+			// 点击跳转到聊天页面
+			function bind_redurl(_eve){
+				/*遍历--绑定页面跳转*/
+				_eve.each(function(_index) {
+					_eve.eq(_index).on('tap', function() {
+						window.location.href = $(this).attr('data-url');
+					});
+				})
 			}
 
 			//搜索框
