@@ -236,7 +236,6 @@ class Chat extends Controller{
         }
         $fromid = input('id');
         $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->where('toid',$fromid)->group('fromid')->select();
-
         $rows = array_map(function($res){
             return [
                 'head_url'=>$this->get_head_one($res['fromid']),

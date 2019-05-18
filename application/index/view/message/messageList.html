@@ -177,9 +177,7 @@
 						<ul class="mui-table-view friendChat">
 
 							<!-- 一对一聊天列表 -->
-							<div class="chat chat3">
-								
-							</div>
+							
 						</ul>
 						
 						</div>
@@ -266,43 +264,40 @@
 					API_URL+"get_list",
 					{id:fromid},
 					function(res){
-						console.log('1111ddd');
 						$.each(res,function(index,content){
 
 							if(content.countNoread==0){
-								
+								// <a href="'+content.chat_page+'">
                 				let str = '';
-                				str += '<a href="'+content.chat_page+'"><div class="chat chat3"><div class="chat_img">'
+                				str += '<div class="chat chat3" onclick=redi("'+content.chat_page+'")><div class="chat_img">'
 									+ '<img src="'+content.head_url+'" />'
 									+ '</div>'
 									+ '<div class="chat_text">'
-									+ '<p class="chat_name publicEllipsis">'+content.last_message.from_name+'</p>'
+									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
 									+ '<p class="chat_context">'+content.last_message.content+'</p>'
 									+ '</div>'
 									+ '<div class="chat_time">'
 									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
-									+ '</div></div></a>'
+									+ '</div></div>'
                 				$('.friendChat').append(str);
-                				console.log(content.chat_page,111);
 
 							}else{
 
 								// 有未读消息显示
 								let str = '';
 
-                				str += '<a href="'+content.chat_page+'"><div class="chat chat3"><div class="chat_img">'
+                				str += '<div class="chat chat3" onclick=redi("'+content.chat_page+'")><div class="chat_img">'
 									+ '<img src="'+content.head_url+'" />'
 									+ '</div>'
 									+ '<div class="chat_text">'
-									+ '<p class="chat_name publicEllipsis">'+content.last_message.from_name+'</p>'
+									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
 									+ '<p class="chat_context">'+content.last_message.content+'</p>'
 									+ '</div>'
 									+ '<div class="chat_time">'
 									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
 									+ '<p class="chat_message gray">'+content.countNoread+'</p>'
-									+ '</div></div></a>'
+									+ '</div></div>'
                 				$('.friendChat').append(str);
-                				console.log(content.chat_page,999);
 							}
 						})
 
