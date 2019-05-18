@@ -27,9 +27,8 @@ class Chat extends Controller{
 
         $message = input('post.');
         // 处理客户端发来的消息 data(文本类型消息)
-        // $text   = nl2br(htmlspecialchars($message['data']));
-        $text   = nl2br($message['data']);
-        $text = preg_replace('/($s*$)|(^s*^)/m', '',$text);  
+        $text   = nl2br(htmlspecialchars($message['data']));
+        // $text = preg_replace('/($s*$)|(^s*^)/m', '',$text);  
 
         $fromid = intval($message['fromid']);
         $toid   = intval($message['toid']);
@@ -121,6 +120,10 @@ class Chat extends Controller{
          $message = Db::name('chat_info')->where('(fromid=:fromid and toid=:toid) || (fromid=:toid1 and toid=:fromid1)',['fromid'=>$fromid,'toid'=>$toid,'toid1'=>$toid,'fromid1'=>$fromid])->limit($count-10,10)->order('id')->select();
         }else{
           $message = Db::name('chat_info')->where('(fromid=:fromid and toid=:toid) || (fromid=:toid1 and toid=:fromid1)',['fromid'=>$fromid,'toid'=>$toid,'toid1'=>$toid,'fromid1'=>$fromid])->order('id')->select();
+        }
+
+        foreach ($message as $key => $value) {
+            $message['content'] = htmlspecialchars_decode($message['content']);
         }
 
         return $message;
