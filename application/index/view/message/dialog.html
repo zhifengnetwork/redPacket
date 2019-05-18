@@ -356,13 +356,15 @@
                     $('html, body').animate({
                         scrollTop: $('html, body').height()
                     }, 'slow');
-                    $.post(
-                        API_URL+"changeNoRead",
-                        {"fromid":toid,"toid":fromid},// 在当前页面中时,更新接收到的信息状态
-                        function(){
-                            console.log('update ok');
-                        },'json'
-                    )
+                    changeNoRead();
+
+                    // $.post(
+                    //     API_URL+"changeNoRead",
+                    //     {"fromid":toid,"toid":fromid},// 在当前页面中时,更新接收到的信息状态
+                    //     function(){
+                    //         console.log('update ok');
+                    //     },'json'
+                    // )
 
                 }
                 return;
