@@ -285,7 +285,7 @@
 
 
     var API_URL = "/index.php/api/chat/"; // 请求地址
-    // var domain = document.domain;
+    var domain = 'http://'+document.domain+'/upload/chat_img/'; // 图片路径
     // 连接服务端
     function connect() {
        // 创建全局websocket
@@ -368,7 +368,8 @@
                     +'<div class="dialog_content_opposite_name">'+to_name+'</div>'
                     +'<div class="dialog_content_opposite_textimg">'
                     // +'<img class="dialog_content_opposite_img" src="__ROOT__/upload/chat_img/'+message.img_name+'" alt="">'
-                    +'<img class="dialog_content_opposite_img" src="/static/upload/chat_img/2019-05-18/chat_img_5cdfcd6fb8a6b.png" alt="">'
+                    // +'<img class="dialog_content_opposite_img" src="http://www.zfrpk.com/upload/chat_img/2019-05-18/chat_img_5cdfd22a7d93e.png" alt="">'
+                    +'<img class="dialog_content_opposite_img" src="'+domain+message.img_name+'" alt="">'
                     +'</div>'
                     +'</div>'
                     +'</div>'
