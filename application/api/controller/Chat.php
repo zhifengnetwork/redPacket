@@ -139,7 +139,7 @@ class Chat extends Controller{
             return json(['code'=>0, 'msg'=>'图片类型错误', 'data'=>""]);
         }
 
-        if($file['size']/1024>5120){
+        if($file['size']/1024>9120){
             // return ['status'=>'img is too large'];
             return json(['code'=>0, 'msg'=>'图片过大', 'data'=>""]);
         }
