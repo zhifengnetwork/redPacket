@@ -211,7 +211,6 @@ class Chat extends Controller{
     public function getCountNoread($fromid,$toid){
 
         return Db::name('chat_info')->where(['fromid'=>$fromid,'toid'=>$toid,'is_read'=>0])->count('id');
-
     }
 
     /**
@@ -222,7 +221,7 @@ class Chat extends Controller{
     public function getLastMessage($fromid,$toid){
 
         $info = Db::name('chat_info')->where('(fromid=:fromid&&toid=:toid)||(fromid=:fromid2&&toid=:toid2)',['fromid'=>$fromid,'toid'=>$toid,'fromid2'=>$toid,'toid2'=>$fromid])->order('id DESC')->limit(1)->find();
-
+        $info['content'] = htmlspecialchars_decode($info['content']);
         return $info;
     }
 
