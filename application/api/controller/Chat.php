@@ -27,7 +27,8 @@ class Chat extends Controller{
 
         $message = input('post.');
         // 处理客户端发来的消息 data(文本类型消息)
-        $text   = nl2br(htmlspecialchars($message['data']));
+        // $text   = nl2br(htmlspecialchars($message['data']));
+        $text   = nl2br($message['data']);
         $text = preg_replace('/($s*$)|(^s*^)/m', '',$text);  
 
         $fromid = intval($message['fromid']);
