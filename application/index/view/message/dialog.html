@@ -343,9 +343,11 @@
                         scrollTop: $('html, body').height()
                     }, 'slow');
 
-                    // 更新余额
-                    $('.account_now').html(message.to_account);
-                    $('.dialog_transfer_num').attr('data-account',message.to_account);
+                    // 更新余额到页面
+                    $.post("/index/my/getAccount",{uid:fromid},function(msg){
+                        $('.account_now').html(msg.data.account);
+                        $('.dialog_transfer_num').attr('data-account',msg.data.account);
+                    });
                 }
                 return;
         }
@@ -458,7 +460,6 @@
                         }else{
                             // 文本类型内容
                             let str = '';
-                            console.log(content.content)
                             str +='<div class="dialog_content_oneself clearfloat">'
                                         +'<div class="dialog_content_oneself_imgwrap">'
                                             +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
@@ -569,11 +570,10 @@
             API_URL+"changeNoRead",
             {"fromid":fromid,"toid":toid},
             function(){
-                console.log('update ok');
+                console.log('update Read ok');
             },'json'
         )
     }
-
 
     // 把内容替换,查看表情结果
     function replace_em(str){

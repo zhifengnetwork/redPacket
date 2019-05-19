@@ -84,6 +84,7 @@ class Message extends Base
         }
         $password = input('pwd/d');
         $money = input('money');
+        $money = abs($money); // 防止提交负数
         $key = input('key/s');
         $to_uid = input('to_uid/d');
 

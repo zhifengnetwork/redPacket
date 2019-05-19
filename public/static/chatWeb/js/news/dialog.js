@@ -72,7 +72,7 @@ $(function(){
                 arr_str.pop();
                 pass_val = arr_str.join('');
                       //if(pass_val.length){
-                console.log('模拟删除代码',pass_val.length);
+                // console.log('模拟删除代码',pass_val.length);
                 /*页面-模拟删除代码*/
                 if(pass_val.length > 0){
                     $('.password_box_num .trem_box').eq(pass_val.length).removeClass("show_box");
@@ -90,7 +90,7 @@ $(function(){
                 /*页面-模拟密码-代码*/
                 $('.password_box_num .trem_box').eq(pass_val.length-1).addClass("show_box");
             }
-            console.log(pass_val);
+            // console.log(pass_val);
             /*密码长度为6时，ajax*/
             if(pass_val.length == 6){
                 remove_class($(this));
@@ -150,7 +150,7 @@ $(function(){
                                 scrollTop: $('html, body').height()
                             }, 'slow');
                             // 推送给收款用户
-                            var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'","to_account":"'+msg.data.to_account+'"}';
+                            var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'"}';
                             ws.send(message); // 向服务器发送信息
                         
                     }else{
@@ -205,7 +205,7 @@ $(function(){
             $('.bottom_alert_box').animate({'bottom':'0'});
             /*获取当前滚动条的位置*/
             thisScroll_num = $(document).scrollTop();
-            console.log('获取当前滚动条的位置',thisScroll_num);
+            // console.log('获取当前滚动条的位置',thisScroll_num);
             /**禁止底部滑动
              * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
              **/
@@ -231,7 +231,7 @@ $(function(){
                 'top': '',
                 'left': '',
             });
-            console.log(66666,thisScroll_num);
+            // console.log(66666,thisScroll_num);
             /*恢复当前用户滚动的位置！*/
             $(document).scrollTop(thisScroll_num);
             

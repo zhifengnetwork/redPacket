@@ -47,6 +47,25 @@ class My extends Base
 
     }
 
+    /**
+     * [获取用户余额]
+     * @return json
+     */
+    public function getAccount(){
+        if(!isPost()){
+            return message(0, '非法提交');
+        }
+        $uid = input('uid/d');
+        if(!$uid){
+            return message(0, 'no uid');
+        }
+        $res = Db::name('users')->field('id,account')->where('id', $uid)->find();
+        if(!$res){
+            return message(0, 'no user');
+        }
+        return message(1, 'ok',['account'=>$res['account']]);
+    }
+
    
 
 
