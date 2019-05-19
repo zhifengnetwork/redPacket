@@ -50,6 +50,8 @@ class Login extends Base
         unset($is_user['password']);
         unset($is_user['salt']);
         $is_user['uid'] = $is_user['id'];
+        // 生成key到session 转账时使用验证
+        $is_user['key'] = md5(time().mt_rand(0,1000).'redpak');
         session('user',$is_user);
         return message(1, '登录成功');
 

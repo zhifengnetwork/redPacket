@@ -45,89 +45,12 @@
             <!-- append -->
 
             <!-- 本人转账 -->
-            <!-- <div class="dialog_content_oneself clearfloat">
-                <div class="dialog_content_oneself_imgwrap">
-                    <img class="dialog_content_oneself_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
-                </div>
-                <div class="dialog_content_oneself_info">
-                    <p class="dialog_content_oneself_name">质检员</p>
-                    <div class="dialog_content_oneself_transfer">
-                        <div class="oneself_transfer_info">
-                            <div class="oneself_transfer_imgwrap">
-                                <img class="oneself_transfer_img" src="__STATIC__/chatWeb/img/news/transfer2.png" alt="">
-                            </div>
-                            <div class="oneself_transfer_price">
-                                <div>给神秘电波转账</div>
-                                <div>￥999.00</div>
-                            </div>
-                        </div>
-                        <p class="oneself_transfer_text">转让</p>
-                    </div>
-                </div>
-            </div> -->
+            
             <!-- 对方转账 -->
-          <!--   <div class="dialog_content_opposite clearfloat">
-                <div class="dialog_content_opposite_imgwrap">
-                    <img class="dialog_content_opposite_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
-                </div>
-                <div class="dialog_content_opposite_info">
-                    <p class="dialog_content_opposite_name">神秘电波</p>
-                    <div class="dialog_content_opposite_transfer">
-                        <div class="opposite_transfer_info">
-                            <div class="opposite_transfer_imgwrap">
-                                <img class="opposite_transfer_img" src="__STATIC__/chatWeb/img/news/transfer2.png" alt="">
-                            </div>
-                            <div class="opposite_transfer_price">
-                                <div>给质检员转账</div>
-                                <div>￥999.00</div>
-                            </div>
-                        </div>
-                        <p class="opposite_transfer_text">转让</p>
-                    </div>
-                </div>
-            </div> -->
+          
             <!-- 本人收款 -->
-            <!-- <div class="dialog_content_oneself clearfloat">
-                <div class="dialog_content_oneself_imgwrap">
-                    <img class="dialog_content_oneself_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
-                </div>
-                <div class="dialog_content_oneself_info">
-                    <p class="dialog_content_oneself_name">质检员</p>
-                    <div class="dialog_content_oneself_transfer gathering">
-                        <div class="oneself_transfer_info">
-                            <div class="oneself_transfer_imgwrap">
-                                <img class="oneself_transfer_img" src="__STATIC__/chatWeb/img/news/succeed.png" alt="">
-                            </div>
-                            <div class="oneself_transfer_price">
-                                <div>已收款</div>
-                                <div>￥999.00</div>
-                            </div>
-                        </div>
-                        <p class="oneself_transfer_text">收款</p>
-                    </div>
-                </div> 
-            </div>-->
+            
             <!-- 对方收款 -->
-          <!--   <div class="dialog_content_opposite clearfloat">
-                <div class="dialog_content_opposite_imgwrap">
-                    <img class="dialog_content_opposite_img" src="__STATIC__/chatWeb/img/0000⑨.jpg" alt="">
-                </div>
-                <div class="dialog_content_opposite_info">
-                    <p class="dialog_content_opposite_name">神秘电波</p>
-                    <div class="dialog_content_oneself_transfer gathering">
-                        <div class="opposite_transfer_info">
-                            <div class="opposite_transfer_imgwrap">
-                                <img class="opposite_transfer_img" src="__STATIC__/chatWeb/img/news/succeed.png" alt="">
-                            </div>
-                            <div class="opposite_transfer_price">
-                                <div>神秘电波已收款</div>
-                                <div>￥999.00</div>
-                            </div>
-                        </div>
-                        <p class="opposite_transfer_text">收款</p>
-                    </div>
-                </div>
-            </div> -->
         </div>
 
         <!-- 转账 -->
@@ -148,16 +71,17 @@
                     </div>
                 </div>
                 <!-- 转账金额 -->
-                <div class="dialog_transfer_num">
+                <div class="dialog_transfer_num" data-account="{$user_arr['account']}">
                     <div class="dialog_transfer_num_title">
                         请输入金额
                     </div>
                     <label class="dialog_transfer_num_label">￥
-                        <input class="dialog_transfer_num_input" type="number">
+                        <input class="dialog_transfer_num_input" type="number" maxlength="7" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")'>
                     </label>
                 </div>
+                <span style="margin-left: 10px;">我的余额: <span class="account_now">{$user_arr['account']}</span></span>
                 <!-- 确认转账 -->
-                <div class="dialog_transfer_affirm">
+                <div class="dialog_transfer_affirm" data-key="{$key}" data-uid="{$user_arr['id']}">
                     确认转账
                 </div>
             </div>
@@ -210,14 +134,14 @@
                     </p>
                     
                 </div>
-                <p class="red_envelope_money">￥<span>50.00</span></p>
+                <p class="red_envelope_money">￥<span class="tr_num"></span></p>
                 <div class="ds">
                     <div class="ds_ds">
                         <div class="dsds_item">
                             <p class="dsds_item_icon_box">
                                 <img src="__STATIC__/chatWeb/img/news/qian.png" class="tixian_pic" />
                             </p>
-                            <span class="qunliao_item_text">账号余额(608元)</span>
+                            <span class="qunliao_item_text">账号余额(<span class="now_account"></span>元)</span>
                         </div>
                     </div>
                 </div>
@@ -233,13 +157,11 @@
             
             
             <!--输入完密码 => 遮罩层-->
-            <div class="loading_wrap"><!--报错 标签-->
-                
+            <!--报错 标签-->
+          <!--   <div class="loading_wrap">
                 输入的密码错误
-                
-                
             </div>
-            
+             -->
             <!--底部弹窗（框）-->
             <div class="bottom_alert_box">
                 <!--数字键盘-->
@@ -371,27 +293,57 @@
 
             case "say_img":
                 // 接收图片
+                if(toid==message.fromid) {
+                    let str = '';
+                    str +='<div class="dialog_content_opposite clearfloat">'
+                        +'<div class="dialog_content_opposite_imgwrap">'
+                        +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                        +'</div>'
+                        +'<div class="dialog_content_opposite_info">'
+                        +'<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                        +'<div class="dialog_content_opposite_textimg">'
+                        // +'<img class="dialog_content_opposite_img" src="__ROOT__/upload/chat_img/'+message.img_name+'" alt="">'
+                        // +'<img class="dialog_content_opposite_img" src="http://www.zfrpk.com/upload/chat_img/2019-05-18/chat_img_5cdfd22a7d93e.png" alt="">'
+                        +'<img class="dialog_content_opposite_img" src="'+domain+message.img_name+'" alt="">'
+                        +'</div>'
+                        +'</div>'
+                        +'</div>'
+                    $('.dialog_content').append(str);
+                    $('html, body').animate({
+                        scrollTop: $('html, body').height()
+                    }, 'slow');
+                    changeNoRead();
+                }
+                return;
+            // 转账收款    
+            case "transfer":
+                if(toid==message.fromid) {
+
                 let str = '';
-                str +='<div class="dialog_content_opposite clearfloat">'
-                    +'<div class="dialog_content_opposite_imgwrap">'
-                    +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
-                    +'</div>'
-                    +'<div class="dialog_content_opposite_info">'
-                    +'<div class="dialog_content_opposite_name">'+to_name+'</div>'
-                    +'<div class="dialog_content_opposite_textimg">'
-                    // +'<img class="dialog_content_opposite_img" src="__ROOT__/upload/chat_img/'+message.img_name+'" alt="">'
-                    // +'<img class="dialog_content_opposite_img" src="http://www.zfrpk.com/upload/chat_img/2019-05-18/chat_img_5cdfd22a7d93e.png" alt="">'
-                    +'<img class="dialog_content_opposite_img" src="'+domain+message.img_name+'" alt="">'
-                    +'</div>'
-                    +'</div>'
-                    +'</div>'
-                $('.dialog_content').append(str);
-                $('html, body').animate({
-                    scrollTop: $('html, body').height()
-                }, 'slow');
-                changeNoRead();
-              
-              return;
+                    str += '<div class="dialog_content_opposite clearfloat">'
+                        + '<div class="dialog_content_opposite_imgwrap">'
+                        + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                        + '</div>'
+                        + '<div class="dialog_content_opposite_info">'
+                        + '<p class="dialog_content_opposite_name">'+to_name+'</p>'
+                        + '<div class="dialog_content_oneself_transfer gathering">'
+                        + '<div class="opposite_transfer_info">'
+                        + '<div class="opposite_transfer_imgwrap">'
+                        + '<img class="opposite_transfer_img" src="/static/chatWeb/img/news/succeed.png" alt="">'
+                        + '</div>'
+                        + '<div class="opposite_transfer_price">'
+                        + '<div>已收'+fromid_name+'</div>'
+                        + '<div>￥'+message.tr_num+'</div>'
+                        + '</div>'
+                        + '</div>'
+                        + '<p class="opposite_transfer_text">收款</p>'
+                        + ' </div></div></div>'
+                    $('.dialog_content').append(str);
+                    $('html, body').animate({
+                        scrollTop: $('html, body').height()
+                    }, 'slow');
+                }
+                return;
         }
     }
 
@@ -618,120 +570,6 @@
         )
     }
 
-    // 输入密码
-    $(function() {
-        /**
-         * 全局变量
-         * **/
-        /*存储-当前滚动条的位置*/
-        var thisScroll_num = null;
-        /*获取支付密码（后台*/
-        var pass_val = '';
-        $('.digital_key').on('click',function(){
-            /*触摸-添加样式*/
-            $(this).addClass('number_trem_active');
-            /*当前的元素*/
-            var this_eve = $(this);
-            /*当前的数字*/
-            var this_nun = Number(this_eve.html());
-            /*当前-状态(输入数字true，删除false)*/
-            var this_state = true;
-            /*删除-按钮*/
-            if(this_eve.attr('data-state') == 'delete'){
-                /*如果当元素为空时*/
-                if(pass_val == ""){
-                    console.log('密码为空!');
-                    remove_class($(this));
-                    return false;
-                }
-                /*删除最后一个元素*/
-                arr_str = pass_val.split('');
-                /*数组删除最后一项*/
-                arr_str.pop();
-                pass_val = arr_str.join('');
-//	        			if(pass_val.length){
-                console.log('模拟删除代码',pass_val.length);
-                /*页面-模拟删除代码*/
-                if(pass_val.length > 0){
-                    $('.password_box_num .trem_box').eq(pass_val.length).removeClass("show_box");
-                }else {
-                    $('.password_box_num .trem_box').eq(0).removeClass("show_box");
-                }
-                this_state = false;
-            }
-            /*获取支付密码*/
-            if(pass_val.length < 6 && this_state){
-                pass_val += this_nun;
-            }
-            /*状态*/
-            if(this_state){
-                /*页面-模拟密码-代码*/
-                $('.password_box_num .trem_box').eq(pass_val.length-1).addClass("show_box");
-            }
-            console.log(pass_val);
-            /*密码长度为6时，ajax*/
-            if(pass_val.length == 6){
-                remove_class($(this));
-                $('.loading_wrap').show();
-                $('.mask_text').hide();
-                $('.bottom_alert_box').hide();
-                console.log('ajax-最终密码:',pass_val);
-                setTimeout(function(){
-                    $('.loading_wrap').hide();
-                    $('.mask_text').show();
-                    $('.bottom_alert_box').show();
-                    pass_val='';
-                    $('.trem_box').removeClass('show_box')
-                },1100);
-                return false;
-            }
-            remove_class($(this));
-        })
-        /*离开-删除样式*/
-        function remove_class(_this){
-            /*模拟-touchs事件，因为iso上失效*/
-            setTimeout(function(){
-                _this.removeClass('number_trem_active');
-            },100);
-            
-        }
-        
-        /*点击出现-底部弹窗*/
-        $('.dialog_transfer_affirm').on('click',function(){
-            $('.bottom_alert_wrap').show();
-            /*底部弹窗(出现)*/
-            $('.bottom_alert_box').animate({'bottom':'0'});
-            /*获取当前滚动条的位置*/
-            thisScroll_num = $(document).scrollTop();
-            console.log('获取当前滚动条的位置',thisScroll_num);
-            /**禁止底部滑动
-             * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
-             **/
-            $('.wrap').css({
-                'position':'fixed',
-                'top': -thisScroll_num,
-                'left': 0,
-            });
-        })
-        /*关闭遮罩层*/
-        $('.delete_img_box').on('click',function(){
-                $('.bottom_alert_wrap').hide();
-                pass_val='';
-                $('.trem_box').removeClass('show_box');
-            /*底部弹窗(隐藏)*/
-            $('.bottom_alert_box').animate({'bottom':-($('.bottom_alert_box').height())});
-            /*恢复底部滑动*/
-            $('.wrap').css({
-                'position':'',
-                'top': '',
-                'left': '',
-            });
-            console.log(66666,thisScroll_num);
-            /*恢复当前用户滚动的位置！*/
-            $(document).scrollTop(thisScroll_num);
-            
-        })
-    });
 
     // 把内容替换,查看表情结果
     function replace_em(str){

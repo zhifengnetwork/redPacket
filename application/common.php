@@ -2,6 +2,12 @@
 use think\Db;
 use think\Request;
 
+
+//生成订单号
+function createOrderNo(){
+    return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
+}
+
 /**
  * [获取用户所有好友]
  * @param  int $uid [当前登录用户uid]
