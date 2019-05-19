@@ -422,16 +422,6 @@
         save_message(text,type='say',fromid,toid);
     });
 
-    // 请求api数据入库
-    function save_message(text,type,fromid,toid){
-        $.post(
-            API_URL+"save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
-                // 返回无需操作
-                console.log(data);
-            },'json'
-        )
-    }
-
     // 页面加载返回聊天记录
     function message_load(){
         $.post(
@@ -571,6 +561,16 @@
             {"fromid":fromid,"toid":toid},
             function(){
                 console.log('update Read ok');
+            },'json'
+        )
+    }
+
+    // 请求api数据入库
+    function save_message(text,type,fromid,toid){
+        $.post(
+            API_URL+"save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
+                // 返回无需操作
+                console.log(data);
             },'json'
         )
     }
