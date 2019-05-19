@@ -344,8 +344,8 @@
                     }, 'slow');
 
                     // 更新余额
-                    $('.account_now').html(message.tr_num);
-                    $('.dialog_transfer_num').attr('data-account',message.tr_num);
+                    $('.account_now').html(message.to_account);
+                    $('.dialog_transfer_num').attr('data-account',message.to_account);
                 }
                 return;
         }

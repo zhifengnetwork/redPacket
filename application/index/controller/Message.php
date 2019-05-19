@@ -153,9 +153,10 @@ class Message extends Base
             $res3 = Db::name('user_transfer')->insert($from_data);
             $res4 = Db::name('user_transfer')->insert($to_data);
             $user_account = Db::name('users')->field('id,account')->where('id',session('user.id'))->find();
+            $to_account = Db::name('users')->field('id,account')->where('id', $to_uid)->find(); // 对方余额
             // 提交事务
             Db::commit();
-            return message(1, '转账成功',['account'=>$user_account['account']]);
+            return message(1, '转账成功',['account'=>$user_account['account'], 'to_account'=>$to_account['account']]);
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();

@@ -150,7 +150,7 @@ $(function(){
                                 scrollTop: $('html, body').height()
                             }, 'slow');
                             // 推送给收款用户
-                            var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'"}';
+                            var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'","to_account":"'+msg.data.to_account+'"}';
                             ws.send(message); // 向服务器发送信息
                         
                     }else{
