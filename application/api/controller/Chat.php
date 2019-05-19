@@ -33,6 +33,15 @@ class Chat extends Controller{
         $fromid = intval($message['fromid']);
         $toid   = intval($message['toid']);
         $send_type = $message['type']=='say'?1:2;
+        if($message['type']=='say'){
+            $send_type = 1;
+        }else if($message['type']=='say_img'){
+            $send_type = 2;
+        }else if($message['type']=='transfer'){
+            $send_type = 3;
+        }else{
+            $send_type = 1; // 否则1文本
+        }
 
         // 判断当前session是否和发送者的uid一致
         if($fromid == session('user.id')){

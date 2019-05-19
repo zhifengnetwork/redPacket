@@ -152,7 +152,9 @@ $(function(){
                             // 推送给收款用户
                             var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'"}';
                             ws.send(message); // 向服务器发送信息
-                        
+                            // 保存数据入库
+                            save_message(tr_num,type='transfer',fromid,toid);
+                            console.log(111);
                     }else{
                         layer.msg(msg.msg);
                         $('.mask_text').hide();
