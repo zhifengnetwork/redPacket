@@ -447,7 +447,7 @@
                                 +'</div>'
                             $('.dialog_content').append(str);
                             $('html, body').scrollTop($('html, body').height());
-                        }else{
+                        }else if(content.type==1){
                             // 文本类型内容
                             let str = '';
                             str +='<div class="dialog_content_oneself clearfloat">'
@@ -461,6 +461,34 @@
                                     +'</div>'
                             $('.dialog_content').append(str);
                             $('html, body').scrollTop($('html, body').height());
+                            
+                        }else{
+                            // 转账记录
+                            var str = '';
+                            str +=  '<div class="dialog_content_oneself clearfloat">'
+                                +   '<div class="dialog_content_oneself_imgwrap">'
+                                +   '<img class="dialog_content_oneself_img" src="'+from_head+'">'
+                                +   '</div>'
+                                +   '<div class="dialog_content_oneself_info">'
+                                +   '<p class="dialog_content_oneself_name">'+fromid_name+'</p>'
+                                +   '<div class="dialog_content_oneself_transfer">'
+                                +   '<div class="oneself_transfer_info">'
+                                +   '<div class="oneself_transfer_imgwrap">'
+                                +   '<img class="oneself_transfer_img" src="/static/chatWeb/img/news/transfer2.png">'
+                                +   '</div>'
+                                +   '<div class="oneself_transfer_price">'
+                                +   '<div>给'+to_name+'转账</div>'
+                                +   '<div>￥'+content.content+'</div>'
+                                +   '</div>'
+                                +   '</div>'
+                                +   '<p class="oneself_transfer_text">转帐</p>'
+                                +   '</div>'
+                                +   '</div>'
+                                +   '</div>'
+                            $('.dialog_content').append(str);
+                            $('html, body').animate({
+                                scrollTop: $('html, body').height()
+                            }, 'slow');
                         }
                     }else{
                         // 页面左边
@@ -480,7 +508,7 @@
                                 +'</div>'
                             $('.dialog_content').append(str);
                             $('html, body').scrollTop($('html, body').height());
-                        }else{
+                        }else if(content.type==1){
                             let str = '';
                             str += '<div class="dialog_content_opposite clearfloat">'
                                 + '<div class="dialog_content_opposite_imgwrap">'
@@ -492,6 +520,32 @@
                                 + AnalyticEmotion(content.content)+'</div></div></div>'
                             $('.dialog_content').append(str);
                             $('html, body').scrollTop($('html, body').height());
+
+                        }else{
+
+                            let str = '';
+                            str += '<div class="dialog_content_opposite clearfloat">'
+                                + '<div class="dialog_content_opposite_imgwrap">'
+                                + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                                + '</div>'
+                                + '<div class="dialog_content_opposite_info">'
+                                + '<p class="dialog_content_opposite_name">'+to_name+'</p>'
+                                + '<div class="dialog_content_oneself_transfer gathering">'
+                                + '<div class="opposite_transfer_info">'
+                                + '<div class="opposite_transfer_imgwrap">'
+                                + '<img class="opposite_transfer_img" src="/static/chatWeb/img/news/succeed.png" alt="">'
+                                + '</div>'
+                                + '<div class="opposite_transfer_price">'
+                                + '<div>已收'+fromid_name+'</div>'
+                                + '<div>￥'+content.content+'</div>'
+                                + '</div>'
+                                + '</div>'
+                                + '<p class="opposite_transfer_text">收款</p>'
+                                + ' </div></div></div>'
+                            $('.dialog_content').append(str);
+                            $('html, body').animate({
+                                scrollTop: $('html, body').height()
+                            }, 'slow');
                         }
                     }
                 })
