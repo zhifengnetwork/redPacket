@@ -342,6 +342,9 @@
                     $('html, body').animate({
                         scrollTop: $('html, body').height()
                     }, 'slow');
+
+                    // 更新余额
+                    $('.dialog_transfer_num').attr('data-account',message.tr_num);
                 }
                 return;
         }
@@ -372,7 +375,7 @@
                 console.log(e);
             },'json'
         );
-    }
+    }    
 
     //输入框按下
     $('.dialog_menu_input').keyup(function(){
