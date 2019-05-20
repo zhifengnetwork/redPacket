@@ -26,6 +26,26 @@ class My extends Base
     }
 
     /**
+     * [账号安全页面]
+     * @return [type] [description]
+     */
+    public function accountAndSecurity()
+    {
+        $user_arr = Db::name('users')->field('id,nickname,mobile,head_imgurl')->where('id',session('user.id'))->find();
+        $this->assign('user_arr', $user_arr);
+        return $this->fetch('accountAndSecurity');
+    }
+
+    /**
+     * [通用页面]
+     * @return [type] [description]
+     */
+    public function commonUse()
+    {
+        return $this->fetch('commonUse');
+    }
+
+    /**
      * [我的钱包]
      * @return array
      */
@@ -68,7 +88,32 @@ class My extends Base
         return message(1, 'ok',['account'=>$res['account']]);
     }
 
-   
+    /**
+     * [我的二维码页面]
+     * @return [type] [description]
+     */
+    public function myQrCode()
+    {
+        return $this->fetch('myQrCode');
+    }
+
+    /**
+     * [我的团队收益页面]
+     * @return [type] [description]
+     */
+    public function myTeamIncome()
+    {
+        return $this->fetch('myTeamIncome');
+    }
+
+    /**
+     * [我的团队页面]
+     * @return [type] [description]
+     */
+    public function myTeam()
+    {
+        return $this->fetch('myTeam');
+    }
 
 
 }
