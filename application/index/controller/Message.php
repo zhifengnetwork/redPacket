@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\Db;
+use think\Config;
 // 消息与我的相关
 class Message extends Base
 {
@@ -55,29 +56,16 @@ class Message extends Base
         return $this->fetch('my/set_up');
     }
 
+
     /**
-     * [好友转账]
+     * [好友转账密码验证及数据入库]
      * @param int $from_uid [转出方uid]
      * @param int $to_uid [收款方uid]
      * @param decimal $money [转账金额]
      * @return json
      */
-    public function friendTransfer(){
-        
-        if(!isPost()){
-            return message(0, '非法提交');
-        }
-        $param = input('post.');
-        var_dump($param);die;
-
-    }
-
-
-    /**
-     * [好友转账密码验证及数据入库]
-     * @return [type] [description]
-     */
-    public function checkPwd(){
+    public function checkPwd()
+    {
 
         if(!isPost()){
             return message(0, '非法提交');
@@ -87,7 +75,9 @@ class Message extends Base
         $money = abs($money); // 防止提交负数
         $key = input('key/s');
         $to_uid = input('to_uid/d');
-
+        if($key != $this->key){
+            return message(0,'错误参数-key');
+        }
         $user = Db::name('users')->field('id,account,password,salt')->where('id',session('user.id'))->find();
         if(!$user){
             return message(0, '用户不存在');
@@ -97,8 +87,11 @@ class Message extends Base
         if(!$to_user){
             return message(0, '对方用户不存在');
         }
-        if($key != $this->key){
-            return message(0,'错误参数-key');
+        // 判断是否属于好友关系
+        $is_friends = getAllFriends($user['id']);
+        $check_touid_in = deep_in_array($to_uid, $is_friends);
+        if(!$check_touid_in){
+            return message(0,'不属于好友关系');
         }
         if(!is_numeric($money)){
             return message(0,'金额有误');
@@ -126,7 +119,7 @@ class Message extends Base
         $order_no = createOrderNo();
         $from_data = [
             'from_uid' => session('user.id'),
-            // 'get_uid' => $to_uid,
+            'get_uid' => $to_uid,
             'order_no' => $order_no,
             'flag' => '-',
             'money' => $money,
@@ -134,7 +127,7 @@ class Message extends Base
             'type' => 1 // 转出
         ];
         $to_data = [
-            // 'from_uid' => session('user.id'),
+            'from_uid' => session('user.id'),
             'get_uid' => $to_uid,
             'order_no' => $order_no,
             'flag' => '+',
@@ -166,5 +159,38 @@ class Message extends Base
 
     }
 
+    /**
+     * [转账记录获取]
+     * @return array
+     */
+    public function transferList()
+    {   
+        echo Config::get('SEND_KEY');die;
+        $list1 = Db::name('user_transfer')->where(['from_uid'=>session('user.id'), 'type'=>1])->select();  // 转入
+        $list2 = Db::name('user_transfer')->where(['get_uid'=>session('user.id'), 'type'=>2])->select(); // 转出
+        $list = array_merge($list1,$list2);
+
+        $income_total = 0; // 收入
+        $expend_total = 0; // 支出
+        $now_date = date('Y年m月');
+        foreach ($list as $k => $v) {
+            if($v['type']==2){
+                $expend_total += $v['money'];
+                $from_user = Db::name('users')->field('nickname,head_imgurl')->where(['id'=>$v['from_uid']])->find();
+            }else{
+                $income_total += $v['money'];
+                $from_user = Db::name('users')->field('nickname,head_imgurl')->where(['id'=>$v['get_uid']])->find();
+            }
+            $list[$k]['create_time'] = date('m月d日 H:i',$v['create_time']);
+            
+            $list[$k]['username'] = $from_user['nickname'];
+            $list[$k]['head_imgurl'] = $from_user['head_imgurl'];
+        }
+        $this->assign('income_total', $income_total);
+        $this->assign('expend_total', $expend_total);
+        $this->assign('now_date', $now_date);
+        $this->assign('list', $list);
+        return $this->fetch('transferList');
+    }
 
 }

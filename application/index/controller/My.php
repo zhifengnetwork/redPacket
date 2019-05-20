@@ -43,8 +43,10 @@ class My extends Base
      */
     public function myBill(){
 
-
-
+        // 获取余额
+        $user_arr = Db::name('users')->field('id,account')->where('id',session('user.id'))->find();
+        $this->assign('user_arr', $user_arr);
+        return $this->fetch('bill');
     }
 
     /**

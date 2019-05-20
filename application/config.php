@@ -275,4 +275,5 @@ return [
         2 => '余额',
         3 => '银行卡',
     ),
+    'SEND_KEY' => 'HGQ3keAjEyWPnT9AoutsCWFky99lbgKE',
 ];

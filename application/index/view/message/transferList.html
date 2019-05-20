@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />    
+	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>    
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/transfer.css">
+    <title>转账记录</title>
+</head>
+
+<body>
+    <div class="wrap_frame">
+        <!--public head-->
+        <div class="lb_headWrap">
+            <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/left.png"/>
+            </p>
+            <span>转账记录</span>
+        </div>
+        <!-- 转账内容 -->
+        <div class="transfer_content">
+            <div class="transfer_content_menu">
+                全部交易类型<!-- <img class="transfer_content_menu_img" src="__STATIC__/chatWeb/img/news/down.png" alt=""> -->
+            </div>
+            <!-- 交易时间 -->
+            <div class="transfer_content_time">
+                <div class="transfer_content_time_title">
+                    {$now_date}
+                </div>
+                <div class="transfer_content_time_info">
+                    <span class="transfer_content_time_text">支付￥{$income_total}    </span>
+                    <span class="transfer_content_time_text">收入￥{$expend_total}</span>
+                </div>
+            </div>
+            <!-- 交易项 -->
+            {foreach name="list" item="vo"}
+                <div class="transfer_content_item clearfloat">
+                    <div class="transfer_content_item_imgwrap">
+                        <img class="transfer_content_item_img" src="{$vo.head_imgurl}" alt="">
+                    </div>
+                    <div class="transfer_content_item_content">
+                        <p class="transfer_content_item_info clearfloat">
+                            <span class="transfer_content_item_name">{$vo.username}</span>
+                            <span class="transfer_content_item_price">{$vo.flag}{$vo.money}</span>
+                        </p>
+                        <p class="transfer_content_item_time">
+                            {$vo.create_time}
+                        </p>
+                    </div>
+                </div>
+            {/foreach}
+           
+         
+        </div>
+    </div>
+    <script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
+    <script src="__STATIC__/chatWeb/js/public/public.js"></script>
+</body>
+</html>
