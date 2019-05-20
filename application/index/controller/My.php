@@ -68,7 +68,16 @@ class My extends Base
         return message(1, 'ok',['account'=>$res['account']]);
     }
 
-   
+    /**
+     * [用户值]
+     * @return array
+     */
+    public function recharge(){
+        
+        
+        return $this->fetch('recharge');
+    }
+
 
 
 }
