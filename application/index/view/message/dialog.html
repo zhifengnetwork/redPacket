@@ -204,7 +204,7 @@
     var to_name    = '';    // 聊天对象昵称
     var fromid_name =  '';  // 当前用户昵称
     var online     = 0;     // 是否在线
-
+    var send_key = "{$send_key}";
 
     var API_URL = "/index.php/api/chat/"; // 请求地址
     var domain = 'http://'+document.domain+'/upload/chat_img/'; // 图片路径
@@ -396,7 +396,7 @@
             layer.msg('不能发送空白内容');
             return;
         }
-        var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'"}';
+        var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
         // 向当前页面追加发送的内容并显示
         let str = '';
         str +='<div class="dialog_content_oneself clearfloat">'
@@ -595,7 +595,7 @@
                         scrollTop: $('html, body').height()
                     }, 'slow');
 
-                    var message = '{"data":"'+data.data.img_name+'","fromid":"'+fromid+'","toid":"'+toid+'","type":"say_img"}';
+                    var message = '{"data":"'+data.data.img_name+'","fromid":"'+fromid+'","toid":"'+toid+'","type":"say_img","send_key":"'+send_key+'"}';
                     $("#file").val("");
                     // 通过服务器发送图片到聊天对象
                     ws.send(message);

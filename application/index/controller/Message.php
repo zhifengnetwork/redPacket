@@ -6,6 +6,7 @@ use think\Config;
 class Message extends Base
 {
     private $key;
+    private $send_key; // 推送信息时带上
     public function _initialize()
     {   
         if (!is_user_login()) {
@@ -14,6 +15,7 @@ class Message extends Base
             exit;
         }
         $this->key = session('user.key');
+        $this->send_key = Config::get('SEND_KEY');
     }
 
     /**
@@ -43,6 +45,7 @@ class Message extends Base
         $this->assign('fromid', session('user.id'));
         $this->assign('user_arr', $user_arr);
         $this->assign('key', $this->key);
+        $this->assign('send_key',$this->send_key);
         return $this->fetch('dialog');
     }
 
@@ -165,7 +168,6 @@ class Message extends Base
      */
     public function transferList()
     {   
-        echo Config::get('SEND_KEY');die;
         $list1 = Db::name('user_transfer')->where(['from_uid'=>session('user.id'), 'type'=>1])->select();  // 转入
         $list2 = Db::name('user_transfer')->where(['get_uid'=>session('user.id'), 'type'=>2])->select(); // 转出
         $list = array_merge($list1,$list2);
