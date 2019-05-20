@@ -157,7 +157,7 @@
 								</form>
 							</div>
 							{foreach name="group_list" item="v" key="k"}
-							<div class="chat chat1">
+							<div class="chat chat1 group_chat" {if condition="$v.id eq 1 or $v.id eq 2"}data-url="{$v.group_chat_url}&fromid={$fromid}" {/if}>
 								<div class="chat_img">
 									<img src="__STATIC__/{$v.img}" />
 								</div>
@@ -313,6 +313,11 @@
 
 				return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
 			}
+
+			// 点击跳转到群页面
+			$('.group_chat').on('tap',function(){
+				window.location.href = $(this).attr('data-url');
+			});
 
 			// 点击跳转到聊天页面
 			function bind_redurl(_eve){
