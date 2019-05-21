@@ -598,7 +598,10 @@ function towArraySort ($data,$key,$order = SORT_ASC) {
 
 }
 
-// 判断某个值是否存在二维数组中
+/**
+ * 判断某个值是否存在二维数组中(判断是否属于好友用到)
+ * 
+ */
 function deep_in_array($value, $array) {
     foreach($array as $item) {
         if(!is_array($item)) {
@@ -616,4 +619,4 @@ function deep_in_array($value, $array) {
         }
     }
     return false;
- }
+}

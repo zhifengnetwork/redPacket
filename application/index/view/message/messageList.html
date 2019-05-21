@@ -157,7 +157,8 @@
 								</form>
 							</div>
 							{foreach name="group_list" item="v" key="k"}
-							<div class="chat chat1 group_chat" {if condition="$v.id eq 1 or $v.id eq 2"}data-url="{$v.group_chat_url}&fromid={$fromid}" {/if}>
+							{if condition="$v.id eq 1001 or $v.id eq 1002"}
+							<div class="chat chat1 group_chat" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}" >
 								<div class="chat_img">
 									<img src="__STATIC__/{$v.img}" />
 								</div>
@@ -171,6 +172,22 @@
 									<p class="chat_message">3</p>
 								</div>
 							</div>
+							{else/}
+							<div class="chat chat1">
+								<div class="chat_img">
+									<img src="__STATIC__/{$v.img}" />
+								</div>
+								<div class="chat_text">
+
+									<p class="chat_name publicEllipsis">{$v.name}</p>
+									<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
+								</div>
+								<div class="chat_time">
+									<!-- <p class="chat_timer">2019-02-14</p> -->
+									<p class="chat_message">3</p>
+								</div>
+							</div>	
+							{/if}
 							{/foreach}
 						</ul>
 						<ul class="mui-table-view friendChat">

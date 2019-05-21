@@ -29,10 +29,12 @@ class Message extends Base
         // 返回绑定群url
         foreach($group_list as $k=>$v){
             if($v['id']==1){ // 10-30红包群
-                $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?roomid=1';
+                $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1001';
+                $group_list[$k]['id'] = 1001;
             }
             if($v['id']==2){ // 30-800红包群
-                $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?roomid=2';
+                $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1002';
+                $group_list[$k]['id'] = 1002;
             }
         }
 
@@ -211,7 +213,15 @@ class Message extends Base
      */
     public function groupChat()
     {   
-        $this->assign('fromid', session('user.id'));
+        $group_name = input('group_name/s');   // 群名称
+        $fromid = input('fromid/d');           // 当前用户
+        $roomid = input('room_id/d');           // 群id
+        $data = [
+            'room_id' => $roomid,
+            'group_name' => $group_name
+        ];
+        $this->assign('data', $data);
+        $this->assign('fromid', $fromid);
         return $this->fetch('groupChat');
     }
 
