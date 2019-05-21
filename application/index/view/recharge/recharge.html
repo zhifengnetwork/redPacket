@@ -57,7 +57,7 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type="text" placeholder="转账金额" />
+            							<input class="inp" type="text" id="money" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -85,10 +85,7 @@
             					<img src="__STATIC__/chatWeb/img/news/my_wallet/Qrcode.png" />
             				</div>
             			</div>
-            			<!--确认充值按钮-->
-            			<div class="verify">
-            				<a class="verify_btn">确认充值</a>
-            			</div>
+
             		</div>
             		<!--上传凭证区-->
             		<div class="push_wrap">
@@ -96,7 +93,9 @@
 	            		<div class="box_wrap">
 	            			<!--上传图片存放区-->
 	            			<div class="file_img_ut">
-								<img id="file_img" src=""/>
+                                <form enctype="multipart/form-data" id="uploadForm">
+								    <img id="file_img" src=""/>
+                                </form>
 							</div>
 							<!--点击上存按钮-->
 	            			<div class="add_wrap" id="add_wrap">
@@ -106,7 +105,7 @@
 	            		</div>
             		</div>
             		<!--提交按钮-->
-            		<div class="refer_btn">提交</div>
+            		<div class="refer_btn" onclick="submits()">确认充值</div>
             	</div>
             </div>
             <!--提交弹框-->
@@ -163,5 +162,42 @@
 			    }
 			}
 		</script>
+        <script type="text/javascript">
+            function submits(){
+                // alert(1);
+
+                var money = $("#money").val();
+                var FileImg = document.getElementById("file_img");//img file
+                var file = FileImg.src;
+    
+       
+
+                if(money<=0){
+                    alert('金额不能小于等于0');
+                    return false;
+
+                }
+                if(file==''){
+                    alert('请上传凭证');
+                    return false;
+                }
+                $.ajax({
+                    url: '/index/recharge/subrecharge',//
+                    dataType:'json',  
+                    data: "money="+money+"&img="+file,        
+                    type: "POST",
+                    success: function(data) {
+                        // alert(json.msg);//成功
+                    },
+                    error: function() {
+                        // alert(json.msg);//失败
+                    }
+                })
+
+
+
+            }
+        </script>
+
 	</body>
 </html>
