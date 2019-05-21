@@ -22,7 +22,7 @@ class Recharge extends Base
      * @return array
      */
     public function index(){
-        
+
         
         return $this->fetch('recharge');
     }
@@ -31,30 +31,35 @@ class Recharge extends Base
     public function subReCharge(){
         $flag=0;
         $msg='';
-
-
-
         if (Request::instance()->isPost()) {
             $amout = input('post.money');
             $base64_img = input('post.img');
-            $img =  base_img($base64_img,'cz');
-            $orderNumber = createOrderNo();
-            $time = time();
-            $id = session('user.id');
-            $data = ['uid' => $id, 
-                    'amount' => $amout,
-                    'type' =>1,
-                    'proof' =>$img,
-                    'ordersn' =>$orderNumber,
-                    'time' => $time,
-                    'status' => 3];
-            $res = Db::table('recharge')->insert($data);
-            if($res>0){
-                $flag = 1;
-                $msg = '提交成功！';
+            // print_r($base64_img);exit;
+            // $img =  base_img($base64_img,'cz');
+            $img =  uploadImg($base64_img);
+            if($img =='上传失败'){
+                $msg = '提交失败！';    
             }else{
-                $msg = '提交失败！';
-            }
+                $orderNumber = createOrderNo();
+                $time = time();
+                $id = session('user.id');
+                $data = ['uid' => $id, 
+                        'amount' => $amout,
+                        'type' =>1,
+                        'proof' =>$img,
+                        'ordersn' =>$orderNumber,
+                        'time' => $time,
+                        'status' => 3];
+                $res = Db::table('recharge')->insert($data);
+                if($res>0){
+                    $flag = 1;
+                    $msg = '提交成功！';
+                }else{
+                    $msg = '提交失败！';
+                }     
+
+            }    
+                
 
         }else{
 
