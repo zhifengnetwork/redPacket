@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/group.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/givered.css">
     <link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/news/red_details.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/jquery.sinaEmotion.css">
     <title>群聊</title>
 </head>
 
@@ -164,7 +165,7 @@
                 </div>
             </div>
             <!-- 领取详情 -->
-            <div class="red_details">
+            <div class="red_details clearfloat">
                 <div class="wrap_frame">
                     <!--public head-->
                     <div class="headWrap">
@@ -339,7 +340,7 @@
                    </div>
             </div>
             <!-- 发红包 -->
-            <div class="give_pack">
+            <div class="give_pack clearfloat">
                 <div class="wrap_frame">
                     <!--public head-->
                     <div class="headWrap">
@@ -377,7 +378,7 @@
                                 <div class="ray_wrap">
                                     <ul>
                                         <li class="rob">0</li>
-                                        <li class="active">1</li>
+                                        <li>1</li>
                                         <li>2</li>
                                         <li>3</li>
                                         <li>4</li>
@@ -470,8 +471,13 @@
                     </div>
                 </div>
             </div>
+            <!-- 放大后的图片 -->
+            <div class="magnify_mask">
+                <img class="magnify" src="" onerror="onerror=null;src='__STATIC__/chatWeb/img/news/load.gif'" alt="">
+            </div>
     </div>
     <script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
+    <script src="__STATIC__/chatWeb/js/news/jquery.sinaEmotion.js"></script>
     <script src="__STATIC__/chatWeb/js/public/public.js"></script>
     <script src="__STATIC__/chatWeb/js/news/group.js"></script>
     <script>
@@ -503,7 +509,7 @@
         function login(){
             console.log('发送登录到ws');
             // 登录
-            var login_data = '{"type":"login","fromid":'+fromid+',"room_id":'+room_id+',"group_name":"'+group_name+'"}';
+            var login_data = '{"type":"login","fromid":'+fromid+',"room_id":'+room_id+',"group_name":"'+group_name.replace(/"/g, '\\"')+'"}';
             console.log("websocket握手成功，发送登录数据:"+login_data);
             ws.send(login_data);
         }
