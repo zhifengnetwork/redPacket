@@ -20,9 +20,9 @@
                 <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/left.png"/>
             </p>
             <p class="lb_headWrap_dialog">
-                <span class="lb_headWrap_dialog_text">99+</span>
+                <span class="lb_headWrap_dialog_text">999</span>
             </p>
-            <span>红包群(999)</span>
+            <span>{$data['group_name']}</span>
             <p class="lb_headWrap_remove">
                 <img class="lb_headWrap_remove_img" src="__STATIC__/chatWeb/img/news/group.png">
             </p>
@@ -478,7 +478,9 @@
 
         // ws begin
         var API_URL = "/index.php/api/chat/"; // 请求地址
-        var fromid ={$fromid};
+        var fromid  = {$fromid};
+        var room_id = {$data.room_id};
+        var group_name = "{$data.group_name}";
 
         // 连接服务端
         function connect() {
@@ -501,7 +503,7 @@
         function login(){
             console.log('发送登录到ws');
             // 登录
-            var login_data = '{"type":"login","fromid":'+fromid+'}';
+            var login_data = '{"type":"login","fromid":'+fromid+',"room_id":'+room_id+',"group_name":"'+group_name+'"}';
             console.log("websocket握手成功，发送登录数据:"+login_data);
             ws.send(login_data);
         }
