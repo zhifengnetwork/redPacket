@@ -88,8 +88,7 @@ class My extends Base
         return message(1, 'ok',['account'=>$res['account']]);
     }
 
-
-     /*   
+    /**
      * [我的二维码页面]
      * @return [type] [description]
      */
@@ -115,7 +114,6 @@ class My extends Base
     {
         return $this->fetch('myTeam');
     }
-
 
 
 }
