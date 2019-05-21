@@ -260,11 +260,41 @@ class Users extends Common
     }
     //充值待审核列表
     public function ck_recharge_list(){
-        $where['type'] = ['=', 0];
-        $last = Db::name('recharge')->where($where)->field('id,uid,amount,type,proof,ordersn,time,status')->select();
-        $this->assign('list', $last);
+
+        $where = "r.status = 3 ";
+        $name = input('get.name');
+        $phone = input('get.phone');
+        if( $name != '' ){
+            $where .= "and u.nickname = {$name} ";    
+        }
+        if( $phone != '' ){
+            $where .= "and u.mobile = {$phone} ";    
+        }
+        // var_dump($where);exit;
+
+        $list = Db::table('recharge')->alias('r')
+                ->join('users u', 'u.id = r.uid', 'LEFT')
+                ->where($where)
+                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.proof,r.ordersn,r.time,r.status')->paginate(10);               
+         // 获取分页显示
+        $page = $list->render();
+        // 模板变量赋值
+        $this->assign('list', $list);
+        $this->assign('page', $page);           
         return $this->fetch('ck_recharge');
     } 
+
+    //充值审核
+    public function recharge(){
+        $phone = trim(input('get.phone'));
+        $money = trim(input('get.money'));
+        $this->assign('phone', $phone);
+        $this->assign('money', $money);
+        return $this->fetch();
+    }
+
+     
+
 
 
 }
