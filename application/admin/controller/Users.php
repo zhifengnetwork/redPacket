@@ -258,4 +258,13 @@ class Users extends Common
         $this->assign('search', $search);
         return $this->fetch();
     }
+    //充值待审核列表
+    public function ck_recharge_list(){
+        $where['type'] = ['=', 0];
+        $last = Db::name('recharge')->where($where)->field('id,uid,amount,type,proof,ordersn,time,status')->select();
+        $this->assign('list', $last);
+        return $this->fetch('ck_recharge');
+    } 
+
+
 }

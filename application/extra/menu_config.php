@@ -42,8 +42,30 @@ return [
                         'url'   => 'users/account_log',
                         'hide'  => 1,
                     ],
+                    [
+                        'id'    => 12002,
+                        'title' => '待充值',
+                        'sort'  => 1,
+                        'url'   => 'users/ck_recharge_list',
+                        'hide'  => 1,
+                    ],
                 ],
             ],
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             [
                 'id'    => 11000,
                 'title' => '用户管理',
