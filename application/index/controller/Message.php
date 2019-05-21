@@ -28,14 +28,15 @@ class Message extends Base
         $group_list = Db::name('chat_group')->select();
         // 返回绑定群url
         foreach($group_list as $k=>$v){
-            if($v['id']==1){ // 10-30红包群
-                $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1001';
-                $group_list[$k]['id'] = 1001;
-            }
-            if($v['id']==2){ // 30-800红包群
-                $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1002';
-                $group_list[$k]['id'] = 1002;
-            }
+            // if($v['id']==1){ // 10-30红包群
+            //     $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1001';
+            //     $group_list[$k]['id'] = 1001;
+            // }
+            // if($v['id']==2){ // 30-800红包群
+            //     $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1002';
+            //     $group_list[$k]['id'] = 1002;
+            // }
+            $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id='.$v['id'];
         }
 
         $this->assign('group_list', $group_list);
@@ -216,11 +217,13 @@ class Message extends Base
         $group_name = input('group_name/s');   // 群名称
         $fromid = input('fromid/d');           // 当前用户
         $roomid = input('room_id/d');           // 群id
-        $data = [
-            'room_id' => $roomid,
-            'group_name' => $group_name
-        ];
-        $this->assign('data', $data);
+        // 获取群id是否存在
+        $group_one = Db::name('chat_group')->field('id,name,min_money,max_money')->where(['id'=>$roomid])->find();
+        if(!$group_one){
+            $this->redirect('/index/message/messageList');
+            exit;
+        }
+        $this->assign('data', $group_one);
         $this->assign('fromid', $fromid);
         return $this->fetch('groupChat');
     }

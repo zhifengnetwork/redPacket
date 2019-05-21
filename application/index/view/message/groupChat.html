@@ -23,7 +23,7 @@
             <p class="lb_headWrap_dialog">
                 <span class="lb_headWrap_dialog_text">999</span>
             </p>
-            <span>{$data['group_name']}</span>
+            <span>{$data['name']}</span>
             <p class="lb_headWrap_remove">
                 <img class="lb_headWrap_remove_img" src="__STATIC__/chatWeb/img/news/group.png">
             </p>
@@ -356,7 +356,7 @@
                             <div class="pdt">
                                 <div class="nitems">红包个数</div>
                                 <div class="inp_wrap">
-                                    <input class="text num" type="number" placeholder="最多发9个红包" />
+                                    <input class="text num" type="number" placeholder="" readonly="readonly" />
                                     <span>个</span>
                                 </div>
                             </div>
@@ -364,7 +364,7 @@
                             <div class="pdt">
                                 <div class="nitems">总金额</div>
                                 <div class="inp_wrap">
-                                    <input class="text" type="number" placeholder="红包范围20-800" />
+                                    <input class="text red_money price" type="number" placeholder="红包范围{$data['min_money']}-{$data['max_money']}" />
                                     <span>元</span>
                                 </div>
                             </div>
@@ -485,8 +485,8 @@
         // ws begin
         var API_URL = "/index.php/api/chat/"; // 请求地址
         var fromid  = {$fromid};
-        var room_id = {$data.room_id};
-        var group_name = "{$data.group_name}";
+        var room_id = {$data.id};
+        var group_name = "{$data.name}";
 
         // 连接服务端
         function connect() {
@@ -524,19 +524,55 @@
                 case 'ping':
                     ws.send('{"type":"pong"}');
                     break;
-                case  "init":
-                    var bild = '{"type":"bind","fromid":"'+fromid+'"}';
-                    ws.send(bild);
-                    $(".friendChat").html("");
-                    return;
-                case "text":
-                    $(".friendChat").html("");
+                // case  "init":
+                //     var bild = '{"type":"bind","fromid":"'+fromid+'"}';
+                //     ws.send(bild);
+                //     return;
+                case "in_group_chat":
+                    console.log(message);
                     return;
                 case "say_img":
-                    $(".friendChat").html("");
+                    
                 return;
             }
         }
+
+        // 客户端点击发送按钮是触发发送,并且把发送内容追加到当前页面中
+        $(".dialog_menu_send").click(function(){
+
+            // send_type=1普通文本,2图片
+            var text = $(".dialog_menu_input").html();
+      
+            if(text==''){
+                //提示
+                layer.msg('不能发送空白内容');
+                return;
+            }
+            var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
+            // 向当前页面追加发送的内容并显示
+            let str = '';
+            str +='<div class="dialog_content_oneself clearfloat">'
+                +'<div class="dialog_content_oneself_imgwrap">'
+                +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
+                +'</div>'
+                +'<div class="dialog_content_oneself_info">'
+                +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
+                +'<div class="dialog_content_oneself_text">'+AnalyticEmotion(text)+'</div>'
+                +'</div>'
+                +'</div>'
+            $('.dialog_content').append(str);
+            $('.dialog_menu_send').css('background','#c3f4ff')
+            $('html, body').animate({
+                scrollTop: $('html, body').height()
+            }, 'slow');
+            // 元素的垂直滚动条位置
+
+            ws.send(message); // 向服务器发送信息
+            $(".dialog_menu_input").html(''); // 发送后置空输入框
+
+            // 保存数据入库
+            save_message(text,type='say',fromid,toid);
+        });
         // ws end
 
 
@@ -549,10 +585,26 @@
             /*获取支付密码（后台*/
             var pass_val = '';
             /*雷点-选择*/
+            let num = 1;
             $(".ray_wrap ul li").click(function() {
-                $(this).siblings('.ray_wrap ul li').removeClass('active'); // 删除其他兄弟元素的样式
-                $(this).addClass('active'); // 添加当前元素的样式
-
+                //$(this).siblings('.ray_wrap ul li').removeClass('active'); // 删除其他兄弟元素的样式
+                //$(this).addClass('active'); // 添加当前元素的样式
+                $(".ray_wrap ul li").each(function(){
+                    if($(this).hasClass('active')){
+                        num++;
+                    }
+                })
+                // 7为最大选择数量
+                if(num <= 7){
+                    if(!$(this).hasClass('active')){
+                        $(this).addClass('active');
+                    }else{
+                        $(this).removeClass('active');
+                    }
+                }else{
+                    $(this).removeClass('active');
+                }
+                num = 1;
             });
             /*000*/
             $('.digital_key').on('click',function(){
@@ -623,23 +675,41 @@
                 },100);
                 
             }
-            
             /*点击出现-底部弹窗*/
             $('.give_btn').on('click',function(){
-                $('.bottom_alert_wrap').show();
-                /*底部弹窗(出现)*/
-                $('.bottom_alert_box').animate({'bottom':'0'});
-                /*获取当前滚动条的位置*/
-                thisScroll_num = $(document).scrollTop();
-                console.log('获取当前滚动条的位置',thisScroll_num);
-                /**禁止底部滑动
-                 * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
-                 **/
-                $('.wrap').css({
-                    'position':'fixed',
-                    'top': -thisScroll_num,
-                    'left': 0,
-                });
+
+                var red_num = $('.num').val();
+                var red_money = $('.red_money').val();
+                // if(!red_num || !isNaN(red_num)){
+                //     layer.msg('红包个数有误');return;
+                // }
+                if($('.price').val()>=30&&$('.price').val()<=800&&$('.num').val()<=9){
+                    let arr=[];
+                    $(".ray_wrap ul li").each(function(){
+                        if($(this).hasClass('active')){
+                            arr.push($(this).html());
+                        }
+                    })
+                    console.log('选中的点数'+arr);
+                    $('.bottom_alert_wrap').show();
+                    /*底部弹窗(出现)*/
+                    $('.bottom_alert_box').animate({'bottom':'0'})
+                    /*获取当前滚动条的位置*/
+                    thisScroll_num = $(document).scrollTop();
+                    console.log('获取当前滚动条的位置',thisScroll_num);
+                    /**禁止底部滑动
+                     * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
+                     **/
+                    $('.wrap').css({
+                        'position':'fixed',
+                        'top': -thisScroll_num,
+                        'left': 0,
+                    });
+                }else if($('.num').val()<=9){
+                    alert('红包范围为30-800');
+                }else{
+                    alert('红包最大数量为9个')
+                }
             })
             /*关闭遮罩层*/
             $('.delete_img_box').on('click',function(){

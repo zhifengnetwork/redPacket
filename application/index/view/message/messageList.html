@@ -157,7 +157,7 @@
 								</form>
 							</div>
 							{foreach name="group_list" item="v" key="k"}
-							{if condition="$v.id eq 1001 or $v.id eq 1002"}
+							{if condition="$v.id eq 1 or $v.id eq 2"}
 							<div class="chat chat1 group_chat" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}" >
 								<div class="chat_img">
 									<img src="__STATIC__/{$v.img}" />
