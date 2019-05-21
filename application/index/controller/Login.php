@@ -14,7 +14,7 @@ class Login extends Base
      */
     public function userToLogin()
     {
-
+   
     	if(!isPost()){
             return message(0, '非法提交');
         }

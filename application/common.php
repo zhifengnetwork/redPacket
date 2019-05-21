@@ -619,4 +619,23 @@ function deep_in_array($value, $array) {
         }
     }
     return false;
+ }
+
+ function base_img($base,$names,$images='',$info=''){
+    $saveName = request()->time().rand(0,99999) . '.png';
+
+    $img=base64_decode($base);
+    //生成文件夹
+    // $names = "distribution_set" ;
+    $name = "{$names}/" .date('Ymd',time()) ;
+    if (!file_exists(ROOT_PATH .Config('c_pub.img').$names)){ 
+        mkdir(ROOT_PATH .Config('c_pub.img').$names,0777,true);
+    } 
+    //保存图片到本地
+    file_put_contents(ROOT_PATH .Config('c_pub.img').$name.$saveName,$img);
+
+    if( $info ){
+        @unlink( ROOT_PATH .Config('c_pub.img') . $info );
+    }
+    return $name.$saveName;
 }
