@@ -76,25 +76,7 @@
                 </p>
             </div>
             <!-- 自己发红包 -->
-            <div class="group_content_oneself clearfloat">
-                <div class="group_content_oneself_imgwrap">
-                    <img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/0000bengbengbeng.jpg" alt="">
-                </div>
-                <div class="group_content_oneself_info">
-                    <p class="group_content_oneself_name">火之高兴</p>
-                    <div class="group_content_oneself_pack"> 
-                        <img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack.png" alt="">
-                        <div class="pack_titie">拆</div>
-                        <div class="pack_num">
-                            <p>恭喜发财</p>
-                            <p>1/233</p>
-                        </div>
-                        <div class="pack_state">
-                            未拆开
-                        </div>
-                    </div>
-                </div>
-            </div>
+          
             <!-- 红包弹出框 -->
             <div class="group_packwrap">
                 <div class="group_pack">
@@ -364,7 +346,7 @@
                             <div class="pdt">
                                 <div class="nitems">总金额</div>
                                 <div class="inp_wrap">
-                                    <input class="text red_money price" type="number" placeholder="红包范围{$data['min_money']}-{$data['max_money']}" />
+                                    <input class="text red_money price" type="number" maxlength="3" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")' placeholder="红包范围{$data['min_money']}-{$data['max_money']}" />
                                     <span>元</span>
                                 </div>
                             </div>
@@ -394,7 +376,7 @@
                             <!--雷点说明-->
                             <div class="state">多雷请选择多个数字，游戏倍数0</div>
                             <!--发红包按钮-->
-                            <div class="give_btn">
+                            <div class="give_btn" data-key="{$key}">
                                 <a class="btn">发红包</a>
                             </div>
         
@@ -476,9 +458,8 @@
                 <img class="magnify" src="" onerror="onerror=null;src='__STATIC__/chatWeb/img/news/load.gif'" alt="">
             </div>
     </div>
-    <script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
+    {include file="common/footer_js"}
     <script src="__STATIC__/chatWeb/js/news/jquery.sinaEmotion.js"></script>
-    <script src="__STATIC__/chatWeb/js/public/public.js"></script>
     <script src="__STATIC__/chatWeb/js/news/group.js"></script>
     <script>
 
@@ -487,6 +468,11 @@
         var fromid  = {$fromid};
         var room_id = {$data.id};
         var group_name = "{$data.name}";
+        var min_money = {$data.min_money};
+        var max_money = {$data.max_money};
+        var send_key = "{$send_key}";
+        // 10的倍数
+        var multiple = 10;
 
         // 连接服务端
         function connect() {
@@ -606,7 +592,59 @@
                 }
                 num = 1;
             });
-            /*000*/
+            // 发红包
+            ray_point = '';
+            /*点击发红包出现-底部弹窗*/
+            $('.give_btn').on('click',function(){
+                
+                var red_num = $('.num').val();
+                var red_money = $('.red_money').val();
+                var key = $('.give_btn').attr('data-key');
+                if(!red_num){
+                    layer.msg('红包个数有误');return;
+                }
+                if(!red_money){
+                    layer.msg('红包金额'+min_money+'-'+max_money);return;
+                }
+                // 判断金额是否在范围内
+                if(red_money >= min_money && red_money <= max_money && red_num){
+                    
+                    if(red_money%multiple != 0){
+                        layer.msg('红包金额'+min_money+'-'+max_money+'('+multiple+'的倍数)');return;
+                    }
+                    if(!key){
+                        layer.msg('缺少参数:key');return;
+                    }
+                    let arr=[];
+                    $(".ray_wrap ul li").each(function(){
+                        if($(this).hasClass('active')){
+                            arr.push($(this).html());
+                        }
+                    })
+                    // console.log('选中的点数'+arr);
+                    ray_point = arr;
+                    $('.bottom_alert_wrap').show();
+                    /*底部弹窗(出现)*/
+                    $('.bottom_alert_box').animate({'bottom':'0'})
+                    /*获取当前滚动条的位置*/
+                    thisScroll_num = $(document).scrollTop();
+                    // console.log('获取当前滚动条的位置',thisScroll_num);
+                    /**禁止底部滑动
+                     * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
+                     **/
+                    $('.wrap').css({
+                        'position':'fixed',
+                        'top': -thisScroll_num,
+                        'left': 0,
+                    });
+
+                    
+                }else{
+                    layer.msg('红包金额'+min_money+'-'+max_money+'('+multiple+'的倍数)');return;
+                }
+                
+            })
+                        /*000*/
             $('.digital_key').on('click',function(){
                 /*触摸-添加样式*/
                 $(this).addClass('number_trem_active');
@@ -629,7 +667,7 @@
                     /*数组删除最后一项*/
                     arr_str.pop();
                     pass_val = arr_str.join('');
-	        			//if(pass_val.length){
+                        //if(pass_val.length){
                     console.log('模拟删除代码',pass_val.length);
                     /*页面-模拟删除代码*/
                     if(pass_val.length > 0){
@@ -656,13 +694,82 @@
                     $('.mask_text').hide();
                     $('.bottom_alert_box').hide();
                     console.log('ajax-最终密码:',pass_val);
-                    setTimeout(function(){
-                        $('.loading_wrap').hide();
-                        $('.mask_text').show();
-                        $('.bottom_alert_box').show();
-                        pass_val='';
-                        $('.trem_box').removeClass('show_box');
-                    },1100);
+                    var red_num = $('.num').val();
+                    var red_money = $('.red_money').val();
+                    var key = $('.give_btn').attr('data-key');
+                    console.log(ray_point);
+                    // 验证密码提交数据
+                    $.post("/index/groupchat/groupSendRed",
+                        {"red_num":red_num, "red_money":red_money, "pwd":pass_val, "key":key},
+                        function(msg){
+                        console.log(msg);return;
+                        if(msg.code==1){
+                            layer.msg(msg.msg);
+                            // 修改页面余额
+                            $('.now_account').html(msg.data.account);
+                            $('.account_now').html(msg.data.account);
+                            $('.dialog_transfer_num').attr('data-account',msg.data.account);
+
+                            $('.dialog_transfer_wrap').hide();
+                            $('.dialog_transfer_num_input').val('');
+                            $('.bottom_alert_wrap').hide();
+                            pass_val='';
+                            $('.trem_box').removeClass('show_box');
+
+                            var str = '';
+                                str +=  '<div class="dialog_content_oneself clearfloat">'
+                                    +   '<div class="group_content_oneself clearfloat">'
+                                    +   '<div class="group_content_oneself_imgwrap">'
+                                    +   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/0000bengbengbeng.jpg">'
+                                    +   '</div>'
+                                    +   '<div class="group_content_oneself_info">'
+                                    +   '<p class="group_content_oneself_name">火之高兴</p>'
+                                    +   '<div class="group_content_oneself_pack">'
+                                    +   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack.png">'
+                                    +   '<div class="pack_titie">拆</div>'
+                                    +   '<div class="pack_num">'
+                                    +   '<p>恭喜发财</p>'
+                                    +   '<p>1/233</p>'
+                                    +   '</div>'
+                                    +   '<div class="pack_state">'
+                                    +   未拆开
+                                    +   '</div></div></div></div>'
+                                   
+                                $('.group_content').append(str);
+                                $('html, body').animate({
+                                    scrollTop: $('html, body').height()
+                                }, 'slow');
+
+                                // 保存数据入库
+                                // save_message(tr_num,type='transfer',fromid,toid);
+                                console.log('保存数据入库');
+
+                                // 推送给收款用户
+                               // var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
+                                ws.send(message); // 向服务器发送信息
+
+                        }else{
+                            layer.msg(msg.msg);
+                            $('.mask_text').hide();
+                            $('.bottom_alert_box').hide();
+               
+                            // setTimeout(function(){
+                                // $('.loading_wrap').hide();
+                                $('.mask_text').show();
+                                $('.bottom_alert_box').show();
+                                pass_val='';
+                                $('.trem_box').removeClass('show_box')
+                            // },1100);
+                            return false;
+                        }
+                    },'json')
+                    // setTimeout(function(){
+                    //     $('.loading_wrap').hide();
+                    //     $('.mask_text').show();
+                    //     $('.bottom_alert_box').show();
+                    //     pass_val='';
+                    //     $('.trem_box').removeClass('show_box');
+                    // },1100);
                     return false;
                 }
                 remove_class($(this));
@@ -675,42 +782,6 @@
                 },100);
                 
             }
-            /*点击出现-底部弹窗*/
-            $('.give_btn').on('click',function(){
-
-                var red_num = $('.num').val();
-                var red_money = $('.red_money').val();
-                // if(!red_num || !isNaN(red_num)){
-                //     layer.msg('红包个数有误');return;
-                // }
-                if($('.price').val()>=30&&$('.price').val()<=800&&$('.num').val()<=9){
-                    let arr=[];
-                    $(".ray_wrap ul li").each(function(){
-                        if($(this).hasClass('active')){
-                            arr.push($(this).html());
-                        }
-                    })
-                    console.log('选中的点数'+arr);
-                    $('.bottom_alert_wrap').show();
-                    /*底部弹窗(出现)*/
-                    $('.bottom_alert_box').animate({'bottom':'0'})
-                    /*获取当前滚动条的位置*/
-                    thisScroll_num = $(document).scrollTop();
-                    console.log('获取当前滚动条的位置',thisScroll_num);
-                    /**禁止底部滑动
-                     * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
-                     **/
-                    $('.wrap').css({
-                        'position':'fixed',
-                        'top': -thisScroll_num,
-                        'left': 0,
-                    });
-                }else if($('.num').val()<=9){
-                    alert('红包范围为30-800');
-                }else{
-                    alert('红包最大数量为9个')
-                }
-            })
             /*关闭遮罩层*/
             $('.delete_img_box').on('click',function(){
                  $('.bottom_alert_wrap').hide();

@@ -5,7 +5,7 @@ use think\Config;
 // 消息与我的相关
 class Message extends Base
 {
-    private $key;
+    private $key; // 自动生成用户的验证key
     private $send_key; // 推送信息时带上
     public function _initialize()
     {   
@@ -225,6 +225,8 @@ class Message extends Base
         }
         $this->assign('data', $group_one);
         $this->assign('fromid', $fromid);
+        $this->assign('key', $this->key);
+        $this->assign('send_key',$this->send_key);
         return $this->fetch('groupChat');
     }
 

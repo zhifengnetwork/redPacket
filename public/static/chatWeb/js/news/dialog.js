@@ -152,7 +152,6 @@ $(function(){
 
                             // 保存数据入库
                             save_message(tr_num,type='transfer',fromid,toid);
-                            console.log('保存数据入库');
 
                             // 推送给收款用户
                             var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
