@@ -658,7 +658,7 @@
                 if(this_eve.attr('data-state') == 'delete'){
                     /*如果当元素为空时*/
                     if(pass_val == ""){
-                        console.log('密码为空!');
+                        // console.log('密码为空!');
                         remove_class($(this));
                         return false;
                     }
@@ -668,7 +668,7 @@
                     arr_str.pop();
                     pass_val = arr_str.join('');
                         //if(pass_val.length){
-                    console.log('模拟删除代码',pass_val.length);
+                    // console.log('模拟删除代码',pass_val.length);
                     /*页面-模拟删除代码*/
                     if(pass_val.length > 0){
                         $('.password_box_num .trem_box').eq(pass_val.length).removeClass("show_box");
@@ -693,16 +693,16 @@
                     $('.loading_wrap').show();
                     $('.mask_text').hide();
                     $('.bottom_alert_box').hide();
-                    console.log('ajax-最终密码:',pass_val);
+                    // console.log('ajax-最终密码:',pass_val);
                     var red_num = $('.num').val();
                     var red_money = $('.red_money').val();
                     var key = $('.give_btn').attr('data-key');
-                    console.log(ray_point);
+                    // console.log(ray_point);
                     // 验证密码提交数据
                     $.post("/index/groupchat/groupSendRed",
                         {"red_num":red_num, "red_money":red_money, "pwd":pass_val, "key":key},
                         function(msg){
-                        console.log(msg);return;
+                        // console.log(msg);return;
                         if(msg.code==1){
                             layer.msg(msg.msg);
                             // 修改页面余额
