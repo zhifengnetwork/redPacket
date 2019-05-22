@@ -159,16 +159,10 @@ $(function(){
 
                     }else{
                         layer.msg(msg.msg);
-                        $('.mask_text').hide();
-                        $('.bottom_alert_box').hide();
-           
-                        // setTimeout(function(){
-                            // $('.loading_wrap').hide();
-                            $('.mask_text').show();
-                            $('.bottom_alert_box').show();
-                            pass_val='';
-                            $('.trem_box').removeClass('show_box')
-                        // },1100);
+                        $('.mask_text').show();
+                        $('.bottom_alert_box').show();
+                        pass_val='';
+                        $('.trem_box').removeClass('show_box')
                         return false;
                     }
                 },'json')
