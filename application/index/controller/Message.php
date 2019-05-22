@@ -214,7 +214,7 @@ class Message extends Base
      */
     public function groupChat()
     {   
-        $group_name = input('group_name/s');   // 群名称
+        // $group_name = input('group_name/s');   // 群名称
         $fromid = input('fromid/d');           // 当前用户
         $roomid = input('room_id/d');           // 群id
         // 获取群id是否存在
@@ -223,6 +223,12 @@ class Message extends Base
             $this->redirect('/index/message/messageList');
             exit;
         }
+        $user = Db::name('users')->field('id,nickname,account,head_imgurl')->where(['id'=>$fromid])->find();
+        if(!$user){
+            $this->redirect('/index/message/messageList');
+            exit;
+        }
+        $this->assign('user', $user);
         $this->assign('data', $group_one);
         $this->assign('fromid', $fromid);
         $this->assign('key', $this->key);
