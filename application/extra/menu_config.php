@@ -49,6 +49,13 @@ return [
                         'url'   => 'users/ck_recharge_list',
                         'hide'  => 1,
                     ],
+                    [
+                        'id'    => 12003,
+                        'title' => '收款码管理',
+                        'sort'  => 1,
+                        'url'   => 'users/receipt_code ',
+                        'hide'  => 1,
+                    ],
                 ],
             ],
 

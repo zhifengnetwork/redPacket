@@ -293,6 +293,44 @@ class Users extends Common
         return $this->fetch();
     }
 
+    //收款码管理
+    public function receipt_code(){
+
+        $query = "select id,name,img_url,code from receipt_code";
+        $list = Db::query($query);
+        $this->assign('list', $list);
+        return $this->fetch();
+
+    }
+    //更换收款码
+    public function change_code(){
+        $file_wx = request()->file('wx');
+        $file_zfb = request()->file('zfb');
+        $path = ROOT_PATH . 'public' . DS . 'uploads';
+
+        if($file_wx){
+            $info_wx = $file_wx->move($path);
+            $wx_path =  $info_wx->getSaveName();
+     
+            Db::table('receipt_code')->where('code', 'wx')->update(['img_url' => $wx_path]);
+
+        }
+        if($file_zfb){
+            $info_zfb = $file_zfb->move($path);
+            $zfb_path =  $info_zfb->getSaveName();
+     
+            Db::table('receipt_code')->where('code', 'zfb')->update(['img_url' => $zfb_path]);
+
+        }
+        $this->success('更新成功', 'users/receipt_code');
+
+
+
+    
+    }
+
+
+
      
 
 
