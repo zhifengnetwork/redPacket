@@ -42,25 +42,7 @@
                 周日 17:24
             </div>
             <!-- 对方发红包 -->
-            <div class="group_content_opposite clearfloat">
-                <div class="group_content_opposite_imgwrap">
-                    <img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/0000bengbengbeng.jpg" alt="">
-                </div>
-                <div class="group_content_opposite_info">
-                    <p class="group_content_opposite_name">霜之哀伤</p>
-                    <div class="group_content_opposite_pack">
-                        <img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/news/pack.png" alt="">
-                        <div class="pack_titie">拆</div>
-                        <div class="pack_num">
-                            <p>恭喜发财</p>
-                            <p>1/233</p>
-                        </div>
-                        <div class="pack_state">
-                            已拆开
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
             <!-- 领取红包提示 -->
             <div class="group_content_tips">
                 <p class="group_content_tips_text">
@@ -413,12 +395,7 @@
                                 
                                 
                                 <!--输入完密码 => 遮罩层-->
-                                <div class="loading_wrap"><!--报错 标签-->
-                                    
-                                    输入的密码错误
-                                    
-                                    
-                                </div>
+                               
                                 
                                 <!--底部弹窗（框）-->
                                 <div class="bottom_alert_box">
@@ -504,7 +481,7 @@
         function onmessage(e){
 
             console.log(e.data);
-            var message = eval("("+ e.data+")");
+            var message = eval("("+ e.data+")");    
             switch (message.type){
                 // 服务端ping客户端
                 case 'ping':
@@ -514,51 +491,77 @@
                 //     var bild = '{"type":"bind","fromid":"'+fromid+'"}';
                 //     ws.send(bild);
                 //     return;
+                // 进入群页面
                 case "in_group_chat":
-                    console.log(message);
+                    console.log(1111);
                     return;
-                case "say_img":
-                    
-                return;
+
+                case "get_group_red":
+                    console.log('接收红包!!'); return;
+                    // 接收对方红包推送
+                    if(room_id==message.room_id) {
+                        let str = '';
+                        str += '<div class="group_content_opposite clearfloat">'
+                            + '<div class="group_content_opposite_imgwrap">'
+                            + '<img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/0000bengbengbeng.jpg" alt="">'
+                            + '</div>'
+                            + '<div class="group_content_opposite_info">'
+                            + '<p class="group_content_opposite_name">霜之哀伤</p>'
+                            + '<div class="group_content_opposite_pack">'
+                            + '<img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/news/pack.png">'
+                            + '<div class="pack_titie">拆</div>'
+                            + '<div class="pack_num">'
+                            + '<p>恭喜发财</p>'
+                            + '<p>1/233</p>'
+                            + '</div>'
+                            + '<div class="pack_state">'
+                            + '已拆开'
+                            + '</div></div></div></div>'
+                        $('.group_content').append(str);
+                        $('html, body').animate({
+                            scrollTop: $('html, body').height()
+                        }, 'slow');
+                    }
+                    return;
             }
         }
 
         // 客户端点击发送按钮是触发发送,并且把发送内容追加到当前页面中
-        $(".dialog_menu_send").click(function(){
+        //$(".dialog_menu_send").click(function(){
 
             // send_type=1普通文本,2图片
-            var text = $(".dialog_menu_input").html();
+            // var text = $(".dialog_menu_input").html();
       
-            if(text==''){
-                //提示
-                layer.msg('不能发送空白内容');
-                return;
-            }
-            var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
-            // 向当前页面追加发送的内容并显示
-            let str = '';
-            str +='<div class="dialog_content_oneself clearfloat">'
-                +'<div class="dialog_content_oneself_imgwrap">'
-                +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
-                +'</div>'
-                +'<div class="dialog_content_oneself_info">'
-                +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
-                +'<div class="dialog_content_oneself_text">'+AnalyticEmotion(text)+'</div>'
-                +'</div>'
-                +'</div>'
-            $('.dialog_content').append(str);
-            $('.dialog_menu_send').css('background','#c3f4ff')
-            $('html, body').animate({
-                scrollTop: $('html, body').height()
-            }, 'slow');
-            // 元素的垂直滚动条位置
+            // if(text==''){
+            //     //提示
+            //     layer.msg('不能发送空白内容');
+            //     return;
+            // }
+            // var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
+            // // 向当前页面追加发送的内容并显示
+            // let str = '';
+            // str +='<div class="dialog_content_oneself clearfloat">'
+            //     +'<div class="dialog_content_oneself_imgwrap">'
+            //     +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
+            //     +'</div>'
+            //     +'<div class="dialog_content_oneself_info">'
+            //     +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
+            //     +'<div class="dialog_content_oneself_text">'+AnalyticEmotion(text)+'</div>'
+            //     +'</div>'
+            //     +'</div>'
+            // $('.dialog_content').append(str);
+            // $('.dialog_menu_send').css('background','#c3f4ff')
+            // $('html, body').animate({
+            //     scrollTop: $('html, body').height()
+            // }, 'slow');
+            // // 元素的垂直滚动条位置
 
-            ws.send(message); // 向服务器发送信息
-            $(".dialog_menu_input").html(''); // 发送后置空输入框
+            // ws.send(message); // 向服务器发送信息
+            // $(".dialog_menu_input").html(''); // 发送后置空输入框
 
-            // 保存数据入库
-            save_message(text,type='say',fromid,toid);
-        });
+            // // 保存数据入库
+            // save_message(text,type='say',fromid,toid);
+        //});
         // ws end
 
 
@@ -644,7 +647,8 @@
                 }
                 
             })
-                        /*000*/
+
+            /*000*/
             $('.digital_key').on('click',function(){
                 /*触摸-添加样式*/
                 $(this).addClass('number_trem_active');
@@ -658,7 +662,6 @@
                 if(this_eve.attr('data-state') == 'delete'){
                     /*如果当元素为空时*/
                     if(pass_val == ""){
-                        // console.log('密码为空!');
                         remove_class($(this));
                         return false;
                     }
@@ -690,33 +693,34 @@
                 /*密码长度为6时，ajax*/
                 if(pass_val.length == 6){
                     remove_class($(this));
-                    $('.loading_wrap').show();
-                    $('.mask_text').hide();
-                    $('.bottom_alert_box').hide();
+                    // $('.loading_wrap').show();
                     // console.log('ajax-最终密码:',pass_val);
                     var red_num = $('.num').val();
                     var red_money = $('.red_money').val();
                     var key = $('.give_btn').attr('data-key');
-                    // console.log(ray_point);
+                    console.log(ray_point);
                     // 验证密码提交数据
                     $.post("/index/groupchat/groupSendRed",
-                        {"red_num":red_num, "red_money":red_money, "pwd":pass_val, "key":key},
+                        {"red_num":red_num, "red_money":red_money, "ray_point":ray_point, "pwd":pass_val, "key":key},
                         function(msg){
                         // console.log(msg);return;
                         if(msg.code==1){
-                            layer.msg(msg.msg);
-                            // 修改页面余额
-                            $('.now_account').html(msg.data.account);
-                            $('.account_now').html(msg.data.account);
-                            $('.dialog_transfer_num').attr('data-account',msg.data.account);
+                            // 请空输入的金额和雷点
+                            // $('.now_account').html(msg.data.account);
+                            // $('.account_now').html(msg.data.account);
+                            // $('.dialog_transfer_num').attr('data-account',msg.data.account);
+                            $(".ray_wrap ul li").removeClass('active');
+                            $('.give_pack').hide(); // 隐藏红包div
+                            $('.red_money').val('');
+                            $('body').css('padding-bottom','1.4rem')
+                            $('.group_content').show();
+                            ray_point = '';
 
-                            $('.dialog_transfer_wrap').hide();
-                            $('.dialog_transfer_num_input').val('');
                             $('.bottom_alert_wrap').hide();
                             pass_val='';
                             $('.trem_box').removeClass('show_box');
 
-                            var str = '';
+                            let str = '';
                                 str +=  '<div class="dialog_content_oneself clearfloat">'
                                     +   '<div class="group_content_oneself clearfloat">'
                                     +   '<div class="group_content_oneself_imgwrap">'
@@ -732,44 +736,32 @@
                                     +   '<p>1/233</p>'
                                     +   '</div>'
                                     +   '<div class="pack_state">'
-                                    +   未拆开
+                                    +   '未拆开'
                                     +   '</div></div></div></div>'
-                                   
                                 $('.group_content').append(str);
                                 $('html, body').animate({
                                     scrollTop: $('html, body').height()
                                 }, 'slow');
 
-                                // 保存数据入库
-                                // save_message(tr_num,type='transfer',fromid,toid);
-                                console.log('保存数据入库');
+                            // 保存数据入库
+                            // save_message(tr_num,type='transfer',fromid,toid);
+                            // 返回红包id
+                            var red_id = '';
+                            console.log('保存数据入库');
 
-                                // 推送给收款用户
-                               // var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
-                                ws.send(message); // 向服务器发送信息
+                            // 推送给当前群所有在线用户
+                            var message = '{"red_id":red_id, red_num":"'+red_num+'","type":"send_group_red","fromid":"'+fromid+'","room_id":"'+room_id+'","send_key":"'+send_key+'"}';
+                            ws.send(message); // 向服务器发送信息
 
                         }else{
                             layer.msg(msg.msg);
-                            $('.mask_text').hide();
-                            $('.bottom_alert_box').hide();
-               
-                            // setTimeout(function(){
-                                // $('.loading_wrap').hide();
-                                $('.mask_text').show();
-                                $('.bottom_alert_box').show();
-                                pass_val='';
-                                $('.trem_box').removeClass('show_box')
-                            // },1100);
+                            $('.mask_text').show();
+                            $('.bottom_alert_box').show();
+                            pass_val='';
+                            $('.trem_box').removeClass('show_box')
                             return false;
                         }
                     },'json')
-                    // setTimeout(function(){
-                    //     $('.loading_wrap').hide();
-                    //     $('.mask_text').show();
-                    //     $('.bottom_alert_box').show();
-                    //     pass_val='';
-                    //     $('.trem_box').removeClass('show_box');
-                    // },1100);
                     return false;
                 }
                 remove_class($(this));

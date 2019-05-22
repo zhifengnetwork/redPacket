@@ -31,9 +31,10 @@ class Groupchat extends Base
         if(!isPost()){
             return message(0, '非法提交');
         }
+     
         $red_num = input('red_num/d');
         $red_money = input('red_money/d');
-        $ray_point = input('ray_point');
+        $ray_point = input('ray_point/a');
         $password = input('pwd/s');
         $red_money = abs($red_money); // 防止提交负数
         $key = input('key/s');

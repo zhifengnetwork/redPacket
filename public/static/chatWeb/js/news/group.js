@@ -34,7 +34,10 @@ $(function(){
     $('.lb_headWrap_return').click(function(){
         $('.group_content').show();
         $('.give_pack').hide();
-        $('body').css('padding-bottom','1.4rem')
+        $('body').css('padding-bottom','1.4rem');
+        $(".ray_wrap ul li").removeClass('active');
+        $('.red_money').val('');
+
     })
     // 领取详情
     $('.group_pack_info').click(function(){
@@ -58,64 +61,64 @@ $(function(){
     })
 
     // 发送消息
-    $('.group_menu_send').click(function(){
-        let str = '';
-        let text = $('.group_menu_input').html();
-        if(text == ''){
-            return;
-        }
-        str +='<div class="group_content_oneself clearfloat">'
-                    +'<div class="group_content_oneself_imgwrap">'
-                        +'<img class="group_content_oneself_img" src="/static/chatWeb/img/0000⑨.jpg" alt="">'
-                    +'</div>'
-                    +'<div class="group_content_oneself_info">'
-                        +'<div class="group_content_oneself_name">火之高兴</div>'
-                        +'<div class="group_content_oneself_text">'+text+'</div>'
-                    +'</div>'
-                +'</div>'
-        $('.group_content').append(str);
-        $('.group_menu_input').html('');
-        $('.group_menu_send').css('background','#c3f4ff')
-        $('html,body').animate({
-            scrollTop: $('html,body').height()
-        }, 'slow');
-        $('.group_menu_more').children().attr('src','/static/chatWeb/img/news/more.png');
-        $('.group_menu_submenu').css('height','.45rem');
-    })
+    // $('.group_menu_send').click(function(){
+    //     let str = '';
+    //     let text = $('.group_menu_input').html();
+    //     if(text == ''){
+    //         return;
+    //     }
+    //     str +='<div class="group_content_oneself clearfloat">'
+    //                 +'<div class="group_content_oneself_imgwrap">'
+    //                     +'<img class="group_content_oneself_img" src="/static/chatWeb/img/0000⑨.jpg" alt="">'
+    //                 +'</div>'
+    //                 +'<div class="group_content_oneself_info">'
+    //                     +'<div class="group_content_oneself_name">火之高兴</div>'
+    //                     +'<div class="group_content_oneself_text">'+text+'</div>'
+    //                 +'</div>'
+    //             +'</div>'
+    //     $('.group_content').append(str);
+    //     $('.group_menu_input').html('');
+    //     $('.group_menu_send').css('background','#c3f4ff')
+    //     $('html,body').animate({
+    //         scrollTop: $('html,body').height()
+    //     }, 'slow');
+    //     $('.group_menu_more').children().attr('src','/static/chatWeb/img/news/more.png');
+    //     $('.group_menu_submenu').css('height','.45rem');
+    // })
 
-    // 验证图片
-    $(".picture").change(function (e) {
-        for (var i = 0; i < e.target.files.length; i++) {
-            var file = e.target.files.item(i);
-            //验证是否为图片，不是就跳出循环
-            if (!(/^image\/.*$/i.test(file.type))) {
-                alert("请选择图片上传！")
-                continue;
-            }
-            //实例化FileReader API  
-            var freader = new FileReader();
-            freader.readAsDataURL(file);
-            freader.onload = function (e) {
-                let str = '';
-                str +='<div class="group_content_oneself clearfloat">'
-                +'<div class="group_content_oneself_imgwrap">'
-                +'<img class="group_content_oneself_img" src="/static/chatWeb/img/0000⑨.jpg" alt="">'
-                +'</div>'
-                +'<div class="group_content_oneself_info">'
-                +'<div class="group_content_oneself_name">质检员</div>'
-                +'<div class="group_content_oneself_textimg">'
-                +'<img class="group_content_oneself_img" src="'+e.target.result+'" alt="">'
-                +'</div>'
-                +'</div>'
-                +'</div>'
-                $('.group_content').append(str);
-                $('html, body').animate({
-                    scrollTop: $('html, body').height()
-                }, 'slow');
-            }
-            $(".picture").val('');
-        }
-    });
+    /// 验证图片
+    // $(".picture").change(function (e) {
+    //     for (var i = 0; i < e.target.files.length; i++) {
+    //         var file = e.target.files.item(i);
+    //         //验证是否为图片，不是就跳出循环
+    //         if (!(/^image\/.*$/i.test(file.type))) {
+    //             alert("请选择图片上传！")
+    //             continue;
+    //         }
+    //         //实例化FileReader API  
+    //         var freader = new FileReader();
+    //         freader.readAsDataURL(file);
+    //         freader.onload = function (e) {
+    //             let str = '';
+    //             str +='<div class="group_content_oneself clearfloat">'
+    //             +'<div class="group_content_oneself_imgwrap">'
+    //             +'<img class="group_content_oneself_img" src="/static/chatWeb/img/0000⑨.jpg" alt="">'
+    //             +'</div>'
+    //             +'<div class="group_content_oneself_info">'
+    //             +'<div class="group_content_oneself_name">质检员</div>'
+    //             +'<div class="group_content_oneself_textimg">'
+    //             +'<img class="group_content_oneself_img" src="'+e.target.result+'" alt="">'
+    //             +'</div>'
+    //             +'</div>'
+    //             +'</div>'
+    //             $('.group_content').append(str);
+    //             $('html, body').animate({
+    //                 scrollTop: $('html, body').height()
+    //             }, 'slow');
+    //         }
+    //         $(".picture").val('');
+    //     }
+    // });
 
     //图片绑定表情包
    $('.emotion_ear').SinaEmotion($('.group_menu_input'));
