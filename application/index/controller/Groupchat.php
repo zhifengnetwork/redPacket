@@ -32,8 +32,9 @@ class Groupchat extends Base
             return message(0, '非法提交');
         }
      
+        $room_id = input('room_id/d');
         $red_num = input('red_num/d');
-        $red_money = input('red_money/d');
+        $red_money = input('red_money');
         $ray_point = input('ray_point/a');
         $password = input('pwd/s');
         $red_money = abs($red_money); // 防止提交负数
@@ -44,6 +45,9 @@ class Groupchat extends Base
         $user = Db::name('users')->field('id,account,password,salt')->where('id',session('user.id'))->find();
         if(!$user){
             return message(0, '用户不存在');
+        }
+        if(!$room_id){
+            return message(0,'群内异常,稍后再试');
         }
         if(!$red_num){
             return message(0,'红包个数NULL');
@@ -73,8 +77,87 @@ class Groupchat extends Base
             return message(0, '密码错误');
         }
 
-        return message(1, 'ok');
+        // 生成红包
+        $red_list = createRedDate($red_money, $red_num);
+        if(!$red_list){
+            return message(0, '红包出错！');
+        }
+        // 启动事务
+        Db::startTrans();
+        try{
 
+            // 扣减金额
+            $res_dec = Db::name('users')->where(['id'=>$user['id']])->setDec('account',$red_money);
+            $time = time();
+            // 插入红包主表
+            $master_data = [
+                'uid' => $user['id'],
+                'room_id' => $room_id,
+                'num' => $red_num,
+                'money' => $red_money,
+                'create_time' => $time,
+            ];
+            if($ray_point){
+                $master_data['ray_point'] = $ray_point;
+                // 根据雷点获取倍数计算
+                // $master_data['mulriple'] = $mulriple;
+            }
+            $res_id = Db::name('chat_red_master')->insertGetId($master_data);
+            // 循环插入红包从表记录
+            foreach($red_list['redMoneyList'] as $v){
+                $detail_data = [
+                    'm_id' => $res_id,
+                    'money' => $v
+                ];
+                $res = Db::name('chat_red_detail')->insert($detail_data);
+            }
+            // 插入流水日志
+            $red_log = [
+                'uid' => $user['id'],
+                'm_id' => $res_id,
+                'money' => $red_money,
+                'type' => 1,
+                'create_time' => $time
+            ];
+            $res2 = Db::name('chat_red_log')->insert($red_log);
+            Db::commit();  
+            return message(1, 'ok', ['red_id'=>$res_id]);
+        }catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return message(0, '网络异常,稍后再试');
+        }
     }
 
+    /**
+     * 生成红包记录
+     */
+    private function getRedData($red_money, $red_num){
+        
+        if(!$red_money || !$red_num){ return false;}
+        $red_list = createRedDate($red_money, $red_num);
+        if(!$red_list){
+            return false;
+        }
+        // 插入红包主表
+        $master_data = [
+            'uid' => 12,
+            'room_id' => 1,
+            'num' => 7,
+            'money' => 30,
+            'ray_point' => '1,2,3',
+            'mulriple' => 1.6,
+            'create_time' => time(),
+        ];
+        $res_id = Db::name('chat_red_master')->insertGetId($master_data);
+        // 循环插入红包从表记录
+        foreach($red_list['redMoneyList'] as $v){
+            $detail_data = [
+                'm_id' => $res_id,
+                'money' => $v
+            ];
+            $res = Db::name('chat_red_detail')->insert($detail_data);
+        }
+        echo $res_id;
+    }
 }

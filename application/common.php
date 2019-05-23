@@ -2,8 +2,34 @@
 use think\Db;
 use think\Request;
 
+/**
+ * @param $total  [要发的红包总额]
+ * @param int $num  [红包个数]
+ * @return array [生成红包金额]
+ */
+function createRedDate($total, $num)
+{
+    if(!$total || !$num){return false;}
+    $min = 0.01; // 保证最小金额
+    $wamp = array();
+    $returnData = array();
+    for ($i = 1; $i < $num; ++$i) {
+        $safe_total = ($total - ($num - $i) * $min) / ($num - $i); // 随机安全上限 红包金额的最大值
+        if ($safe_total < 0) break;
+        $money = @mt_rand($min * 100, $safe_total * 100) / 100; // 随机产生一个红包金额
+        $total = $total - $money;   // 剩余红包总额
+        $wamp[$i] = sprintf("%.2f",$money); // 保留两位有效数字
+    }
+    $wamp[$i] = sprintf("%.2f",$total);
+    $returnData['redMoneyList'] = $wamp;
+    $returnData['newTotalMoney'] = array_sum($wamp);
+    return $returnData;
+}
 
-//生成订单号
+/**
+ *  生成订单号
+ * @return string
+ */
 function createOrderNo(){
     return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
 }
