@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>编辑银行卡</title>
+		<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/news/my/editcard.css"/>
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/back@2x.png"/> 
+                </p>
+				<span>编辑银行卡</span>
+            </div>
+            <!--内容-->
+            <div class="content">	
+            	<div class="minor">
+            		<!--输入银行名称-->
+            		<div class="bank_wrap">
+            			<div class="name">银行</div>
+            			<div class="inp_wrap">
+            				<input class="inp put" type="text" placeholder="请输入银行名称" id="bank" value="{$info.bank_name}" />
+            			</div>
+            		</div>
+            		<!--输入姓名-->
+            		<div class="bank_wrap">
+            			<div class="name">姓名</div>
+            			<div class="inp_wrap">
+            				<input class="inp put" type="text" placeholder="请输入真实名字" id="name" value="{$info.name}" />
+            			</div>
+            		</div>
+            		<!--输入卡号-->
+            		<div class="bank_wrap">
+            			<div class="name">卡号</div>
+            			<div class="inp_wrap">
+            				<input class="inp put" type="number" placeholder="请输入卡号" id="account" value="{$info.account}" />
+            			</div>
+            		</div>
+            		
+            		<div>
+            			<div class="site">请输入开户行地址</div>
+            			<textarea class="text put" placeholder="请输入开户行地址" id="address">{$info.bank_address}</textarea>
+            		</div>
+            		
+            	</div>
+            </div>
+            <!--按钮-->
+            <div class="btn_wrap">
+            	<a onclick="submits()" class="btn">确定</a>
+
+            </div>
+		</div>
+		{include file="common/footer_js"}   
+
+		<script>
+			//input输入框失去焦点，页面视觉回弹
+			$(".put").blur(function(){
+			  	document.body.scrollTop = 0;
+				document.documentElement.scrollTop = 0;
+			});
+            function submits(){
+                var name = $("#name").val();
+                var account = $("#account").val();
+                var bank = $("#bank").val();
+                var address = $("#address").val();
+  
+                if(name==''){
+                    layer.msg('请输入账户真实姓名');
+                    layer.msg('请输入账户真实姓名');
+                    $("#name").focus();
+                    return false;
+                }
+                if(account==''){
+                    layer.msg('请输入银行卡号');
+                    $("#account").focus();
+                    return false;
+                }
+                if(bank==''){
+                    layer.msg('请输入银行名称');
+                    $("#account").focus();
+                    return false;
+                }
+                if(address==''){
+                    layer.msg('请输入开户行地址');
+                    $("#account").focus();
+                    return false;
+                }
+                $.ajax({
+                    type: "post", 
+                    url : "/index/recharge/sub_card",
+                    dataType:'json',
+                    data: "name="+name+"&account="+account+"&bank="+bank+"&address="+address,
+     
+                    success: function(json){
+
+                        if(json.flag==1){
+                            layer.msg(json.msg);
+                           
+                        }else{
+                            layer.msg(json.msg);
+                            
+                        }
+                    }
+                });
+
+            }
+
+		</script>
+       
+	</body>
+</html>

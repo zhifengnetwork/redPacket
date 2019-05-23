@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>选择提现方式</title>
+		<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/news/my/withdrawal_way.css"/>
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/back@2x.png"/> 
+                </p>
+				<span>选择提现方式</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<!--银行卡-->
+            	<div class="clip_wrap active">
+            		<div class="clip">
+            			<!---->
+            			<div class="bank_wrap">
+            				<div class="icon"></div>
+            				<div class="house">银行卡</div>
+            				<!--编辑按钮-->
+            				<a href="editcard.html" class="edit">编辑</a>
+            			</div>
+            			<!---->
+            			<div class="detail_wrap">
+            				<div class="arrive">提现到：</div>
+            				<div class="ive">
+            					<div class="name">
+            						<!--编辑后银行名称-->
+        							<span>中国工商银行</span>
+        							<!--编辑后银行卡姓名-->
+        							<span class="small">*小明</span>
+            					</div>
+            					<!--编辑后银行卡卡号-->
+            					<div class="card">
+            						<span>6221 ********88</span>
+            					</div>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            	
+            	<!--支付宝-->
+            	<div class="clip_wrap">
+            		<div class="clip">
+            			<!---->
+            			<div class="bank_wrap">
+            				<div class="ico"></div>
+            				<div class="house">支付宝</div>
+            				<!--编辑按钮-->
+            				<a href="pay.html" class="edit">编辑</a>
+            			</div>
+            			<!---->
+            			<div class="detail_wrap">
+            				<div class="arrive">提现到：</div>
+            				<div class="ive">
+            					<div class="name">
+            						<!--编辑后支付宝名称-->
+            						<span>*小明</span>
+            					</div>
+            					<!--编辑后支付宝账号-->
+            					<div class="card">
+            						<span>138****8000</span>
+            					</div>
+            				</div>
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <!--确认按钮-->
+            <div class="ack_wrap">
+            	<a href="withdrawal.html" class="ack">确定</a>
+            </div>
+        </div>    
+		
+		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
+		<script src="__STATIC__/chatWeb/js/public/public.js"></script>
+		<script>
+			$(function(){
+			    $(".clip_wrap").click(function() {
+			        $(this).siblings('.clip_wrap').removeClass('active');// 删除其他兄弟元素的样式
+			        $(this).addClass('active');// 添加当前元素的样式
+			
+			    });
+			});
+		</script>
+	</body>
+</html>

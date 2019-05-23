@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>提现</title>
+		<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/news/my/withdrawal.css"/>
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/back@2x.png"/> 
+                </p>
+				<span>提现</span>
+            </div>
+            <!--内容-->
+            <div class="content">
+            	<!--选择提现方式-->
+            	<div class="basic_wrap">
+        
+            		<div class="data">
+            			<!--提现方式名称-->
+            			<div class="way">选择提现方式
+            				<select class="way" name="method" id="method" value="" style="width:181px;height: 30px;">
+   								<option value="1" selected >支付宝</option>
+   								<option value="2">银行卡</option>
+							</select>
+            			</div>
+            						
+            		</div>
+        
+            	</div>
+            	
+            	<div class="item_wrap">
+            		<div class="cash">提现金额</div>
+            		<!--金额输入-->
+            		<div class="sum_wrap">
+            			<div class="sum_box">
+	            			<div class="dl"></div>
+	            			
+	            			<div class="inp_wrap">
+	            				<input class="inp" type="number" placeholder="请输入提现金额" id="money" />
+	            			</div>
+            			</div>
+            		</div>
+            		<!---->
+            		<div class="ance">
+            			<span class="beg">我的余额：</span>
+            			<span class="beg">{$info.account}元</span>
+            		</div>
+            		<!--提现按钮-->
+	            	<div class="all_btn">
+	            		<a onclick="submits()" >申请提现</a>
+	            	</div>
+	            	<!--时间-->
+	            	<div class="time">
+	            		<span>提现时间</span>
+	            		<span>00：00：00-23：59：60</span>
+	            	</div>
+            	</div>
+            	
+            </div>
+            
+		</div>
+		
+		{include file="common/footer_js"}  
+		<script>
+			//input输入框失去焦点，页面视觉回弹
+			$(".inp").blur(function(){
+			  	document.body.scrollTop = 0;
+				document.documentElement.scrollTop = 0;
+			});
+
+			function submits(){
+				var money=$("#money").val();
+				var method=$("#method").val();
+				if(money<100){
+			        layer.msg('提现金额不能小于100');
+			        $("#money").focus();
+			        return false;
+			    }
+			    if(method ==''){
+			        layer.msg('请选择提现方式');
+			        $("#method").focus();
+			        return false;
+			    }
+			    $.ajax({
+	                type: "post", 
+	                url : "/index/recharge/sub_tixian",
+	                dataType:'json',
+	                data: "method="+method+"&money="+money,
+	 
+	                success: function(json){
+
+	                    if(json.flag==1){
+	                        layer.msg(json.msg);
+	                       
+	                    }else{
+	                        layer.msg(json.msg);
+	                        
+	                    }
+	              	}
+              	});
+	
+
+
+			}
+
+
+		</script>
+	</body>
+</html>

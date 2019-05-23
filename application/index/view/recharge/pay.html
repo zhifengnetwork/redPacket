@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>编辑支付宝</title>
+		<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+		<link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/news/my/pay.css"/>
+	</head>
+	<body>
+		<div class="wrap_frame">
+			<!--头部-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                    <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/back@2x.png"/> 
+                </p>
+				<span>编辑支付宝</span>
+            </div>
+            <!--内容-->
+            <div class="content">	
+            	<div class="minor">
+            		<!--输入姓名-->
+            		<div class="bank_wrap">
+            			<div class="name">姓名</div>
+            			<div class="inp_wrap">
+            				<input class="inp" type="text" placeholder="请输入真实名字" value="{$info.name}" id="name" />
+            			</div>
+            		</div>
+            		<!--支付宝账号-->
+            		<div class="bank_wrap">
+            			<div class="name">支付宝账号</div>
+            			<div class="inp_wrap">
+            				<input class="inp put" type="text" placeholder="请输入支付宝号" value="{$info.account}" id="account" />
+            			</div>
+            		</div>
+            	</div>
+            </div>
+            <!--按钮-->
+            <div class="btn_wrap">
+            	<a onclick="submits()" class="btn">确定</a>
+            </div>
+		</div>
+		
+		{include file="common/footer_js"}   
+		<script>
+			//input输入框失去焦点，页面视觉回弹
+			$(".inp").blur(function(){
+			  	document.body.scrollTop = 0;
+				document.documentElement.scrollTop = 0;
+			});
+
+			function submits(){
+				var name=$("#name").val();
+				var account=$("#account").val();
+				if(name==''){
+			        layer.msg('请输入账户真实姓名');
+			        $("#name").focus();
+			        return false;
+			    }
+			    if(account==''){
+			        layer.msg('请输入支付宝号');
+			        $("#account").focus();
+			        return false;
+			    }
+			    $.ajax({
+	                type: "post", 
+	                url : "/index/recharge/edit_pay",
+	                dataType:'json',
+	                data: "name="+name+"&account="+account,
+	 
+	                success: function(json){
+
+	                    if(json.flag==1){
+	                        layer.msg(json.msg);
+	                       
+	                    }else{
+	                        layer.msg(json.msg);
+	                        
+	                    }
+	              	}
+              	});
+
+			}
+
+		</script>
+	</body>
+</html>
