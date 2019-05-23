@@ -57,7 +57,7 @@
                                 <td>{$vo.mobile}</td>
                                 <td>{$vo.amount}</td>
                                 <td><img src="../../{$vo.proof}"></td>
-                                <td>{$vo.time}</td>
+                                <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
                                 <td>待充值</td>
                                 <td><a onclick="recharge({$vo.mobile},{$vo.amount})">通过</a>/<a href="    ">驳回</a></td>    
                             </tr>

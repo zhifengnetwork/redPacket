@@ -56,6 +56,13 @@ return [
                         'url'   => 'users/receipt_code ',
                         'hide'  => 1,
                     ],
+                    [
+                        'id'    => 12004,
+                        'title' => '待提现',
+                        'sort'  => 1,
+                        'url'   => 'users/tx_list ',
+                        'hide'  => 1,
+                    ],
                 ],
             ],
 

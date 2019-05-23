@@ -263,9 +263,9 @@ class Users extends Common
 
         $where = "r.status = 3 ";
         $name = input('get.name');
-        $phone = input('get.phone');
+        $phone = input('get.mobile');
         if( $name != '' ){
-            $where .= "and u.nickname = {$name} ";    
+            $where .= "and u.nickname = '{$name}' ";    
         }
         if( $phone != '' ){
             $where .= "and u.mobile = {$phone} ";    
@@ -329,6 +329,34 @@ class Users extends Common
     
     }
 
+    //提现审核列表
+    public function tx_list(){
+        $where = "r.status = 3 ";
+        $name = input('get.name');
+        $phone = input('get.mobile');
+        if( $name != '' ){
+            $where .= "and u.nickname = '{$name}' ";    
+        }
+        if( $phone != '' ){
+            $where .= "and u.mobile = {$phone} ";    
+        }
+        // var_dump($where);exit;
+
+        $list = Db::table('tixian')->alias('r')
+                ->join('users u', 'u.id = r.uid', 'LEFT')
+                ->where($where)
+                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.ordersn,r.time,r.status')->paginate(10);
+        // var_dump($list);exit;           
+         // 获取分页显示
+        $page = $list->render();
+        // 模板变量赋值
+        $this->assign('list', $list);
+        $this->assign('page', $page);  
+
+        return $this->fetch();
+
+
+    }
 
 
      
