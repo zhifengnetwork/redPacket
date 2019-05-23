@@ -44,6 +44,7 @@
                                 <th width="100">充值金额</th>
                                 <th width="60">充值凭证</th>
                                 <th width="100">充值时间</th>
+                                <th width="100">充值方式</th>
                                 <th width="100">状态</th>
                                 <th width="100">操作</th>
                             </tr>
@@ -58,8 +59,16 @@
                                 <td>{$vo.amount}</td>
                                 <td><img src="../../{$vo.proof}"></td>
                                 <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
+                                <td>
+                                    {if condition="$vo.type eq 1"}
+                                        支付宝
+                                    {elseif condition="$vo.type eq 2"}
+                                         微信 
+                                    {/if}
+
+                                </td>
                                 <td>待充值</td>
-                                <td><a onclick="recharge({$vo.mobile},{$vo.amount})">通过</a>/<a href="    ">驳回</a></td>    
+                                <td><a onclick="recharge({$vo.id})">通过</a>/<a href="    ">驳回</a></td>    
                             </tr>
                             {/volist}
                         </tbody>
@@ -77,12 +86,12 @@
 
 
     }
-    function recharge(mobile,amount){
+    function recharge(id){
         // alert(amount);
         layer.open({
             title:'账户充值',
             type:2,
-            content:'/admin/users/recharge?phone='+mobile+'&money='+amount,
+            content:'/admin/users/recharge?id='+id,
             area:['850px','600px'],
         });
     }

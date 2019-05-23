@@ -57,7 +57,7 @@
                                 <td>{$vo.amount}</td>
                                 <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
                                 <td>待审核</td>
-                                <td><a onclick="recharge({$vo.mobile},{$vo.amount})">通过</a>/<a href="    ">驳回</a></td>    
+                                <td><a onclick="confirms({$vo.id})" >通过</a>/<a onclick="cancel({$vo.id})">驳回</a></td>    
                             </tr>
                             {/volist}
                         </tbody>
@@ -75,14 +75,59 @@
 
 
     }
-    function recharge(mobile,amount){
-        // alert(amount);
-        layer.open({
-            title:'账户充值',
-            type:2,
-            content:'/admin/users/recharge?phone='+mobile+'&money='+amount,
-            area:['850px','600px'],
-        });
+    function confirms(id){
+
+        layer.confirm('提现审核确认？',{icon:3},function(index){
+
+            //击确认后的业务流程
+
+            $.ajax({
+                type: "post", 
+                url : "/admin/users/tixian",
+                dataType:'json',
+                data: "id="+id,
+ 
+                success: function(json){
+
+                    if(json.flag==1){
+                        layer.msg(json.msg);
+                        location.reload();
+                    }else{
+                        layer.msg(json.msg);
+                        
+                    }
+                }
+            });
+
+        })
+
+    }
+
+    function cancel(id){
+        layer.confirm('提现审核确认？',{icon:3},function(index){
+
+            //击确认后的业务流程
+
+            $.ajax({
+                type: "post", 
+                url : "/admin/users/tixian",
+                dataType:'json',
+                data: "id="+id,
+ 
+                success: function(json){
+
+                    if(json.flag==1){
+                        layer.msg(json.msg);
+                        location.reload();
+                    }else{
+                        layer.msg(json.msg);
+                        
+                    }
+                }
+            });
+
+        })
+
     }
 
     function success(){

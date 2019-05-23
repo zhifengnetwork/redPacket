@@ -9,7 +9,7 @@
                 <form method="POST" class="form-horizontal" target="ajaxR">
                     <input type="hidden" name="id" value="{$info ? $info['id'] : 0}">
                     <div class="form-group"><label class="col-sm-3 control-label">会员手机号：</label>
-                    <div class="col-sm-5"><input type="text" id="mobile" name="mobile" class="form-control" value="{$phone}" readonly="readonly"></div>
+                    <div class="col-sm-5"><input type="text" id="mobile" name="mobile" class="form-control" value="{$info['mobile']}" readonly="readonly"></div>
                     </div>
 
                     <div class="form-group"><label class="col-sm-3 control-label">账户金额：</label>
@@ -17,7 +17,7 @@
                             <select id="type" style="height:35px;width:23%;display:inline-block;">
                                 <option value="0" checked>充值：</option>
                             </select>
-                            <input type="text" id="money" class="form-control" style="float:right;width:76%;" value="{$money}">
+                            <input type="text" id="money" class="form-control" style="float:right;width:76%;" value="{$info['amount']}">
                         </div>
                     </div>
                     <div class="form-group"><label class="col-sm-3 control-label">备注：</label>
@@ -28,8 +28,8 @@
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-6 col-sm-offset-2" style="padding-left:20%;">
-                            <button class="btn btn-primary" type="button" onclick="save();">保存</button>
-                            <button class="btn btn-white" type="button">取消</button>
+                            <button class="btn btn-primary" type="button" onclick="save({$info.id});">保存</button>
+                            <button class="btn btn-white" type="button" onclick="cancel();">取消</button>
                         </div>
                     </div>
                 </form>
@@ -39,7 +39,7 @@
     </div>
 </div>
 <script>
-    function save(){
+    function save(id){
         var mobile = $('#mobile').val();
         var type = $('#type').val();
         var money = $('#money').val();
@@ -56,20 +56,37 @@
         }
         if(!desc){
             layer.msg('请输入备注',{icon:5});
-            false;
+            return false;
         }
 
-        $.post('/admin/users/edit_account',{mobile:mobile,type:type,money:money,desc:desc},function(res){
 
-            if(res.status == 1){
-                layer.msg(res.msg,{icon:6});
-                setTimeout(function(){
-                    parent.openClose();
-                },1500);
-            }else{
-                layer.msg(res.msg,{icon:5});
+        $.ajax({
+            type: "post", 
+            url : "/admin/users/sub_recharge",
+            dataType:'json',
+            data: "desc="+desc+"&id="+id,
+
+            success: function(json){
+
+                if(json.flag==1){
+                    layer.msg(json.msg);
+                    window.history.back(-1); 
+                   
+                }else{
+                    layer.msg(json.msg);
+                    
+                }
             }
         });
+
+
+
+
+
+
+
+
+
     }
 
 
@@ -77,6 +94,13 @@
     function error(msg){
         layer.msg(msg,{icon:5});
     }
+
+
+    function cancel(){
+
+
+    }
+
 
     function success(){
         layer.msg('保存成功！正在跳转...',{icon:6});

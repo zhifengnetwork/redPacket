@@ -23,7 +23,9 @@ class Recharge extends Base
      */
     public function index(){
 
-        
+
+        $res = Db::query('select id,name,img_url,code from receipt_code');
+        $this->assign('info', $res);
         return $this->fetch('recharge');
     }
 
@@ -81,8 +83,8 @@ class Recharge extends Base
 
     //提现申请提交
     public function sub_tixian(){
-        $flag=0;
-        $msg='';
+        $flag = 0;
+        $msg = '';
         $userid = session('user.id');
         $money = input('post.money');
         $method = input('post.method');

@@ -7,7 +7,7 @@ namespace app\admin\controller;
 
 use think\Db;
 use think\Session;
-
+use think\Request;
 class Users extends Common
 {
     # 会员列表
@@ -284,14 +284,67 @@ class Users extends Common
         return $this->fetch('ck_recharge');
     } 
 
-    //充值审核
+    //充值审核页面
     public function recharge(){
-        $phone = trim(input('get.phone'));
-        $money = trim(input('get.money'));
-        $this->assign('phone', $phone);
-        $this->assign('money', $money);
+        $id = trim(input('get.id'));
+        $info = Db::query("select u.mobile,r.amount,r.uid,r.id from users as u left join recharge as r on u.id = r.uid where r.id = $id");
+        $this->assign('info', $info[0]);
         return $this->fetch();
     }
+
+    //充值审核
+    public function sub_recharge(){
+
+        $msg = '';
+        $flag = 0;
+        $id = trim(input('post.id'));
+        $desc = trim(input('post.desc'));
+        $operate_name = session('admin_user_auth.username');
+
+        if(Request::instance()->isPost()){
+            $info = Db::table('recharge')->where('id',$id)->find();
+           // var_dump($info);exit;
+           $before_money =  Db::name('users')->where('id',$info['uid'])->value('account');
+            // 启动事务
+            Db::startTrans();
+            try{
+               
+                //更改充值表中交易状态
+                Db::table('recharge')->where('id',$id)->update(['status' => 1,'money' => $info['amount']]);
+
+                //账户金额变更记录表中添加记录
+                $time = time();
+                $data = ['admin' => $operate_name ,'addtime' => $time,'user_id' => $info['uid'],'account' => $before_money,'money' => $info['amount'],'newaccount' => $before_money + $info['amount'],'action' => 0,'desc' => $desc];
+                db('account_log')->insert($data);
+
+                //更改用户表中余额
+                Db::table('users')->where('id',$info['uid'])->setInc('account',$info['amount']);
+                    // 提交事务
+                Db::commit();
+                $flag = 1;
+                $msg = '操作成功';
+
+            } catch (\Exception $e) {
+
+                // 回滚事务
+                Db::rollback();
+                $msg = '操作失败！';
+
+            }
+
+        }else{
+
+             $msg = '非法请求';
+
+        }
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+    }
+
+
+
 
     //收款码管理
     public function receipt_code(){
@@ -358,6 +411,93 @@ class Users extends Common
 
     }
 
+    //提现审核
+    public function tixian(){
+
+        $msg = '';
+        $flag = 0;
+        $id = input('post.id');
+        $operate_name = session('admin_user_auth.username');
+
+        if(Request::instance()->isPost()){
+           $info = Db::table('tixian')->where('id',$id)->find();
+           // var_dump($info);exit;
+           $before_money =  Db::name('users')->where('id',$info['uid'])->value('account');
+            // echo DB::table('users')->getlastsql();exit;
+            if($before_money < $info['amount']){
+                $msg = '提现金额大于余额';
+
+            }else{
+                // 启动事务
+                Db::startTrans();
+                try{
+                   
+                    //更改提现记录表中交易状态
+                    Db::table('tixian')->where('id',$id)->update(['status' => 1]);
+
+                    //账户金额变更记录表中添加记录
+                    $time = time();
+                    $data = ['admin' => $operate_name ,'addtime' => $time,'user_id' => $info['uid'],'account' => $before_money,'money' => $info['amount'],'newaccount' => $before_money -$info['amount'],'action' => 1,'desc' => '后台提现审核通过'];
+                    db('account_log')->insert($data);
+
+                    //更改用户表中余额
+                    Db::table('users')->where('id',$info['uid'])->setDec('account',$info['amount']);
+                        // 提交事务
+                    Db::commit();
+                    $flag = 1;
+                    $msg = '操作成功';
+    
+                } catch (\Exception $e) {
+
+                    // 回滚事务
+                    Db::rollback();
+                    $msg = '操作失败！';
+
+                }
+
+            } 
+
+
+        }else{
+
+            $msg = '非法请求';
+        }
+
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+    }
+
+
+    //提现审核不通过
+    public function cancel_tx(){
+
+        $msg = '';
+        $flag = 0;
+        $id = input('post.id');
+        if(Request::instance()->isPost()){
+            //更改提现记录表中交易状态
+            $res = Db::table('tixian')->where('id',$id)->update(['status' => 2]);
+            if($res){
+
+                $flag = 1;
+                $msg = '操作成功';
+            }else{
+
+                $msg = '操作失败！';
+
+            }
+
+        }else{
+
+            $msg = '非法请求';
+
+        }   
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+    }
 
      
 
