@@ -228,6 +228,12 @@ class Message extends Base
             $this->redirect('/index/message/messageList');
             exit;
         }
+        // 获取配置信息到页面
+        $map['name'] = array('in', 'thunder_7_one,thunder_9_one,thunder_9_two,thunder_9_three,thunder_9_four,thunder_9_five');
+        $rule_set = Db::name('setting')->field('name,value')->where($map)->select();
+        $rule_set = arr2name($rule_set);
+        // var_dump($rule_set);die;
+        $this->assign('rule_set', $rule_set);
         $this->assign('user', $user);
         $this->assign('data', $group_one);
         $this->assign('fromid', $fromid);

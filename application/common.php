@@ -2,6 +2,41 @@
 use think\Db;
 use think\Request;
 
+
+// 递归获取用户所有上线(不包括自己)
+function getUpMemberIds($uid){
+	global $g_up_mids,$i;
+	if($uid){
+        $up_i = 0;
+        if($up_i!=30){
+            $member = Db::name('users')->field('id,pid')->where(['id'=>$uid])->find();
+            if($member&&$member['pid']!=$uid){
+                if($member['pid']){
+                    $g_up_mids[]=$member['pid'];
+                    getUpMemberIds($member['pid']);
+                    $up_i++;
+                }
+            }
+        }
+    }
+	return $g_up_mids;
+}
+
+//数组转换成[配置项名称]获取数据
+function arr2name($data,$key=''){
+    $return_data=array();
+    if(!$data||!is_array($data)){
+        return $return_data;
+    }
+    if(!$key){
+        $key='name';
+    }
+    foreach($data as $dv){
+        $return_data[$dv[$key]]=$dv;
+    }
+    return $return_data;
+}
+
 /**
  * @param $total  [要发的红包总额]
  * @param int $num  [红包个数]

@@ -356,7 +356,7 @@
         
                             </div>
                             <!--雷点说明-->
-                            <div class="state">多雷请选择多个数字，游戏倍数0</div>
+                            <div class="state">多雷请选择多个数字，游戏倍数<span class="rule_set">0</span></div>
                             <!--发红包按钮-->
                             <div class="give_btn" data-key="{$key}">
                                 <a class="btn">发红包</a>
@@ -372,14 +372,14 @@
                                         </p>
                                         
                                     </div>
-                                    <p class="red_envelope_money">￥<span>50.00</span></p>
+                                    <p class="red_envelope_money">￥<span class="red_money"></span></p>
                                     <div class="ds">
                                         <div class="ds_ds">
                                             <div class="dsds_item">
                                                 <p class="dsds_item_icon_box">
                                                     <img src="__STATIC__/chatWeb/img/news/qian.png" class="tixian_pic" />
                                                 </p>
-                                                <span class="qunliao_item_text">账号余额(608元)</span>
+                                                <span class="qunliao_item_text">账号余额(<span class="now_account">{$user['account']}</span>元)</span>
                                             </div>
                                         </div>
                                     </div>
@@ -425,7 +425,7 @@
                             </div>
         
                             <!--红包说明-->
-                            <div class="state">未领取的红包，将3分钟后退款</div>
+                            <div class="state">未领取的红包，将5分钟后退款</div>
                         </div>
                     </div>
                 </div>
@@ -452,6 +452,14 @@
         var send_key = "{$send_key}";
         // 10的倍数
         var multiple = 10;
+
+        // 设置赔率
+        var ponit_7_one = {$rule_set.thunder_7_one.value};
+        var ponit_9_one = {$rule_set.thunder_9_one.value};
+        var ponit_9_two = {$rule_set.thunder_9_two.value};
+        var ponit_9_three = {$rule_set.thunder_9_three.value};
+        var ponit_9_four = {$rule_set.thunder_9_four.value};
+        var ponit_9_five = {$rule_set.thunder_9_five.value};
 
         // 连接服务端
         function connect() {
@@ -579,22 +587,84 @@
             /*雷点-选择*/
             let num = 1;
             $(".ray_wrap ul li").click(function() {
-                //$(this).siblings('.ray_wrap ul li').removeClass('active'); // 删除其他兄弟元素的样式
-                //$(this).addClass('active'); // 添加当前元素的样式
+                var red_num = $('.num').val();
+                if(red_num == 7){
+                    var set_point = 1;
+                    $('.rule_set').html(ponit_7_one);
+                }else{
+                    var set_point = 5;
+                    $('.rule_set').html(ponit_9_one);
+                }
                 $(".ray_wrap ul li").each(function(){
                     if($(this).hasClass('active')){
                         num++;
                     }
                 })
+                let sum = 0;
                 // 7为最大选择数量
-                if(num <= 7){
-                    if(!$(this).hasClass('active')){
-                        $(this).addClass('active');
+                if(set_point==1){
+                    $(".ray_wrap ul li").each(function(){
+                        if($(this).hasClass('active')){
+                            sum++;
+                        }
+                    })
+                    if(sum <= set_point&&sum != 0){
+                        $(this).siblings('.ray_wrap ul li').removeClass('active');
+                        if(!$(this).hasClass('active')){
+                            $(this).addClass('active');
+                            $('.rule_set').html(ponit_7_one);
+                        }else{
+                            $('.rule_set').html(0);
+                            $(this).removeClass('active');
+                        }
+                    }else{
+                        $('.rule_set').html(ponit_7_one);
+                        $(this).siblings('.ray_wrap ul li').removeClass('active'); // 删除其他兄弟元素的样式
+                        $(this).addClass('active'); // 添加当前元素的样式
+                    }
+                }
+                if(set_point==5){
+                    if(num <= set_point){
+                        if(!$(this).hasClass('active')){
+                            $(this).addClass('active');
+                        }else{
+                            $(this).removeClass('active');
+                        }
+                        $(".ray_wrap ul li").each(function(){
+                            if($(this).hasClass('active')){
+                                sum++;
+                            }
+                        })
+                        if(sum == 0){
+                            $('.rule_set').html('0'); 
+                        }else if(sum == 2){
+                            $('.rule_set').html(ponit_9_two); 
+                        }else if(sum == 3){
+                            $('.rule_set').html(ponit_9_three); 
+                        }else if(sum == 4){
+                            $('.rule_set').html(ponit_9_four); 
+                        }else if(sum >= 5){
+                            $('.rule_set').html(ponit_9_five); 
+                        }
                     }else{
                         $(this).removeClass('active');
+                        $(".ray_wrap ul li").each(function(){
+                            if($(this).hasClass('active')){
+                                sum++;
+                            }
+                        })
+                        if(sum == 0){
+                            $('.rule_set').html('0'); 
+                        }else if(sum == 2){
+                            $('.rule_set').html(ponit_9_two); 
+                        }else if(sum == 3){
+                            $('.rule_set').html(ponit_9_three); 
+                        }else if(sum == 4){
+                            $('.rule_set').html(ponit_9_four); 
+                        }else if(sum >= 5){
+                            $('.rule_set').html(ponit_9_five); 
+                        }
                     }
-                }else{
-                    $(this).removeClass('active');
                 }
                 num = 1;
             });
@@ -624,13 +694,14 @@
                     if(!key){
                         layer.msg('缺少参数:key');return;
                     }
+                    // 填充发红包金额
+                    $('.red_money').html(red_money);
                     let arr=[];
                     $(".ray_wrap ul li").each(function(){
                         if($(this).hasClass('active')){
                             arr.push($(this).html());
                         }
                     })
-                    // console.log('选中的点数'+arr);
                     ray_point = arr;
                     $('.bottom_alert_wrap').show();
                     /*底部弹窗(出现)*/
@@ -726,8 +797,10 @@
                             $('.red_money').val('');
                             $('body').css('padding-bottom','1.4rem')
                             $('.group_content').show();
-                            ray_point = '';
-
+                            if(ray_point){
+                                ray_point = ray_point.join(',');//数组转成为字符串
+                            }
+                           
                             $('.bottom_alert_wrap').hide();
                             pass_val='';
                             $('.trem_box').removeClass('show_box');
@@ -774,6 +847,11 @@
                             // var message = '{"red_id":"'+red_id+'", "red_num":"'+red_num+'","type":"send_group_red","fromid":"'+fromid+'","room_id":"'+room_id+'","from_head":"'+from_head+'","from_name":"'+from_name+'","send_key":"'+send_key+'"}';
                             ws.send(message); // 向服务器发送信息
 
+                            // 更新余额到页面
+                            $.post("/index/my/getAccount",{uid:fromid},function(msg){
+                                $('.now_account').html(msg.data.account);
+                            });
+
                         }else{
                             layer.msg(msg.msg);
                             $('.mask_text').show();
@@ -808,7 +886,7 @@
                     'top': '',
                     'left': '',
                 });
-                console.log(66666,thisScroll_num);
+                // console.log(66666,thisScroll_num);
                 /*恢复当前用户滚动的位置！*/
                 $(document).scrollTop(thisScroll_num);
                 
