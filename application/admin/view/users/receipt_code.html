@@ -24,49 +24,22 @@
                 </div>
 
                 <div class="ibox-content">
-                   <!--  <table>
-                        <form method="post" enctype="multipart/form-data" action="change_code" >
-                            {volist name="list" id="vo"}
-                            <tr>
-                                <td>{$vo.name}：  </td>
-                                <td><img src="/uploads/{$vo.img_url}"/></td>
-                                <td><input type="file" name="{$vo.code}"></td>
-                            </tr>
-                            {/volist}
-                            <tr>
-                                <td></td><td><input type="submit" value="修改"></td><td></td>
-                            </tr>
-                        </form>
-                    </table> -->
+
                     <form method="post" enctype="multipart/form-data" action="change_code" >
                         {volist name="list" id="vo"}
                             <div style="">
-                            <p>
-                                {$vo.name}：<input type="file" id="xdaTanFileImg" onchange="xmTanUploadImg(this)" accept="image/*"/  name="{$vo.code}">
+                                <p>
+                                    {$vo.name}：<input type="file" id="xdaTanFileImg" onchange="xmTanUploadImg(this)" accept="image/*"/  name="{$vo.code}">
 
-                            </p>
-                            <img id="xmTanImg"/ src="/uploads/{$vo.img_url}" width="200px">
-                            <div id="xmTanDiv"></div>
-                        {/volist}
-                            <input type="submit" value="修改">
+                                </p>
+                                <img id="xmTanImg"/ src="/uploads/{$vo.img_url}" width="200px">
+                                <div id="xmTanDiv"></div>
                             </div>
+                        {/volist}
+
+                        <input type="submit" value="修改">
+                            
                     </form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use think\Request;
 use think\Db;
+use think\Session;
 // 充值提现相关
 class Recharge extends Base
 {
@@ -261,5 +262,148 @@ class Recharge extends Base
 
 
     }
+
+    //支付密码
+    public function paypwd(){
+        $userid =  session('user.id');
+        $info = Db::table('users')->where('id',$userid)->field('pay_pwd,mobile')->find();
+        $flag = 0;
+        if($info['pay_pwd']==null){
+            $flag = 1; //未设置支付密码
+
+        }
+
+        $mobile = $info['mobile'];
+        $this->assign('flag', $flag);
+        $this->assign('mobile', $mobile);
+        return $this->fetch('payment');
+
+    }
+
+
+    //设置支付密码
+    public function set_paypwd(){
+
+        $flag = 0;
+        $msg = '';
+        $userid =  session('user.id');
+        if (Request::instance()->isPost()){
+            $pw1 = trim(input('post.pw1'));
+            $pw2 = trim(input('post.pw2'));
+            if($pw1 != $pw2 ){
+                $msg = '两次密码输入不一致';
+            }else{
+
+                //更新数据
+                $salt = Db::table('users')->where('id',$userid)->field('salt')->find();
+
+                $pay_pwd = minishop_md5($pw1,$salt['salt']);
+                $res = Db::table('users')->where('id',$userid)->update(['pay_pwd' => $pay_pwd]);
+                if($res){
+
+                    $flag = 1;
+                    $msg = '支付密码设置成功';   
+                }else{
+                    $msg = '支付密码设置失败';
+                }
+
+            }
+
+        }else{
+
+            $msg = '非法请求';
+
+
+        }
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+    }
+
+    //重置支付密码、
+    public function reset_paypwd(){
+
+        $flag = 0;
+        $msg = '';
+        $userid =  session('user.id');
+        if (Request::instance()->isPost()){
+            $oldpwd = trim(input('post.oldpwd'));
+            $newpwd = trim(input('post.newpwd'));
+            if($newpwd =='' ){
+                $msg = '请输入新密码';
+            }elseif($oldpwd ==''){
+
+                $msg = '请输入旧密码';
+
+            }else{
+
+                //更新数据
+                $info = Db::table('users')->where('id',$userid)->field('salt,pay_pwd')->find();
+                $old_pay_pwd = minishop_md5($oldpwd,$info['salt']);
+
+                $new_pay_pwd =  minishop_md5($newpwd,$info['salt']);
+
+                if($old_pay_pwd != $info['pay_pwd']){
+                    $msg ='原密码输入错误';
+
+                }else{
+                    $res = Db::table('users')->where('id',$userid)->update(['pay_pwd' => $new_pay_pwd]);
+                    if($res){
+
+                        $flag = 1;
+                        $msg = '支付密码重置成功';   
+                    }else{
+                        $msg = '支付密码重置失败';
+                    }
+
+                }
+
+                
+
+            }
+
+        }else{
+
+            $msg = '非法请求';
+
+
+        }
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+
+
+    }
+
+        // 获取短信验证码
+    public function smscode(){
+       
+        $flag = 0;
+        $msg = '';
+        if (Request::instance()->isPost()){
+            $mobile = input('post.mobile');
+            // $code = rand('100000','999999');
+            $res = Db::query("select mobile from users where mobile = $mobile");
+            if(!$res){
+                $msg = '用户不存在';   
+            }else{
+                $code = '888888';//短信接口调用
+                Session::set('smscode',$code);
+                $flag = 1;
+                $msg = '发送成功';   
+
+            }   
+        }else{
+
+            $msg = '非法请求';
+
+
+        }
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+
+    }
+
 
 }
