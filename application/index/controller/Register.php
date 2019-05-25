@@ -11,7 +11,7 @@ class Register extends Base
     public function register()
     {
     	// 接收invite_code到注册页面
-    	$invite_code = input('invite_code/s');
+    	$invite_code = input('get.invite_code');
         $this->assign('invite_code',$invite_code);
         return $this->fetch();
     }

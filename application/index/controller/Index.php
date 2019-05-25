@@ -31,7 +31,7 @@ class Index extends Base
 
     // 获取短信验证码
     public function smscode(){
-       
+
         $flag = 0;
         $msg = '';
         if (Request::instance()->isPost()){
@@ -70,7 +70,8 @@ class Index extends Base
             $code = trim(input('post.code'));
             $pw1 = trim(input('post.pw1'));
             $pw2 = trim(input('post.pw2'));
-            $res = Db::query("select mobile from users where mobile = $mobile");
+            $res = Db::query("select mobile,salt from users where mobile = $mobile");
+
             if( $pw1!=$pw2 ){
                 $msg = '两次密码输入不一致';
 
@@ -91,7 +92,7 @@ class Index extends Base
                 }else{
 
                     // 密码处理
-                    $salt = create_salt();
+                    $salt = $res[0]['salt'];
                     $password = minishop_md5($pw1,$salt);
                     //更新数据
                     $res = Db::table('users')->where('mobile',$mobile)->update(['password' => $password,'salt' => $salt]);
@@ -115,6 +116,7 @@ class Index extends Base
         echo $string;
 
     }
+
 
 
 

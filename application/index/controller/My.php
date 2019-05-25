@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use think\Db;
+use think\Session;
 // 我的相关
 class My extends Base
 {
@@ -94,6 +95,12 @@ class My extends Base
      */
     public function myQrCode()
     {
+        $userid = session('user.id');
+        $res = Db::query("select invite_code from users where id = $userid");
+        $url = 'http://'.$_SERVER['HTTP_HOST'].'/index/register/register?invite_code='.$res[0]['invite_code'];
+        $img =  scerweima($url,$userid);
+        $this->assign('img', $img);
+        
         return $this->fetch('myQrCode');
     }
 
@@ -114,6 +121,7 @@ class My extends Base
     {
         return $this->fetch('myTeam');
     }
+
 
 
 }

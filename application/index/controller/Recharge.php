@@ -375,6 +375,68 @@ class Recharge extends Base
 
     }
 
+    //找回支付密码
+    public function find_paypwd(){
+        $flag = 0;
+        $msg = '';
+        $userid =  session('user.id');
+        if (Request::instance()->isPost()){
+            $pass1 = trim(input('post.pass1'));
+            $pass2 = trim(input('post.pass2'));
+            $code = trim(input('post.code'));
+            if($pass1 =='' ){
+                $msg = '请输入新密码';
+            }elseif($pass2 ==''){
+
+                $msg = '请输入确认密码';
+
+            }elseif($pass2!=$pass1){
+                $msg = '两次密码输入不一致';    
+
+            
+            }elseif($code==''){
+               $msg = '请输入验证码';     
+
+            }elseif($code!=session('smscode')){
+
+                $msg = '短信验证码错误';
+
+
+            }else{
+
+
+
+                //更新数据
+                $info = Db::table('users')->where('id',$userid)->field('salt,pay_pwd')->find();
+                
+                $new_pay_pwd = minishop_md5($pass1,$info['salt']);
+                $res = Db::table('users')->where('id',$userid)->update(['pay_pwd' => $new_pay_pwd]);
+                if($res){
+
+                    $flag = 1;
+                    $msg = '支付密码找回成功';   
+                }else{
+                    $msg = '支付密码找回失败';
+                }
+
+    
+
+            }
+
+        }else{
+
+            $msg = '非法请求';
+
+
+        }
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+   
+
+    }    
+
+
+
         // 获取短信验证码
     public function smscode(){
        

@@ -30,7 +30,7 @@
             			</div>
             			<!--输入手机号-->
             			<div class="inp">
-            				<input class="text name mobile" type="text" placeholder="手机号" autocomplete="off"/>
+            				<input class="text name mobile" type="text" placeholder="手机号" autocomplete="off" onkeyup="this.value=this.value.replace(/\D/g,'')"  maxlength="11"/>
             			</div>
             		</div>
             		<!--请输入短信验证码-->
@@ -125,7 +125,7 @@
                         function(msg){
                         if(msg.code==1){
                               layer.msg(msg.msg,function(){
-                                    window.location.reload();
+                                    self.location="{:url('/index/index')}"
                               });
                         }else{
                               layer.msg(msg.msg);
