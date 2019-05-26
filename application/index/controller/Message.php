@@ -235,7 +235,11 @@ class Message extends Base
         $map['name'] = array('in', 'thunder_7_one,thunder_9_one,thunder_9_two,thunder_9_three,thunder_9_four,thunder_9_five');
         $rule_set = Db::name('setting')->field('name,value')->where($map)->select();
         $rule_set = arr2name($rule_set);
-        // var_dump($rule_set);die;
+        
+        // 获取群主信息到页面
+        $group_owner = Db::name('users')->field('id,nickname,type')->where(['type'=>200])->find();
+        $group_owner_chat_url = '/index/message/onetoonedialog?fromid='.$fromid.'&toid='.$group_owner['id'];
+        $this->assign('group_owner_chat_url', $group_owner_chat_url);
         $this->assign('rule_set', $rule_set);
         $this->assign('user', $user);
         $this->assign('data', $group_one);
@@ -245,7 +249,7 @@ class Message extends Base
         return $this->fetch('groupChat');
     }
 
-     /**
+    /**
      *文本消息的数据持久化
      */
     public function save_message(){
