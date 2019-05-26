@@ -10,6 +10,7 @@ class Recharge extends Base
     private $key;
     public function _initialize()
     {   
+        parent::_initialize();
         if (!is_user_login()) {
             //未登陆跳转到登陆
             $this->redirect('/index/index');

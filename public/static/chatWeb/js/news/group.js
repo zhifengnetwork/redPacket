@@ -49,6 +49,10 @@ $(function(){
         $('.group_content').show();
         $('.red_details').hide();
         $('body').css('padding-bottom','1.4rem')
+        $(".ray_wrap ul li").removeClass('active');
+        $('.red_money').val('');
+        $('.rule_set').html(0);
+
     })
 
     //改变发送按钮样式

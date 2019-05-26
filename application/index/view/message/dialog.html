@@ -622,7 +622,8 @@
     // 请求api数据入库
     function save_message(text,type,fromid,toid){
         $.post(
-            API_URL+"save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
+            // API_URL+"save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
+            "/index/message/save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
                 // 返回无需操作
                 console.log(data);
             },'json'

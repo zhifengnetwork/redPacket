@@ -17,50 +17,46 @@ class Chat extends Controller{
     /**
      *文本消息的数据持久化
      */
-    public function save_message(){
+    // public function save_message(){
 
-        if(!Request::instance()->isAjax()){
-            return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
-        }
+    //     if(!Request::instance()->isAjax()){
+    //         return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
+    //     }
+    //     $message = input('post.');
+    //     // 处理客户端发来的消息 data(文本类型消息)
+    //     $text   = nl2br(htmlspecialchars($message['data']));
+    //     // $text = preg_replace('/($s*$)|(^s*^)/m', '',$text);  
 
+    //     $fromid = intval($message['fromid']);
+    //     $toid   = intval($message['toid']);
+    //     $send_type = $message['type']=='say'?1:2;
+    //     if($message['type']=='say'){
+    //         $send_type = 1;
+    //     }else if($message['type']=='say_img'){
+    //         $send_type = 2;
+    //     }else if($message['type']=='transfer'){
+    //         $send_type = 3;
+    //     }else{
+    //         $send_type = 1; // 否则1文本
+    //     }
 
-
-        $message = input('post.');
-        // 处理客户端发来的消息 data(文本类型消息)
-        $text   = nl2br(htmlspecialchars($message['data']));
-        // $text = preg_replace('/($s*$)|(^s*^)/m', '',$text);  
-
-        $fromid = intval($message['fromid']);
-        $toid   = intval($message['toid']);
-        $send_type = $message['type']=='say'?1:2;
-        if($message['type']=='say'){
-            $send_type = 1;
-        }else if($message['type']=='say_img'){
-            $send_type = 2;
-        }else if($message['type']=='transfer'){
-            $send_type = 3;
-        }else{
-            $send_type = 1; // 否则1文本
-        }
-
-        // 判断当前session是否和发送者的uid一致
-        if($fromid == session('user.id')){
-            $datas['fromid'] = $fromid;
-            $datas['from_name'] = $this->getName($fromid);
-            $datas['toid'] = $toid;
-            $datas['to_name'] = $this->getName($toid);
-            $datas['content'] = $text;
-            $datas['time'] = time();
-            // $datas['is_read'] = $message['is_read'];
-            $datas['type'] = $send_type;
-            $res = Db::name("chat_info")->insert($datas);
-            if(!$res){
-                return json(['code'=>0, 'msg'=>'failed', 'data'=>'']);
-            }
-        }
-        return json(['code'=>1, 'msg'=>'save ok', 'data'=>'']);
-        
-    }
+    //     // 判断当前session是否和发送者的uid一致
+    //     if($fromid == session('user.id')){
+    //         $datas['fromid'] = $fromid;
+    //         $datas['from_name'] = $this->getName($fromid);
+    //         $datas['toid'] = $toid;
+    //         $datas['to_name'] = $this->getName($toid);
+    //         $datas['content'] = $text;
+    //         $datas['time'] = time();
+    //         // $datas['is_read'] = $message['is_read'];
+    //         $datas['type'] = $send_type;
+    //         $res = Db::name("chat_info")->insert($datas);
+    //         if(!$res){
+    //             return json(['code'=>0, 'msg'=>'failed', 'data'=>'']);
+    //         }
+    //     }
+    //     return json(['code'=>1, 'msg'=>'save ok', 'data'=>'']); 
+    // }
 
     /**
      * 入库时根据用户id返回用户昵称

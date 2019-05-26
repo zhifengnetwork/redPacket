@@ -17,7 +17,16 @@ class Base extends Controller
      */
     public function _initialize()
     {
-    	
+    	// 一个账号一处登录
+	    // 获取数据库中存的登录值
+	    $uid = session('user.uid');
+	    $m_login = Db::name('users')->field('id,login_token')->where(['id' => $uid])->find();
+	    // 和session中的值对比，不一样则退出上一次登录
+	    if($_SESSION['login_token'] != $m_login['login_token']){
+	        session('user',null);
+        	$this->redirect('/index/index');
+	    }
+
     }
 
 }

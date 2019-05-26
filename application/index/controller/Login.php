@@ -1,9 +1,12 @@
 <?php
 namespace app\index\controller;
+use think\Controller;
 use think\Db;
+use think\Request;
 use think\Session;
+use think\View;
 
-class Login extends Base
+class Login extends Controller
 {
 
     /**
@@ -50,6 +53,15 @@ class Login extends Base
         unset($is_user['password']);
         unset($is_user['salt']);
         $is_user['uid'] = $is_user['id'];
+
+        // 一个账号一处登录begin
+        //生成随机串
+        $login_token['login_token'] =md5(time().$is_user['id']);
+        //存到数据库 
+        $in_token = Db::name('users')->where(['id'=>$is_user['id']])->update($login_token);
+        //存到session
+        $_SESSION['login_token'] = $login_token['login_token'];
+        // end
         // 生成key到session 好友转账时使用验证
         $is_user['key'] = md5(time().mt_rand(0,1000).'redpak');
         session('user',$is_user);

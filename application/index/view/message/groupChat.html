@@ -28,14 +28,14 @@
                 <img class="lb_headWrap_remove_img" src="__STATIC__/chatWeb/img/news/group.png">
             </p>
         </div>
-        <div class="group_notice">
+     <!--    <div class="group_notice">
             <div class="group_notice_imgwrap">
                 <img class="group_notice_img" src="__STATIC__/chatWeb/img/news/notice.png" alt="">
             </div>
             <div class="group_notice_text">
                 公告维护中
             </div>
-        </div>
+        </div> -->
         <!-- 群聊内容 -->
         <div class="group_content">
             <div class="group_content_time">
@@ -90,11 +90,11 @@
                         <span class="group_menu_send">发送</span>
                     </div>
                     <div class="group_menu_submenu">
-                        <p class="group_menu_submenu_item" onclick="window.location.href='my/my_wallet/recharge.html'">
+                        <p class="group_menu_submenu_item" onclick="window.location.href='/index/recharge/index.html'">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/recharge.png" alt="">
                             <span>充值</span>
                         </p>
-                        <p class="group_menu_submenu_item" onclick="window.location.href='my/my_wallet/bill.html'">
+                        <p class="group_menu_submenu_item" onclick="window.location.href='/index/my/myBill/bill.html'">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/bill.png" alt="">
                             <span>账单</span>
                         </p>
@@ -110,7 +110,7 @@
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/smile.png" alt="">
                             <span>表情</span>
                         </p>
-                        <p class="group_menu_submenu_item" onclick="window.location.href='my/withdrawal/withdrawal.html'">
+                        <p class="group_menu_submenu_item" onclick="window.location.href='/index/recharge/tixian.html'">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/withdraw.png" alt="">
                             <span>提现</span>
                         </p>
@@ -508,7 +508,7 @@
                     return;
 
                 case "get_group_red":
-                    console.log('接收红包!!'); 
+                    console.log('接收红包222!!'); 
                     // 接收对方红包推送
                     if(room_id == message.room_id && fromid != message.fromid) {
                         let str = '';
@@ -767,7 +767,7 @@
                     /*页面-模拟密码-代码*/
                     $('.password_box_num .trem_box').eq(pass_val.length-1).addClass("show_box");
                 }
-                console.log(pass_val);
+                // console.log(pass_val);
                 /*密码长度为6时，ajax*/
                 if(pass_val.length == 6){
                     remove_class($(this));
@@ -775,9 +775,8 @@
                     // console.log('ajax-最终密码:',pass_val);
                     var red_num = $('.num').val();
                     var red_money = $('.red_money').val();
-                    console.log(red_money);
                     var key = $('.give_btn').attr('data-key');
-                    console.log(ray_point);
+                    // console.log(ray_point);
                     // 验证密码提交数据
                     $.post("/index/groupchat/groupSendRed",
                         {"room_id":room_id, "red_num":red_num, "red_money":red_money, "ray_point":ray_point, "pwd":pass_val, "key":key},

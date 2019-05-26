@@ -2,6 +2,8 @@
 namespace app\index\controller;
 use think\Db;
 use think\Config;
+use think\Request;
+
 // 消息与我的相关
 class Message extends Base
 {
@@ -9,6 +11,7 @@ class Message extends Base
     private $send_key; // 推送信息时带上
     public function _initialize()
     {   
+        parent::_initialize();
         if (!is_user_login()) {
             //未登陆跳转到登陆
             $this->redirect('/index/index');
@@ -240,6 +243,59 @@ class Message extends Base
         $this->assign('key', $this->key);
         $this->assign('send_key',$this->send_key);
         return $this->fetch('groupChat');
+    }
+
+     /**
+     *文本消息的数据持久化
+     */
+    public function save_message(){
+        
+        if(!Request::instance()->isAjax()){
+            return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
+        }
+        $message = input('post.');
+        // 处理客户端发来的消息 data(文本类型消息)
+        $text   = nl2br(htmlspecialchars($message['data']));
+        // $text = preg_replace('/($s*$)|(^s*^)/m', '',$text);  
+
+        $fromid = intval($message['fromid']);
+        $toid   = intval($message['toid']);
+        $send_type = $message['type']=='say'?1:2;
+        if($message['type']=='say'){
+            $send_type = 1;
+        }else if($message['type']=='say_img'){
+            $send_type = 2;
+        }else if($message['type']=='transfer'){
+            $send_type = 3;
+        }else{
+            $send_type = 1; // 否则1文本
+        }
+
+        // 判断当前session是否和发送者的uid一致
+        if($fromid == session('user.id')){
+            $datas['fromid'] = $fromid;
+            $datas['from_name'] = $this->getName($fromid);
+            $datas['toid'] = $toid;
+            $datas['to_name'] = $this->getName($toid);
+            $datas['content'] = $text;
+            $datas['time'] = time();
+            // $datas['is_read'] = $message['is_read'];
+            $datas['type'] = $send_type;
+            $res = Db::name("chat_info")->insert($datas);
+            if(!$res){
+                return json(['code'=>0, 'msg'=>'failed', 'data'=>'']);
+            }
+        }
+        return json(['code'=>1, 'msg'=>'save ok', 'data'=>'']); 
+    }
+
+    /**
+     * 信息入库时根据用户id返回用户昵称
+     */
+    protected function getName($uid){
+
+        $userinfo = Db::name("users")->where('id',$uid)->field('nickname')->find();
+        return $userinfo['nickname'];
     }
 
 }
