@@ -1,9 +1,10 @@
 <?php
 namespace app\index\controller;
-use think\Session;
-use think\Request;
+use think\Controller;
 use think\Db;
-class Index extends Base
+use think\Request;
+use think\Session;
+class Index extends Controller
 {
 
 	public function _initialize()
