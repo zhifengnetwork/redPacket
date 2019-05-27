@@ -562,8 +562,9 @@ class Groupchat extends Base
                 ];
                 $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
             }
-            Db::commit();
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
+
+            Db::commit();
             $data = [
                 'get_red_money' => $red_detail['money'],
                 'is_die_flag' => $red_detail['is_die']==2?'你已中雷':'你未中雷',
@@ -596,7 +597,7 @@ class Groupchat extends Base
         if(!$m_id){
             return message(0,'缺少参数-');
         }
-        echo 1;
+        
     }
     
 
