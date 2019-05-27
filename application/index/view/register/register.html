@@ -60,14 +60,14 @@
                               <input type="hidden" name="invite_code" class="invite_code" value="{$invite_code}">
             		</div>
             		<!--请再输入密码-->
-            		<!-- <div class="user_name">
+            		<div class="user_name">
             			<div class="img">
             				<img src="__STATIC__/chatWeb/img/login/the_lock.png" />
             			</div>
             			<div class="inp">
-            				<input class="text name" type="text" placeholder="请再输入密码" />
+            				<input class="text name" type="text" placeholder="请输入确认密码" id="password2" />
             			</div>
-            		</div> -->
+            		</div>
             		
             	</div>
             	<!--提交按钮-->
@@ -105,6 +105,7 @@
 
             var mobile = $(".mobile").val();
             var pwd = $(".pwd").val();
+            var pwd2 = $("#password2").val();
             var invite_code = $(".invite_code").val();
             if(!mobile){
                   layer.msg('请输入手机号');
@@ -114,6 +115,15 @@
                   layer.msg('请设置密码');
                   return;
             }
+            if(!pwd2){
+                  layer.msg('请输入确认密码');
+                  return;
+            }
+            if(pwd!=pwd2){
+                  layer.msg('两次密码输入不一致');
+                  return;
+            }
+
             if(!invite_code){
                   layer.msg('缺少参数-invite');
                   return;
