@@ -21,7 +21,7 @@
                 <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/left.png"/>
             </p>
             <p class="lb_headWrap_dialog">
-                <span class="lb_headWrap_dialog_text">999</span>
+                <!-- <span class="lb_headWrap_dialog_text">999</span> -->
             </p>
             <span>{$data['name']}</span>
             <p class="lb_headWrap_remove">
@@ -38,41 +38,41 @@
         </div> -->
         <!-- 群聊内容 -->
         <div class="group_content">
-            <div class="group_content_time">
+            <!-- <div class="group_content_time">
                 周日 17:24
-            </div>
+            </div> -->
             <!-- 对方发红包 -->
            
             <!-- 领取红包提示 -->
-            <div class="group_content_tips">
+            <!-- <div class="group_content_tips">
                 <p class="group_content_tips_text">
                     <img class="group_content_tips_img" src="__STATIC__/chatWeb/img/news/tips.png" alt="">
                     霜之哀伤领取了你的<span class="group_content_tips_strong">红包</span>
                 </p>
-            </div>
+            </div> -->
             <!-- 领取红包提示 -->
-            <div class="group_content_tips">
+            <!-- <div class="group_content_tips">
                 <p class="group_content_tips_text">
                     <img class="group_content_tips_img" src="__STATIC__/chatWeb/img/news/tips.png" alt="">
                     小火汁领取了你的<span class="group_content_tips_strong">红包</span>
                 </p>
-            </div>
+            </div> -->
             <!-- 自己发红包 -->
           
             <!-- 红包弹出框 -->
             <div class="group_packwrap">
                 <div class="group_pack">
                     <div class="group_pack_title">
-                        <img class="group_pack_img" src="__STATIC__/chatWeb/img/0000bengbengbeng.jpg" alt="">
-                        <span>来自霜之哀伤的红包</span>
+                        <img class="group_pack_img" src="" alt="">
+                        <span>来自<span class="from_nickname"></span>的红包</span>
                     </div>
                     <div class="group_pack_state">
-                         你未中雷
+                         
                     </div>
                     <div class="group_pack_num">
-                        ￥66.00元
+                        ￥<span class="get_red_money"></span>元
                     </div>
-                    <div class="group_pack_info">
+                    <div class="group_pack_info" data-red-id="">
                         查看领取详情
                     </div>
                 </div>
@@ -157,10 +157,10 @@
                                 <div class="oval"></div>
                                 <!--头像-->
                                 <div class="photo">
-                                    <img src="__STATIC__/chatWeb/img/0009g.png" />
+                                    <img src="" class="photo_head"/>
                                 </div>
                                 <!--名称-->
-                                <div class="name">超级靓子</div>
+                                <div class="name"></div>
                             </div>
                             <!--领取红包数-->
                             <div class="get_wrap">
@@ -168,19 +168,19 @@
                                 <div class="account">
                                     <div class="rece">
                                         <span>已领取</span>
-                                        <span>9/9</span>
+                                        <span><span class="get_ok"></span>/<span class="total_num"></span></span>
                                         <span>共</span>
-                                        <span>500.00</span>
+                                        <span class="red_total"></span>
                                     </div>
                                     <div class="ray">
                                         <span>雷点：</span>
-                                        <span>1，2，3</span>
+                                        <span class="ray_points"></span>
                                     </div>
                                 </div>
                                 <!--领取红包详细-->
                                 <div class="info_wrap">
                                     <!--未中雷状态-->
-                                    <div class="item">
+                                    <!-- <div class="item">
                                         <div class="img">
                                             <img src="__STATIC__/chatWeb/img/0009g.png" />
                                         </div>
@@ -194,113 +194,10 @@
                                         <div class="right_sum">
                                             <p class="fig">50.00元</p>
                                         </div>
-                                    </div>
-                                    <!--中雷状态-->
-                                    <div class="item active">
-                                        <div class="img">
-                                            <img src="__STATIC__/chatWeb/img/0009g.png" />
-                                        </div>
-                                        <div class="name_time">
-                                            <div class="super">超级靓子</div>
-                                            <p class="time">
-                                                <span>2019-04-09</span>
-                                                <span>23:02:45</span>
-                                            </p>
-                                        </div>
-                                        <div class="right_sum">
-                                            <p class="fig">50.00元</p>
-                                            <div class="crump">
-                                                <span class="crump_tu"></span>
-                                                <span class="theRay">中雷</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--未中雷状态-->
-                                    <div class="item">
-                                        <div class="img">
-                                            <img src="__STATIC__/chatWeb/img/0009g.png" />
-                                        </div>
-                                        <div class="name_time">
-                                            <div class="super">超级靓子</div>
-                                            <p class="time">
-                                                <span>2019-04-09</span>
-                                                <span>23:02:45</span>
-                                            </p>
-                                        </div>
-                                        <div class="right_sum">
-                                            <p class="fig">50.00元</p>
-                                        </div>
-                                    </div>
-                                    <!--未中雷状态-->
-                                    <div class="item">
-                                        <div class="img">
-                                            <img src="__STATIC__/chatWeb/img/0009g.png" />
-                                        </div>
-                                        <div class="name_time">
-                                            <div class="super">超级靓子</div>
-                                            <p class="time">
-                                                <span>2019-04-09</span>
-                                                <span>23:02:45</span>
-                                            </p>
-                                        </div>
-                                        <div class="right_sum">
-                                            <p class="fig">50.00元</p>
-                                        </div>
-                                    </div>
-                                    <!--未中雷状态-->
-                                    <div class="item">
-                                        <div class="img">
-                                            <img src="__STATIC__/chatWeb/img/0009g.png" />
-                                        </div>
-                                        <div class="name_time">
-                                            <div class="super">超级靓子</div>
-                                            <p class="time">
-                                                <span>2019-04-09</span>
-                                                <span>23:02:45</span>
-                                            </p>
-                                        </div>
-                                        <div class="right_sum">
-                                            <p class="fig">50.00元</p>
-                                        </div>
-                                    </div>
-                                    <!--未中雷状态-->
-                                    <div class="item">
-                                        <div class="img">
-                                            <img src="__STATIC__/chatWeb/img/0009g.png" />
-                                        </div>
-                                        <div class="name_time">
-                                            <div class="super">超级靓子</div>
-                                            <p class="time">
-                                                <span>2019-04-09</span>
-                                                <span>23:02:45</span>
-                                            </p>
-                                        </div>
-                                        <div class="right_sum">
-                                            <p class="fig">50.00元</p>
-                                        </div>
-                                    </div>
-                                    <!--未中雷状态-->
-                                    <div class="item">
-                                        <div class="img">
-                                            <img src="__STATIC__/chatWeb/img/0009g.png" />
-                                        </div>
-                                        <div class="name_time">
-                                            <div class="super">超级靓子</div>
-                                            <p class="time">
-                                                <span>2019-04-09</span>
-                                                <span>23:02:45</span>
-                                            </p>
-                                        </div>
-                                        <div class="right_sum">
-                                            <p class="fig">50.00元</p>
-                                        </div>
-                                    </div>
-                                    
+                                    </div> -->
                                 </div>
                             </div>
-                            
                         </div>
-                        
                     </div>
                    </div>
             </div>
@@ -513,7 +410,7 @@
                     // 接收对方红包推送
                     if(room_id == message.room_id && fromid != message.fromid) {
                         let str = '';
-                        str += '<div class="group_content_opposite clearfloat">'
+                        str += '<div class="group_content_opposite clearfloat open_red" data-m-id="'+message.red_id+'">'
                             + '<div class="group_content_opposite_imgwrap">'
                             + '<img class="group_content_opposite_img" src='+message.from_head+'>'
                             + '</div>'
@@ -527,7 +424,7 @@
                             + '<p>'+message.red_money+'/'+message.ray_point+'</p>'
                             + '</div>'
                             + '<div class="pack_state">'
-                            + '已拆开'
+                            + '未拆开'
                             + '</div></div></div></div>'
                         $('.group_content').append(str);
                         $('html, body').animate({
@@ -537,45 +434,6 @@
                     return;
             }
         }
-
-        // 客户端点击发送按钮是触发发送,并且把发送内容追加到当前页面中
-        //$(".dialog_menu_send").click(function(){
-
-            // send_type=1普通文本,2图片
-            // var text = $(".dialog_menu_input").html();
-      
-            // if(text==''){
-            //     //提示
-            //     layer.msg('不能发送空白内容');
-            //     return;
-            // }
-            // var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
-            // // 向当前页面追加发送的内容并显示
-            // let str = '';
-            // str +='<div class="dialog_content_oneself clearfloat">'
-            //     +'<div class="dialog_content_oneself_imgwrap">'
-            //     +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
-            //     +'</div>'
-            //     +'<div class="dialog_content_oneself_info">'
-            //     +'<div class="dialog_content_oneself_name">'+fromid_name+'</div>'
-            //     +'<div class="dialog_content_oneself_text">'+AnalyticEmotion(text)+'</div>'
-            //     +'</div>'
-            //     +'</div>'
-            // $('.dialog_content').append(str);
-            // $('.dialog_menu_send').css('background','#c3f4ff')
-            // $('html, body').animate({
-            //     scrollTop: $('html, body').height()
-            // }, 'slow');
-            // // 元素的垂直滚动条位置
-
-            // ws.send(message); // 向服务器发送信息
-            // $(".dialog_menu_input").html(''); // 发送后置空输入框
-
-            // // 保存数据入库
-            // save_message(text,type='say',fromid,toid);
-        //});
-        // ws end
-
 
         $(function() {
             /**
@@ -782,76 +640,73 @@
                     $.post("/index/groupchat/groupSendRed",
                         {"room_id":room_id, "red_num":red_num, "red_money":red_money, "ray_point":ray_point, "pwd":pass_val, "key":key},
                         function(msg){
-                        // console.log(msg);return;
+                        // console.log(msg);
                         if(msg.code==1){
 
                             // 必须返回红包id
-                            var red_id = 11; // 数据库返回来
+                            var red_id = msg.data.red_id; // 数据库返回来
+                            if(red_id){
 
-                            // 请空输入的金额和雷点
-                            // $('.now_account').html(msg.data.account);
-                            // $('.account_now').html(msg.data.account);
-                            // $('.dialog_transfer_num').attr('data-account',msg.data.account);
-                            $(".ray_wrap ul li").removeClass('active');
-                            $('.give_pack').hide(); // 隐藏红包div
-                            $('.red_money').val('');
-                            $('body').css('padding-bottom','1.4rem')
-                            $('.group_content').show();
-                            if(ray_point){
-                                ray_point = ray_point.join(',');//数组转成为字符串
+                                // 请空输入的金额和雷点
+                                // $('.now_account').html(msg.data.account);
+                                // $('.account_now').html(msg.data.account);
+                                // $('.dialog_transfer_num').attr('data-account',msg.data.account);
+                                $(".ray_wrap ul li").removeClass('active');
+                                $('.give_pack').hide(); // 隐藏红包div
+                                $('.red_money').val('');
+                                $('body').css('padding-bottom','1.4rem')
+                                $('.group_content').show();
+                                if(ray_point){
+                                    ray_point = ray_point.join(',');//数组转成为字符串
+                                }
+                            
+                                $('.bottom_alert_wrap').hide();
+                                pass_val='';
+                                $('.trem_box').removeClass('show_box');
+
+                                let str = '';
+                                    str +=  '<div class="dialog_content_oneself clearfloat open_red"  open_red" data-m-id="'+red_id+'">'
+                                        +   '<div class="group_content_oneself clearfloat">'
+                                        +   '<div class="group_content_oneself_imgwrap">'
+                                        +   '<img class="group_content_oneself_img" src="'+from_head+'">'
+                                        +   '</div>'
+                                        +   '<div class="group_content_oneself_info">'
+                                        +   '<p class="group_content_oneself_name">'+from_name+'</p>'
+                                        +   '<div class="group_content_oneself_pack">'
+                                        +   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack.png">'
+                                        +   '<div class="pack_titie">拆</div>'
+                                        +   '<div class="pack_num">'
+                                        +   '<p>恭喜发财</p>'
+                                        +   '<p>'+red_money+'/'+ray_point+'</p>'
+                                        +   '</div>'
+                                        +   '<div class="pack_state">'
+                                        +   '未拆开'
+                                        +   '</div></div></div></div>'
+                                    $('.group_content').append(str);
+                                    $('html, body').animate({
+                                        scrollTop: $('html, body').height()
+                                    }, 'slow');
+
+                                // 推送给当前群所有在线用户
+                                var message = '';
+                                    message += '{"red_id":"'+red_id+'",'
+                                            + '"red_num":"'+red_num+'",'
+                                            + '"type":"send_group_red",'
+                                            + '"fromid":"'+fromid+'",'
+                                            + '"room_id":"'+room_id+'",'
+                                            + '"from_head":"'+from_head+'",'
+                                            + '"from_name":"'+from_name+'",'
+                                            + '"red_money":"'+red_money+'",'
+                                            + '"ray_point":"'+ray_point+'",'
+                                            + '"send_key":"'+send_key+'"}'
+                                ws.send(message); // 向服务器发送信息
+                                // 更新余额到页面
+                                $.post("/index/my/getAccount",{uid:fromid},function(msg){
+                                    $('.now_account').html(msg.data.account);
+                                });
+                            }else{
+                                layer.msg('网络异常,稍后再试');
                             }
-                           
-                            $('.bottom_alert_wrap').hide();
-                            pass_val='';
-                            $('.trem_box').removeClass('show_box');
-
-                            let str = '';
-                                str +=  '<div class="dialog_content_oneself clearfloat">'
-                                    +   '<div class="group_content_oneself clearfloat">'
-                                    +   '<div class="group_content_oneself_imgwrap">'
-                                    +   '<img class="group_content_oneself_img" src="'+from_head+'">'
-                                    +   '</div>'
-                                    +   '<div class="group_content_oneself_info">'
-                                    +   '<p class="group_content_oneself_name">'+from_name+'</p>'
-                                    +   '<div class="group_content_oneself_pack">'
-                                    +   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack.png">'
-                                    +   '<div class="pack_titie">拆</div>'
-                                    +   '<div class="pack_num">'
-                                    +   '<p>恭喜发财</p>'
-                                    +   '<p>'+red_money+'/'+ray_point+'</p>'
-                                    +   '</div>'
-                                    +   '<div class="pack_state">'
-                                    +   '未拆开'
-                                    +   '</div></div></div></div>'
-                                $('.group_content').append(str);
-                                $('html, body').animate({
-                                    scrollTop: $('html, body').height()
-                                }, 'slow');
-
-                            // 保存数据入库
-                            // save_message(tr_num,type='transfer',fromid,toid);
-                            console.log('保存数据入库');
-
-                            // 推送给当前群所有在线用户
-                            var message = '';
-                                message += '{"red_id":"'+red_id+'",'
-                                        + '"red_num":"'+red_num+'",'
-                                        + '"type":"send_group_red",'
-                                        + '"fromid":"'+fromid+'",'
-                                        + '"room_id":"'+room_id+'",'
-                                        + '"from_head":"'+from_head+'",'
-                                        + '"from_name":"'+from_name+'",'
-                                        + '"red_money":"'+red_money+'",'
-                                        + '"ray_point":"'+ray_point+'",'
-                                        + '"send_key":"'+send_key+'"}'
-                            // var message = '{"red_id":"'+red_id+'", "red_num":"'+red_num+'","type":"send_group_red","fromid":"'+fromid+'","room_id":"'+room_id+'","from_head":"'+from_head+'","from_name":"'+from_name+'","send_key":"'+send_key+'"}';
-                            ws.send(message); // 向服务器发送信息
-
-                            // 更新余额到页面
-                            $.post("/index/my/getAccount",{uid:fromid},function(msg){
-                                $('.now_account').html(msg.data.account);
-                            });
-
                         }else{
                             layer.msg(msg.msg);
                             $('.mask_text').show();
@@ -900,6 +755,30 @@
             obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
             obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3'); //只能输入两个小数
         }
+
+        // 抢红包
+        $('.group_content').on('click','.open_red',function(){
+            var red_id = $(this).attr('data-m-id');
+            var key = $('.give_btn').attr('data-key');
+            if(!red_id || !key){
+                layer.msg('缺失参数-');return;
+            }
+            $.post("/index/groupchat/openToRed",{"room_id":room_id,"red_id":red_id,"key":key},function(msg){
+                if(msg.code == 1 || msg.code == 101){
+                    $('.group_packwrap').show();
+                    $('.group_pack_state').html(msg.data.is_die_flag);
+                    $('.get_red_money').html(msg.data.get_red_money);
+                    $('.from_nickname').html(msg.data.from_name);
+                    $(".group_pack_img").attr("src", msg.data.from_head);
+                    $(".pack_state").html('已拆开');
+                    $(".group_pack_info").attr("data-red-id", msg.data.red_id);
+                }else{
+                    layer.msg(msg.msg);
+                    return;
+                }
+            },'json')
+        });
+
     </script>
 </body>
 </html>

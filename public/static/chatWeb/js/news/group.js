@@ -44,6 +44,66 @@ $(function(){
         $('.group_content').hide();
         $('.red_details').show();
         $('body').css('padding','0')
+
+        var red_id = $(this).attr("data-red-id");
+        var key = $('.give_btn').attr('data-key');
+        if(!red_id || !key){
+            layer.msg('缺失参数-');return;
+        }
+        $.post("/index/groupchat/getRedDetail",{"red_id":red_id,"key":key},function(msg){
+                $('.sum').html(msg.data.master_info.money);
+                $('.name').html(msg.data.master_info.nickname);
+                $(".photo_head").attr("src", msg.data.master_info.head_imgurl);
+                $(".red_total").html(msg.data.master_info.money);
+                $(".ray_points").html(msg.data.master_info.ray_point);
+                $(".get_ok").html(msg.data.master_info.get_num);
+                $(".total_num").html(msg.data.master_info.num);
+                let str = '';
+                console.log(msg.data.detail_info)
+                for(let i = 0;i< msg.data.detail_info.length;i++){
+                    if(msg.data.detail_info[i].is_die == 2){
+                        str +="<div class='item active'>"
+                                +"<div class='img'>"
+                                +"<img src='"+msg.data.detail_info[i].head_imgurl+"' />"
+                                +"</div>"
+                                +"<div class='name_time'>"
+                                +"<div class='super'>"+msg.data.detail_info[i].nickname+"</div>"
+                                +"<p class='time'>"
+                                +"<span>"+msg.data.detail_info[i].get_time_date+"</span>"
+                                +"<span>"+msg.data.detail_info[i].get_time+"</span>"
+                                +"</p>"
+                                +"</div>"
+                                +"<div class='right_sum'>"
+                                +"<p class='fig'>"+msg.data.detail_info[i].money+"</p>"
+                                +"<div class='crump'>"
+                                +"<span class='crump_tu'></span>"
+                                +"<span class='theRay'>中雷</span>"
+                                +"</div>"
+                                +"</div>"
+                                +"</div>"
+                    }else{
+                        str +="<div class='item'>"
+                                +"<div class='img'>"
+                                +"<img src='"+msg.data.detail_info[i].head_imgurl+"' />"
+                                +"</div>"
+                                +"<div class='name_time'>"
+                                +"<div class='super'>"+msg.data.detail_info[i].nickname+"</div>"
+                                +"<p class='time'>"
+                                +"<span>"+msg.data.detail_info[i].get_time_date+"</span>"
+                                +"<span>"+msg.data.detail_info[i].get_time+"</span>"
+                                +"</p>"
+                                +"</div>"
+                                +"<div class='right_sum'>"
+                                +"<p class='fig'>"+msg.data.detail_info[i].money+"</p>"
+                                +"</div>"
+                                +"</div>"
+                    }
+                    $('.info_wrap').html(str)
+                }
+            console.log(msg);
+        },'json')
+        console.log(red_id);
+
     })
     $('.lb_headWrap_return').click(function(){
         $('.group_content').show();
@@ -63,66 +123,6 @@ $(function(){
             $('.group_menu_send').css('background','#c3f4ff')
         }
     })
-
-    // 发送消息
-    // $('.group_menu_send').click(function(){
-    //     let str = '';
-    //     let text = $('.group_menu_input').html();
-    //     if(text == ''){
-    //         return;
-    //     }
-    //     str +='<div class="group_content_oneself clearfloat">'
-    //                 +'<div class="group_content_oneself_imgwrap">'
-    //                     +'<img class="group_content_oneself_img" src="/static/chatWeb/img/0000⑨.jpg" alt="">'
-    //                 +'</div>'
-    //                 +'<div class="group_content_oneself_info">'
-    //                     +'<div class="group_content_oneself_name">火之高兴</div>'
-    //                     +'<div class="group_content_oneself_text">'+text+'</div>'
-    //                 +'</div>'
-    //             +'</div>'
-    //     $('.group_content').append(str);
-    //     $('.group_menu_input').html('');
-    //     $('.group_menu_send').css('background','#c3f4ff')
-    //     $('html,body').animate({
-    //         scrollTop: $('html,body').height()
-    //     }, 'slow');
-    //     $('.group_menu_more').children().attr('src','/static/chatWeb/img/news/more.png');
-    //     $('.group_menu_submenu').css('height','.45rem');
-    // })
-
-    /// 验证图片
-    // $(".picture").change(function (e) {
-    //     for (var i = 0; i < e.target.files.length; i++) {
-    //         var file = e.target.files.item(i);
-    //         //验证是否为图片，不是就跳出循环
-    //         if (!(/^image\/.*$/i.test(file.type))) {
-    //             alert("请选择图片上传！")
-    //             continue;
-    //         }
-    //         //实例化FileReader API  
-    //         var freader = new FileReader();
-    //         freader.readAsDataURL(file);
-    //         freader.onload = function (e) {
-    //             let str = '';
-    //             str +='<div class="group_content_oneself clearfloat">'
-    //             +'<div class="group_content_oneself_imgwrap">'
-    //             +'<img class="group_content_oneself_img" src="/static/chatWeb/img/0000⑨.jpg" alt="">'
-    //             +'</div>'
-    //             +'<div class="group_content_oneself_info">'
-    //             +'<div class="group_content_oneself_name">质检员</div>'
-    //             +'<div class="group_content_oneself_textimg">'
-    //             +'<img class="group_content_oneself_img" src="'+e.target.result+'" alt="">'
-    //             +'</div>'
-    //             +'</div>'
-    //             +'</div>'
-    //             $('.group_content').append(str);
-    //             $('html, body').animate({
-    //                 scrollTop: $('html, body').height()
-    //             }, 'slow');
-    //         }
-    //         $(".picture").val('');
-    //     }
-    // });
 
     //图片绑定表情包
    $('.emotion_ear').SinaEmotion($('.group_menu_input'));
