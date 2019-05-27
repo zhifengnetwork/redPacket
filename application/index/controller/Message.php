@@ -53,7 +53,10 @@ class Message extends Base
      * @return toid [聊天对象uid]
      */
     public function oneToOnedialog(){
-
+        
+        if( !is_complete(session('user.id')) ){
+            $this->redirect('/index/my/personInfo');    
+        };
         $user_arr = Db::name('users')->field('id,account')->where('id',session('user.id'))->find();
         $toid = input('toid/d');
         $this->assign('toid', $toid);
@@ -220,6 +223,9 @@ class Message extends Base
      */
     public function groupChat()
     {   
+        if( !is_complete(session('user.id')) ){
+            $this->redirect('/index/my/personInfo');    
+        };
         // $group_name = input('group_name/s');   // 群名称
         $fromid = input('fromid/d');           // 当前用户
         $roomid = input('room_id/d');           // 群id

@@ -69,11 +69,13 @@ class My extends Base
         // 获取余额
         $user_arr = Db::name('users')->field('id,account')->where('id',session('user.id'))->find();
         //充值记录
-        $rechargeList =  Db::query("select id,uid,time,amount,status from recharge where uid = $userid");
+        // $rechargeList =  Db::query("select id,uid,time,amount,status from recharge where uid = $userid");
+        $rechargeList = Db::name('recharge')->where(['uid'=>$userid])->select();
         //提现记录
-        $txList =  Db::query("select id,uid,time,amount,status from tixian where uid = $userid");
-
-        $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
+        // $txList =  Db::query("select id,uid,time,amount,status from tixian where uid = $userid");
+        $txList = Db::name('tixian')->where(['uid'=>$userid])->select();
+        // $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
+        $redbagList = Db::name('chat_red_detail')->where(['get_uid'=>$userid, 'type'=>1])->select();
         // var_dump($rechargeList);exit;
         $this->assign('rechargeList', $rechargeList);
         $this->assign('txList', $txList);

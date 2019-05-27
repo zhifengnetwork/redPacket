@@ -123,15 +123,15 @@
 								{volist name="$redbagList" id="vo"}	
 									<li class="record-item selected">
 										<div class="date">
-											<p>{$vo.time|date='Y-m-d',###}</p>
-											<p>{$vo.time|date='H:i',###}</p>
+											<p>{$vo.get_time|date='Y-m-d',###}</p>
+											<p>{$vo.get_time|date='H:i',###}</p>
 										</div>
 										<div class="amount-money">
 											<span>¥</span>{$vo.money}
 										</div>
 										<div class="state">
 											<span>抢到红包</span>
-											<span class="sign">{$vo.status}</span>
+											<!-- <span class="sign">{$vo.status}</span> -->
 										</div>
 									</li>
 								{/volist}

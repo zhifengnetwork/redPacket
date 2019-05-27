@@ -29,7 +29,6 @@ class Address extends Base
 
         if( !is_complete(session('user.id')) ){
             $this->redirect('/index/my/personInfo');    
-
         };
 
         // 获取当前用户所有好友
