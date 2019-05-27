@@ -160,13 +160,17 @@ class Groupchat extends Base
                 }
 
                 // 根据设置雷点 标记好中雷的红包
-                $new_v = preg_replace("/[.]/",'',$v);
+                // $new_v = preg_replace("/[.]/",'',$v);
                 // 转换为数组
-                $new_v_arr = str_split($new_v);
-                foreach ($ray_points as $v) {
-                    if(in_array($v, $new_v_arr)){
-                        $detail_data['is_die'] = 2; // 中雷
-                    }
+                // $new_v_arr = str_split($new_v);
+                // foreach ($ray_points as $v) {
+                //     if(in_array($v, $new_v_arr)){
+                //         $detail_data['is_die'] = 2; // 中雷
+                //     }
+                // }
+                $last_number = substr($v,-1);
+                if(in_array($last_number, $ray_points)){
+                    $detail_data['is_die'] = 2; // 中雷
                 }
                 
                 $res = Db::name('chat_red_detail')->insert($detail_data);

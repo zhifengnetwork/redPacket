@@ -1,8 +1,12 @@
 <?php
 namespace app\index\controller;
+use think\Controller;
 use think\Db;
+use think\Request;
+use think\Session;
+use think\View;
 
-class Register extends Base
+class Register extends Controller
 {
     /**
      * [用户扫码上级二维码注册页面]
