@@ -122,6 +122,11 @@ class My extends Base
      */
     public function myTeamIncome()
     {
+        $userid = session('user.id');
+        $nums =  Db::query("select count(id) as nums from users where pid = $userid");
+
+        $this->assign('nums', $nums[0]['nums']);
+
         return $this->fetch('myTeamIncome');
     }
 
