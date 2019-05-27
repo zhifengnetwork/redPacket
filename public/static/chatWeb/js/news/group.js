@@ -59,7 +59,6 @@ $(function(){
                 $(".get_ok").html(msg.data.master_info.get_num);
                 $(".total_num").html(msg.data.master_info.num);
                 let str = '';
-                console.log(msg.data.detail_info)
                 for(let i = 0;i< msg.data.detail_info.length;i++){
                     if(msg.data.detail_info[i].is_die == 2){
                         str +="<div class='item active'>"
@@ -100,10 +99,7 @@ $(function(){
                     }
                     $('.info_wrap').html(str)
                 }
-            console.log(msg);
         },'json')
-        console.log(red_id);
-
     })
     $('.lb_headWrap_return').click(function(){
         $('.group_content').show();

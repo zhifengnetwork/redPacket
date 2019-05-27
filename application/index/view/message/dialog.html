@@ -189,6 +189,9 @@
 
         </div>
     </div>
+    <audio id="audio">
+        <source src="__STATIC__/chatWeb/img/news/tips.mp3">
+    </audio>
     {include file="common/footer_js"}
     <script src="__STATIC__/chatWeb/js/news/dialog.js"></script>
     <script src="__STATIC__/qqFace/js/jquery.min.js"></script>
@@ -279,7 +282,12 @@
                         scrollTop: $('html, body').height()
                     }, 'slow');
                     changeNoRead();
-
+                    $('#audio')[0].play();
+                    if (navigator.vibrate) {
+                        navigator.vibrate([200,50,200]);
+                    } else if (navigator.webkitVibrate) {
+                        navigator.webkitVibrate([200,50,200]);
+                    }
                     // $.post(
                     //     API_URL+"changeNoRead",
                     //     {"fromid":toid,"toid":fromid},// 在当前页面中时,更新接收到的信息状态
@@ -313,6 +321,12 @@
                         scrollTop: $('html, body').height()
                     }, 'slow');
                     changeNoRead();
+                    $('#audio')[0].play();
+                    if (navigator.vibrate) {
+                        navigator.vibrate([200,50,200]);
+                    } else if (navigator.webkitVibrate) {
+                        navigator.webkitVibrate([200,50,200]);
+                    }
                 }
                 return;
             // 转账收款    
@@ -348,6 +362,12 @@
                         $('.account_now').html(msg.data.account);
                         $('.dialog_transfer_num').attr('data-account',msg.data.account);
                     });
+                    $('#audio')[0].play();
+                    if (navigator.vibrate) {
+                        navigator.vibrate([200,50,200]);
+                    } else if (navigator.webkitVibrate) {
+                        navigator.webkitVibrate([200,50,200]);
+                    }
                 }
                 return;
         }
@@ -375,7 +395,7 @@
                 to_name = e.data.toname;
                 fromid_name = e.data.fromname;
                 $(".title_name").text('与'+to_name+'聊天中...');
-                console.log(e);
+                // console.log(e);
             },'json'
         );
     }    

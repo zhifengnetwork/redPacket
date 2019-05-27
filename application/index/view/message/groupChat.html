@@ -333,6 +333,9 @@
                 <img class="magnify" src="" onerror="onerror=null;src='__STATIC__/chatWeb/img/news/load.gif'" alt="">
             </div>
     </div>
+    <audio id="audio">
+        <source src="__STATIC__/chatWeb/img/news/tips.mp3">
+    </audio>
     {include file="common/footer_js"}
     <script src="__STATIC__/chatWeb/js/news/jquery.sinaEmotion.js"></script>
     <script src="__STATIC__/chatWeb/js/news/group.js"></script>
@@ -430,6 +433,12 @@
                         $('html, body').animate({
                             scrollTop: $('html, body').height()
                         }, 'slow');
+                        $('#audio')[0].play();
+                        if (navigator.vibrate) {
+                            navigator.vibrate([200,50,200]);
+                        } else if (navigator.webkitVibrate) {
+                            navigator.webkitVibrate([200,50,200]);
+                        }
                     }
                     return;
             }
@@ -760,6 +769,7 @@
         $('.group_content').on('click','.open_red',function(){
             var red_id = $(this).attr('data-m-id');
             var key = $('.give_btn').attr('data-key');
+            var that = $(this);
             if(!red_id || !key){
                 layer.msg('缺失参数-');return;
             }
@@ -770,7 +780,8 @@
                     $('.get_red_money').html(msg.data.get_red_money);
                     $('.from_nickname').html(msg.data.from_name);
                     $(".group_pack_img").attr("src", msg.data.from_head);
-                    $(".pack_state").html('已拆开');
+                    $(that).find(".pack_state").html('已拆开');
+                    $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
                     $(".group_pack_info").attr("data-red-id", msg.data.red_id);
                 }else{
                     layer.msg(msg.msg);
