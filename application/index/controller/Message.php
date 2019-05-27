@@ -96,7 +96,7 @@ class Message extends Base
         if($key != $this->key){
             return message(0,'错误参数-key');
         }
-        $user = Db::name('users')->field('id,account,password,salt')->where('id',session('user.id'))->find();
+        $user = Db::name('users')->field('id,account,password,pay_pwd,salt')->where('id',session('user.id'))->find();
         if(!$user){
             return message(0, '用户不存在');
         }
@@ -129,7 +129,10 @@ class Message extends Base
             return message(0, '密码格式有误');
         }
         // 比对密码
-        if($user['password'] !== minishop_md5($password, $user['salt'])){
+        if(!$user['pay_pwd']){
+            return message(0, '请先设置支付密码');
+        }
+        if($user['pay_pwd'] !== minishop_md5($password, $user['salt'])){
             return message(0, '密码错误');
         }
         // 转账数据入库
