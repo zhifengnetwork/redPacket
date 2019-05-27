@@ -275,7 +275,8 @@ class Groupchat extends Base
             }
 
             // 发包返免死金额的5%到发包用户
-            $rebate_money  = $rebate_money*(abs(5/100));
+            $no_die_money = Db::name('chat_red_detail')->where(['m_id'=>$res_id, 'is_die'=>1])->find();
+            $rebate_money  = $no_die_money['money']*(abs(5/100));
             $rebate_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $rebate_money);
             $red_rebate_data = [
                 'from_id' => $user['id'],
@@ -629,6 +630,11 @@ class Groupchat extends Base
         return message(1,'ok', $data);
     }
     
+    // 群设置
+    public function groupSet()
+    {
+        return $this->fetch('/message/group_set');
+    }
 
     // 抢包奖励，抢到对应金额
     private function awardList($get_red_money)
