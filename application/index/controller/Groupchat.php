@@ -606,6 +606,7 @@ class Groupchat extends Base
                         ->field('d.id,d.m_id,d.get_uid,d.money,d.get_time,d.type,d.is_die,u.nickname,u.head_imgurl')
                         ->join('users u','d.get_uid = u.id')
                         ->where(['d.type'=>1, 'd.m_id'=>$m_id])
+                        ->order('get_time desc')
                         ->select();
         $master_info['get_num'] = count($detail_info);
         $master_info['nickname'] = $master_user['nickname'];
