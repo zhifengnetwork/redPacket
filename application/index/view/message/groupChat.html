@@ -72,7 +72,7 @@
                     <div class="group_pack_num">
                         ￥<span class="get_red_money"></span>元
                     </div>
-                    <div class="group_pack_info">
+                    <div class="group_pack_info" data-red-id="">
                         查看领取详情
                     </div>
                 </div>
@@ -157,10 +157,10 @@
                                 <div class="oval"></div>
                                 <!--头像-->
                                 <div class="photo">
-                                    <img src="__STATIC__/chatWeb/img/0009g.png" />
+                                    <img src="" class="photo_head"/>
                                 </div>
                                 <!--名称-->
-                                <div class="name">超级靓子</div>
+                                <div class="name"></div>
                             </div>
                             <!--领取红包数-->
                             <div class="get_wrap">
@@ -869,11 +869,12 @@
             $.post("/index/groupchat/openToRed",{"room_id":room_id,"red_id":red_id,"key":key},function(msg){
                 if(msg.code == 1 || msg.code == 101){
                     $('.group_packwrap').show();
-                    $('.get_red_money').html(msg.data.get_red_money);
                     $('.group_pack_state').html(msg.data.is_die_flag);
-                    $('.from_nickname').html(from_name);
-                    $(".group_pack_img").attr("src", from_head);
+                    $('.get_red_money').html(msg.data.get_red_money);
+                    $('.from_nickname').html(msg.data.from_name);
+                    $(".group_pack_img").attr("src", msg.data.from_head);
                     $(".pack_state").html('已拆开');
+                    $(".group_pack_info").attr("data-red-id", msg.data.red_id);
                 }else{
                     layer.msg(msg.msg);
                     return;

@@ -44,6 +44,22 @@ $(function(){
         $('.group_content').hide();
         $('.red_details').show();
         $('body').css('padding','0')
+
+        $('.name').html(from_name);
+        $(".photo_head").attr("src", from_head);
+
+        var red_id = $(this).attr("data-red-id");
+        var key = $('.give_btn').attr('data-key');
+        if(!red_id || !key){
+            layer.msg('缺失参数-');return;
+        }
+        $.post("/index/groupchat/getRedDetail",{"red_id":red_id,"key":key},function(msg){
+                // $('.sum').html(msg.data.get_red_money);
+
+            console.log(msg);
+        },'json')
+        console.log(red_id);
+
     })
     $('.lb_headWrap_return').click(function(){
         $('.group_content').show();

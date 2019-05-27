@@ -563,10 +563,13 @@ class Groupchat extends Base
                 $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
             }
             Db::commit();
+            $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
             $data = [
                 'get_red_money' => $red_detail['money'],
                 'is_die_flag' => $red_detail['is_die']==2?'你已中雷':'你未中雷',
-                'red_id' => $red_one['id']
+                'red_id' => $red_one['id'],
+                'from_name' => $from_user['nickname'],
+                'from_head' => $from_user['head_imgurl']
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {
@@ -574,6 +577,26 @@ class Groupchat extends Base
             Db::rollback();
             return message(0, '网络异常,稍后再试');
         }
+    }
+
+    /**
+     * 获取红包详情
+     * @param int $red_id 红包id
+     */
+    public function getRedDetail()
+    {
+        if(!isPost()){
+            return message(0, '非法提交');
+        }
+        $m_id = input('red_id/d');
+        $key = input('key/s');
+        if($key != $this->key){
+            return message(0,'错误参数-key');
+        }
+        if(!$m_id){
+            return message(0,'缺少参数-');
+        }
+        echo 1;
     }
     
 
