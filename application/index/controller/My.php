@@ -65,9 +65,19 @@ class My extends Base
      * @return array
      */
     public function myBill(){
-
+        $userid = session('user.id');
         // 获取余额
         $user_arr = Db::name('users')->field('id,account')->where('id',session('user.id'))->find();
+        //充值记录
+        $rechargeList =  Db::query("select id,uid,time,amount,status from recharge where uid = $userid");
+        //提现记录
+        $txList =  Db::query("select id,uid,time,amount,status from tixian where uid = $userid");
+
+        $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
+        // var_dump($rechargeList);exit;
+        $this->assign('rechargeList', $rechargeList);
+        $this->assign('txList', $txList);
+        $this->assign('redbagList', $redbagList);
         $this->assign('user_arr', $user_arr);
         return $this->fetch('bill');
     }
@@ -112,6 +122,11 @@ class My extends Base
      */
     public function myTeamIncome()
     {
+        $userid = session('user.id');
+        $nums =  Db::query("select count(id) as nums from users where pid = $userid");
+
+        $this->assign('nums', $nums[0]['nums']);
+
         return $this->fetch('myTeamIncome');
     }
 
@@ -121,6 +136,10 @@ class My extends Base
      */
     public function myTeam()
     {
+        
+        $userid = session('user.id');
+        $list =  Db::query("select id,pid,head_imgurl,nickname from users where pid = $userid");
+        $this->assign('list', $list);
         return $this->fetch('myTeam');
     }
 
@@ -130,6 +149,7 @@ class My extends Base
     public function personInfo(){
 
         $info = Db::table('users')->where('id',session('user.id'))->field('id,nickname,head_imgurl,mobile')->find();
+        // var_dump($info);exit;
          $this->assign('info', $info);
         return $this->fetch('personal_center');
 
