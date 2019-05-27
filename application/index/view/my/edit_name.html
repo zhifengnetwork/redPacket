@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+		<title>更改名字</title>
+		<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+		<!--public-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+		<!--头部-->
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+		<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/my/personal_center.css">
+	</head>
+	<body>
+		<!--最大边框-->
+		<div class="wrap_frame">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+					<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/back@2x.png"/>
+				</p>
+                <span>更改名字</span>
+                
+                <!-- <span class="editBtn"><a href="../../my/personal_center/personal_center.html">保存</a></span> -->
+                <span class="editBtn">保存</span>
+                
+			</div>
+
+            <!-- 内容 -->
+			<div class="edit-content">
+                <div class="edit-item">
+                    <input type="text" class="editName">
+                    <span class="del-icon">
+                        <img src="__STATIC__/chatWeb/img/news/my/del-icon.png" />
+                    </span>
+                </div>
+            </div>
+			
+		</div>
+		
+{include file="common/footer_js"}
+        <script>
+            $(function(){
+				
+				var userName = localStorage["userName"];
+				$(".editName").val(userName);
+
+				// 清空输入框内容
+                $(".del-icon").click(function(){
+                    $(".editName").val("");
+					$(".editName").focus();
+                })
+				
+				//获取焦点
+				moveEnd($(".editName").focus().get(0));
+				//移动光标到input最后面
+				function moveEnd(obj) {
+					obj.focus();
+					var len = obj.value.length;
+					if (document.selection) {
+						var sel = obj.createTextRange();
+						sel.moveStart('character', len); //设置开头的位置
+						sel.collapse();
+						sel.select();
+					}else if (typeof obj.selectionStart == 'number' && typeof obj.selectionEnd == 'number') {
+						obj.selectionStart = obj.selectionEnd = len;
+					}
+				}
+				
+				// 输入框值改变时触发
+				$('.editName').bind('input propertychange', function() {
+					$(".editBtn").css("opacity","1")
+				});
+
+				//保存后返回页面
+				$(".editBtn").click(function(){
+					var userName = $(".editName").val();
+					localStorage.userName = userName;
+					if(userName==''){
+						layer.msg('昵称不能为空！');
+						return false;
+					}
+					$.ajax({
+			            type: "post", 
+			            url : "/index/my/sub_name",
+			            dataType:'json',
+			            data: "nickname="+userName,
+
+			            success: function(json){
+
+			                if(json.flag==1){
+			                    layer.msg(json.msg);
+			                    setTimeout(function(){
+		  								self.location="{:url('/index/my/personInfo')}";
+								},2000);
+		
+			                }else{
+			                    layer.msg(json.msg);
+			                    
+			                }
+			            }
+			        });
+				})
+
+				
+
+
+            })
+        </script>
+	</body>
+</html>

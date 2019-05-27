@@ -27,7 +27,7 @@
 
 							<div class="person_message_my">
 
-								<span>我的</span>
+								<span class="personInfo" data-url="/index/my/personInfo">我的</span>
 
 								<img src="__STATIC__/chatWeb/img/news/close@2x.png" class="close" />
 
@@ -57,11 +57,11 @@
 								<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
 							</div>
 							<div class="three_ear">
-								<div class="three_ear_son">
+<!-- 								<div class="three_ear_son" data-url="/index/my/personInfo">
 									<img src="__STATIC__/chatWeb/img/news/account@2x.png" class="img_left" />
 									<span>账号管理</span>
 									<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
-								</div>
+								</div> -->
 								<div class="three_ear_son page_trrem" data-url="/index/my/myTeamIncome">
 									<img src="__STATIC__/chatWeb/img/news/team@2x.png" class="img_left" />
 									<span>我的代理团队</span>
@@ -461,6 +461,13 @@
 			$('.my_qrcodeyf').on('tap', function() {
 				window.location.href = $(this).attr('data-url');
 			})
+
+
+			//点击显示个人信息
+			$(".personInfo").on('tap', function(event) {
+
+				window.location.href = $(this).attr('data-url');
+			});
 		</script>
 
 </body>
