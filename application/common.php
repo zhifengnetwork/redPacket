@@ -739,7 +739,7 @@ function scerweima($url='',$id=''){
     //生成二维码图片
     $filename = "uploads/ewm/".$id.'.png';
     if(!file_exists($filename)){
-        
+
         QRcode::png($value,$filename , $errorCorrectionLevel, $matrixPointSize, 2);
         $QR = $filename;        //已经生成的原始二维码图片文件
         $QR = imagecreatefromstring(file_get_contents($QR));
@@ -753,3 +753,16 @@ function scerweima($url='',$id=''){
     
 }
 
+/*
+判断用户昵称和图像是否设置
+$userid 用户id
+*/
+function is_complete($userid){
+
+    $info = Db::table('users')->where('id',$userid)->field('id,nickname,head_imgurl')->find();
+    if($info['nickname'] =='' or $info['head_imgurl']==''){
+        return false;
+    }
+    return true;
+
+}

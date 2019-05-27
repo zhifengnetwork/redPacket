@@ -2,6 +2,7 @@
 namespace app\index\controller;
 use think\Db;
 use think\Session;
+use think\Request;
 // 我的相关
 class My extends Base
 {
@@ -121,6 +122,95 @@ class My extends Base
     public function myTeam()
     {
         return $this->fetch('myTeam');
+    }
+
+    /*
+    用户个人信息
+    */
+    public function personInfo(){
+
+        $info = Db::table('users')->where('id',session('user.id'))->field('id,nickname,head_imgurl,mobile')->find();
+         $this->assign('info', $info);
+        return $this->fetch('personal_center');
+
+    }
+
+    public function editname(){
+
+        return $this->fetch('edit_name');
+
+    }
+    // 个人用户名称
+    public function sub_name(){
+        $flag=0;
+        $msg='';
+        $userid = session('user.id');
+        if (Request::instance()->isPost()) {
+            $nickname = trim(input('post.nickname'));
+            if($nickname==''){
+                $msg='昵称不能为空！';
+            }else{
+                $res = Db::table('users')->where('id',$userid)->update(['nickname' => $nickname]);
+                if( $res ){
+                    $flag = 1;
+                    $msg = '成功！';
+                }else{
+
+                    $flag = 0;
+                    $msg = '失败！';
+                }
+
+
+            }
+
+        }else{
+            $msg='非法请求';
+
+
+        }   
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+    }
+    //个人用户图像修改
+    public function sub_photo(){
+
+        $flag=0;
+        $msg='';
+        $userid = session('user.id');
+        if (Request::instance()->isPost()) {
+   
+            $base64_img = input('post.photo');
+        
+            if($base64_img==''){
+                $msg='图像不能为空！';
+            }else{
+                $head_imgurl =  uploadImg($base64_img); 
+                if($head_imgurl =='上传失败'){
+                        $msg = '失败！';  
+                }else{            
+
+                    $res = Db::table('users')->where('id',$userid)->update(['head_imgurl' => $head_imgurl]);
+                    if( $res ){
+                        $flag = 1;
+                        $msg = '成功！';
+                    }else{
+
+                        $msg = '失败！';
+                    }
+                }
+
+            }
+
+        }else{
+            $msg='非法请求';
+
+
+        }   
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;   
+
     }
 
 

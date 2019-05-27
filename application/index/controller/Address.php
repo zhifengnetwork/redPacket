@@ -26,6 +26,9 @@ class Address extends Base
      */
     public function addressList()
     {
+
+        is_complete(session('user.id'));
+
         // 获取当前用户所有好友
         $list = getAllFriends($this->user['id']);
         // 将数组按字母A-Z排序
