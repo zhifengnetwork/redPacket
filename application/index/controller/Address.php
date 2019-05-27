@@ -27,7 +27,10 @@ class Address extends Base
     public function addressList()
     {
 
-        is_complete(session('user.id'));
+        if( !is_complete(session('user.id')) ){
+            $this->redirect('/index/my/personInfo');    
+
+        };
 
         // 获取当前用户所有好友
         $list = getAllFriends($this->user['id']);
