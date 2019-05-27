@@ -597,7 +597,35 @@ class Groupchat extends Base
         if(!$m_id){
             return message(0,'缺少参数-');
         }
+        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point')->where(['id'=>$m_id])->find();
+        if(!$master_info){
+            return message(0,'红包不存在');
+        }
+        $master_user = Db::name('users')->field('id,nickname,head_imgurl')->where(['id'=>$master_info['uid']])->find();
+        $detail_info = Db::name('chat_red_detail')->alias('d')
+                        ->field('d.id,d.m_id,d.get_uid,d.money,d.get_time,d.type,d.is_die,u.nickname,u.head_imgurl')
+                        ->join('users u','d.get_uid = u.id')
+                        ->where(['d.type'=>1, 'd.m_id'=>$m_id])
+                        ->select();
+        $master_info['get_num'] = count($detail_info);
+        $master_info['nickname'] = $master_user['nickname'];
+        $master_info['head_imgurl'] = $master_user['head_imgurl'];
+        foreach($detail_info as $k=>$v){
+            if($v['get_uid']==113){ // 免死机器人
+                $detail_info[$k]['nickname'] = '免死金牌';
+            }
+            if($v['get_uid']==112){ // 平台抢红包机器人
+                $detail_info[$k]['nickname'] = '老东家888';
+            }
+            $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
+            $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
+        }
         
+        $data = [
+            'master_info' => $master_info,
+            'detail_info' => $detail_info
+        ];
+        return message(1,'ok', $data);
     }
     
 
