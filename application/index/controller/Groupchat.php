@@ -353,7 +353,7 @@ class Groupchat extends Base
         if($is_get){
             // 返回红包获取明细
             // todo
-            return message(1,'红包已抢过');
+            return message(101,'红包已抢过');
         }
 
         // 启动事务
@@ -562,8 +562,13 @@ class Groupchat extends Base
                 ];
                 $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
             }
-            Db::commit();  
-            return message(1, 'ok');
+            Db::commit();
+            $data = [
+                'get_red_money' => $red_detail['money'],
+                'is_die_flag' => $red_detail['is_die']==2?'你已中雷':'你未中雷',
+                'red_id' => $red_one['id']
+            ];
+            return message(1, 'ok', $data);
         }catch (\Exception $e) {
             // 回滚事务
             Db::rollback();

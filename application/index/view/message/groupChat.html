@@ -38,9 +38,9 @@
         </div> -->
         <!-- 群聊内容 -->
         <div class="group_content">
-            <div class="group_content_time">
+            <!-- <div class="group_content_time">
                 周日 17:24
-            </div>
+            </div> -->
             <!-- 对方发红包 -->
            
             <!-- 领取红包提示 -->
@@ -63,14 +63,14 @@
             <div class="group_packwrap">
                 <div class="group_pack">
                     <div class="group_pack_title">
-                        <img class="group_pack_img" src="__STATIC__/chatWeb/img/0000bengbengbeng.jpg" alt="">
-                        <span>来自霜之哀伤的红包</span>
+                        <img class="group_pack_img" src="" alt="">
+                        <span>来自<span class="from_nickname"></span>的红包</span>
                     </div>
                     <div class="group_pack_state">
-                         你未中雷
+                         
                     </div>
                     <div class="group_pack_num">
-                        ￥66.00元
+                        ￥<span class="get_red_money"></span>元
                     </div>
                     <div class="group_pack_info">
                         查看领取详情
@@ -861,15 +861,22 @@
 
         // 抢红包
         $('.group_content').on('click','.open_red',function(){
-            
             var red_id = $(this).attr('data-m-id');
             var key = $('.give_btn').attr('data-key');
             if(!red_id || !key){
                 layer.msg('缺失参数-');return;
             }
             $.post("/index/groupchat/openToRed",{"room_id":room_id,"red_id":red_id,"key":key},function(msg){
-                if(){
-                    
+                if(msg.code == 1 || msg.code == 101){
+                    $('.group_packwrap').show();
+                    $('.get_red_money').html(msg.data.get_red_money);
+                    $('.group_pack_state').html(msg.data.is_die_flag);
+                    $('.from_nickname').html(from_name);
+                    $(".group_pack_img").attr("src", from_head);
+                    $(".pack_state").html('已拆开');
+                }else{
+                    layer.msg(msg.msg);
+                    return;
                 }
             },'json')
         });
