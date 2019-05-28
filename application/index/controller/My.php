@@ -145,6 +145,10 @@ class My extends Base
         return $this->fetch('myTeam');
     }
 
+    public function activityCenter(){
+        return $this->fetch('activity_center');
+    }
+
     /*
     用户个人信息
     */
