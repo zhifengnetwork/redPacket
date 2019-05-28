@@ -294,9 +294,18 @@ class Chat extends Controller{
      */
     public function sendBackRed()
     {
-        if(!Request::instance()->isAjax()){
-            return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
-        }
+        // if(!Request::instance()->isAjax()){
+        //     return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
+        // }
+        // 获取所有大于5分钟的红包
+        // $this->send_key = Config::get('SEND_KEY');
+        // $key = input('key/s');
+        $red_all = Db::name('chat_red_master')->alias('m')
+                ->join('chat_red_detail d','m.id=d.m_id')
+                ->whereTime('m.create_time','<= m.create_time')
+                ->fetchSql(true)
+                ->select();
+        dump($red_all);        
 
     }
 }
