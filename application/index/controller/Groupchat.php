@@ -513,8 +513,8 @@ class Groupchat extends Base
                 if($point_award_money){
                     $point_award_money = abs($point_award_money);
                     $point_award_money_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $point_award_money);
-
-                    // 发包返水插入chat_red_log流水日志
+                    // 修改红包主表标记已奖励
+                    
                     $point_award_money_log = [
                         'from_id' => $red_one['uid'],
                         'uid' => $red_one['uid'],
