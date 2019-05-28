@@ -153,24 +153,12 @@ class Groupchat extends Base
                 ];
                 // 1号机器人获取红包
                 if($robot_dis == 3){ // 第3个红包
-                    // 平台两个机器人获得红包处理
-                    $detail_data['get_uid'] = 112; // 1号机器人uid
-                    $detail_data['get_time'] = time();
-                    $detail_data['type'] = 1;
-                    // $robot_one = Db::name('chat_red_detail')->where(['m_id'=>$res_id])->update($robot_one_data)->limit(1);
-                    
+                // 平台两个机器人获得红包处理
+                $detail_data['get_uid'] = 112; // 1号机器人uid
+                $detail_data['get_time'] = time();
+                $detail_data['type'] = 1;
+                // $robot_one = Db::name('chat_red_detail')->where(['m_id'=>$res_id])->update($robot_one_data)->limit(1);
                 }
-                // 2免死机器人
-                if($robot_dis == 4){ //第5个红包
-                    $detail_data['get_uid'] = 113; // 2号机器人uid 免死
-                    $detail_data['get_time'] = time();
-                    $detail_data['type'] = 1;
-                    $detail_data['is_die'] = 1;
-
-                    // 免死金额5%返到发包用户
-                    $rebate_money = $v;
-                }
-
                 // 根据设置雷点 标记好中雷的红包
                 // $new_v = preg_replace("/[.]/",'',$v);
                 // 转换为数组
@@ -210,6 +198,17 @@ class Groupchat extends Base
                             $detail_data['is_die'] = 2; // 中雷
                         }
                     }
+                }
+
+                // 2免死机器人
+                if($robot_dis == 4){ //第5个红包
+                    $detail_data['get_uid'] = 113; // 2号机器人uid 免死
+                    $detail_data['get_time'] = time();
+                    $detail_data['type'] = 1;
+                    $detail_data['is_die'] = 1;
+
+                    // 免死金额5%返到发包用户
+                    $rebate_money = $v;
                 }
                 $res = Db::name('chat_red_detail')->insert($detail_data);
                 $robot_dis++;
@@ -266,6 +265,7 @@ class Groupchat extends Base
                             'rebate' => $superior_rebate,
                             'money' => $superior_rebate_money,
                             'type' => 4,
+                            'user_level' => $keys, // 等级
                             'create_time' => $time,
                             'remake' => '发包返水'
                         ];
@@ -293,7 +293,7 @@ class Groupchat extends Base
             $red_log = [
                 'uid' => $user['id'],
                 'm_id' => $res_id,
-                'money' => $red_money,
+                'money' => '-'.$red_money,
                 'type' => 1,
                 'create_time' => $time,
                 'remake' => '发包'
@@ -423,6 +423,7 @@ class Groupchat extends Base
                             'red_money' => $red_one['money'],
                             'money' => $superior_rebate_money,
                             'type' => 6,
+                            'user_level' => $keys, // 等级
                             'create_time' => $time,
                             'remake' => '抢包返水'
                         ];
@@ -444,6 +445,7 @@ class Groupchat extends Base
                     'uid' => $user['id'],
                     'm_id' => $red_one['id'],
                     'red_money' => $red_one['money'],
+                    'con_money' => $red_detail['money'],
                     'money' => $award_money,
                     'type' => 7,
                     'create_time' => $time,

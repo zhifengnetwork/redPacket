@@ -29,16 +29,16 @@
             		<!---->
             		<div class="record">
             			<h2>我的收益记录</h2>
-            			<p>我的团队总人数{$nums}人</p>
+            			<p>我的团队总人数{$team_num}人</p>
             			<div class="unit">
             				<div class="today">
             					<span class="days">今日收益</span>
-            					<span class="tr">230.52</span>
+            					<span class="tr">{$toDay_income}</span>
             					<span class="ts">元</span>
             				</div>
             				<div class="diana">
             					<span class="days">月总收益</span>
-            					<span class="tr">26500.23</span>
+            					<span class="tr">{$month_income}</span>
             					<span class="ts">元</span>
             				</div>
             			</div>
@@ -48,130 +48,30 @@
             			<ul>
             				<li>昵称</li>
             				<li>佣金</li>
-            				<li>下线级别</li>
+            				<li>级别</li>
             				<li>日期</li>
             			</ul>
             		</div>
             		<!--详细-->
             		<div class="list_wrap">
+						{foreach name="income_info" item="vo"}
             			<ul>
             				<li>
-            					<span>小明</span>
+            					<span>{$vo.nickname}</span>
             				</li>
             				<li>
             					<span>￥</span>
-            					<span>100244343</span>
+            					<span>{$vo.money}</span>
             				</li>
             				<li>
-            					<span>1</span>
+            					<span>{$vo.money}</span>
             				</li>
             				<li>
             					<p>2019-01-29</p>
             					<p>15：59</p>
             				</li>
-            			</ul>
-            			
-            			<ul>
-            				<li>
-            					<span>小明</span>
-            				</li>
-            				<li>
-            					<span>￥</span>
-            					<span>100244343</span>
-            				</li>
-            				<li>
-            					<span>3</span>
-            				</li>
-            				<li>
-            					<p>2019-01-29</p>
-            					<p>15：59</p>
-            				</li>
-            			</ul>
-            			
-            			<ul>
-            				<li>
-            					<span>小明</span>
-            				</li>
-            				<li>
-            					<span>￥</span>
-            					<span>100244343</span>
-            				</li>
-            				<li>
-            					<span>1</span>
-            				</li>
-            				<li>
-            					<p>2019-01-29</p>
-            					<p>15：59</p>
-            				</li>
-            			</ul>
-            			
-            			<ul>
-            				<li>
-            					<span>小明</span>
-            				</li>
-            				<li>
-            					<span>￥</span>
-            					<span>100244343</span>
-            				</li>
-            				<li>
-            					<span>2</span>
-            				</li>
-            				<li>
-            					<p>2019-01-29</p>
-            					<p>15：59</p>
-            				</li>
-            			</ul>
-            			
-            			<ul>
-            				<li>
-            					<span>小明</span>
-            				</li>
-            				<li>
-            					<span>￥</span>
-            					<span>100244343</span>
-            				</li>
-            				<li>
-            					<span>1</span>
-            				</li>
-            				<li>
-            					<p>2019-01-29</p>
-            					<p>15：59</p>
-            				</li>
-            			</ul>
-            			
-            			<ul>
-            				<li>
-            					<span>小明</span>
-            				</li>
-            				<li>
-            					<span>￥</span>
-            					<span>100244343</span>
-            				</li>
-            				<li>
-            					<span>1</span>
-            				</li>
-            				<li>
-            					<p>2019-01-29</p>
-            					<p>15：59</p>
-            				</li>
-            			</ul>
-            			
-            			<ul>
-            				<li>
-            					<span>小明</span>
-            				</li>
-            				<li>
-            					<span>￥</span>
-            					<span>100244343</span>
-            				</li>
-            				<li>
-            					<span>1</span>
-            				</li>
-            				<li>
-            					<p>2019-01-29</p>
-            					<p>15：59</p>
-            				</li>
-            			</ul>
+						</ul>
+						{/foreach}
             		</div>
             	</div>
             </div>

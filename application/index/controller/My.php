@@ -125,10 +125,38 @@ class My extends Base
     public function myTeamIncome()
     {
         $userid = session('user.id');
-        $nums =  Db::query("select count(id) as nums from users where pid = $userid");
+        // 我的团队人数 当前用户的所有下线
+        $team_list =  getDownUserUids2($userid);
+        $team_num = count($team_list);
+        unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
+        $team_list_in = '';
+        if($team_list){
+            foreach ($team_list as $v) {
+                $team_list_in .= $v.',';
+            }
+            $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
+        }
+        // 收益详情
+        $map['u.id'] = $userid;
+        $map['d.type'] = ['in','4,6'];
+        $income_info = Db::name('chat_red_log')->alias('d')
+                        ->field('d.*,u.nickname,u.head_imgurl')
+                        ->join('users u','d.uid = u.id')
+                        ->where($map)
+                        ->order('create_time desc')
+                        ->select();
 
-        $this->assign('nums', $nums[0]['nums']);
+        // 今日收益
+        $where['uid'] = $userid;
+        $where['type'] = ['in','4,6'];
+        $toDay_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'today')->sum('money');
+        // 月总收益
+        $month_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'month')->sum('money');
 
+        $this->assign('team_num', $team_num);
+        $this->assign('toDay_income', $toDay_income);
+        $this->assign('month_income', $month_income);
+        $this->assign('income_info', $income_info);
         return $this->fetch('myTeamIncome');
     }
 
