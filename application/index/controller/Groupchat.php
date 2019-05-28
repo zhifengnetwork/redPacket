@@ -218,7 +218,6 @@ class Groupchat extends Base
             $upAll_arr = getUpMemberIds($user['id']); // 获取所有上级最多30级
             unset($GLOBALS['g_up_mids']); // 清空上一次循环全局数据
             unset($GLOBALS['up_i']); 
-            // pre($upAll_arr);die;
             $upAll_i = 1;
             $superior_red_log_res = true;
             $superior_rebate_res = true;

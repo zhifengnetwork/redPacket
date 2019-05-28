@@ -254,6 +254,26 @@ class Chat extends Controller{
         },$info);
         return $rows;
     }
+
+    /**
+     * 根据room_id来获取5分钟内的红包
+     */
+    public function getRedList(){
+        
+        if(!Request::instance()->isAjax()){
+            return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
+        }
+        $room_id = input('room_id/d');
+        $map['room_id'] = $room_id;
+        $info = Db::name('chat_red_master')->alias('d')
+                ->field('d.id,d.uid,d.room_id,u.nickname,head_imgurl')
+                ->join('users u','d.uid = u.id')
+                ->where($map)
+                ->whereTime('d.create_time','-5 minute')
+                ->order('create_time desc')
+                ->select();
+        return $info;
+    }
     
     /**
      * 修改聊天状态

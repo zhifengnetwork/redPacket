@@ -41,7 +41,7 @@ function getDownUserUids2($uid){
 	return $g_down_Uids;
 }
 
-// 获取当前用户的所有下线(不包括自己)3
+// 获取当前用户的所有下线(不包括自己)有等级
 function getDownUserUids3($uid){
     global $g_down_Uids;
     $level = 1;
