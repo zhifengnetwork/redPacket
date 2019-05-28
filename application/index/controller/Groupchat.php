@@ -352,9 +352,14 @@ class Groupchat extends Base
 
         $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
         if($is_get){
-            // 返回红包获取明细
-            // todo
             return message(101,'红包已抢过');
+        }
+        // 判断红包是否过期 大于5分钟
+        if(!$is_get){
+            $ex_time = $red_one['create_time']+2;
+            if(time() > $ex_time){
+                return message(-1,'红包已过期');
+            }
         }
 
         // 启动事务
@@ -426,7 +431,7 @@ class Groupchat extends Base
                 }
             }
             // +-------------奖励-------------+
-            // 抢包奖励
+            // 抢包奖励 抢到指定金额
             $award_money = $this->awardList($red_detail['money']);
             $award_log_res = true;
             $award_rebate_res =true;

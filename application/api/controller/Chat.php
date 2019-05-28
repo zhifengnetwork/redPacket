@@ -252,11 +252,9 @@ class Chat extends Controller{
             ];
 
         },$info);
-
         return $rows;
     }
     
-
     /**
      * 修改聊天状态
      * 
@@ -272,4 +270,14 @@ class Chat extends Controller{
         return json(['code'=>1, 'msg'=>'update'.$res, 'data'=>'']);
     }
 
+    /**
+     * 红包超时退回
+     */
+    public function sendBackRed()
+    {
+        if(!Request::instance()->isAjax()){
+            return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
+        }
+
+    }
 }
