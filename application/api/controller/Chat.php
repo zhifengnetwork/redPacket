@@ -266,11 +266,10 @@ class Chat extends Controller{
         $room_id = input('room_id/d');
         $map['room_id'] = $room_id;
         $info = Db::name('chat_red_master')->alias('d')
-                ->field('d.id,d.uid,d.room_id,u.nickname,head_imgurl')
+                ->field('d.id,d.uid,d.room_id,d.ray_point,d.money,u.nickname,head_imgurl')
                 ->join('users u','d.uid = u.id')
                 ->where($map)
                 ->whereTime('d.create_time','-5 minute')
-                ->order('create_time desc')
                 ->select();
         return $info;
     }

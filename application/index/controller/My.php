@@ -75,6 +75,7 @@ class My extends Base
         // $txList =  Db::query("select id,uid,time,amount,status from tixian where uid = $userid");
         $txList = Db::name('tixian')->where(['uid'=>$userid])->order('time desc')->select();
         // $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
+        // 红包记录
         $redbagList = Db::name('chat_red_log')->where(['uid'=>$userid])->order('create_time desc')->select();
         // var_dump($rechargeList);exit;
         $this->assign('rechargeList', $rechargeList);
