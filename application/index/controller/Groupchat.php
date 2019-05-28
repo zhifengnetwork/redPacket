@@ -436,7 +436,7 @@ class Groupchat extends Base
                 // 抢包奖励插入chat_red_log流水日志
                 $award_log = [
                     'from_id' => $red_one['uid'],
-                    'uid' => $v,
+                    'uid' => $user['id'],
                     'm_id' => $red_one['id'],
                     'red_money' => $red_one['money'],
                     'money' => $award_money,
@@ -450,6 +450,7 @@ class Groupchat extends Base
             // 判断当前红包主表是否记录 发包奖励 返给发包人
             $point_award_money_res = true;
             $point_award_money_log_res = true;
+            $point_award_update_res = true;
             if(!$red_one['is_award']){
                 // 7包发包奖励 
                 // 获取红包明细，中雷人数是否和雷点个数一致
@@ -509,12 +510,12 @@ class Groupchat extends Base
                     }
                 }
 
-                // 累加奖励并记录
+                // 累加奖励并记录 
                 if($point_award_money){
                     $point_award_money = abs($point_award_money);
                     $point_award_money_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $point_award_money);
                     // 修改红包主表标记已奖励
-                    
+                    $point_award_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_award'=>1]);
                     $point_award_money_log = [
                         'from_id' => $red_one['uid'],
                         'uid' => $red_one['uid'],
