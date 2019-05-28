@@ -356,7 +356,7 @@ class Groupchat extends Base
         }
         // 判断红包是否过期 大于5分钟
         if(!$is_get){
-            $ex_time = $red_one['create_time']+2;
+            $ex_time = $red_one['create_time']+(5*60);
             if(time() > $ex_time){
                 return message(-1,'红包已过期');
             }
