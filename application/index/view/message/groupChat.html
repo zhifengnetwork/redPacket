@@ -787,7 +787,7 @@
                 }else if(msg.code == 101){
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.master_info.is_die_flag);
-                    $('.get_red_money').html(msg.data.master_info.money);
+                    $('.get_red_money').html(msg.data.master_info.get_red_money);
                     $('.from_nickname').html(msg.data.master_info.nickname);
                     $(".group_pack_img").attr("src", msg.data.master_info.head_imgurl);
                     $(that).find(".pack_state").html('已拆开');

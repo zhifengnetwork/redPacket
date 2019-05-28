@@ -354,6 +354,7 @@ class Groupchat extends Base
         if($is_get){
             $data = $this->getRedDetail2($is_get['m_id']);
             $data['master_info']['is_die_flag'] =  $is_get['is_die']==2?'你已中雷':'你未中雷';
+            $data['master_info']['get_red_money'] = $is_get['money'];
             return message(101,'红包已抢过', $data);
         }
         // 判断红包是否过期 大于5分钟
