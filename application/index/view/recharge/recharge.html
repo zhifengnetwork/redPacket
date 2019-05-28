@@ -93,7 +93,7 @@
 	            		<div class="box_wrap">
 	            			<!--上传图片存放区-->
 	            			<div class="file_img_ut">
-                                <form enctype="multipart/form-data" id="uploadForm">
+                                <form style="height: 3.15rem" enctype="multipart/form-data" id="uploadForm">
 								    <img id="file_img" src=""/>
                                 </form>
 							</div>
@@ -121,8 +121,7 @@
         </div>    
 		
 		
-		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
-		<script src="__STATIC__/chatWeb/js/public/public.js"></script>
+{include file="common/footer_js"}
 		<script>
 			$(function() {
 				//支付方式切换
@@ -133,13 +132,7 @@
 			        var n = $(this).index();
 			        $('.code_btn_wrap .wecha_code').eq(n).show().siblings('.wecha_code').hide();
 			    });
-			    //提交弹框
-			    $('.refer_btn').on('click', function() {
-			    	$('.submit_pop').show();
-			    });
-			    $('.submit_pop').on('click', function() {
-			    	$('.submit_pop').hide();
-			    });
+			    
 			});
 			
 			//上传凭证
@@ -171,28 +164,33 @@
                 var file = FileImg.src;
     
        
-
                 if(money<=0){
-                    alert('金额不能小于等于0');
+                    layer.msg('金额不能小于等于0');
                     return false;
+                }
+                console.log(file.indexOf('data:image'))
+                if(file.indexOf('data:image')>-1){
+                    $.ajax({
+                        url: '/index/recharge/subrecharge',//
+                        dataType:'json',  
+                        data: "money="+money+"&img="+file,        
+                        type: "POST",
+                        success: function(json){
+                            if(json.flag==1){
 
-                }
-                if(file==''){
-                    alert('请上传凭证');
+                                layer.msg('提交成功');
+                            }else{
+
+                                layer.msg('提交失败！');
+                            }
+                        }   
+                    })
+                }else{
+                    layer.msg('请上传图片');
                     return false;
                 }
-                $.ajax({
-                    url: '/index/recharge/subrecharge',//
-                    dataType:'json',  
-                    data: "money="+money+"&img="+file,        
-                    type: "POST",
-                    success: function(data) {
-                        // alert(json.msg);//成功
-                    },
-                    error: function() {
-                        // alert(json.msg);//失败
-                    }
-                })
+
+                
 
 
 
