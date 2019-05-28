@@ -70,12 +70,12 @@ class My extends Base
         $user_arr = Db::name('users')->field('id,account')->where('id',session('user.id'))->find();
         //充值记录
         // $rechargeList =  Db::query("select id,uid,time,amount,status from recharge where uid = $userid");
-        $rechargeList = Db::name('recharge')->where(['uid'=>$userid])->select();
+        $rechargeList = Db::name('recharge')->where(['uid'=>$userid])->order('time desc')->select();
         //提现记录
         // $txList =  Db::query("select id,uid,time,amount,status from tixian where uid = $userid");
-        $txList = Db::name('tixian')->where(['uid'=>$userid])->select();
+        $txList = Db::name('tixian')->where(['uid'=>$userid])->order('time desc')->select();
         // $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
-        $redbagList = Db::name('chat_red_detail')->where(['get_uid'=>$userid, 'type'=>1])->select();
+        $redbagList = Db::name('chat_red_log')->where(['uid'=>$userid])->order('create_time desc')->select();
         // var_dump($rechargeList);exit;
         $this->assign('rechargeList', $rechargeList);
         $this->assign('txList', $txList);
@@ -143,6 +143,10 @@ class My extends Base
         $list =  Db::query("select id,pid,head_imgurl,nickname from users where pid = $userid");
         $this->assign('list', $list);
         return $this->fetch('myTeam');
+    }
+
+    public function activityCenter(){
+        return $this->fetch('activity_center');
     }
 
     /*

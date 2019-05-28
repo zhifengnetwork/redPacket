@@ -112,13 +112,13 @@
 <script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
 <script>
     $(function(){
-        $('.lb_headWrap').hide();
+        $('.lb_headWrap').css('background','transparent');
         $(window).scroll(function(){
             let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
             if(scrollTop >= 100){
-                $('.lb_headWrap').show();
+                $('.lb_headWrap').css('background','linear-gradient(to right,#00dafd,#00a7ff)');
             }else{
-                $('.lb_headWrap').hide();
+                $('.lb_headWrap').css('background','transparent');
             }
         })
         $('.group_set_list_item').click(function(){

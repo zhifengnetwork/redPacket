@@ -62,6 +62,7 @@ body{
     -ms-flex-align: center;
     align-items: center;
     justify-content: center;
+    justify-content: space-between;
 }
 .team-content .list-item ul li .user-name .avatar{
     width: .65rem;
@@ -72,4 +73,12 @@ body{
 }
 .team-content .list-item ul li .user-name img{
     width: 100%;
+}
+
+.team-content .list-item ul li .user-name .name{
+    flex: 1;
+    display:inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

@@ -783,6 +783,13 @@
                     $(that).find(".pack_state").html('已拆开');
                     $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
                     $(".group_pack_info").attr("data-red-id", msg.data.red_id);
+                }else if(msg.code == '-1'){
+                    layer.msg(msg.msg,function(){
+                        $(that).find(".pack_state").html('已过期');
+                        $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
+                        // $(".group_pack_info").trigger("click");
+                    });
+                    return;
                 }else{
                     layer.msg(msg.msg);
                     return;
