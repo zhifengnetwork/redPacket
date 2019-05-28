@@ -275,7 +275,7 @@ class Users extends Common
         $list = Db::table('recharge')->alias('r')
                 ->join('users u', 'u.id = r.uid', 'LEFT')
                 ->where($where)
-                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.proof,r.ordersn,r.time,r.status')->paginate(10);               
+                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.proof,r.ordersn,r.time,r.status')->order('r.time desc')->paginate(10);               
          // 获取分页显示
         $page = $list->render();
         // 模板变量赋值

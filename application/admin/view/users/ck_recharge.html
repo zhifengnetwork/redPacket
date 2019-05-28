@@ -57,7 +57,7 @@
                                 <td>{$vo.nickname}</td>
                                 <td>{$vo.mobile}</td>
                                 <td>{$vo.amount}</td>
-                                <td><img src="../../{$vo.proof}"></td>
+                                <td><img src="../../{$vo.proof}" width="20px" id="{vo.id}" onclick="bigImg(this)" ondblclick="normalImg(this)"></td>
                                 <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
                                 <td>
                                     {if condition="$vo.type eq 1"}
@@ -68,7 +68,7 @@
 
                                 </td>
                                 <td>待充值</td>
-                                <td><a onclick="recharge({$vo.id})">通过</a>/<a href="    ">驳回</a></td>    
+                                <td><a onclick="recharge({$vo.id})">通过</a>/<a href="">驳回</a></td>    
                             </tr>
                             {/volist}
                         </tbody>
@@ -103,6 +103,15 @@
         },1000);
     }    
 
+    function bigImg(x){
+
+        x.style.width="200px";
+    }
+
+    function normalImg(x){
+  
+        x.style.width="20px";
+    }
 </script>
 {/block}
 {block name="script"}
