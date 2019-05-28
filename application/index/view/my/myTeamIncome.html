@@ -48,7 +48,7 @@
             			<ul>
             				<li>昵称</li>
             				<li>佣金</li>
-            				<li>级别</li>
+            				<!-- <li>级别</li> -->
             				<li>日期</li>
             			</ul>
             		</div>
@@ -63,12 +63,12 @@
             					<span>￥</span>
             					<span>{$vo.money}</span>
             				</li>
-            				<li>
+            				<!-- <li>
             					<span>{$vo.money}</span>
-            				</li>
+            				</li> -->
             				<li>
-            					<p>2019-01-29</p>
-            					<p>15：59</p>
+								<p>{$vo.create_time|date='Y-m-d',###}</p>
+								<p>{$vo.create_time|date='H:i',###}</p>
             				</li>
 						</ul>
 						{/foreach}

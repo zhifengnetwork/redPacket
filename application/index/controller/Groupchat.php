@@ -259,6 +259,7 @@ class Groupchat extends Base
 
                         // 发包返水插入chat_red_log流水日志
                         $superior_red_log = [
+                            'from_id' => $user['id'],
                             'uid' => $v,
                             'm_id' => $res_id,
                             'red_money' => $red_money,

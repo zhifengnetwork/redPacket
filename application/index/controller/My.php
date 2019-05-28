@@ -129,23 +129,16 @@ class My extends Base
         $team_list =  getDownUserUids2($userid);
         $team_num = count($team_list);
         unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
-        $team_list_in = '';
-        if($team_list){
-            foreach ($team_list as $v) {
-                $team_list_in .= $v.',';
-            }
-            $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
-        }
+       
         // 收益详情
-        $map['u.id'] = $userid;
+        $map['d.uid'] = $userid;
         $map['d.type'] = ['in','4,6'];
         $income_info = Db::name('chat_red_log')->alias('d')
-                        ->field('d.*,u.nickname,u.head_imgurl')
-                        ->join('users u','d.uid = u.id')
+                        ->field('d.*,u.nickname')
+                        ->join('users u','d.from_id = u.id')
                         ->where($map)
                         ->order('create_time desc')
                         ->select();
-
         // 今日收益
         $where['uid'] = $userid;
         $where['type'] = ['in','4,6'];
@@ -168,7 +161,27 @@ class My extends Base
     {
         
         $userid = session('user.id');
-        $list =  Db::query("select id,pid,head_imgurl,nickname from users where pid = $userid");
+        // 当前用户的所有下线
+        $team_list =  getDownUserUids3($userid);
+        unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
+        $team_list_in = '';
+        $map['id'] = '';
+        if($team_list){
+            foreach ($team_list as $v) {
+                $team_list_in .= $v['uid'].',';
+            }
+            $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
+            $map['id'] = ['in',$team_list_in];
+        }
+        
+        $list = Db::name('users')->field('id,nickname,head_imgurl')->where($map)->select();
+        foreach($list as $k=>$v){
+            foreach($team_list as $ks=>$vs){
+                if($v['id']==$vs['uid']){
+                    $list[$k]['level'] = $vs['level'];
+                }
+            }
+        }
         $this->assign('list', $list);
         return $this->fetch('myTeam');
     }
