@@ -75,7 +75,10 @@ class My extends Base
         // $txList =  Db::query("select id,uid,time,amount,status from tixian where uid = $userid");
         $txList = Db::name('tixian')->where(['uid'=>$userid])->order('time desc')->select();
         // $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
-        $redbagList = Db::name('chat_red_log')->where(['uid'=>$userid])->order('create_time desc')->select();
+        // 红包记录
+        $where['uid'] = $userid;
+        $where['type'] = ['in','1,2,7,8,9,10,11,12'];
+        $redbagList = Db::name('chat_red_log')->where($where)->order('create_time desc')->select();
         // var_dump($rechargeList);exit;
         $this->assign('rechargeList', $rechargeList);
         $this->assign('txList', $txList);
@@ -125,10 +128,31 @@ class My extends Base
     public function myTeamIncome()
     {
         $userid = session('user.id');
-        $nums =  Db::query("select count(id) as nums from users where pid = $userid");
+        // 我的团队人数 当前用户的所有下线
+        $team_list =  getDownUserUids2($userid);
+        $team_num = count($team_list);
+        unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
+       
+        // 收益详情
+        $map['d.uid'] = $userid;
+        $map['d.type'] = ['in','3,4,5,6'];
+        $income_info = Db::name('chat_red_log')->alias('d')
+                        ->field('d.*,u.nickname')
+                        ->join('users u','d.from_id = u.id')
+                        ->where($map)
+                        ->order('create_time desc')
+                        ->select();
+        // 今日收益
+        $where['uid'] = $userid;
+        $where['type'] = ['in','3,4,5,6'];
+        $toDay_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'today')->sum('money');
+        // 月总收益
+        $month_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'month')->sum('money');
 
-        $this->assign('nums', $nums[0]['nums']);
-
+        $this->assign('team_num', $team_num);
+        $this->assign('toDay_income', $toDay_income);
+        $this->assign('month_income', $month_income);
+        $this->assign('income_info', $income_info);
         return $this->fetch('myTeamIncome');
     }
 
@@ -140,7 +164,27 @@ class My extends Base
     {
         
         $userid = session('user.id');
-        $list =  Db::query("select id,pid,head_imgurl,nickname from users where pid = $userid");
+        // 当前用户的所有下线
+        $team_list =  getDownUserUids3($userid);
+        unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
+        $team_list_in = '';
+        $map['id'] = '';
+        if($team_list){
+            foreach ($team_list as $v) {
+                $team_list_in .= $v['uid'].',';
+            }
+            $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
+            $map['id'] = ['in',$team_list_in];
+        }
+        
+        $list = Db::name('users')->field('id,nickname,head_imgurl')->where($map)->select();
+        foreach($list as $k=>$v){
+            foreach($team_list as $ks=>$vs){
+                if($v['id']==$vs['uid']){
+                    $list[$k]['level'] = $vs['level'];
+                }
+            }
+        }
         $this->assign('list', $list);
         return $this->fetch('myTeam');
     }

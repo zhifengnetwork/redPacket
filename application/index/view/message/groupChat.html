@@ -387,6 +387,7 @@
             var login_data = '{"type":"login","fromid":'+fromid+',"room_id":'+room_id+',"group_name":"'+group_name.replace(/"/g, '\\"')+'"}';
             console.log("websocket握手成功，发送登录数据:"+login_data);
             ws.send(login_data);
+            red_list_load();
         }
 
         // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
@@ -774,7 +775,7 @@
                 layer.msg('缺失参数-');return;
             }
             $.post("/index/groupchat/openToRed",{"room_id":room_id,"red_id":red_id,"key":key},function(msg){
-                if(msg.code == 1 || msg.code == 101){
+                if(msg.code == 1 ){
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.is_die_flag);
                     $('.get_red_money').html(msg.data.get_red_money);
@@ -783,6 +784,15 @@
                     $(that).find(".pack_state").html('已拆开');
                     $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
                     $(".group_pack_info").attr("data-red-id", msg.data.red_id);
+                }else if(msg.code == 101){
+                    $('.group_packwrap').show();
+                    $('.group_pack_state').html(msg.data.master_info.is_die_flag);
+                    $('.get_red_money').html(msg.data.master_info.money);
+                    $('.from_nickname').html(msg.data.master_info.nickname);
+                    $(".group_pack_img").attr("src", msg.data.master_info.head_imgurl);
+                    $(that).find(".pack_state").html('已拆开');
+                    $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
+                    $(".group_pack_info").attr("data-red-id", msg.data.master_info.id);
                 }else if(msg.code == '-1'){
                     layer.msg(msg.msg,function(){
                         $(that).find(".pack_state").html('已过期');
@@ -796,6 +806,63 @@
                 }
             },'json')
         });
+
+
+        // 加载5分钟内的红包list
+        function red_list_load(){
+            $.post(
+                API_URL +"getRedList",
+                {"room_id":room_id},
+                function(e){
+                    console.log(e);
+                    console.log('load 红包');
+                    $.each(e,function(index,content){
+                        // 当前登录用户发送的放右边 
+                        if(fromid==content.uid){ 
+                            let str = '';
+                            str +=  '<div class="dialog_content_oneself clearfloat open_red"  open_red" data-m-id="'+content.id+'">'
+                                +   '<div class="group_content_oneself clearfloat">'
+                                +   '<div class="group_content_oneself_imgwrap">'
+                                +   '<img class="group_content_oneself_img" src="'+from_head+'">'
+                                +   '</div>'
+                                +   '<div class="group_content_oneself_info">'
+                                +   '<p class="group_content_oneself_name">'+from_name+'</p>'
+                                +   '<div class="group_content_oneself_pack">'
+                                +   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack.png">'
+                                +   '<div class="pack_titie">拆</div>'
+                                +   '<div class="pack_num">'
+                                +   '<p>恭喜发财</p>'
+                                +   '<p>'+content.money+'/'+content.ray_point+'</p>'
+                                +   '</div>'
+                                +   '<div class="pack_state">'
+                                +   '未拆开'
+                                +   '</div></div></div></div>'
+                            $('.group_content').append(str);
+                        }else{
+                            // 页面左边
+                            let str = '';
+                            str += '<div class="group_content_opposite clearfloat open_red" data-m-id="'+content.id+'">'
+                                + '<div class="group_content_opposite_imgwrap">'
+                                + '<img class="group_content_opposite_img" src='+content.head_imgurl+'>'
+                                + '</div>'
+                                + '<div class="group_content_opposite_info">'
+                                + '<p class="group_content_opposite_name">'+content.nickname+'</p>'
+                                + '<div class="group_content_opposite_pack">'
+                                + '<img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/news/pack.png">'
+                                + '<div class="pack_titie">拆</div>'
+                                + '<div class="pack_num">'
+                                + '<p>恭喜发财</p>'
+                                + '<p>'+content.money+'/'+content.ray_point+'</p>'
+                                + '</div>'
+                                + '<div class="pack_state">'
+                                + '未拆开'
+                                + '</div></div></div></div>'
+                            $('.group_content').append(str);
+                        }
+                    })
+                },'json'
+            );
+        }
 
     </script>
 </body>

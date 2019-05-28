@@ -26,7 +26,7 @@ body{
     align-items: center;
 }
 .team-content .thead ul li{
-    width: 25%;
+    width: 30%;
     height: .57rem;
     line-height: .57rem;
     text-align: center;
@@ -50,7 +50,7 @@ body{
     font-size: .2rem;
 }
 .team-content .list-item ul li div{
-    width: 25%;
+    width: 30%;
     text-align: center;
 }
 .team-content .list-item ul li .user-name{

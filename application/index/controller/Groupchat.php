@@ -153,24 +153,12 @@ class Groupchat extends Base
                 ];
                 // 1号机器人获取红包
                 if($robot_dis == 3){ // 第3个红包
-                    // 平台两个机器人获得红包处理
-                    $detail_data['get_uid'] = 112; // 1号机器人uid
-                    $detail_data['get_time'] = time();
-                    $detail_data['type'] = 1;
-                    // $robot_one = Db::name('chat_red_detail')->where(['m_id'=>$res_id])->update($robot_one_data)->limit(1);
-                    
+                // 平台两个机器人获得红包处理
+                $detail_data['get_uid'] = 112; // 1号机器人uid
+                $detail_data['get_time'] = time();
+                $detail_data['type'] = 1;
+                // $robot_one = Db::name('chat_red_detail')->where(['m_id'=>$res_id])->update($robot_one_data)->limit(1);
                 }
-                // 2免死机器人
-                if($robot_dis == 4){ //第5个红包
-                    $detail_data['get_uid'] = 113; // 2号机器人uid 免死
-                    $detail_data['get_time'] = time();
-                    $detail_data['type'] = 1;
-                    $detail_data['is_die'] = 1;
-
-                    // 免死金额5%返到发包用户
-                    $rebate_money = $v;
-                }
-
                 // 根据设置雷点 标记好中雷的红包
                 // $new_v = preg_replace("/[.]/",'',$v);
                 // 转换为数组
@@ -211,6 +199,17 @@ class Groupchat extends Base
                         }
                     }
                 }
+
+                // 2免死机器人
+                if($robot_dis == 4){ //第5个红包
+                    $detail_data['get_uid'] = 113; // 2号机器人uid 免死
+                    $detail_data['get_time'] = time();
+                    $detail_data['type'] = 1;
+                    $detail_data['is_die'] = 1;
+
+                    // 免死金额5%返到发包用户
+                    $rebate_money = $v;
+                }
                 $res = Db::name('chat_red_detail')->insert($detail_data);
                 $robot_dis++;
             }
@@ -219,7 +218,6 @@ class Groupchat extends Base
             $upAll_arr = getUpMemberIds($user['id']); // 获取所有上级最多30级
             unset($GLOBALS['g_up_mids']); // 清空上一次循环全局数据
             unset($GLOBALS['up_i']); 
-            // pre($upAll_arr);die;
             $upAll_i = 1;
             $superior_red_log_res = true;
             $superior_rebate_res = true;
@@ -260,12 +258,14 @@ class Groupchat extends Base
 
                         // 发包返水插入chat_red_log流水日志
                         $superior_red_log = [
+                            'from_id' => $user['id'],
                             'uid' => $v,
                             'm_id' => $res_id,
                             'red_money' => $red_money,
                             'rebate' => $superior_rebate,
                             'money' => $superior_rebate_money,
                             'type' => 4,
+                            'user_level' => $keys, // 等级
                             'create_time' => $time,
                             'remake' => '发包返水'
                         ];
@@ -293,7 +293,7 @@ class Groupchat extends Base
             $red_log = [
                 'uid' => $user['id'],
                 'm_id' => $res_id,
-                'money' => $red_money,
+                'money' => '-'.$red_money,
                 'type' => 1,
                 'create_time' => $time,
                 'remake' => '发包'
@@ -352,7 +352,9 @@ class Groupchat extends Base
 
         $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
         if($is_get){
-            return message(101,'红包已抢过');
+            $data = $this->getRedDetail2($is_get['m_id']);
+            $data['master_info']['is_die_flag'] =  $is_get['is_die']==2?'你已中雷':'你未中雷';
+            return message(101,'红包已抢过', $data);
         }
         // 判断红包是否过期 大于5分钟
         if(!$is_get){
@@ -382,6 +384,18 @@ class Groupchat extends Base
                 'type' => 1
             ];
             $get_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update($get_update);
+            // 插入抢到红包记录
+            $grab_red_log = [
+                'from_id' => $red_one['uid'],
+                'uid' => $user['id'],
+                'm_id' => $red_one['id'],
+                'red_money' => $red_one['money'],
+                'money' => $red_detail['money'],
+                'type' => 11,
+                'create_time' => $time,
+                'remake' => '抢到红包'
+            ];
+            $grab_red_log_res = Db::name('chat_red_log')->insert($grab_red_log);
 
             // 抢包返水
             $upAll_arr = getUpMemberIds($user['id']); // 获取所有上级最多30级
@@ -423,6 +437,7 @@ class Groupchat extends Base
                             'red_money' => $red_one['money'],
                             'money' => $superior_rebate_money,
                             'type' => 6,
+                            'user_level' => $keys, // 等级
                             'create_time' => $time,
                             'remake' => '抢包返水'
                         ];
@@ -444,6 +459,7 @@ class Groupchat extends Base
                     'uid' => $user['id'],
                     'm_id' => $red_one['id'],
                     'red_money' => $red_one['money'],
+                    'con_money' => $red_detail['money'],
                     'money' => $award_money,
                     'type' => 7,
                     'create_time' => $time,
@@ -698,6 +714,45 @@ class Groupchat extends Base
             return false;
         }
         
+    }
+
+
+    // 红包详情2 
+    private function getRedDetail2($red_id)
+    {
+  
+        $m_id = $red_id;
+        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point')->where(['id'=>$m_id])->find();
+        if(!$master_info){
+            return message(0,'红包不存在');
+        }
+        $master_user = Db::name('users')->field('id,nickname,head_imgurl')->where(['id'=>$master_info['uid']])->find();
+        $detail_info = Db::name('chat_red_detail')->alias('d')
+                        ->field('d.id,d.m_id,d.get_uid,d.money,d.get_time,d.type,d.is_die,u.nickname,u.head_imgurl')
+                        ->join('users u','d.get_uid = u.id')
+                        ->where(['d.type'=>1, 'd.m_id'=>$m_id])
+                        ->order('get_time desc')
+                        ->select();
+        $master_info['get_num'] = count($detail_info);
+        $master_info['nickname'] = $master_user['nickname'];
+        $master_info['head_imgurl'] = $master_user['head_imgurl'];
+       
+        foreach($detail_info as $k=>$v){
+            if($v['get_uid']==113){ // 免死机器人
+                $detail_info[$k]['nickname'] = '免死金牌';
+            }
+            if($v['get_uid']==112){ // 平台抢红包机器人
+                $detail_info[$k]['nickname'] = '老东家888';
+            }
+            $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
+            $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
+        }
+        
+        $data = [
+            'master_info' => $master_info,
+            'detail_info' => $detail_info
+        ];
+        return $data;
     }
     
 }

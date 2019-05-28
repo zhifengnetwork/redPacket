@@ -22,6 +22,43 @@ function getUpMemberIds($uid){
 	return $g_up_mids;
 }
 
+// 获取当前用户的所有下线(不包括自己)
+function getDownUserUids2($uid){
+    global $g_down_Uids;
+    // $level = 1;
+	if($uid){
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
+		foreach($member_arr as $mb){
+			if($mb['id'] && $mb['id'] != $uid){
+                // $g_down_Uids['level'][] = $level;
+                // $g_down_Uids['id'][] = $mb['id'];
+                $g_down_Uids[] = $mb['id'];
+                getDownUserUids2($mb['id']);
+            }
+            // $level++;
+		}
+    }
+	return $g_down_Uids;
+}
+
+// 获取当前用户的所有下线(不包括自己)有等级
+function getDownUserUids3($uid){
+    global $g_down_Uids;
+    $level = 1;
+	if($uid){
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
+		foreach($member_arr as $k=>$mb){
+			if($mb['id'] && $mb['id'] != $uid){
+                $g_down_Uids[$k]['level'] = $level;
+                $g_down_Uids[$k]['uid'] = $mb['id'];
+                getDownUserUids2($mb['id']);
+            }
+            $level++;
+		}
+    }
+	return $g_down_Uids;
+}
+
 //数组转换成[配置项名称]获取数据
 function arr2name($data,$key=''){
     $return_data=array();

@@ -40,7 +40,7 @@ $(function(){
 
     })
     // 领取详情
-    $('.group_pack_info').click(function(){
+    $('.group_pack_info').on('click',function(){
         $('.group_content').hide();
         $('.red_details').show();
         $('body').css('padding','0')
@@ -101,7 +101,7 @@ $(function(){
                 }
         },'json')
     })
-    $('.lb_headWrap_return').click(function(){
+    $('.lb_headWrap_return').on('click',function(){
         $('.group_content').show();
         $('.red_details').hide();
         $('body').css('padding-bottom','1.4rem')
@@ -136,14 +136,14 @@ $(function(){
             $('.magnify').attr('src','');
         }
     });
-    $('.magnify_mask').click(function(){
+    $('.magnify_mask').on('click',function(){
         $('.group_content_oneself_textimg .group_content_oneself_img,.group_content_opposite_textimg .group_content_opposite_img').removeClass('magnify_active');
         $('.magnify').attr('src','')
         $(this).hide();
     });
 
     // 点击发送按钮不关闭输入法
-    $('.group_menu_send').click(function(){
+    $('.group_menu_send').on('click',function(){
         $('.group_menu_input').focus();
     });
 })
