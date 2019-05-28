@@ -77,7 +77,7 @@ class My extends Base
         // $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
         // 红包记录
         $where['uid'] = $userid;
-        $where['type'] = ['in','1,7,8,9,10,11,12'];
+        $where['type'] = ['in','1,2,7,8,9,10,11,12'];
         $redbagList = Db::name('chat_red_log')->where($where)->order('create_time desc')->select();
         // var_dump($rechargeList);exit;
         $this->assign('rechargeList', $rechargeList);
@@ -135,7 +135,7 @@ class My extends Base
        
         // 收益详情
         $map['d.uid'] = $userid;
-        $map['d.type'] = ['in','3,4,6'];
+        $map['d.type'] = ['in','3,4,5,6'];
         $income_info = Db::name('chat_red_log')->alias('d')
                         ->field('d.*,u.nickname')
                         ->join('users u','d.from_id = u.id')
@@ -144,7 +144,7 @@ class My extends Base
                         ->select();
         // 今日收益
         $where['uid'] = $userid;
-        $where['type'] = ['in','3,4,6'];
+        $where['type'] = ['in','3,4,5,6'];
         $toDay_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'today')->sum('money');
         // 月总收益
         $month_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'month')->sum('money');
