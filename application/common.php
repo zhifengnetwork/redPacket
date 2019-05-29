@@ -25,41 +25,42 @@ function getUpMemberIds($uid){
 // 获取当前用户的所有下线(不包括自己)
 function getDownUserUids2($uid){
     global $g_down_Uids;
-    // $level = 1;
 	if($uid){
-        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,3000)->select();
 		foreach($member_arr as $mb){
 			if($mb['id'] && $mb['id'] != $uid){
-                // $g_down_Uids['level'][] = $level;
-                // $g_down_Uids['id'][] = $mb['id'];
+               
                 $g_down_Uids[] = $mb['id'];
                 getDownUserUids2($mb['id']);
             }
-            // $level++;
 		}
     }
 	return $g_down_Uids;
 }
 
-// 获取当前用户的所有下线(不包括自己)有等级
-function getDownUserUids3($uid){
-    global $g_down_Uids;
-    $level = 1;
-	if($uid){
-        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
-        if($member_arr){
-            foreach($member_arr as $k=>$mb){
-                if($mb['id'] && $mb['id'] != $uid){
-                    $g_down_Uids[$k]['level'] = $k+1;
-                    $g_down_Uids[$k]['uid'] = $mb['id'];
-                    getDownUserUids2($mb['id']);
+//递归获取用户下线(不包括自己) 以及等级
+function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limit=0){
+
+    if($agent_level_limit&&$agent_level>$agent_level_limit){
+        return false;
+    }
+    if($uid||true){
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,3000)->select();
+        foreach($member_arr as $mb){
+            if($mb['id']&&$mb['id']!=$uid){
+                if($need_all){
+                    $mb['agent_level'] = $agent_level;
+                    $GLOBALS['g_down_ids'][]=$mb;
+                }else{
+                    $GLOBALS['g_down_ids'][]=$mb['id'];
                 }
-                $level++;
-            }
+                getDownMemberIds2($mb['id'],$need_all,$agent_level+1,$agent_level_limit);
+            }   
         }
     }
-	return $g_down_Uids;
+    return $GLOBALS['g_down_ids'];
 }
+
 
 //数组转换成[配置项名称]获取数据
 function arr2name($data,$key=''){

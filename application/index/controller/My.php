@@ -164,14 +164,14 @@ class My extends Base
     {
         
         $userid = session('user.id');
-        // 当前用户的所有下线
-        $team_list =  getDownUserUids3($userid);
-        unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
+        // 当前用户的30级下线 返回等级
+        $team_list =  getDownMemberIds2($userid,true,1,30);
+        unset($GLOBALS['g_down_ids']); // 清空上一次循环全局数据
         $team_list_in = '';
         $map['id'] = '';
         if($team_list){
             foreach ($team_list as $v) {
-                $team_list_in .= $v['uid'].',';
+                $team_list_in .= $v['id'].',';
             }
             $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
             $map['id'] = ['in',$team_list_in];
@@ -180,8 +180,8 @@ class My extends Base
         $list = Db::name('users')->field('id,nickname,head_imgurl')->where($map)->select();
         foreach($list as $k=>$v){
             foreach($team_list as $ks=>$vs){
-                if($v['id']==$vs['uid']){
-                    $list[$k]['level'] = $vs['level'];
+                if($v['id']==$vs['id']){
+                    $list[$k]['level'] = $vs['agent_level'];
                 }
             }
         }
