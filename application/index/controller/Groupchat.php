@@ -606,7 +606,7 @@ class Groupchat extends Base
                 'red_id' => $red_one['id'],
                 'from_name' => $from_user['nickname'],
                 'from_head' => $from_user['head_imgurl'],
-                'get_award_money' => 188.88//$point_award_money?$point_award_money:0
+                'get_award_money' => $point_award_money?$point_award_money:0
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {
