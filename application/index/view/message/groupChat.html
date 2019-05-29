@@ -403,10 +403,6 @@
                 case 'ping':
                     ws.send('{"type":"pong"}');
                     break;
-                // case  "init":
-                //     var bild = '{"type":"bind","fromid":"'+fromid+'"}';
-                //     ws.send(bild);
-                //     return;
                 // 进入群页面
                 case "in_group_chat":
                     console.log('已进入红包群');
@@ -414,8 +410,7 @@
 
                 // 用户获得奖励群通知
                 case "get_award_notice":
-                    console.log('获得奖励通知');
-                    if(room_id == message.room_id && fromid != message.fromid) {
+                    if(room_id == message.room_id && fromid != message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
@@ -425,7 +420,10 @@
                                 +  '</p></div>'
                         $('.group_content').append(str);
                     }
-                    return;   
+                    return;
+                
+                // 领取红包通知
+                
 
                 case "get_group_red":
                     console.log('接收红包222!!'); 
@@ -604,13 +602,10 @@
                         'top': -thisScroll_num,
                         'left': 0,
                     });
-
-                    
                 }else{
                     // layer.msg('红包金额'+min_money+'-'+max_money+'('+multiple+'的倍数)');return;
                     layer.msg('红包金额'+min_money+'-'+max_money);return;
                 }
-                
             })
 
             /*000*/
@@ -654,12 +649,9 @@
                     /*页面-模拟密码-代码*/
                     $('.password_box_num .trem_box').eq(pass_val.length-1).addClass("show_box");
                 }
-                // console.log(pass_val);
                 /*密码长度为6时，ajax*/
                 if(pass_val.length == 6){
                     remove_class($(this));
-                    // $('.loading_wrap').show();
-                    // console.log('ajax-最终密码:',pass_val);
                     var red_num = $('.num').val();
                     var red_money = $('.red_money').val();
                     var key = $('.give_btn').attr('data-key');
@@ -668,7 +660,6 @@
                     $.post("/index/groupchat/groupSendRed",
                         {"room_id":room_id, "red_num":red_num, "red_money":red_money, "ray_point":ray_point, "pwd":pass_val, "key":key},
                         function(msg){
-                        // console.log(msg);
                         if(msg.code==1){
 
                             // 必须返回红包id
@@ -676,9 +667,6 @@
                             if(red_id){
 
                                 // 请空输入的金额和雷点
-                                // $('.now_account').html(msg.data.account);
-                                // $('.account_now').html(msg.data.account);
-                                // $('.dialog_transfer_num').attr('data-account',msg.data.account);
                                 $(".ray_wrap ul li").removeClass('active');
                                 $('.give_pack').hide(); // 隐藏红包div
                                 $('.red_money').val('');
@@ -806,8 +794,7 @@
                         $('.get_award').show();
                         $('.award_money').html(msg.data.get_award_money);
                         // 群发获得奖励通知到当前群
-                        var get_award_data = '{"type":"send_award_notice","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
-                        console.log("群发奖励:"+get_award_data);
+                        var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
                         ws.send(get_award_data);
                     }
                 }else if(msg.code == 101){
