@@ -358,6 +358,7 @@ class Groupchat extends Base
         if($is_get){
             $data = $this->getRedDetail2($is_get['m_id']);
             $data['master_info']['is_die_flag'] =  $is_get['is_die']==2?'你已中雷':'你未中雷';
+            $data['master_info']['get_award_money'] =  $is_get['get_award_money']>0?$is_get['get_award_money']:0;
             $data['master_info']['get_red_money'] = $is_get['money'];
             return message(101,'红包已抢过', $data);
         }
@@ -477,6 +478,7 @@ class Groupchat extends Base
             $point_award_money_res = true;
             $point_award_money_log_res = true;
             $point_award_update_res = true;
+            $award_flag_res = true;
             if(!$red_one['is_award']){
                 // 7包发包奖励 
                 // 获取红包明细，中雷人数是否和雷点个数一致
@@ -555,6 +557,9 @@ class Groupchat extends Base
                         'remake' => '发包奖励'
                     ];
                     $point_award_money_log_res = Db::name('chat_red_log')->insert($point_award_money_log);
+
+                    // 抢到当前红包获得奖励金额标记
+                    $award_flag_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['get_award_money'=>$point_award_money]);
                 }
             }
             // 抢包返利 系统返利
@@ -600,7 +605,8 @@ class Groupchat extends Base
                 'is_die_flag' => $red_detail['is_die']==2?'你已中雷':'你未中雷',
                 'red_id' => $red_one['id'],
                 'from_name' => $from_user['nickname'],
-                'from_head' => $from_user['head_imgurl']
+                'from_head' => $from_user['head_imgurl'],
+                'get_award_money' => 188.88//$point_award_money?$point_award_money:0
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {
@@ -633,7 +639,7 @@ class Groupchat extends Base
         }
         $master_user = Db::name('users')->field('id,nickname,head_imgurl')->where(['id'=>$master_info['uid']])->find();
         $detail_info = Db::name('chat_red_detail')->alias('d')
-                        ->field('d.id,d.m_id,d.get_uid,d.money,d.get_time,d.type,d.is_die,u.nickname,u.head_imgurl')
+                        ->field('d.id,d.m_id,d.get_uid,d.money,d.get_time,d.type,d.is_die,d.get_award_money,u.nickname,u.head_imgurl')
                         ->join('users u','d.get_uid = u.id')
                         ->where(['d.type'=>1, 'd.m_id'=>$m_id])
                         ->order('get_time desc')
@@ -735,7 +741,7 @@ class Groupchat extends Base
         }
         $master_user = Db::name('users')->field('id,nickname,head_imgurl')->where(['id'=>$master_info['uid']])->find();
         $detail_info = Db::name('chat_red_detail')->alias('d')
-                        ->field('d.id,d.m_id,d.get_uid,d.money,d.get_time,d.type,d.is_die,u.nickname,u.head_imgurl')
+                        ->field('d.id,d.m_id,d.get_uid,d.money,d.get_time,d.type,d.is_die,d.get_award_money,u.nickname,u.head_imgurl')
                         ->join('users u','d.get_uid = u.id')
                         ->where(['d.type'=>1, 'd.m_id'=>$m_id])
                         ->order('get_time desc')
