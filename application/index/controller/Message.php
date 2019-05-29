@@ -48,6 +48,35 @@ class Message extends Base
         return $this->fetch('messageList');
     }
 
+
+     /**
+     * [测试]
+     * @return json
+     */
+    public function test()
+    {
+        // 获取平台群列表
+        $group_list = Db::name('chat_group')->select();
+        // 返回绑定群url
+        foreach($group_list as $k=>$v){
+            // if($v['id']==1){ // 10-30红包群
+            //     $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1001';
+            //     $group_list[$k]['id'] = 1001;
+            // }
+            // if($v['id']==2){ // 30-800红包群
+            //     $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id=1002';
+            //     $group_list[$k]['id'] = 1002;
+            // }
+            $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id='.$v['id'];
+        }
+
+        $this->assign('group_list', $group_list);
+        $this->assign('user', session('user'));
+        $this->assign('fromid', session('user.id'));
+        return $this->fetch('messageList');
+    }
+
+
     /**
      * [一对一聊天页面]
      * @return toid [聊天对象uid]
