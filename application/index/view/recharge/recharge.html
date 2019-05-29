@@ -57,7 +57,7 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type="text" id="money" placeholder="转账金额" />
+            							<input class="inp" type="text" id="weixin" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -77,7 +77,7 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type="text" placeholder="转账金额" />
+            							<input class="inp" type="text" id="zfb" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -157,9 +157,14 @@
 		</script>
         <script type="text/javascript">
             function submits(){
-                // alert(1);
-
-                var money = $("#money").val();
+           
+                var money = null;
+                if($('.pay_wrap').eq(0).children(".hook_wrap").hasClass('active')){
+                    money = $('#weixin').val();
+                }else{
+                    money = $('#zfb').val();
+                }
+ 
                 var FileImg = document.getElementById("file_img");//img file
                 var file = FileImg.src;
     
