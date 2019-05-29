@@ -424,7 +424,9 @@
                 
                 // 领取红包通知
                 case "get_red_notice":
-                    if(room_id == message.room_id && fromid != message.from_id) {
+                    console.log(fromid);
+                    console.log(message.from_id);
+                    if(room_id == message.room_id && fromid == message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
@@ -437,7 +439,6 @@
                     return;
 
                 case "get_group_red":
-                    console.log('接收红包222!!'); 
                     // 接收对方红包推送
                     if(room_id == message.room_id && fromid != message.fromid) {
                         let str = '';
@@ -734,12 +735,23 @@
                             }else{
                                 layer.msg('网络异常,稍后再试');
                             }
+                        }else if(msg.code==101){
+                            layer.confirm(msg.msg, {
+                            btn: ['设置','取消'], skin: 'layer-custom', title: '提示', closeBtn:0,icon:4
+                                }, function(){
+                                    console.log(11);
+                                    window.location.href = '/index/recharge/paypwd';
+                                }, function(){
+                                    $('.delete_img_box').trigger("click");
+                                    layer.closeAll('dialog');
+                                    return false;
+                                });
                         }else{
                             layer.msg(msg.msg);
                             $('.mask_text').show();
                             $('.bottom_alert_box').show();
                             pass_val='';
-                            $('.trem_box').removeClass('show_box')
+                            $('.trem_box').removeClass('show_box');
                             return false;
                         }
                     },'json')
@@ -806,13 +818,16 @@
                         $('.get_award').show();
                         $('.award_money').html(msg.data.get_award_money);
                         // 群发获得奖励通知到当前群
-                        var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
+                        var get_award_data = '{"type":"send_award_notice","from_id":"'+msg.data.from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
                         ws.send(get_award_data);
                     }
-
-                    // 推送领红包信息到发红包用户
-                    var get_red_data = '{"type":"send_get_red_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'"}';
-                    ws.send(get_red_data);
+                    // 自己领取不推送
+                    if(msg.data.from_id != fromid){
+                        // 推送领红包信息到发红包用户
+                        var get_red_data = '{"type":"send_get_red_notice","from_id":"'+msg.data.from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'"}';
+                        ws.send(get_red_data);
+                    }
+                   
                 }else if(msg.code == 101){
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.master_info.is_die_flag);

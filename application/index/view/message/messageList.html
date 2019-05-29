@@ -133,6 +133,7 @@
 								<img src="__STATIC__/chatWeb/img/news/saoyisao@2x.png" class="qunliao_item_icon qunliao_item_icon3" />
 							</p>
 							<span class="qunliao_item_text">扫一扫</span>
+							<!-- <input class="qunliao_item_text" type="file" accept="image/*" capture="camera"> -->
 						</div>
 
 					</div>
@@ -474,7 +475,8 @@
 			})
 
 			/*底部导航-页面跳转*/
-			$(".bottomNavWrap .bottomNavTerm").on('tap', function() {
+			// $(".bottomNavWrap .bottomNavTerm").on('tap', function() {
+			mui("body").on('tap','.bottomNavWrap .bottomNavTerm',function(){
 				window.location.href = $(this).attr('onclick').split("'")[1];
 			})
 			/*跳转-二维码链接*/

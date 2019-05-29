@@ -94,7 +94,7 @@ class Groupchat extends Base
         }
         // 比对密码
         if(!$user['pay_pwd']){
-            return message(0, '请先设置支付密码');
+            return message(101, '请先设置支付密码');
         }
         if($user['pay_pwd'] !== minishop_md5($password, $user['salt'])){
             return message(0, '密码错误');
@@ -606,6 +606,7 @@ class Groupchat extends Base
                 'get_red_money' => $red_detail['money'],
                 'is_die_flag' => $red_detail['is_ray']==2?'你已中雷':'你未中雷',
                 'red_id' => $red_one['id'],
+                'from_id' => $red_one['uid'],
                 'from_name' => $from_user['nickname'],
                 'from_head' => $from_user['head_imgurl'],
                 'get_award_money' => $point_award_money?$point_award_money:0
