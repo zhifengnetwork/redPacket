@@ -48,7 +48,7 @@
             			<ul>
             				<li>昵称</li>
             				<li>佣金</li>
-            				<!-- <li>级别</li> -->
+            				<li>下级级别</li>
             				<li>日期</li>
             			</ul>
             		</div>
@@ -61,11 +61,18 @@
             				</li>
             				<li>
             					<span>￥</span>
-            					<span>{$vo.money}</span>
+            					<span>
+									{$vo.money}
+									{if condition="$vo.type eq 3 or $vo.type eq 4"}
+									(发)
+									{else/}
+									(抢)
+									{/if}
+								</span>
             				</li>
-            				<!-- <li>
-            					<span>{$vo.money}</span>
-            				</li> -->
+            				<li>
+            					<span></span>
+            				</li>
             				<li>
 								<p>{$vo.create_time|date='Y-m-d',###}</p>
 								<p>{$vo.create_time|date='H:i',###}</p>

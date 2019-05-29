@@ -67,8 +67,7 @@
 }
 .item_wrap ul li {
 	display: inline-block;
-	/* width: 25%; */
-	width: 30%;
+	width: 25%;
 	letter-spacing: 1px;
 	color: #000006;
 	font-size: .26rem;
@@ -85,8 +84,7 @@
 .list_wrap ul li {
 	display: inline-block;
 	vertical-align: top;
-	/* width: 25%; */
-	width: 30%;
+	width: 25%;
 	color: #000006;
 	font-size: .26rem;
 	text-align: center;
