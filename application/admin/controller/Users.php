@@ -443,10 +443,10 @@ class Users extends Common
                     $msg = 'ok';
                     
                     if($type==1){
-                        $paramet = "<div align='center' class='layui-bg-gray layui-text'>提现方式：".$method."<hr>账号：".$data['account']."<hr>真实姓名：".$data['name']."</div>";
+                        $paramet = "<div align='center' style='padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;'>提现方式：".$method."<hr>账号：".$data['account']."<hr>真实姓名：".$data['name']."</div>";
                     }
                     if($type==2){
-                        $paramet = "<div align='center' class='layui-bg-gray layui-text'>
+                        $paramet = "<div align='center' style='padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;'>
                         提现方式：".$method."<hr>
                         开户行：".$data['bank_name']."<hr>
                         账号：".$data['account']."<hr>
