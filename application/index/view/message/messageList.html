@@ -102,7 +102,7 @@
 					<img class="lb_headWrap_return_img touxx" src="{$user['head_imgurl']}" />
 				</p>
 				<span>信息</span>
-				<p class="lb_headWrap_share" data-num="1">
+				<p class="lb_headWrap_share" id="group_chat_1" data-num="1">
 					<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
 				</p>
 			</div>
@@ -446,8 +446,8 @@
 				mui('.mui-off-canvas-wrap').offCanvas('show');
 			})
 			/*+*/
-			document.getElementById('group_chat').addEventListener('tap',function(){
-				mui.openWindow('https:www.baidu.com','group_chat');
+			document.getElementById('group_chat_1').addEventListener('tap',function(){
+				mui.openWindow('https:www.baidu.com','group_chat_1');
 			})
 
 			//点击关闭按钮,左侧消失
