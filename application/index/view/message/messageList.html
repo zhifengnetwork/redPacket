@@ -443,7 +443,7 @@
 				});
 			}
 			//点击头像,左侧出现
-			$(".lb_headWrap_return").on('tap', function(event) {
+			$("body").on('tap','.lb_headWrap_return',function(event) {
 				mui('.mui-off-canvas-wrap').offCanvas('show');
 			});
 			//点击关闭按钮,左侧消失
