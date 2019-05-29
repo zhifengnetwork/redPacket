@@ -438,9 +438,12 @@
 				});
 			}
 			//点击头像,左侧出现
-			$("body").on('tap touchstart','.lb_headWrap_return',function(event) {
+			// $("body").on('tap touchstart','.lb_headWrap_return',function(event) {
+			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
+			// });
+			mui("body").on('tap','.lb_headWrap_return',function(){
 				mui('.mui-off-canvas-wrap').offCanvas('show');
-			});
+			})
 			//点击关闭按钮,左侧消失
 			$(".person_message_close").on('tap', function(event) {
 				mui('.mui-off-canvas-wrap').offCanvas('show');
