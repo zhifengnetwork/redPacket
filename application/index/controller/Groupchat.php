@@ -581,9 +581,10 @@ class Groupchat extends Base
             // 中雷 如果中雷是发包本人不作处理
             $dec_res = true;
             $dec_log_res = true;
+            $dec_log_res = true;
             if($red_detail['is_ray'] == 2 && $user['id'] != $red_one['uid']){
 
-                // 扣除金额=红包本金*赔率
+                // 扣除中雷者金额=红包本金*赔率
                 $dec_money = $red_one['money']*$red_one['mulriple'];
                 $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
                 $dec_log = [
@@ -597,6 +598,19 @@ class Groupchat extends Base
                     'remake' => '中雷'
                 ];
                 $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
+                // 累加发包者金额
+                $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
+                $send_red_log = [
+                    'from_id' => $user['id'], // 中雷者
+                    'uid' => $red_one['uid'], // 发包者
+                    'm_id' => $red_one['id'],
+                    'red_money' => $red_one['money'],
+                    'money' => '+'.$dec_money,
+                    'type' => 13,
+                    'create_time' => $time,
+                    'remake' => '中雷(返)'
+                ];
+                $dec_log_res = Db::name('chat_red_log')->insert($send_red_log);
             }
             // 获取发包者的信息
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();

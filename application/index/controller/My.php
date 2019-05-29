@@ -77,7 +77,7 @@ class My extends Base
         // $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
         // 红包记录
         $where['uid'] = $userid;
-        $where['type'] = ['in','1,2,3,7,8,9,10,11,12'];
+        $where['type'] = ['in','1,2,3,7,8,9,10,11,12,13'];
         $redbagList = Db::name('chat_red_log')->where($where)->order('create_time desc')->select();
         // var_dump($rechargeList);exit;
         $this->assign('rechargeList', $rechargeList);
