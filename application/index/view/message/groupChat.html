@@ -424,7 +424,8 @@
                 
                 // 领取红包通知
                 case "get_red_notice":
-                    if(room_id == message.room_id && fromid != message.from_id) {
+                    console.log('别人领取红包通知');
+                    if(room_id == message.room_id && fromid == message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
