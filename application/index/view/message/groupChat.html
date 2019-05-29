@@ -737,7 +737,7 @@
                             }
                         }else if(msg.code==101){
                             layer.confirm(msg.msg, {
-                            btn: ['设置','取消'], skin: 'layer-custom', title: '提示' //按钮
+                            btn: ['设置','取消'], skin: 'layer-custom', title: '提示', closeBtn:0
                                 }, function(){
                                     console.log(11);
                                     window.location.href = '/index/recharge/paypwd';
