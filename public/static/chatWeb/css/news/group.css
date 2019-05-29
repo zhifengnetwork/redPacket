@@ -416,7 +416,7 @@ body{
 }
 .give_pack,.red_details{
     display: none;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     width: 100%;
@@ -472,8 +472,6 @@ body{
 }
 .red_details>.wrap_frame,.give_pack>.wrap_frame{
     overflow: scroll;
-    position: fixed;
-    height: 100vh;
 }
 /* 摄像机input */
 .camera,.picture{
