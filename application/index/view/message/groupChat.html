@@ -423,7 +423,18 @@
                     return;
                 
                 // 领取红包通知
-                
+                case "get_red_notice":
+                    if(room_id == message.room_id && fromid != message.from_id) {
+                        let str ='';
+                            str += '<div class="group_content_tips">'
+                                +  '<p class="group_content_tips_text">'
+                                +  '<span class="group_award_title">'
+                                +  '<img class="group_content_tips_img" src="__STATIC__/chatWeb/img/news/tips.png">'
+                                +  message.from_name+'领取了你的<span class="group_content_tips_strong">红包</span>'
+                                +  '</p></div>'
+                        $('.group_content').append(str);
+                    }
+                    return;
 
                 case "get_group_red":
                     console.log('接收红包222!!'); 
@@ -782,6 +793,7 @@
             }
             $.post("/index/groupchat/openToRed",{"room_id":room_id,"red_id":red_id,"key":key},function(msg){
                 if(msg.code == 1 ){
+                    console.log(msg);
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.is_die_flag);
                     $('.get_red_money').html(msg.data.get_red_money);
@@ -797,6 +809,10 @@
                         var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
                         ws.send(get_award_data);
                     }
+
+                    // 推送领红包信息到发红包用户
+                    var get_red_data = '{"type":"send_get_red_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'"}';
+                    ws.send(get_red_data);
                 }else if(msg.code == 101){
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.master_info.is_die_flag);
