@@ -469,7 +469,8 @@
 			})
 
 			/*底部导航-页面跳转*/
-			$(".bottomNavWrap .bottomNavTerm").on('tap', function() {
+			// $(".bottomNavWrap .bottomNavTerm").on('tap', function() {
+			mui("body").on('tap','.bottomNavWrap .bottomNavTerm',function(){
 				window.location.href = $(this).attr('onclick').split("'")[1];
 			})
 			/*跳转-二维码链接*/

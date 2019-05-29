@@ -293,7 +293,9 @@ body{
 	position: absolute;
 	left: .5rem;
 	top: 1rem;
-	width: 1.2rem;
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
 	
 	
 }
@@ -412,7 +414,7 @@ body{
 .four_ear{
 	
 	position: relative;
-	top: 2.2rem;
+	top: 1.2rem;
 	height: .9rem;
 	line-height: .9rem;
 	
