@@ -606,6 +606,7 @@ class Groupchat extends Base
                 'get_red_money' => $red_detail['money'],
                 'is_die_flag' => $red_detail['is_ray']==2?'你已中雷':'你未中雷',
                 'red_id' => $red_one['id'],
+                'from_id' => $from_user['id'],
                 'from_name' => $from_user['nickname'],
                 'from_head' => $from_user['head_imgurl'],
                 'get_award_money' => $point_award_money?$point_award_money:0

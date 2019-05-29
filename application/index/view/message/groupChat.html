@@ -410,7 +410,7 @@
 
                 // 用户获得奖励群通知
                 case "get_award_notice":
-                    if(room_id == message.room_id && fromid != message.from_id) {
+                    if(room_id == message.room_id && fromid == message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
@@ -807,7 +807,7 @@
                         $('.get_award').show();
                         $('.award_money').html(msg.data.get_award_money);
                         // 群发获得奖励通知到当前群
-                        var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
+                        var get_award_data = '{"type":"send_award_notice","from_id":"'+msg.data.from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
                         ws.send(get_award_data);
                     }
 
