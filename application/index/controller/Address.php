@@ -28,7 +28,10 @@ class Address extends Base
     {
 
         if( !is_complete(session('user.id')) ){
-            $this->redirect('/index/my/personInfo');    
+
+            layer_error('请完善个人信息', $re = true, $url = '/index/my/personInfo');
+
+            // $this->redirect('/index/my/personInfo');    
         };
 
         // 获取当前用户所有好友
