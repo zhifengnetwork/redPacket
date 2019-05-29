@@ -121,6 +121,7 @@ $(function(){
                         $('.dialog_transfer_num').attr('data-account',msg.data.account);
 
                         $('.dialog_transfer_wrap').hide();
+                        $('.dialog_content').show(); 
                         $('.dialog_transfer_num_input').val('');
                         $('.bottom_alert_wrap').hide();
                         pass_val='';

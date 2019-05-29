@@ -49,7 +49,7 @@ function getDownUserUids3($uid){
         $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
 		foreach($member_arr as $k=>$mb){
 			if($mb['id'] && $mb['id'] != $uid){
-                $g_down_Uids[$k]['level'] = $level;
+                $g_down_Uids[$k]['level'] = $k+1;
                 $g_down_Uids[$k]['uid'] = $mb['id'];
                 getDownUserUids2($mb['id']);
             }
