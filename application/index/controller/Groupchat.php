@@ -578,10 +578,10 @@ class Groupchat extends Base
             ];
             $system_rebate_log_res = Db::name('chat_red_log')->insert($system_rebate_log);
 
-            // 中雷
+            // 中雷 如果中雷是发包本人不作处理
             $dec_res = true;
             $dec_log_res = true;
-            if($red_detail['is_ray'] == 2){
+            if($red_detail['is_ray'] == 2 && $user['id'] != $red_one['uid']){
 
                 // 扣除金额=红包本金*赔率
                 $dec_money = $red_one['money']*$red_one['mulriple'];
@@ -598,6 +598,7 @@ class Groupchat extends Base
                 ];
                 $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
             }
+            // 获取发包者的信息
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
 
             Db::commit();
@@ -653,7 +654,7 @@ class Groupchat extends Base
                 $detail_info[$k]['nickname'] = '免死金牌';
             }
             if($v['get_uid']==112){ // 平台抢红包机器人
-                $detail_info[$k]['nickname'] = '老东家888';
+                $detail_info[$k]['nickname'] = '平台';
             }
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
