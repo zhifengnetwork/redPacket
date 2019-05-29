@@ -166,7 +166,6 @@ class My extends Base
         $userid = session('user.id');
         // 当前用户的所有下线
         $team_list =  getDownUserUids3($userid);
-        var_dump($team_list);die;
         unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
         $team_list_in = '';
         $map['id'] = '';
