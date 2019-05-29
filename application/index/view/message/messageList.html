@@ -21,15 +21,10 @@
 		<aside id="offCanvasSide" class="mui-off-canvas-left">
 			<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
 				<div class="mui-scroll">
-
 					<li>
 						<div class="person_message">
-
 							<div class="person_message_my">
-
 								<span class="personInfo" data-url="/index/my/personInfo">我的</span>
-
-
 							</div>
 							<div class="person_message_close" style="float: right;width: 1rem;height: 1rem;">
 								<img src="__STATIC__/chatWeb/img/news/close@2x.png" class="close" />
@@ -121,7 +116,7 @@
 					<div class="jiasaosao">
 						<!--向上-三角形-->
 						<p class="triangle_border_up"></p>
-						<div class="qunliao_item" onclick="">
+						<div class="qunliao_item" onclick="" style="cursor:pointer">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/qunliao@2x.png" class="qunliao_item_icon" />
 							</p>
@@ -161,7 +156,7 @@
 							</div>
 							{foreach name="group_list" item="v" key="k"}
 							{if condition="$v.id eq 1 or $v.id eq 2"}
-							<div class="chat chat1 group_chat" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}" >
+							<div class="chat chat1 group_chat" style="cursor:pointer;" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}" >
 								<div class="chat_img">
 									<img src="__STATIC__/{$v.img}" />
 								</div>
@@ -443,7 +438,7 @@
 				});
 			}
 			//点击头像,左侧出现
-			$(".lb_headWrap_return").on('tap', function(event) {
+			$("body").on('tap touchstart','.lb_headWrap_return',function(event) {
 				mui('.mui-off-canvas-wrap').offCanvas('show');
 			});
 			//点击关闭按钮,左侧消失
