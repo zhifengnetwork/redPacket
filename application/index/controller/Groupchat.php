@@ -269,7 +269,7 @@ class Groupchat extends Base
                             'rebate' => $superior_rebate,
                             'money' => $superior_rebate_money,
                             'type' => 4,
-                            'user_level' => $keys, // 等级
+                            // 'user_level' => $keys, // 等级
                             'create_time' => $time,
                             'remake' => '发包返水'
                         ];
@@ -444,7 +444,7 @@ class Groupchat extends Base
                             'red_money' => $red_one['money'],
                             'money' => $superior_rebate_money,
                             'type' => 6,
-                            'user_level' => $keys, // 等级
+                            // 'user_level' => $keys, // 等级
                             'create_time' => $time,
                             'remake' => '抢包返水'
                         ];

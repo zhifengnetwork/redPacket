@@ -142,13 +142,16 @@ class My extends Base
                         ->where($map)
                         ->order('create_time desc')
                         ->select();
-        foreach ($team_list as $v) {
-            foreach ($income_info as $k => $vs) {
-                if($v['id'] == $vs['from_id']){
-                    $income_info[$k]['level'] = $v['agent_level'];
+        if($team_list && $income_info){
+            foreach ($team_list as $v) {
+                foreach ($income_info as $k => $vs) {
+                    if($v['id'] == $vs['from_id']){
+                        $income_info[$k]['level'] = $v['agent_level'];
+                    }
                 }
             }
         }
+        
         // 今日收益
         $where['uid'] = $userid;
         $where['type'] = ['in','4,5,6'];
