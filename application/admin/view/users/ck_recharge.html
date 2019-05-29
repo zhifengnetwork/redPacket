@@ -7,6 +7,26 @@
     .red{
         color:red;
     }
+    .myModel {
+            position: absolute;
+            top: 25%;
+            left: 25%;
+            display: none;
+            background-color: rgba(9, 9, 9, 0.63);
+            width: 50%;
+            height: 50%;
+            z-index: 1000;
+        }
+
+  .model-content {
+      width: 100%;
+      text-align: center;
+      background: #ffffff;
+      border-radius: 6px;
+      margin: 100px auto;
+      line-height: 30px;
+      z-index: 10001;
+  }
 </style>
 <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -57,7 +77,19 @@
                                 <td>{$vo.nickname}</td>
                                 <td>{$vo.mobile}</td>
                                 <td>{$vo.amount}</td>
-                                <td><img src="../../{$vo.proof}" width="20px" id="{vo.id}" onclick="bigImg(this)" ondblclick="normalImg(this)"></td>
+                                <!-- <td><img src="../../{$vo.proof}" width="20px" id="{vo.id}" onclick="bigImg(this)" ondblclick="normalImg(this)"></td> -->
+ <!--                                <td>
+                                    <button onclick="showModel({$vo.id})">查看详情</button>
+                                      <div id="myModel_{$vo.id}" onclick="closeModel()" class="myModel">
+                                        <div class="model-content">
+                                          <p>充值凭证：</p>
+                                          <img src="../../{$vo.proof}" height="300px" >
+                                          <p> <button id="closeModel" onclick="closeModel({$vo.id})">返回</button></p>
+                                         
+                                        </div>
+                                      </div>
+                                </td> -->
+                                <td><button onclick="detail('../../{$vo.proof}')">查看详情</button></td>
                                 <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
                                 <td>
                                     {if condition="$vo.type eq 1"}
@@ -68,7 +100,7 @@
 
                                 </td>
                                 <td>待充值</td>
-                                <td><a onclick="recharge({$vo.id})">通过</a>/<a href="">驳回</a></td>    
+                                <td><a onclick="recharge('{$vo.id}')">通过</a>/<a href="">驳回</a></td>    
                             </tr>
                             {/volist}
                         </tbody>
@@ -105,12 +137,37 @@
 
     function bigImg(x){
 
-        x.style.width="200px";
+        x.style.width="180px";
     }
 
     function normalImg(x){
   
         x.style.width="20px";
+    }
+     function showModel(id) {
+
+        document.getElementById('myModel_'+id).style.display = 'block';
+    }
+    function closeModel(id) {
+        document.getElementById('myModel_'+id).style.display = 'none';
+    }
+
+
+    function detail(path){
+ 
+        layer.open({
+            type: 1 //此处以iframe举例
+            ,title: '支付凭证'
+            ,area: ['400px', '400px'] //窗体尺寸
+            ,shade: 0
+            ,maxmin: true
+            ,offset: [ //坐标
+              $(window).height()/2-200
+              ,$(window).width()/2-200
+            ] 
+            ,content: "<div align='center'><img src='"+path+"' width='300px' margin-left='50px'></div>"
+           
+      });
     }
 </script>
 {/block}

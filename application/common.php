@@ -803,3 +803,21 @@ function is_complete($userid){
     return true;
 
 }
+
+/**
+ * 调用layer弹出错误提示
+ */
+function layer_error($msg, $re = true, $url = ''){
+    header("Content-type: text/html; charset=utf-8"); 
+
+    echo "<h1 style='margin-top:30%; text-align:center;color:red;'>$msg</h1>";
+    if($re){
+        if($url){
+            echo "<script>setTimeout(function(){window.location.href='$url';},3000);</script>";
+        }else{
+            echo "<script>setTimeout(function(){window.history.go(-1);},3000);</script>";
+        }
+        
+    }
+    exit;
+}

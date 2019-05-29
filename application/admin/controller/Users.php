@@ -398,7 +398,7 @@ class Users extends Common
         $list = Db::table('tixian')->alias('r')
                 ->join('users u', 'u.id = r.uid', 'LEFT')
                 ->where($where)
-                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.ordersn,r.time,r.status')->paginate(10);
+                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.ordersn,r.time,r.status')->order('r.time desc')->paginate(10);
         // var_dump($list);exit;           
          // 获取分页显示
         $page = $list->render();
@@ -410,6 +410,73 @@ class Users extends Common
 
 
     }
+
+    //查询提现账号
+    public function ajax_account(){
+        $msg = '';
+        $flag = 0;
+        $data = '';
+        $paramet = '';
+        $id = input('post.id');
+        $type = input('post.type');
+        if(Request::instance()->isPost()){
+           // $info = Db::table('tixian')->where('id',$id)->find();
+           // var_dump($info);exit;
+            if($id=='' or $type ==''){
+                $msg = '参数错误';
+            }else{
+                $sql ='';
+                $method ='';
+                if($type==1){
+                   $sql = "select uid,name,account from alipay where uid = $id";
+                   $method = '支付宝';    
+                }else{
+
+                    $sql = "select uid,name,account, bank_name,bank_address from card where uid = $id";
+                    $method = '银行卡'; 
+                }
+                
+                $info = Db::query($sql);
+                if($info){
+                    $data = $info[0];
+                    $flag = 1;
+                    $msg = 'ok';
+                    
+                    if($type==1){
+                        $paramet = "<div align='center' class='layui-bg-gray layui-text'>提现方式：".$method."<hr>账号：".$data['account']."<hr>真实姓名：".$data['name']."</div>";
+                    }
+                    if($type==2){
+                        $paramet = "<div align='center' class='layui-bg-gray layui-text'>
+                        提现方式：".$method."<hr>
+                        开户行：".$data['bank_name']."<hr>
+                        账号：".$data['account']."<hr>
+                        开户地址：".$data['bank_address']."<hr>
+                        真实姓名：".$data['name']."</div>";
+                    }
+
+
+                }else{
+
+                    $msg = '账号信息不存在';
+                }
+                
+                
+            }
+
+
+        }else{
+
+            $msg = '非法请求';
+        }
+
+        
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag,'data'=>$paramet));
+        echo $string;
+
+
+    }
+
+
 
     //提现审核
     public function tixian(){
