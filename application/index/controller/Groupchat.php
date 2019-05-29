@@ -563,7 +563,7 @@ class Groupchat extends Base
                     $award_flag_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['get_award_money'=>$point_award_money]);
                 }
             }
-            // 抢包返利 系统返利
+            // 抢包返利 平台返利
             $system_rebate_money = 0.05;
             $system_rebate_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $system_rebate_money);
             $system_rebate_log = [
@@ -574,7 +574,7 @@ class Groupchat extends Base
                 'money' => $system_rebate_money,
                 'type' => 9,
                 'create_time' => $time,
-                'remake' => '系统返利'
+                'remake' => '平台返利'
             ];
             $system_rebate_log_res = Db::name('chat_red_log')->insert($system_rebate_log);
 
