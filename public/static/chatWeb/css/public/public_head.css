@@ -60,6 +60,9 @@
 	line-height: .88rem;
 	letter-spacing: .02rem;
 }
+.font_000 {
+	color: #0b0b0b;
+}
 /*（右box）分享 图标*/
 .lb_headWrap_share {
 	position: absolute;
