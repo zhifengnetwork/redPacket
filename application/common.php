@@ -40,7 +40,7 @@ function getDownUserUids2($uid){
 
 //递归获取用户下线(不包括自己) 以及等级
 function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limit=0){
-
+    global $g_down_ids;
     if($agent_level_limit&&$agent_level>$agent_level_limit){
         return false;
     }
@@ -50,15 +50,15 @@ function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limi
             if($mb['id']&&$mb['id']!=$uid){
                 if($need_all){
                     $mb['agent_level'] = $agent_level;
-                    $GLOBALS['g_down_ids'][]=$mb;
+                    $g_down_ids['g_down_ids'][]=$mb;
                 }else{
-                    $GLOBALS['g_down_ids'][]=$mb['id'];
+                    $g_down_ids['g_down_ids'][]=$mb['id'];
                 }
                 getDownMemberIds2($mb['id'],$need_all,$agent_level+1,$agent_level_limit);
             }   
         }
     }
-    return $GLOBALS['g_down_ids'];
+    return $g_down_ids['g_down_ids'];
 }
 
 
