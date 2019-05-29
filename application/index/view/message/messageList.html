@@ -99,7 +99,7 @@
 			<!--public head-->
 			<div class="lb_headWrap">
 				<p class="lb_headWrap_return" data-num="1">
-					<img class="lb_headWrap_return_img touxx" src="{$user['head_imgurl']}" />
+					<img class="lb_headWrap_return_img touxx" id="submit_1" src="{$user['head_imgurl']}" />
 				</p>
 				<span>信息</span>
 				<p class="lb_headWrap_share" id="group_chat_1" data-num="1">
@@ -448,7 +448,22 @@
 			/*+*/
 			document.getElementById('group_chat_1').addEventListener('tap',function(){
 				mui.openWindow('https:www.baidu.com','group_chat_1');
+				alert('是否可以点击!');
 			})
+			
+			/**测试测试*/
+			var btn = document.getElementById("submit_1");
+			//监听点击事件
+			btn.addEventListener("tap",function () {
+				console.log("tap event trigger");
+				alert('终于可以点击了。');
+			});
+			//触发submit按钮的点击事件
+			mui.trigger(btn,'tap');
+
+			
+
+
 
 			//点击关闭按钮,左侧消失
 			$(".person_message_close").on('tap', function(event) {
