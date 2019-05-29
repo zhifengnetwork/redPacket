@@ -60,7 +60,7 @@ $(function(){
                 $(".total_num").html(msg.data.master_info.num);
                 let str = '';
                 for(let i = 0;i< msg.data.detail_info.length;i++){
-                    if(msg.data.detail_info[i].is_die == 2){
+                    if(msg.data.detail_info[i].is_ray == 2){
                         str +="<div class='item active'>"
                                 +"<div class='img'>"
                                 +"<img src='"+msg.data.detail_info[i].head_imgurl+"' />"
