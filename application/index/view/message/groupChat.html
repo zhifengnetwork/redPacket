@@ -813,7 +813,7 @@
                     // 自己领取不推送
                     if(msg.data.from_id != fromid){
                         // 推送领红包信息到发红包用户
-                        var get_red_data = '{"type":"send_get_red_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'"}';
+                        var get_red_data = '{"type":"send_get_red_notice","from_id":"'+msg.data.from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'"}';
                         ws.send(get_red_data);
                     }
                    
