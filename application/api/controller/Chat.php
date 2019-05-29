@@ -300,9 +300,11 @@ class Chat extends Controller{
         // 获取所有大于5分钟的红包
         // $this->send_key = Config::get('SEND_KEY');
         // $key = input('key/s');
+        $map['m.time_out'] = 0;
+        $map['m.all_get'] = 0;
         $red_all = Db::name('chat_red_master')->alias('m')
                 ->join('chat_red_detail d','m.id=d.m_id')
-                ->whereTime('m.create_time','<= m.create_time')
+                ->where('m.time_out',0)
                 ->fetchSql(true)
                 ->select();
         dump($red_all);        
