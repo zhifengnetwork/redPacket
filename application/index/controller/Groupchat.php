@@ -278,9 +278,9 @@ class Groupchat extends Base
                 }
             }
 
-            // 发包返免死金额的5%到发包用户
+            // 发包返免死金额的5%到发包用户 发包返利
             $no_die_money = Db::name('chat_red_detail')->where(['m_id'=>$res_id, 'is_die'=>1])->find();
-            $rebate_money  = $no_die_money['money']*(abs(5/100));
+            $rebate_money  = $no_die_money['money']*(5/100);
             $rebate_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $rebate_money);
             $red_rebate_data = [
                 'from_id' => $user['id'],
@@ -438,7 +438,7 @@ class Groupchat extends Base
 
                         // 发包返水插入chat_red_log流水日志
                         $superior_rebate_money_log = [
-                            'from_id' => $red_one['uid'],
+                            'from_id' => $user['id'],
                             'uid' => $v,
                             'm_id' => $red_one['id'],
                             'red_money' => $red_one['money'],

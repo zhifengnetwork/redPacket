@@ -62,20 +62,20 @@
             				<li>
             					<span>￥</span>
             					<span>
-									{$vo.money}
-									{if condition="$vo.type eq 3 or $vo.type eq 4"}
-									(发)
-									{else/}
-									(抢)
-									{/if}
-								</span>
+								{$vo.money}
+								{if condition="$vo.type eq 3 or $vo.type eq 4"}
+								(发)
+								{else/}
+								(抢)
+								{/if}
+							</span>
             				</li>
             				<li>
-            					<span></span>
+            					<span>{$vo.level}</span>
             				</li>
             				<li>
-								<p>{$vo.create_time|date='Y-m-d',###}</p>
-								<p>{$vo.create_time|date='H:i',###}</p>
+							<p>{$vo.create_time|date='Y-m-d',###}</p>
+							<p>{$vo.create_time|date='H:i',###}</p>
             				</li>
 						</ul>
 						{/foreach}
