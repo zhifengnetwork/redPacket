@@ -424,10 +424,9 @@
                 
                 // 领取红包通知
                 case "get_red_notice":
-                    console.log('别人领取红包通知');
                     console.log(fromid);
                     console.log(message.from_id);
-                    if(room_id == message.room_id && fromid != message.from_id) {
+                    if(room_id == message.room_id && fromid == message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
@@ -440,7 +439,6 @@
                     return;
 
                 case "get_group_red":
-                    console.log('接收红包222!!'); 
                     // 接收对方红包推送
                     if(room_id == message.room_id && fromid != message.fromid) {
                         let str = '';
@@ -814,9 +812,6 @@
                     }
                     // 自己领取不推送
                     if(msg.data.from_id != fromid){
-                        console.log('本人领取');
-                        console.log(msg.data.from_uid);
-                        console.log(fromid);
                         // 推送领红包信息到发红包用户
                         var get_red_data = '{"type":"send_get_red_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'"}';
                         ws.send(get_red_data);
