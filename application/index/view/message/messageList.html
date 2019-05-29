@@ -444,6 +444,11 @@
 			mui("body").on('tap','.lb_headWrap_return',function(){
 				mui('.mui-off-canvas-wrap').offCanvas('show');
 			})
+			/*+*/
+			docuemnt.getElementById('group_chat').addEventListener('tap',function(){
+				mui.openWindow('https:www.baidu.com','group_chat');
+			})
+
 			//点击关闭按钮,左侧消失
 			$(".person_message_close").on('tap', function(event) {
 				mui('.mui-off-canvas-wrap').offCanvas('show');
