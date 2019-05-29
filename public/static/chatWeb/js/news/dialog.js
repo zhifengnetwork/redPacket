@@ -15,15 +15,17 @@ $(function(){
     
     // 显示转账弹框
     $('.transfer').on('click',function(){
-        $('.dialog_transfer_wrap').show()
+        $('.dialog_content').hide();
+        $('.dialog_transfer_wrap').show();
         $('.dialog_transfer_user_name').html(to_name);
         $(".dialog_transfer_user_img").attr("src", to_head);
     })
 
     // 隐藏转账弹框
     $('.dialog_transfer_back').on('click',function(){
-        $('.dialog_transfer_wrap').hide()
-        $('.dialog_transfer_num_input').val('')
+        $('.dialog_content').show();        
+        $('.dialog_transfer_wrap').hide();
+        $('.dialog_transfer_num_input').val('');
     })
     //点击表情包的图片，让滚动条滚动到底部
     $('.emotion_ear').on(function(){
