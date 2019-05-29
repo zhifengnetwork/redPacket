@@ -121,7 +121,7 @@
 					<div class="jiasaosao">
 						<!--向上-三角形-->
 						<p class="triangle_border_up"></p>
-						<div class="qunliao_item" onclick="">
+						<div class="qunliao_item" onclick="" style="cursor:pointer">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/qunliao@2x.png" class="qunliao_item_icon" />
 							</p>
@@ -161,7 +161,7 @@
 							</div>
 							{foreach name="group_list" item="v" key="k"}
 							{if condition="$v.id eq 1 or $v.id eq 2"}
-							<div class="chat chat1 group_chat" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}" >
+							<div class="chat chat1 group_chat" style="cursor:pointer;" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}" >
 								<div class="chat_img">
 									<img src="__STATIC__/{$v.img}" />
 								</div>
