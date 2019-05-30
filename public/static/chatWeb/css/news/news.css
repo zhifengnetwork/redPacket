@@ -332,21 +332,21 @@ body{
 	font-size: .26rem;
 	
 }
+
 .first_ear{
-	
-	
 	position: relative;
-	border-bottom: .3rem solid #F5F5F5;
-	height: 1.2rem;
+	/* border-bottom: .3rem solid #F5F5F5; */
+	height: 9rem;
 	line-height: .9rem;
-	
-	
 }
 .first_ear span{
-	
 	margin-left: 1rem;
-	
 }
+.first_ear_bottom_box {
+	width: 100%;
+	height: .3rem;
+}
+
 .img_left{
   
   position: absolute;	
@@ -369,24 +369,17 @@ body{
 	width: .2rem;
 	
 }
-.second_ear{
-	
-	
+/* .second_ear{
 	position: relative;
 	height: 1.2rem;
 	line-height: .9rem;
-	/*border: 1px solid green;*/
-	border-bottom: .3rem solid #F5F5F5;
-	
-   
-	
-	
+	border-bottom: .3rem solid #F5F5F5;	
 }
 .second_ear span{
 	
 	margin-left: 1rem;
 	
-}
+} */
 .three_ear{
 	
 	position: relative;
@@ -395,24 +388,24 @@ body{
 	
   
 }
-.three_ear_son{
+/* .three_ear_son{ */
 	
-	position: relative;
+	/* position: relative; */
 	/*border: 1px solid green;*/
 	
 	
-}
-.three_ear .three_ear_son:last-child{
+/* } */
+/* .three_ear .three_ear_son:last-child{ */
 	
-	border-bottom: .3rem solid #F5F5F5;
+	/* border-bottom: .3rem solid #F5F5F5; */
 	
-}
-.three_ear_son span{
+/* } */
+/* .three_ear_son span{
 	
 	margin-left: 1rem;
 	
-}
-.four_ear{
+} */
+/* .four_ear{
 	
 	position: relative;
 	top: 1.2rem;
@@ -420,8 +413,8 @@ body{
 	line-height: .9rem;
 	
 	
-}
-.four_ear_son{
+} */
+/* .four_ear_son{
 	
 	position: relative;
 	
@@ -430,7 +423,7 @@ body{
 	
 	margin-left: 1rem;
 	
-}
+} */
 .mask{
 	position: absolute;
 	left: 0;
