@@ -410,6 +410,9 @@
 
                 // 用户获得奖励群通知
                 case "get_award_notice":
+                    console.log('奖励通知');
+                    console.log(fromid);
+                    console.log(message.from_id);
                     if(room_id == message.room_id && fromid != message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
@@ -837,9 +840,9 @@
                     $(that).find(".pack_state").html('已拆开');
                     $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
                     $(".group_pack_info").attr("data-red-id", msg.data.master_info.id);
-                    if(msg.data.master_info.get_award_money!=0){
+                    if(msg.data.master_info.get_award_flag!=0){
                         $('.get_award').show();
-                        $('.award_money').html(msg.data.master_info.get_award_money);
+                        $('.award_money').html(msg.data.master_info.award_money);
                     }
                 }else if(msg.code == '-1'){
                     layer.msg(msg.msg,function(){
