@@ -412,8 +412,8 @@
                 case "get_award_notice":
                     console.log('奖励通知');
                     console.log(fromid);
-                    console.log(message.from_id);
-                    if(room_id == message.room_id && fromid != message.from_id) {
+                    console.log(message.from_id);// && fromid != message.from_id
+                    if(room_id == message.room_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
@@ -427,8 +427,8 @@
                 
                 // 领取红包通知
                 case "get_red_notice":
-                    console.log(fromid);
-                    console.log(message.from_id);
+                    // console.log(fromid);
+                    // console.log(message.from_id);
                     if(room_id == message.room_id && fromid == message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
