@@ -483,7 +483,7 @@
             var pass_val = '';
             /*雷点-选择*/
             let num = 1;
-            $(".ray_wrap ul li").click(function() {
+            $(".ray_wrap ul li").on('click',function() {
                 var red_num = $('.num').val();
                 if(red_num == 7){
                     var set_point = 1;

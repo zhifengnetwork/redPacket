@@ -406,7 +406,7 @@
     })
 
     // 客户端点击发送按钮是触发发送,并且把发送内容追加到当前页面中
-    $(".dialog_menu_send").click(function(){
+    $(".dialog_menu_send").on('click',function(){
 
         // send_type=1普通文本,2图片
         var text = $(".dialog_menu_input").html();
@@ -575,7 +575,7 @@
 
 
     // 发送图片
-    $(".image_up").click(function(){
+    $(".image_up").on('click',function(){
         $("#file").click();
     })
 
