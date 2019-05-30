@@ -336,7 +336,7 @@ body{
 .first_ear{
 	position: relative;
 	/* border-bottom: .3rem solid #F5F5F5; */
-	height: 9rem;
+	height: .9rem;
 	line-height: .9rem;
 }
 .first_ear span{
