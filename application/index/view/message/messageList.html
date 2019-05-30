@@ -132,11 +132,11 @@
 		<div id="news_wrap">
 			<!--public head-->
 			<div class="lb_headWrap">
-				<p class="lb_headWrap_return" data-num="1">
-					<img class="lb_headWrap_return_img touxx" id="submit_1" src="{$user['head_imgurl']}" />
+				<p class="lb_headWrap_return" onclick="head_portrait()">
+					<img class="lb_headWrap_return_img touxx"  onclick="head_portrait()" src="{$user['head_imgurl']}" />
 				</p>
 				<span>信息</span>
-				<p class="lb_headWrap_share" id="group_chat_1" data-num="1">
+				<p class="lb_headWrap_share" onclick="click_add()">
 					<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
 				</p>
 			</div>
@@ -248,7 +248,7 @@
 		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
 		<!-- 删除 插件 -->
 		<!-- <script src="https://cdn.bootcss.com/mui/3.4.0/js/mui.min.js"></script> -->
-		<script src="__STATIC__/chatWeb/js/public/public.js"></script>
+		<!-- <script src="__STATIC__/chatWeb/js/public/public.js"></script> -->
 		<!--公共底部导航栏-->
 		<script src="__STATIC__/chatWeb/js/public/bottom_nav.js"></script>
 		<!--<script src="__STATIC__/chatWeb/js/news/news.js"></script>-->
@@ -564,19 +564,30 @@
 			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
 			// });
 			//点击头像,左侧出现
-			$(document).on('click','.lb_headWrap_return, .touxx',function() {
+			// $(document).on('click','.lb_headWrap_return, .touxx',function() {
+			// 	deviation('show');
+			// });
+			//点击头像,左侧出现
+			function head_portrait(){
 				deviation('show');
-			});
+				return false;
+			}
 			//点击关闭按钮,左侧消失
 			$(document).on('click','.person_message_close, .close',function() {
 			// $(".person_message_close, .close").on('click', function(event) {
 				deviation('hide');
 			});
 			/** '+'号 按钮*/
-			$(document).on('click','.lb_headWrap_share', function() {
+			// $(document).on('click','.lb_headWrap_share', function() {
+			// 	$(".mask").show();
+			// 	$(".mask_son").slideDown();
+			// });
+			/** '+'号 按钮*/
+			function click_add(){
 				$(".mask").show();
 				$(".mask_son").slideDown();
-			});
+				return false;
+			}
 			/**隐藏-创建群聊*/
 			$(document).on('click','.mask', function(event) {
 				$(".mask").hide();
