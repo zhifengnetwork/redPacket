@@ -412,8 +412,8 @@
                 case "get_award_notice":
                     console.log('奖励通知');
                     console.log(fromid);
-                    console.log(message.from_id);
-                    if(room_id == message.room_id && fromid != message.from_id) {
+                    console.log(message.from_id);// && fromid != message.from_id
+                    if(room_id == message.room_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
@@ -427,8 +427,8 @@
                 
                 // 领取红包通知
                 case "get_red_notice":
-                    console.log(fromid);
-                    console.log(message.from_id);
+                    // console.log(fromid);
+                    // console.log(message.from_id);
                     if(room_id == message.room_id && fromid == message.from_id) {
                         let str ='';
                             str += '<div class="group_content_tips">'
@@ -821,7 +821,7 @@
                     if(msg.data.get_award_flag == 1){
                         $('.get_award').show();
                         $('.award_money').html(msg.data.award_money);
-                        var get_award_data = '{"type":"send_award_notice","from_id":"'+from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.award_money+'"}';
+                        var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.award_money+'"}';
                         ws.send(get_award_data);
                     }
                     // 自己领取不推送
@@ -842,7 +842,7 @@
                     $(".group_pack_info").attr("data-red-id", msg.data.master_info.id);
                     if(msg.data.master_info.get_award_flag!=0){
                         $('.get_award').show();
-                        $(that).find('.award_money').html(msg.data.master_info.award_money);
+                        $('.award_money').html(msg.data.master_info.award_money);
                     }
                 }else if(msg.code == '-1'){
                     layer.msg(msg.msg,function(){
