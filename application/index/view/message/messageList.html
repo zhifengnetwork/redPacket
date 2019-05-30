@@ -44,8 +44,7 @@
 	</style>
 </head>
 
-<!-- <body onload="connect();"> -->
-<body>
+<body onload="connect();">
 	<!-- <div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable"> -->
 		<!--侧滑菜单部分(我的-模块)-->
 		<!-- <aside id="offCanvasSide" class="mui-off-canvas-left"> -->
@@ -63,7 +62,7 @@
 
 				<div class="person_message_img">
 					<!-- 关闭-按钮 绝对定位 -->
-					<div class="person_message_close" style="position: absolute;width: 1rem;height: 1rem;top: 0;right: 0;z-index:1;">
+					<div class="person_message_close" style="position: absolute;width: 1rem;height: 1rem;top: -0.5rem;right: 0;z-index:1;">
 						<img src="__STATIC__/chatWeb/img/news/close@2x.png" class="close" />
 					</div>
 					<img src="{$user['head_imgurl']}" class="touxiang page_trrem" data-url="./my/personal_center/personal_center.html"/>
@@ -134,12 +133,12 @@
 		<div id="news_wrap">
 			<!--public head-->
 			<div class="lb_headWrap">
-				<p class="lb_headWrap_return" onclick="head_portrait()">
-					<img class="lb_headWrap_return_img touxx"  onclick="head_portrait()" src="{$user['head_imgurl']}" />
+				<p class="lb_headWrap_return" onclick="head_portrait()" style="cursor :pointer;">
+					<img class="lb_headWrap_return_img touxx"  onclick="head_portrait()" style="cursor :pointer;" src="{$user['head_imgurl']}" />
 				</p>
 				<span>信息</span>
-				<p class="lb_headWrap_share" onclick="click_add()">
-					<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
+				<p class="lb_headWrap_share" onclick="click_add()" style="cursor :pointer;">
+					<img class="lb_headWrap_return_img" style="cursor :pointer;" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
 				</p>
 			</div>
 
