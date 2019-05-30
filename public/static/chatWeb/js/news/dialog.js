@@ -1,8 +1,5 @@
 
 $(function(){
-    $('html, body').animate({
-        scrollTop: $('html, body').height()
-    },100);
     //改变发送按钮样式
     $('.dialog_menu_input').keyup(function(){
         if($(this).html()!=''){
