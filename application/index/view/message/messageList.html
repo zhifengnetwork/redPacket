@@ -122,11 +122,11 @@
 							</p>
 							<span class="qunliao_item_text">创建群聊</span>
 						</div>
-						<div class="qunliao_item" onclick="">
+						<div class="qunliao_item" data-url="/index/my/add_friend">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/jiahaoyou@2x.png" class="qunliao_item_icon qunliao_item_icon2" />
 							</p>
-							<span class="qunliao_item_text"><a onclick="addFriends()">添加好友</a></span>
+							<span class="qunliao_item_text">添加好友</span>
 						</div>
 						<div class="qunliao_item" onclick="">
 							<p class="qunliao_item_icon_box">
@@ -503,10 +503,9 @@
 				window.location.href = $(this).attr('data-url');
 			});
 
-			function addFriends(){
-
-				layer.msg(111);
-			}
+			$(".qunliao_item").on('tap',function(event){
+				window.location.href = $(this).attr('data-url');
+			})
 		</script>
 
 </body>
