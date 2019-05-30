@@ -404,6 +404,7 @@ class Groupchat extends Base
                 'from_id' => $red_one['uid'],
                 'uid' => $user['id'],
                 'm_id' => $red_one['id'],
+                'd_id' => $red_detail['id'],
                 'red_money' => $red_one['money'],
                 'money' => $red_detail['money'],
                 'type' => 11,
@@ -449,6 +450,7 @@ class Groupchat extends Base
                             'from_id' => $user['id'],
                             'uid' => $v,
                             'm_id' => $red_one['id'],
+                            'd_id' => $red_detail['id'],
                             'red_money' => $red_one['money'],
                             'money' => $superior_rebate_money,
                             'type' => 6,
@@ -465,6 +467,7 @@ class Groupchat extends Base
             $award_money = $this->awardList($red_detail['money']);
             $award_log_res = true;
             $award_rebate_res =true;
+            $award_flag_res = true;
             if($award_money){
                 // 累加奖励金额
                 $award_rebate_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $award_money);
@@ -473,6 +476,7 @@ class Groupchat extends Base
                     'from_id' => $red_one['uid'],
                     'uid' => $user['id'],
                     'm_id' => $red_one['id'],
+                    'd_id' => $red_detail['id'],
                     'red_money' => $red_one['money'],
                     'con_money' => $red_detail['money'],
                     'money' => $award_money,
@@ -481,13 +485,14 @@ class Groupchat extends Base
                     'remake' => '抢包奖励'
                 ];
                 $award_log_res = Db::name('chat_red_log')->insert($award_log);
+                // 抢到当前红包获得奖励金额标记
+                $award_flag_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['get_award_money'=>1]);
             }
 
             // 判断当前红包主表是否记录 发包奖励 返给发包人
             $point_award_money_res = true;
             $point_award_money_log_res = true;
             $point_award_update_res = true;
-            $award_flag_res = true;
             if(!$red_one['is_award']){
                 // 7包发包奖励 
                 // 获取红包明细，中雷人数是否和雷点个数一致
@@ -559,6 +564,7 @@ class Groupchat extends Base
                         'from_id' => $red_one['uid'],
                         'uid' => $red_one['uid'],
                         'm_id' => $red_one['id'],
+                        'd_id' => $red_detail['id'],
                         'red_money' => $red_one['money'],
                         'money' => $point_award_money,
                         'type' => 8,
@@ -566,11 +572,9 @@ class Groupchat extends Base
                         'remake' => '发包奖励'
                     ];
                     $point_award_money_log_res = Db::name('chat_red_log')->insert($point_award_money_log);
-
-                    // 抢到当前红包获得奖励金额标记
-                    $award_flag_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['get_award_money'=>$point_award_money]);
                 }
             }
+
             // 抢包返利 平台返利
             $system_rebate_money = 0.05;
             $system_rebate_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $system_rebate_money);
@@ -578,6 +582,7 @@ class Groupchat extends Base
                 'from_id' => $red_one['uid'],
                 'uid' => $user['id'],
                 'm_id' => $red_one['id'],
+                'd_id' => $red_detail['id'],
                 'red_money' => $red_one['money'],
                 'money' => $system_rebate_money,
                 'type' => 9,
@@ -599,6 +604,7 @@ class Groupchat extends Base
                     'from_id' => $red_one['uid'],
                     'uid' => $user['id'],
                     'm_id' => $red_one['id'],
+                    'd_id' => $red_detail['id'],
                     'red_money' => $red_one['money'],
                     'money' => '-'.$dec_money,
                     'type' => 10,
@@ -612,6 +618,7 @@ class Groupchat extends Base
                     'from_id' => $user['id'], // 中雷者
                     'uid' => $red_one['uid'], // 发包者
                     'm_id' => $red_one['id'],
+                    'd_id' => $red_detail['id'],
                     'red_money' => $red_one['money'],
                     'money' => '+'.$dec_money,
                     'type' => 13,
@@ -624,6 +631,11 @@ class Groupchat extends Base
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
 
             Db::commit();
+            if($point_award_money||$award_money){
+                $get_award_flag = 1;
+            }else{
+                $get_award_flag = 0;
+            }
             $data = [
                 'get_red_money' => $red_detail['money'],
                 'is_die_flag' => $red_detail['is_ray']==2?'你已中雷':'你未中雷',
@@ -631,7 +643,7 @@ class Groupchat extends Base
                 'from_id' => $red_one['uid'],
                 'from_name' => $from_user['nickname'],
                 'from_head' => $from_user['head_imgurl'],
-                'get_award_money' => $point_award_money?$point_award_money:0
+                'get_award_money' => $get_award_flag //$award_money?$award_money:0
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {

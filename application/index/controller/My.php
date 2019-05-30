@@ -186,14 +186,35 @@ class My extends Base
             $map['id'] = ['in',$team_list_in];
         }
         
-        $list = Db::name('users')->field('id,nickname,head_imgurl')->where($map)->select();
+        $list = Db::name('users')->field('id,pid,nickname,head_imgurl')->where($map)->select();
+        // 获取下线上级昵称
+        
+        if($list){
+            $where['id'] = '';
+            $up_list_in = '';
+            foreach ($list as $v) {
+                $up_list_in .= $v['id'].',';
+            }
+            $up_list_in = rtrim($up_list_in, ','); // 最终1,2,3
+            $where['id'] = ['in',$up_list_in];
+            $up_list = Db::name('users')->field('id,nickname')->where($where)->select();
+
+        }
+
         foreach($list as $k=>$v){
             foreach($team_list as $ks=>$vs){
                 if($v['id']==$vs['id']){
                     $list[$k]['level'] = $vs['agent_level'];
+                    foreach ($up_list as $vl) {
+                        if($v['pid']==$vl['id']){
+                            $list[$k]['up_nickname'] = $vs['nickname'];
+                        }
+                    }
                 }
             }
         }
+        // 按照level排序
+        $list = array_sort($list,'level','asc');
         $this->assign('list', $list);
         return $this->fetch('myTeam');
     }

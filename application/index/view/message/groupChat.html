@@ -814,11 +814,11 @@
                     $(that).find(".pack_state").html('已拆开');
                     $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
                     $(".group_pack_info").attr("data-red-id", msg.data.red_id);
-                    if(msg.data.get_award_money!=0){
+                    if(msg.data.get_award_money==1){
                         $('.get_award').show();
-                        $('.award_money').html(msg.data.get_award_money);
+                        $('.award_money').html(msg.data.money);
                         // 群发获得奖励通知到当前群
-                        var get_award_data = '{"type":"send_award_notice","from_id":"'+msg.data.from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.get_award_money+'"}';
+                        var get_award_data = '{"type":"send_award_notice","from_id":"'+msg.data.from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.money+'"}';
                         ws.send(get_award_data);
                     }
                     // 自己领取不推送

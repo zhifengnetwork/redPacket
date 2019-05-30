@@ -190,10 +190,9 @@ class Message extends Base
      */
     public function transferList()
     {   
-        $list1 = Db::name('user_transfer')->where(['from_uid'=>session('user.id'), 'type'=>1])->select();  // 转入
-        $list2 = Db::name('user_transfer')->where(['get_uid'=>session('user.id'), 'type'=>2])->select(); // 转出
+        $list1 = Db::name('user_transfer')->where(['from_uid'=>session('user.id'), 'type'=>1])->order('create_time')->select();  // 转入
+        $list2 = Db::name('user_transfer')->where(['get_uid'=>session('user.id'), 'type'=>2])->order('create_time')->select(); // 转出
         $list = array_merge($list1,$list2);
-
         $income_total = 0; // 收入
         $expend_total = 0; // 支出
         $now_date = date('Y年m月');
@@ -210,6 +209,7 @@ class Message extends Base
             $list[$k]['username'] = $from_user['nickname'];
             $list[$k]['head_imgurl'] = $from_user['head_imgurl'];
         }
+        arsort($list);
         $this->assign('income_total', $income_total);
         $this->assign('expend_total', $expend_total);
         $this->assign('now_date', $now_date);

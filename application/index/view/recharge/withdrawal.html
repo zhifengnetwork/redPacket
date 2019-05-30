@@ -102,9 +102,16 @@
 	                    if(json.flag==1){
 	                        layer.msg(json.msg);
 	                       
-	                    }else{
-	                        layer.msg(json.msg);
+	                    }else if(json.flag==3){
+	                    	layer.msg(json.msg);
+	                        setTimeout(function(){
+								 self.location="{:url('index/my/myWallet')}";
+							},2000);
+
 	                        
+	                    }else{
+	                    	layer.msg(json.msg);
+
 	                    }
 	              	}
               	});
