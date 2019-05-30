@@ -819,9 +819,14 @@
                     $(".group_pack_info").attr("data-red-id", msg.data.red_id);
                     // 群发获得奖励通知到当前群
                     if(msg.data.get_award_flag == 1){
+                        console.log(888)
+                        console.log(msg.data.award_money)
+
                         $('.get_award').show();
-                        $('.award_money').html(msg.data.award_money);
+                        $(that).find('.award_money').html(msg.data.award_money);
                         var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.award_money+'"}';
+                        console.log(get_award_data)
+
                         ws.send(get_award_data);
                     }
                     // 自己领取不推送
@@ -832,6 +837,7 @@
                     }
                    
                 }else if(msg.code == 101){
+                    console.log($(that))
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.master_info.is_die_flag);
                     $('.get_red_money').html(msg.data.master_info.get_red_money);
@@ -842,7 +848,7 @@
                     $(".group_pack_info").attr("data-red-id", msg.data.master_info.id);
                     if(msg.data.master_info.get_award_flag!=0){
                         $('.get_award').show();
-                        $('.award_money').html(msg.data.master_info.award_money);
+                        $(that).find('.award_money').html(msg.data.master_info.award_money);
                     }
                 }else if(msg.code == '-1'){
                     layer.msg(msg.msg,function(){
