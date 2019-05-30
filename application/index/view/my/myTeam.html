@@ -26,10 +26,9 @@
             <div class="team-content">
                 <div class="thead">
                     <ul>
-                        <li>用户ID</li>
                         <li>昵称</li>
                         <li>等级</li>
-                      <!--   <li>上级</li> -->
+                        <li>上级</li>
                     </ul>
                 </div>
                 <div class="tbody">
@@ -38,15 +37,13 @@
                         <ul>
                         {volist name="list" id="vo"} 
                             <li>
-                                <div class="user-id">
-                                 {$vo.id}
-                                </div>
+                      
                                 <div class="user-name">
 									<span class="avatar"><img src="__STATIC__/chatWeb/img/00avatar-01-zp.png"/> </span>
                                     <span class="name">{$vo.nickname}</span>
                                 </div>
                                 <div class="user-rank">{$vo.level}级</div>
-                                <!-- <div class="user-superior">王子</div> -->
+                                <div class="user-superior">王子</div>
 							</li>
                         {/volist}  
                         </ul>

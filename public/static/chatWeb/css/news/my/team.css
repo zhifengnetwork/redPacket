@@ -63,6 +63,7 @@ body{
     align-items: center;
     justify-content: center;
     justify-content: space-between;
+    margin-left: 5px;
 }
 .team-content .list-item ul li .user-name .avatar{
     width: .65rem;
