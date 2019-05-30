@@ -314,5 +314,64 @@ class My extends Base
     }
 
 
+    public function add_friend(){
+
+        return $this->fetch();
+
+    }
+    // 添加朋友时 搜索
+    public function search_friend(){
+
+        $flag = 0;// 参数错误
+        $msg = '';
+        $userid = session('user.id');
+        if (Request::instance()->isPost()) {
+            $mobile = trim(input('post.mobile'));
+            if(!isMobile($mobile)){
+
+                $msg = '请输入正确的手机号！';
+            }else{
+
+                $res = Db::query("select mobile,id,nickname,head_imgurl from users where mobile = {$mobile}");
+                if(!$res){
+                    $msg = '用户不存在';
+                }elseif($userid == $res[0]['id']){
+
+                    $msg = '不能添加自己为好友';
+
+                }else{
+
+                    // 判断是否为好友
+                    $friends_id = $res[0]['id'];
+                    $sql = "select id from chat_friends where (uid = {$friends_id} and friend_uid ={$userid}) or (friend_uid = {$friends_id} and uid ={$userid}) ";
+                    // echo $sql;exit;
+                    //判断是否为好友
+                    $isFriends = Db::query($sql);
+                    if($isFriends){
+
+                        $flag = 2;
+                        $msg = $res[0];
+
+                    }else{ //不是好友关系
+                        $flag = 1; 
+                        $msg = $res[0];
+                    }
+                }
+            }    
+        }else{
+
+            $msg = '非法请求';
+
+        }
+        
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+    }
+
+    // 添加好友提交
+    public function sub_friend(){
+
+        echo 1;exit;
+    }
 
 }
