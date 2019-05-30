@@ -42,42 +42,39 @@ function getUpMemberIds($uid){
 // 获取当前用户的所有下线(不包括自己)
 function getDownUserUids2($uid){
     global $g_down_Uids;
+    // $level = 1;
 	if($uid){
-        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,3000)->select();
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
 		foreach($member_arr as $mb){
 			if($mb['id'] && $mb['id'] != $uid){
-               
+                // $g_down_Uids['level'][] = $level;
+                // $g_down_Uids['id'][] = $mb['id'];
                 $g_down_Uids[] = $mb['id'];
                 getDownUserUids2($mb['id']);
             }
+            // $level++;
 		}
     }
 	return $g_down_Uids;
 }
 
-//递归获取用户下线(不包括自己) 以及等级
-function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limit=0){
-    global $g_down_ids;
-    if($agent_level_limit&&$agent_level>$agent_level_limit){
-        return false;
+// 获取当前用户的所有下线(不包括自己)有等级
+function getDownUserUids3($uid){
+    global $g_down_Uids;
+    $level = 1;
+	if($uid){
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
+		foreach($member_arr as $k=>$mb){
+			if($mb['id'] && $mb['id'] != $uid){
+                $g_down_Uids[$k]['level'] = $level;
+                $g_down_Uids[$k]['uid'] = $mb['id'];
+                getDownUserUids2($mb['id']);
+            }
+            $level++;
+		}
     }
-    if($uid||true){
-        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,3000)->select();
-        foreach($member_arr as $mb){
-            if($mb['id']&&$mb['id']!=$uid){
-                if($need_all){
-                    $mb['agent_level'] = $agent_level;
-                    $g_down_ids['g_down_ids'][]=$mb;
-                }else{
-                    $g_down_ids['g_down_ids'][]=$mb['id'];
-                }
-                getDownMemberIds2($mb['id'],$need_all,$agent_level+1,$agent_level_limit);
-            }   
-        }
-    }
-    return $g_down_ids['g_down_ids'];
+	return $g_down_Uids;
 }
-
 
 //数组转换成[配置项名称]获取数据
 function arr2name($data,$key=''){
@@ -829,7 +826,9 @@ function is_complete($userid){
  */
 function layer_error($msg, $re = true, $url = ''){
     header("Content-type: text/html; charset=utf-8"); 
-
+    // echo '<script type="text/javascript" src="/public/static/public/jquery.min.js"></script>';
+    // echo '<script type="text/javascript" src="/public/static/public/layer/layer.js"></script>';
+    // echo "<script>layer.msg('$msg',{icon:5,time:3000});</script>";
     echo "<h1 style='margin-top:30%; text-align:center;color:red;'>$msg</h1>";
     if($re){
         if($url){
@@ -841,3 +840,5 @@ function layer_error($msg, $re = true, $url = ''){
     }
     exit;
 }
+
+

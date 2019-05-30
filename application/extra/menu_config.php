@@ -25,6 +25,13 @@ return [
                         'url'   => 'rule/setting',
                         'hide'  => 1,
                     ],
+                    [
+                        'id'    => 210402,
+                        'title' => '规则海报',
+                        'sort'  => 1,
+                        'url'   => 'rule/haibao',
+                        'hide'  => 1,
+                    ],                    
                 ],
             ],
             [

@@ -107,7 +107,8 @@ class Recharge extends Base
       
         if(!$check){
 
-            $msg = '请先完善支付宝或银行卡信息';    
+            $msg = '请先完善支付宝和银行卡信息';
+            $flag = 3;    
         }elseif($money<100){
            $msg='提现金额不能小于100';     
 
