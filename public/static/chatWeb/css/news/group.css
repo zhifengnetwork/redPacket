@@ -84,7 +84,7 @@ body{
     color: #ffdc52;
     /* width: 2.4rem;
     height: 3rem; */
-    width: 1.5rem;
+    width: 2.5rem;
     height: 2rem;
     border-radius: .1rem;
 }
@@ -207,7 +207,7 @@ body{
 }
 /* 本人消息 */
 .group_content_oneself,.group_content_opposite{
-    margin-top:.5rem; 
+    margin-top:.2rem; 
     width: 100%;
     height: auto;
 }
