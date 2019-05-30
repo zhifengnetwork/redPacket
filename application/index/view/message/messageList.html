@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<title class="pageTopTitle" page-id="0"></title>
+	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+	<!-- 删除 插件 -->
+	<!-- <link href="__STATIC__/chatWeb/css/news/mui.min.css" rel="stylesheet"> -->
+	<!--public-->
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css" />
+	<!--头部-->
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/bottom_nav.css" />
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/news.css" />
+	<style>
+		.new_wrapper {
+			position: relative;
+			width: 100%;
+			height: 100vh;
+			overflow-x: hidden;
+			overflow-y: scroll;
+		}
+		/* 侧边页面 */
+		#measure_wrap {
+			position: absolute;
+			top: 0;
+			left: -100%;
+			z-index: 100;
+			width: 100%;
+			height: 100vh;
+			background: #F5F5F5;
+		}
+		#news_wrap {
+			position: relative;
+			padding-top: 1rem;
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body onload="connect();">
+	<!-- <div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable"> -->
+		<!--侧滑菜单部分(我的-模块)-->
+		<!-- <aside id="offCanvasSide" class="mui-off-canvas-left"> -->
+			<!-- <div id="offCanvasSideScroll" class="mui-scroll-wrapper"> -->
+				<!-- <div class="mui-scroll"> -->
+					<!-- <li> -->
+	<div class="new_wrapper">
+		<!-- 侧边 页面,data-start='show'=>未-滑动到侧边页面，data-start='hide'=>已-滑动到侧边页面-->
+		<div id="measure_wrap" data-start='show'>	
+			<div class="person_message">
+				<div class="person_message_my">
+					<span class="personInfo" data-url="/index/my/personInfo">我的</span>
+				</div>
+				<!-- 关闭-按钮 绝对定位 -->
+				<div class="person_message_close" style="position: absolute;width: 1rem;height: 1rem;top: 0;right: 0;z-index：1;">
+					<img src="__STATIC__/chatWeb/img/news/close@2x.png" class="close" />
+				</div>
+
+				<div class="person_message_img">
+					<img src="{$user['head_imgurl']}" class="touxiang page_trrem" data-url="./my/personal_center/personal_center.html"/>
+					<span class="nickname">{$user['nickname']}</span><br/>
+					<span class="my_number">{$user['mobile']}</span>
+					<!-- <img src="__STATIC__/chatWeb/img/news/qr_code1@2x.png" class="my_qrcodeyf" data-url="./my/my_inviteCode.html" /> -->
+				</div>
+
+			</div>
+			<!--列表区域-->
+			<div class="list_ear">
+
+				<div class="first_ear first_ear_bottom_box page_trrem" data-url="/index/my/myWallet">
+
+					<img src="__STATIC__/chatWeb/img/news/wallet@2x.png" class="img_left" />
+					<span>我的钱包</span>
+					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+
+				</div>
+				<div class="first_ear first_ear_bottom_box page_trrem" data-url="/index/recharge/tixian.html">
+					<img src="__STATIC__/chatWeb/img/news/withdrawal@2x.png" class="img_left" />
+					<span>提现</span>
+					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+				</div>
+				<!--<div class="first_ear page_trrem" data-url="/index/my/personInfo">
+					<img src="__STATIC__/chatWeb/img/news/account@2x.png" class="img_left" />
+					<span>账号管理</span>
+					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+				</div> -->
+				<div class="first_ear page_trrem" data-url="/index/my/myTeamIncome">
+					<img src="__STATIC__/chatWeb/img/news/team@2x.png" class="img_left" />
+					<span>我的代理团队</span>
+					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+				</div>
+				<div class="first_ear first_ear_bottom_box page_trrem" data-url="/index/my/myQrCode">
+					<img src="__STATIC__/chatWeb/img/news/Qr code3@2x.png" class="img_left" />
+					<span>邀请二维码</span>
+					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+				</div>
+
+				<div class="first_ear page_trrem" data-url="/index/my/activityCenter">
+
+					<img src="__STATIC__/chatWeb/img/news/activity@2x.png" class="img_left" />
+					<span>活动中心</span>
+					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+
+				</div>
+				<div class="first_ear page_trrem" data-url='/index/my/mySet'">
+					<img src="__STATIC__/chatWeb/img/news/Set@2x.png" class="img_left" />
+					<span>设置</span>
+					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
+				</div>
+
+
+			</div>
+
+		</div>
+
+				<!-- </div> -->
+
+					<!-- </li> -->
+				<!-- </div> -->
+			<!-- </div> -->
+		<!-- </aside> -->
+
+		<!--主界面部分（信息-模块）-->
+		<!-- <div class="mui-inner-wrap" style="background: white;z-index: 40;position: absolute;left: 0;top: 0;bottom: 0;right: 0;"> -->
+		<div id="news_wrap">
+			<!--public head-->
+			<div class="lb_headWrap">
+				<p class="lb_headWrap_return" data-num="1">
+					<img class="lb_headWrap_return_img touxx" id="submit_1" src="{$user['head_imgurl']}" />
+				</p>
+				<span>信息</span>
+				<p class="lb_headWrap_share" id="group_chat_1" data-num="1">
+					<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
+				</p>
+			</div>
+
+			<!--mask遮罩层-->
+			<div class="mask">
+
+				<div class="mask_son">
+					<!--<img src="__STATIC__/chatWeb/img/news/d.png" class="jiantou" />-->
+
+					<div class="jiasaosao">
+						<!--向上-三角形-->
+						<p class="triangle_border_up"></p>
+						<div class="qunliao_item" onclick="" style="cursor:pointer">
+							<p class="qunliao_item_icon_box">
+								<img src="__STATIC__/chatWeb/img/news/qunliao@2x.png" class="qunliao_item_icon" />
+							</p>
+							<span class="qunliao_item_text">创建群聊</span>
+						</div>
+						<div class="qunliao_item" onclick="">
+							<p class="qunliao_item_icon_box">
+								<img src="__STATIC__/chatWeb/img/news/jiahaoyou@2x.png" class="qunliao_item_icon qunliao_item_icon2" />
+							</p>
+							<span class="qunliao_item_text">添加好友</span>
+						</div>
+						<div class="qunliao_item" onclick="">
+							<p class="qunliao_item_icon_box">
+								<img src="__STATIC__/chatWeb/img/news/saoyisao@2x.png" class="qunliao_item_icon qunliao_item_icon3" />
+							</p>
+							<span class="qunliao_item_text">扫一扫</span>
+							<!-- <input class="qunliao_item_text" type="file" accept="image/*" capture="camera"> -->
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- <div class="mui-content"> -->
+				<!-- <div id="scroll1" class="mui-scroll-wrapper" style="top:.88rem;bottom: 50px;"> -->
+					<!--MUI默认是position是absolute-->
+					<!-- <div class="mui-scroll"> -->
+
+						<!-- <ul class="mui-table-view"> -->
+			<!-- 搜索 -->
+			<div class="search">
+				<form action="#">
+					<input class="search-input" type="text">
+					<span class="search-tip">搜索</span>
+				</form>
+			</div>
+			{foreach name="group_list" item="v" key="k"}
+			{if condition="$v.id eq 1 or $v.id eq 2"}
+			<div class="chat chat1 group_chat" style="cursor:pointer;" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}" >
+				<div class="chat_img">
+					<img src="__STATIC__/{$v.img}" />
+				</div>
+				<div class="chat_text">
+
+					<p class="chat_name publicEllipsis">{$v.name}</p>
+					<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
+				</div>
+				<div class="chat_time">
+					<!-- <p class="chat_timer">2019-02-14</p> -->
+					<!-- <p class="chat_message">3</p> -->
+				</div>
+			</div>
+			{else/}
+			<div class="chat chat1">
+				<div class="chat_img">
+					<img src="__STATIC__/{$v.img}" />
+				</div>
+				<div class="chat_text">
+
+					<p class="chat_name publicEllipsis">{$v.name}</p>
+					<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
+				</div>
+				<div class="chat_time">
+					<!-- <p class="chat_timer">2019-02-14</p> -->
+					<!-- <p class="chat_message">3</p> -->
+				</div>
+			</div>	
+			{/if}
+			{/foreach}
+						<!-- </ul> -->
+						<!--<ul class="mui-table-view friendChat"> -->
+
+							<!-- 一对一聊天列表 -->
+							
+						<!-- </ul> -->
+						
+						<!-- </div> -->
+					<!-- </div> -->
+
+				<!-- </div> -->
+				<!-- <div class="line" style="position: absolute;bottom: -10px; z-index: 10;"> -->
+					<!--需要固定在底部，所以需要用到绝对定位，另外，由于MUI本身的组件的z-index要高于我们自己的div，所以，这里需要自定义z-index，一般10就足够。-->
+					<!-- 底部导航 -->
+			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
+				<!-- </div> -->
+
+			<!-- </div> -->
+		</div>
+	</div>
+		<audio id="audio">
+			<source src="__STATIC__/chatWeb/img/news/tips.mp3">
+		</audio>
+		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
+		<!-- 删除 插件 -->
+		<!-- <script src="https://cdn.bootcss.com/mui/3.4.0/js/mui.min.js"></script> -->
+		<script src="__STATIC__/chatWeb/js/public/public.js"></script>
+		<!--公共底部导航栏-->
+		<script src="__STATIC__/chatWeb/js/public/bottom_nav.js"></script>
+		<!--<script src="__STATIC__/chatWeb/js/news/news.js"></script>-->
+		<script>
+		
+		// window.onload = function() {
+
+			var API_URL = "/index.php/api/chat/"; // 请求地址
+			var fromid ={$fromid};
+
+			// 连接服务端
+			function connect() {
+				console.log('连接服务端1');
+				// 创建全局websocket
+				ws =  new WebSocket("ws://47.107.185.253:8282");
+				// 当socket连接打开时
+				ws.onopen = login;
+				// 当有消息时根据消息类型显示不同信息
+				ws.onmessage = onmessage;
+				ws.onclose = function() {
+					console.log("连接关闭，定时重连...");
+					connect();
+				};
+				ws.onerror = function() {
+					console.log("出现错误");
+				};
+			}
+		
+			function login(){
+				console.log('发送登录到ws');
+				// 登录
+				var login_data = '{"type":"login","fromid":'+fromid+'}';
+				console.log("websocket握手成功，发送登录数据:"+login_data);
+				ws.send(login_data);
+			}
+
+			// 服务端发来消息时,根据业务类型type处理客户端页面相应业务
+			function onmessage(e){
+
+				console.log(e.data);
+				var message = eval("("+ e.data+")");
+				switch (message.type){
+					// 服务端ping客户端
+					case 'ping':
+                		ws.send('{"type":"pong"}');
+                		break;
+					case  "init":
+						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
+						ws.send(bild);
+						$(".friendChat").html("");
+						list();
+						return;
+					case "text":
+						$(".friendChat").html("");
+						list();
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						return;
+					case "say_img":
+						$(".friendChat").html("");
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						list();
+					return;
+				}
+			}
+
+			function list(){
+
+				$.post(
+					API_URL+"get_list",
+					{id:fromid},
+					function(res){
+						$.each(res,function(index,content){
+
+							if(content.countNoread==0){
+								// <a href="'+content.chat_page+'">
+                				let str = '';
+                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
+									+ '<img src="'+content.head_url+'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
+									+ '<p class="chat_context">'+content.last_message.content+'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+									+ '</div></div>'
+                				$('.friendChat').append(str);
+                				bind_redurl($('.chat3'));
+
+							}else{
+
+								// 有未读消息显示
+								let str = '';
+
+                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
+									+ '<img src="'+content.head_url+'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
+									+ '<p class="chat_context">'+content.last_message.content+'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+									+ '<p class="chat_message gray">'+content.countNoread+'</p>'
+									+ '</div></div>'
+                				$('.friendChat').append(str);
+                				bind_redurl($('.chat3'));
+							}
+						})
+					},'json'
+				)
+			}
+
+			/**
+			*根据时间戳格式化为日期形式
+			*/
+			function mydate(nS){
+
+				return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+			}
+			/** 页面左右切换 -s */
+			/*存储-当前滚动条的位置*/
+			var newsScrollNum = null;
+			/**侧边页面-元素*/
+			var side_eve = $('#measure_wrap');
+			//限制 频繁滑动
+			var start_slip = true;
+			//获取接触屏幕时的X和Y
+			$('body').bind('touchstart',function(e){
+				startX = e.originalEvent.changedTouches[0].pageX,
+				startY = e.originalEvent.changedTouches[0].pageY;
+			});
+			/**
+			 * 获取滑动的坐标，并使用后面的坐标减去前面的坐标，通过获取的值判断其滑动方向。
+			 * 因为手滑动方向一般不是水平或者垂直的，所以可使用Math.abs()进行比较
+			 * **/
+			$('body').bind('touchmove', function(e) {
+				//获取滑动屏幕时的X,Y
+				endX = e.originalEvent.changedTouches[0].pageX,
+				endY = e.originalEvent.changedTouches[0].pageY;
+				//获取滑动距离
+				distanceX = endX - startX;
+				distanceY = endY - startY;
+				
+				// console.log('滑动的距离:',distanceX,'角度问题',Math.abs(distanceY));
+				/*判断滑动方向（滑动距离和方向 && 角度问题）*/
+				if(distanceX > 80 && Math.abs(distanceY) < 10) {
+					/*限制 频繁滑动 && 根据状态进行 滑动处理*/
+					if(start_slip && side_eve.attr('data-start') == 'show'){
+						deviation('show');
+					}
+
+				} else if(distanceX < -80 && Math.abs(distanceY) < 10) {
+					if(start_slip  && side_eve.attr('data-start') == 'hide'){
+						deviation('hide');
+					}				
+				}
+
+			});
+			/*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
+			function deviation(_start){
+				start_slip = false;
+				/*右滑动*/
+				if(_start == 'show'){
+					/*获取当前滚动条的位置*/
+					newsScrollNum = $(document).scrollTop();
+					/*右切换*/
+					side_eve.animate({'left':0},300,function(){
+						/*设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度**/
+						$('#news_wrap').css({
+							'position':'fixed',
+							'top': -newsScrollNum,
+							'left': 0,
+							'display': 'none',
+						});
+						start_slip = true;
+						/*改变-当前滑动状态*/
+						side_eve.attr('data-start',2);
+						console.log('往右滑动',side_eve.attr('data-start'));
+					});
+					return false;
+				}
+				if(_start == 'hide'){
+					/*恢复-主页的滑动*/
+					$('#news_wrap').css({
+						'position':'',
+						'top': '',
+						'left': '',
+						'display': 'inherit',
+					});
+					console.log('回复-之前-滚动位置',newsScrollNum);
+					/*恢复当前用户滚动的位置！*/
+					$(document).scrollTop(newsScrollNum);
+					side_eve.animate({'left':'-100%'},300,function(){
+						start_slip = true;
+						side_eve.attr('data-start',1);
+						console.log('往左滑动',side_eve.attr('data-start'));
+					});
+					return false;
+				}
+			}
+			/** 页面左右切换 -e */
+
+			// 点击跳转到群页面
+			$('.group_chat').on('click',function(){
+				window.location.href = $(this).attr('data-url');
+			});
+
+			// 点击跳转到聊天页面
+			function bind_redurl(_eve){
+				/*遍历--绑定页面跳转*/
+				_eve.each(function(_index) {
+					_eve.eq(_index).on('click', function() {
+						window.location.href = $(this).attr('data-url');
+					});
+				})
+			}
+
+			//搜索框
+			$(".search-input").focus(function() {
+				$(".search-tip").hide();
+			}).blur(function() {
+				var val = $(this).val();
+				if(val != "") {
+					$(".search-tip").hide();
+				} else {
+					$(".search-tip").show();
+				}
+			})
+		// 	mui('.mui-scroll-wrapper').scroll({
+		// 		deceleration: 0.000000001 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+		// 	});
+		// // }
+	
+		// 	mui.init();
+		// 	//侧滑容器父节点
+		// 	var offCanvasWrapper = mui('#offCanvasWrapper');
+		// 	//主界面容器
+		// 	var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+		// 	//菜单容器
+		// 	var offCanvasSide = document.getElementById("offCanvasSide");
+		// 	if(!mui.os.android) {
+		// 		//				document.getElementById("move-togger").classList.remove('mui-hidden');
+		// 		var spans = document.querySelectorAll('.android-only');
+		// 		for(var i = 0, len = spans.length; i < len; i++) {
+		// 			spans[i].style.display = "none";
+		// 		}
+		// 	}
+		// 	//移动效果是否为整体移动
+		// 	var moveTogether = false;
+		// 	//侧滑容器的class列表，增加.mui-slide-in即可实现菜单移动、主界面不动的效果；
+		// 	var classList = offCanvasWrapper[0].classList;
+		// 	//变换侧滑动画移动效果；
+		// 	mui('.mui-input-group').on('change', 'input', function() {
+		// 		if(this.checked) {
+		// 			offCanvasSide.classList.remove('mui-transitioning');
+		// 			offCanvasSide.setAttribute('style', '');
+		// 			classList.remove('mui-slide-in');
+		// 			classList.remove('mui-scalable');
+		// 			switch(this.value) {
+		// 				case 'main-move':
+		// 					if(moveTogether) {
+		// 						//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+		// 						offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+		// 					}
+		// 					break;
+		// 				case 'main-move-scalable':
+		// 					if(moveTogether) {
+		// 						//仅主内容滑动时，侧滑菜单在off-canvas-wrap内，和主界面并列
+		// 						offCanvasWrapper[0].insertBefore(offCanvasSide, offCanvasWrapper[0].firstElementChild);
+		// 					}
+		// 					classList.add('mui-scalable');
+		// 					break;
+		// 				case 'menu-move':
+		// 					classList.add('mui-slide-in');
+		// 					break;
+		// 				case 'all-move':
+		// 					moveTogether = true;
+		// 					//整体滑动时，侧滑菜单在inner-wrap内
+		// 					offCanvasInner.insertBefore(offCanvasSide, offCanvasInner.firstElementChild);
+		// 					break;
+		// 			}
+		// 			offCanvasWrapper.offCanvas().refresh();
+		// 		}
+		// 	});
+
+		// 	mui('#offCanvasSideScroll').scroll();
+		// 	mui('#offCanvasContentScroll').scroll();
+
+		// 	//实现ios平台原生侧滑关闭页面；
+		// 	if(mui.os.plus && mui.os.ios) {
+		// 		mui.plusReady(function() { //5+ iOS暂时无法屏蔽popGesture时传递touch事件，故该demo直接屏蔽popGesture功能
+		// 			plus.webview.currentWebview().setStyle({
+		// 				'popGesture': 'none'
+		// 			});
+		// 		});
+		// 	}
+
+			//点击头像,左侧出现
+			// $("body").on('tap touchstart','.lb_headWrap_return',function(event) {
+			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
+			// });
+			//点击头像,左侧出现
+			$(".lb_headWrap_return, .touxx").on('click',function() {
+				deviation('show');
+			});
+			//点击关闭按钮,左侧消失
+			$(".person_message_close, .close").on('click', function(event) {
+				deviation('hide');
+			});
+			/** '+'号 按钮*/
+			$(".lb_headWrap_share").on('click', function() {
+				$(".mask").show();
+				$(".mask_son").slideDown()
+			});
+			/**隐藏-创建群聊*/
+			$(".mask").on('click', function(event) {
+				$(".mask").hide();
+			});
+			// /*+*/
+			// document.getElementById('group_chat_1').addEventListener('tap',function(){
+			// 	mui.openWindow('https:www.baidu.com','group_chat_1');
+			// })
+			
+			// /**测试测试*/
+			// var btn = document.getElementById("submit_1");
+			// //监听点击事件
+			// btn.addEventListener("tap",function () {
+			// 	console.log("tap event trigger");
+			// });
+			// //触发submit按钮的点击事件
+			// mui.trigger(btn,'tap');
+
+			//点击关闭按钮,左侧消失
+			// $(".person_message_close").on('tap', function(event) {
+			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
+			// });
+
+			// $(".lb_headWrap_share").on('tap', function(event) {
+
+			// 	$(".mask").show();
+			// 	$(".mask_son").slideDown()
+
+			// });
+			// $(".mask").on('tap', function(event) {
+
+			// 	$(".mask").hide();
+
+			// });
+			/*遍历--绑定页面跳转*/
+			$('.page_trrem').each(function(_index) {
+				$(".page_trrem").eq(_index).on('click', function() {
+					/*$(location).attr('href', 'dialog.html');*/
+					window.location.href = $(this).attr('data-url');
+				});
+			})
+
+			/*底部导航-页面跳转*/
+			// $(".bottomNavWrap .bottomNavTerm").on('tap', function() {
+			// mui("body").on('tap','.bottomNavWrap .bottomNavTerm',function(){
+			// 	window.location.href = $(this).attr('onclick').split("'")[1];
+			// })
+			/*跳转-二维码链接*/
+			$('.my_qrcodeyf').on('click', function() {
+				window.location.href = $(this).attr('data-url');
+			})
+
+
+			//点击显示个人信息
+			$(".personInfo").on('click', function(event) {
+				window.location.href = $(this).attr('data-url');
+			});
+		</script>
+
+</body>
+
+</html>
