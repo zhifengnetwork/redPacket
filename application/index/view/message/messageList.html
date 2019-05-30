@@ -290,53 +290,53 @@
 				}
 			}
 
-			function list(){
+			// function list(){
 
-				$.post(
-					API_URL+"get_list",
-					{id:fromid},
-					function(res){
-						$.each(res,function(index,content){
+			// 	$.post(
+			// 		API_URL+"get_list",
+			// 		{id:fromid},
+			// 		function(res){
+			// 			$.each(res,function(index,content){
 
-							if(content.countNoread==0){
-								// <a href="'+content.chat_page+'">
-                				let str = '';
-                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
-									+ '<img src="'+content.head_url+'" />'
-									+ '</div>'
-									+ '<div class="chat_text">'
-									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
-									+ '<p class="chat_context">'+content.last_message.content+'</p>'
-									+ '</div>'
-									+ '<div class="chat_time">'
-									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
-									+ '</div></div>'
-                				$('.friendChat').append(str);
-                				bind_redurl($('.chat3'));
+			// 				if(content.countNoread==0){
+			// 					// <a href="'+content.chat_page+'">
+            //     				let str = '';
+            //     				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
+			// 						+ '<img src="'+content.head_url+'" />'
+			// 						+ '</div>'
+			// 						+ '<div class="chat_text">'
+			// 						+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
+			// 						+ '<p class="chat_context">'+content.last_message.content+'</p>'
+			// 						+ '</div>'
+			// 						+ '<div class="chat_time">'
+			// 						+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+			// 						+ '</div></div>'
+            //     				$('.friendChat').append(str);
+            //     				bind_redurl($('.chat3'));
 
-							}else{
+			// 				}else{
 
-								// 有未读消息显示
-								let str = '';
+			// 					// 有未读消息显示
+			// 					let str = '';
 
-                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
-									+ '<img src="'+content.head_url+'" />'
-									+ '</div>'
-									+ '<div class="chat_text">'
-									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
-									+ '<p class="chat_context">'+content.last_message.content+'</p>'
-									+ '</div>'
-									+ '<div class="chat_time">'
-									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
-									+ '<p class="chat_message gray">'+content.countNoread+'</p>'
-									+ '</div></div>'
-                				$('.friendChat').append(str);
-                				bind_redurl($('.chat3'));
-							}
-						})
-					},'json'
-				)
-			}
+            //     				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
+			// 						+ '<img src="'+content.head_url+'" />'
+			// 						+ '</div>'
+			// 						+ '<div class="chat_text">'
+			// 						+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
+			// 						+ '<p class="chat_context">'+content.last_message.content+'</p>'
+			// 						+ '</div>'
+			// 						+ '<div class="chat_time">'
+			// 						+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+			// 						+ '<p class="chat_message gray">'+content.countNoread+'</p>'
+			// 						+ '</div></div>'
+            //     				$('.friendChat').append(str);
+            //     				bind_redurl($('.chat3'));
+			// 				}
+			// 			})
+			// 		},'json'
+			// 	)
+			// }
 
 			/**
 			*根据时间戳格式化为日期形式
