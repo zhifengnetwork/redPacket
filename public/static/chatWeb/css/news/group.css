@@ -134,7 +134,7 @@ body{
     /* top: 1.4rem; */
     top: .8rem;
     width: 100%;
-    font-size: .32rem;
+    /* font-size: .32rem; */
 }
 .pack_state{
     position: absolute;
