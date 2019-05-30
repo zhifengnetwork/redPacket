@@ -842,7 +842,7 @@
                     $(".group_pack_info").attr("data-red-id", msg.data.master_info.id);
                     if(msg.data.master_info.get_award_flag!=0){
                         $('.get_award').show();
-                        $(that).find('.award_money').html(msg.data.master_info.award_money);
+                        $('.award_money').html(msg.data.master_info.award_money);
                     }
                 }else if(msg.code == '-1'){
                     layer.msg(msg.msg,function(){
