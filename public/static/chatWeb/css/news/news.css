@@ -342,8 +342,8 @@ body{
 	margin-left: 1rem;
 }
 /*项与项的间距*/
-.first_ear_bottom_box {
-	margin-bottom: .3rem; 
+.first_ear_bottom_box:after {
+	border-bottom: .3rem solid #f5f5f5;
 }
 
 .img_left{
