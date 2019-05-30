@@ -821,7 +821,7 @@
                     if(msg.data.get_award_flag == 1){
                         $('.get_award').show();
                         $('.award_money').html(msg.data.award_money);
-                        var get_award_data = '{"type":"send_award_notice","from_id":"'+from_id+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.award_money+'"}';
+                        var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.award_money+'"}';
                         ws.send(get_award_data);
                     }
                     // 自己领取不推送
