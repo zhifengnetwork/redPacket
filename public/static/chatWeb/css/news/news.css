@@ -284,7 +284,7 @@ body{
 }
 .person_message_img{
 	
-	position: relative;
+	position: absolute;
 	top: .5rem;
 	color: white;
 
