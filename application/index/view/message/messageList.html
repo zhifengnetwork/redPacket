@@ -54,7 +54,7 @@
 				</div>
 				
 				<!-- 关闭-按钮 绝对定位 -->
-				<div class="person_message_close" style="position: absolute;width: 1rem;height: 1rem;top: 0;right: 0;z-index:1;">
+				<div class="person_message_close" onclick="head_portrait_hide()" style="position: absolute;width: 1rem;height: 1rem;top: 0;right: 0;z-index:1;">
 					<img src="__STATIC__/chatWeb/img/news/close@2x.png" class="close" />
 				</div>
 
@@ -472,10 +472,14 @@
 				return false;
 			}
 			//点击关闭按钮,左侧消失
-			$(document).on('click','.person_message_close, .close',function() {
-			// $(".person_message_close, .close").on('click', function(event) {
+			function head_portrait_hide(){
 				deviation('hide');
-			});
+				return false;
+			}
+			// $(document).on('click','.person_message_close, .close',function() {
+			// // $(".person_message_close, .close").on('click', function(event) {
+			// 	deviation('hide');
+			// });
 			/** '+'号 按钮*/
 			// $(document).on('click','.lb_headWrap_share', function() {
 			// 	$(".mask").show();
