@@ -76,6 +76,30 @@ function getDownUserUids3($uid){
 	return $g_down_Uids;
 }
 
+
+//递归获取用户下线(不包括自己) 以及等级
+function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limit=0){
+    global $g_down_ids;
+    if(!$uid){
+        return false;
+    }
+    if($uid||true){
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,3000)->select();
+        foreach($member_arr as $mb){
+            if($mb['id']&&$mb['id']!=$uid){
+                if($need_all){
+                    $mb['agent_level'] = $agent_level;
+                    $GLOBALS['g_down_ids'][]=$mb;
+                }else{
+                    $GLOBALS['g_down_ids'][]=$mb['id'];
+                }
+                getDownMemberIds2($mb['id'],$need_all,$agent_level+1,$agent_level_limit);
+            }   
+        }
+    }
+    return $g_down_ids;
+}
+
 //数组转换成[配置项名称]获取数据
 function arr2name($data,$key=''){
     $return_data=array();

@@ -8,7 +8,7 @@ body{
 }
 .lb_headWrap_return{
 	
-	width: 1rem;.chat_message
+	width: 1rem;
 	margin-left: .15rem;
 	
 	
@@ -18,7 +18,7 @@ body{
 	
 	width: .7rem;
 	height: .7rem;
-	border-radius:50% ;
+	border-radius:50%;
 	
 	
 }
@@ -58,12 +58,13 @@ body{
 	position: absolute;
 	top: 0;
 	left: 0;
-    -prefix-box-flex: 1; 
+    /* -prefix-box-flex: 1; 
 	-webkit-box-flex: 1; 
 	-webkit-flex: 1; 
 	-moz-box-flex: 1; 
 	-ms-flex: 1; 
-	flex: 1;
+	flex: 1; */
+	width: 100%;
     height: .5rem;
     line-height: .5rem;
     text-align: center;
@@ -331,21 +332,20 @@ body{
 	font-size: .26rem;
 	
 }
+
 .first_ear{
-	
-	
 	position: relative;
-	border-bottom: .3rem solid #F5F5F5;
-	height: 1.2rem;
+	height: .9rem;
 	line-height: .9rem;
-	
-	
 }
 .first_ear span{
-	
 	margin-left: 1rem;
-	
 }
+/*项与项的间距*/
+.first_ear_bottom_box {
+	margin-bottom: .3rem; 
+}
+
 .img_left{
   
   position: absolute;	
@@ -368,24 +368,7 @@ body{
 	width: .2rem;
 	
 }
-.second_ear{
-	
-	
-	position: relative;
-	height: 1.2rem;
-	line-height: .9rem;
-	/*border: 1px solid green;*/
-	border-bottom: .3rem solid #F5F5F5;
-	
-   
-	
-	
-}
-.second_ear span{
-	
-	margin-left: 1rem;
-	
-}
+
 .three_ear{
 	
 	position: relative;
@@ -394,42 +377,7 @@ body{
 	
   
 }
-.three_ear_son{
-	
-	position: relative;
-	/*border: 1px solid green;*/
-	
-	
-}
-.three_ear .three_ear_son:last-child{
-	
-	border-bottom: .3rem solid #F5F5F5;
-	
-}
-.three_ear_son span{
-	
-	margin-left: 1rem;
-	
-}
-.four_ear{
-	
-	position: relative;
-	top: 1.2rem;
-	height: .9rem;
-	line-height: .9rem;
-	
-	
-}
-.four_ear_son{
-	
-	position: relative;
-	
-}
-.four_ear_son span{
-	
-	margin-left: 1rem;
-	
-}
+
 .mask{
 	position: absolute;
 	left: 0;
