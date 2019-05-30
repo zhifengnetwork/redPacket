@@ -29,9 +29,10 @@ class Address extends Base
 
         if( !is_complete(session('user.id')) ){
 
-            layer_error('请完善个人信息', $re = true, $url = '/index/my/personInfo');
-
-            // $this->redirect('/index/my/personInfo');    
+            $info['msg'] = '请完善个人信息';
+            $info['url'] = '/index/my/personInfo';
+            $this->assign('info',$info);
+            return $this->fetch('/message/redirect');
         };
 
         // 获取当前用户所有好友
@@ -42,6 +43,29 @@ class Address extends Base
         $this->assign('list', $list);
         return $this->fetch('addressList');
     }
+    //判断个人用户信息是否完善
+    public function ajax_is(){
+        $flag = 0;
+        $msg = '';
+        if (Request::instance()->isPost()){
+            if( !is_complete(session('user.id')) ){
+                $msg = '请完善个人信息';
+                $flag = 3;
+
+            }
+             
+        }else{
+
+            $msg = '非法请求';
+
+        }
+        
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+    }
+
+
 
     /**
      * [我的上级页面]
