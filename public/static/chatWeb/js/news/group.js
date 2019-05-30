@@ -4,9 +4,11 @@ $(function(){
         if($(this).children().attr('src')=='/static/chatWeb/img/news/more.png'){
             $(this).children().attr('src','/static/chatWeb/img/news/more1.png');
             $('.group_menu_submenu').css('height','auto');
+            $('body').css('padding-bottom','3.2rem');
         }else{
             $(this).children().attr('src','/static/chatWeb/img/news/more.png');
             $('.group_menu_submenu').css('height','.45rem');
+            $('body').css('padding-bottom','1.8rem');
         }
     })
     // 红包弹框显示隐藏
