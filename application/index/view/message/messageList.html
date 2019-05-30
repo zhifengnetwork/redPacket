@@ -74,14 +74,14 @@
 			<!--列表区域-->
 			<div class="list_ear">
 
-				<div class="first_ear first_ear_bottom_box page_trrem" data-url="/index/my/myWallet">
+				<div class="first_ear first_ear_bottom_box page_trrem" onclick="window.location.href = '/index/my/myWallet'">
 
 					<img src="__STATIC__/chatWeb/img/news/wallet@2x.png" class="img_left" />
 					<span>我的钱包</span>
 					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
 
 				</div>
-				<div class="first_ear first_ear_bottom_box page_trrem" data-url="/index/recharge/tixian.html">
+				<div class="first_ear first_ear_bottom_box page_trrem" onclick="window.location.href = '/index/recharge/tixian.html'">
 					<img src="__STATIC__/chatWeb/img/news/withdrawal@2x.png" class="img_left" />
 					<span>提现</span>
 					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
@@ -91,25 +91,25 @@
 					<span>账号管理</span>
 					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
 				</div> -->
-				<div class="first_ear page_trrem" data-url="/index/my/myTeamIncome">
+				<div class="first_ear page_trrem" onclick="window.location.href = '/index/my/myTeamIncome'">
 					<img src="__STATIC__/chatWeb/img/news/team@2x.png" class="img_left" />
 					<span>我的代理团队</span>
 					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
 				</div>
-				<div class="first_ear first_ear_bottom_box page_trrem" data-url="/index/my/myQrCode">
+				<div class="first_ear first_ear_bottom_box page_trrem"  onclick="window.location.href = '/index/my/myQrCode'">
 					<img src="__STATIC__/chatWeb/img/news/Qr code3@2x.png" class="img_left" />
 					<span>邀请二维码</span>
 					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
 				</div>
 
-				<div class="first_ear page_trrem" data-url="/index/my/activityCenter">
+				<div class="first_ear page_trrem" onclick="window.location.href = '/index/my/activityCenter'">
 
 					<img src="__STATIC__/chatWeb/img/news/activity@2x.png" class="img_left" />
 					<span>活动中心</span>
 					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
 
 				</div>
-				<div class="first_ear page_trrem" data-url='/index/my/mySet'">
+				<div class="first_ear page_trrem"  onclick="window.location.href = '/index/my/mySet'">
 					<img src="__STATIC__/chatWeb/img/news/Set@2x.png" class="img_left" />
 					<span>设置</span>
 					<img src="__STATIC__/chatWeb/img/news/arrow@2x.png" class="img_right" />
@@ -564,20 +564,21 @@
 			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
 			// });
 			//点击头像,左侧出现
-			$(".lb_headWrap_return, .touxx").on('click',function() {
+			$(document).on('click','.lb_headWrap_return, .touxx',function() {
 				deviation('show');
 			});
 			//点击关闭按钮,左侧消失
-			$(".person_message_close, .close").on('click', function(event) {
+			$(document).on('click','.person_message_close, .close',function() {
+			// $(".person_message_close, .close").on('click', function(event) {
 				deviation('hide');
 			});
 			/** '+'号 按钮*/
-			$(".lb_headWrap_share").on('click', function() {
+			$(document).on('click','.lb_headWrap_share', function() {
 				$(".mask").show();
-				$(".mask_son").slideDown()
+				$(".mask_son").slideDown();
 			});
 			/**隐藏-创建群聊*/
-			$(".mask").on('click', function(event) {
+			$(document).on('click','.mask', function(event) {
 				$(".mask").hide();
 			});
 			// /*+*/
@@ -611,12 +612,17 @@
 
 			// });
 			/*遍历--绑定页面跳转*/
-			$('.page_trrem').each(function(_index) {
-				$(".page_trrem").eq(_index).on('click', function() {
+			// $('.page_trrem').each(function(_index) {
+				// $(".page_trrem").eq(_index).on('click', function() {
 					/*$(location).attr('href', 'dialog.html');*/
-					window.location.href = $(this).attr('data-url');
-				});
-			})
+					// window.location.href = $(this).attr('data-url');
+				// });
+			// })
+			/**我的页面-项路径跳转*/
+			// function my_trem_but(_this){
+			// 	window.location.href = $(_this).attr('data-url');
+			// }
+			
 
 			/*底部导航-页面跳转*/
 			// $(".bottomNavWrap .bottomNavTerm").on('tap', function() {
