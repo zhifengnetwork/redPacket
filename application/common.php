@@ -3,6 +3,23 @@ use think\Db;
 use think\Request;
 
 
+function array_sort($arr, $keys, $type = 'desc'){  
+    $key_value = $new_array = array();  
+    foreach ($arr as $k => $v) {  
+        $key_value[$k] = $v[$keys];  
+    }  
+    if ($type == 'asc') {  
+        asort($key_value);  
+    } else {  
+        arsort($key_value);  
+    }  
+    reset($key_value);  
+    foreach ($key_value as $k => $v) {  
+        $new_array[$k] = $arr[$k];  
+    }  
+    return $new_array;  
+}
+
 // 递归获取用户所有上线(不包括自己)
 function getUpMemberIds($uid){
 	global $g_up_mids,$i;
