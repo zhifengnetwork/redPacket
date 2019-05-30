@@ -260,42 +260,47 @@ class Groupchat extends Base
                     }
                     if($superior_rebate){
                         $superior_rebate_money = $no_die_money['money']*(abs($superior_rebate/100));
-                        $superior_rebate_res = Db::name('users')->where(['id'=>$v])->setInc('account', $superior_rebate_money);
+                        if($superior_rebate_money>=0.01){
+                            $superior_rebate_res = Db::name('users')->where(['id'=>$v])->setInc('account', $superior_rebate_money);
 
-                        // 发包返水插入chat_red_log流水日志
-                        $superior_red_log = [
-                            'from_id' => $user['id'],
-                            'uid' => $v,
-                            'm_id' => $res_id,
-                            'red_money' => $no_die_money['money'], // 免死金额
-                            'rebate' => $superior_rebate,
-                            'money' => $superior_rebate_money,
-                            'type' => 4,
-                            // 'user_level' => $keys, // 等级
-                            'create_time' => $time,
-                            'remake' => '发包返水'
-                        ];
-                        $superior_red_log_res = Db::name('chat_red_log')->insert($superior_red_log);
+                            // 发包返水插入chat_red_log流水日志
+                            $superior_red_log = [
+                                'from_id' => $user['id'],
+                                'uid' => $v,
+                                'm_id' => $res_id,
+                                'red_money' => $no_die_money['money'], // 免死金额
+                                'rebate' => $superior_rebate,
+                                'money' => $superior_rebate_money,
+                                'type' => 4,
+                                // 'user_level' => $keys, // 等级
+                                'create_time' => $time,
+                                'remake' => '发包返水'
+                            ];
+                            $superior_red_log_res = Db::name('chat_red_log')->insert($superior_red_log);
+                        }
                     }
                 }
             }
 
             // 发包返免死金额的5%到发包用户 发包返利
             $rebate_money  = $no_die_money['money']*(5/100);
+            // 小于0.01不处理 因为保留两位小数
             $rebate_res = true;
             $rebate_in = true;
-            $rebate_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $rebate_money);
-            $red_rebate_data = [
-                'from_id' => $user['id'],
-                'uid' => $user['id'],
-                'm_id' => $res_id,
-                'red_money' => $no_die_money['money'], // 免死金额
-                'money' => $rebate_money,
-                'type' => 3,
-                'create_time' => $time,
-                'remake' => '发包返免死金额的5%'
-            ];
-            $rebate_in = Db::name('chat_red_log')->insert($red_rebate_data);
+            if($rebate_money>=0.01){
+                $rebate_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $rebate_money);
+                $red_rebate_data = [
+                    'from_id' => $user['id'],
+                    'uid' => $user['id'],
+                    'm_id' => $res_id,
+                    'red_money' => $no_die_money['money'], // 免死金额
+                    'money' => $rebate_money,
+                    'type' => 3,
+                    'create_time' => $time,
+                    'remake' => '发包返免死金额的5%'
+                ];
+                $rebate_in = Db::name('chat_red_log')->insert($red_rebate_data);
+            }
 
             // 插入chat_red_log流水日志
             $red_log = [
