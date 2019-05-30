@@ -100,7 +100,7 @@
 
                                 </td>
                                 <td>待充值</td>
-                                <td><a onclick="recharge('{$vo.id}')">通过</a>/<a href="">驳回</a></td>    
+                                <td><a onclick="recharge('{$vo.id}')">通过</a>/<a onclick="cancel('{$vo.id}')">驳回</a></td>    
                             </tr>
                             {/volist}
                         </tbody>
@@ -126,6 +126,11 @@
             content:'/admin/users/recharge?id='+id,
             area:['850px','600px'],
         });
+    }
+
+    function cancel(id){
+        layer.msg(id);
+
     }
 
     function success(){
