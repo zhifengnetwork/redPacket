@@ -276,6 +276,7 @@ class Chat extends Controller{
         foreach($info as $k => $value) {
             if(!$value['ray_point_num']){
                 $info[$k]['ray_point'] = '';
+                // $info[$k]['money'] = floatval($value['money']);
             }
         }
         return $info;
