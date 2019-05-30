@@ -6,56 +6,6 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 	<title class="pageTopTitle" page-id="0"></title>
 	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
-	<script>
-		/*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
-		function deviation(_start){
-				start_slip = false;
-				/*右滑动*/
-				if(_start == 'show'){
-					/*获取当前滚动条的位置*/
-					newsScrollNum = $(document).scrollTop();
-					/*右切换*/
-					side_eve.animate({'left':0},300,function(){
-						/*设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度**/
-						$('#news_wrap').css({
-							'position':'fixed',
-							'top': -newsScrollNum,
-							'left': 0,
-							'display': 'none',
-						});
-						start_slip = true;
-						/*改变-当前滑动状态*/
-						side_eve.attr('data-start',2);
-						console.log('往右滑动',side_eve.attr('data-start'));
-					});
-					return false;
-				}
-				if(_start == 'hide'){
-					/*恢复-主页的滑动*/
-					$('#news_wrap').css({
-						'position':'',
-						'top': '',
-						'left': '',
-						'display': 'inherit',
-					});
-					console.log('回复-之前-滚动位置',newsScrollNum);
-					/*恢复当前用户滚动的位置！*/
-					$(document).scrollTop(newsScrollNum);
-					side_eve.animate({'left':'-100%'},300,function(){
-						start_slip = true;
-						side_eve.attr('data-start',1);
-						console.log('往左滑动',side_eve.attr('data-start'));
-					});
-					return false;
-				}
-			}
-			/** 页面左右切换 -e */
-		//点击头像,左侧出现
-		function head_portrait(){
-			deviation('show');
-			return false;
-		}
-	</script>
 	<!-- 删除 插件 -->
 	<!-- <link href="__STATIC__/chatWeb/css/news/mui.min.css" rel="stylesheet"> -->
 	<!--public-->
@@ -293,9 +243,9 @@
 			<!-- </div> -->
 		</div>
 	</div>
-		<audio id="audio">
+		<!-- <audio id="audio">
 			<source src="__STATIC__/chatWeb/img/news/tips.mp3">
-		</audio>
+		</audio> -->
 		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
 		<!-- 删除 插件 -->
 		<!-- <script src="https://cdn.bootcss.com/mui/3.4.0/js/mui.min.js"></script> -->
@@ -471,49 +421,49 @@
 			// 	}
 
 			// });
-			// /*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
-			// function deviation(_start){
-			// 	start_slip = false;
-			// 	/*右滑动*/
-			// 	if(_start == 'show'){
-			// 		/*获取当前滚动条的位置*/
-			// 		newsScrollNum = $(document).scrollTop();
-			// 		/*右切换*/
-			// 		side_eve.animate({'left':0},300,function(){
-			// 			/*设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度**/
-			// 			$('#news_wrap').css({
-			// 				'position':'fixed',
-			// 				'top': -newsScrollNum,
-			// 				'left': 0,
-			// 				'display': 'none',
-			// 			});
-			// 			start_slip = true;
-			// 			/*改变-当前滑动状态*/
-			// 			side_eve.attr('data-start',2);
-			// 			console.log('往右滑动',side_eve.attr('data-start'));
-			// 		});
-			// 		return false;
-			// 	}
-			// 	if(_start == 'hide'){
-			// 		/*恢复-主页的滑动*/
-			// 		$('#news_wrap').css({
-			// 			'position':'',
-			// 			'top': '',
-			// 			'left': '',
-			// 			'display': 'inherit',
-			// 		});
-			// 		console.log('回复-之前-滚动位置',newsScrollNum);
-			// 		/*恢复当前用户滚动的位置！*/
-			// 		$(document).scrollTop(newsScrollNum);
-			// 		side_eve.animate({'left':'-100%'},300,function(){
-			// 			start_slip = true;
-			// 			side_eve.attr('data-start',1);
-			// 			console.log('往左滑动',side_eve.attr('data-start'));
-			// 		});
-			// 		return false;
-			// 	}
-			// }
-			// /** 页面左右切换 -e */
+			/*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
+			function deviation(_start){
+				start_slip = false;
+				/*右滑动*/
+				if(_start == 'show'){
+					/*获取当前滚动条的位置*/
+					newsScrollNum = $(document).scrollTop();
+					/*右切换*/
+					side_eve.animate({'left':0},300,function(){
+						/*设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度**/
+						$('#news_wrap').css({
+							'position':'fixed',
+							'top': -newsScrollNum,
+							'left': 0,
+							'display': 'none',
+						});
+						start_slip = true;
+						/*改变-当前滑动状态*/
+						side_eve.attr('data-start',2);
+						console.log('往右滑动',side_eve.attr('data-start'));
+					});
+					return false;
+				}
+				if(_start == 'hide'){
+					/*恢复-主页的滑动*/
+					$('#news_wrap').css({
+						'position':'',
+						'top': '',
+						'left': '',
+						'display': 'inherit',
+					});
+					console.log('回复-之前-滚动位置',newsScrollNum);
+					/*恢复当前用户滚动的位置！*/
+					$(document).scrollTop(newsScrollNum);
+					side_eve.animate({'left':'-100%'},300,function(){
+						start_slip = true;
+						side_eve.attr('data-start',1);
+						console.log('往左滑动',side_eve.attr('data-start'));
+					});
+					return false;
+				}
+			}
+			/** 页面左右切换 -e */
 
 			// 点击跳转到群页面
 			$('.group_chat').on('click',function(){
@@ -618,11 +568,11 @@
 			// $(document).on('click','.lb_headWrap_return, .touxx',function() {
 			// 	deviation('show');
 			// });
-			// //点击头像,左侧出现
-			// function head_portrait(){
-			// 	deviation('show');
-			// 	return false;
-			// }
+			//点击头像,左侧出现
+			function head_portrait(){
+				deviation('show');
+				return false;
+			}
 			//点击关闭按钮,左侧消失
 			$(document).on('click','.person_message_close, .close',function() {
 			// $(".person_message_close, .close").on('click', function(event) {
