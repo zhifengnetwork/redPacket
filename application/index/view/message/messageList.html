@@ -242,13 +242,13 @@
 				};
 			}
 		
-			// function login(){
-			// 	console.log('发送登录到ws');
-			// 	// 登录
-			// 	var login_data = '{"type":"login","fromid":'+fromid+'}';
-			// 	console.log("websocket握手成功，发送登录数据:"+login_data);
-			// 	ws.send(login_data);
-			// }
+			function login(){
+				console.log('发送登录到ws');
+				// 登录
+				var login_data = '{"type":"login","fromid":'+fromid+'}';
+				console.log("websocket握手成功，发送登录数据:"+login_data);
+				ws.send(login_data);
+			}
 
 			// // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
 			// function onmessage(e){
