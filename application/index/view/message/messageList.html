@@ -6,6 +6,56 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 	<title class="pageTopTitle" page-id="0"></title>
 	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>
+	<script>
+		/*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
+		function deviation(_start){
+				start_slip = false;
+				/*右滑动*/
+				if(_start == 'show'){
+					/*获取当前滚动条的位置*/
+					newsScrollNum = $(document).scrollTop();
+					/*右切换*/
+					side_eve.animate({'left':0},300,function(){
+						/*设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度**/
+						$('#news_wrap').css({
+							'position':'fixed',
+							'top': -newsScrollNum,
+							'left': 0,
+							'display': 'none',
+						});
+						start_slip = true;
+						/*改变-当前滑动状态*/
+						side_eve.attr('data-start',2);
+						console.log('往右滑动',side_eve.attr('data-start'));
+					});
+					return false;
+				}
+				if(_start == 'hide'){
+					/*恢复-主页的滑动*/
+					$('#news_wrap').css({
+						'position':'',
+						'top': '',
+						'left': '',
+						'display': 'inherit',
+					});
+					console.log('回复-之前-滚动位置',newsScrollNum);
+					/*恢复当前用户滚动的位置！*/
+					$(document).scrollTop(newsScrollNum);
+					side_eve.animate({'left':'-100%'},300,function(){
+						start_slip = true;
+						side_eve.attr('data-start',1);
+						console.log('往左滑动',side_eve.attr('data-start'));
+					});
+					return false;
+				}
+			}
+			/** 页面左右切换 -e */
+		//点击头像,左侧出现
+		function head_portrait(){
+			deviation('show');
+			return false;
+		}
+	</script>
 	<!-- 删除 插件 -->
 	<!-- <link href="__STATIC__/chatWeb/css/news/mui.min.css" rel="stylesheet"> -->
 	<!--public-->
@@ -388,82 +438,82 @@
 			//限制 频繁滑动
 			var start_slip = true;
 			//获取接触屏幕时的X和Y
-			$('body').bind('touchstart',function(e){
-				e.preventDefault();
-				startX = e.originalEvent.changedTouches[0].pageX,
-				startY = e.originalEvent.changedTouches[0].pageY;
-			});
+			// $('body').bind('touchstart',function(e){
+			// 	e.preventDefault();
+			// 	startX = e.originalEvent.changedTouches[0].pageX,
+			// 	startY = e.originalEvent.changedTouches[0].pageY;
+			// });
 			/**
 			 * 获取滑动的坐标，并使用后面的坐标减去前面的坐标，通过获取的值判断其滑动方向。
 			 * 因为手滑动方向一般不是水平或者垂直的，所以可使用Math.abs()进行比较
 			 * **/
-			$('body').bind('touchmove', function(e) {
-				e.preventDefault();
-				//获取滑动屏幕时的X,Y
-				endX = e.originalEvent.changedTouches[0].pageX,
-				endY = e.originalEvent.changedTouches[0].pageY;
-				//获取滑动距离
-				distanceX = endX - startX;
-				distanceY = endY - startY;
+			// $('body').bind('touchmove', function(e) {
+			// 	e.preventDefault();
+			// 	//获取滑动屏幕时的X,Y
+			// 	endX = e.originalEvent.changedTouches[0].pageX,
+			// 	endY = e.originalEvent.changedTouches[0].pageY;
+			// 	//获取滑动距离
+			// 	distanceX = endX - startX;
+			// 	distanceY = endY - startY;
 				
-				// console.log('滑动的距离:',distanceX,'角度问题',Math.abs(distanceY));
-				/*判断滑动方向（滑动距离和方向 && 角度问题）*/
-				if(distanceX > 80 && Math.abs(distanceY) < 10) {
-					/*限制 频繁滑动 && 根据状态进行 滑动处理*/
-					if(start_slip && side_eve.attr('data-start') == 'show'){
-						deviation('show');
-					}
+			// 	// console.log('滑动的距离:',distanceX,'角度问题',Math.abs(distanceY));
+			// 	/*判断滑动方向（滑动距离和方向 && 角度问题）*/
+			// 	if(distanceX > 80 && Math.abs(distanceY) < 10) {
+			// 		/*限制 频繁滑动 && 根据状态进行 滑动处理*/
+			// 		if(start_slip && side_eve.attr('data-start') == 'show'){
+			// 			deviation('show');
+			// 		}
 
-				} else if(distanceX < -80 && Math.abs(distanceY) < 10) {
-					if(start_slip  && side_eve.attr('data-start') == 'hide'){
-						deviation('hide');
-					}				
-				}
+			// 	} else if(distanceX < -80 && Math.abs(distanceY) < 10) {
+			// 		if(start_slip  && side_eve.attr('data-start') == 'hide'){
+			// 			deviation('hide');
+			// 		}				
+			// 	}
 
-			});
-			/*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
-			function deviation(_start){
-				start_slip = false;
-				/*右滑动*/
-				if(_start == 'show'){
-					/*获取当前滚动条的位置*/
-					newsScrollNum = $(document).scrollTop();
-					/*右切换*/
-					side_eve.animate({'left':0},300,function(){
-						/*设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度**/
-						$('#news_wrap').css({
-							'position':'fixed',
-							'top': -newsScrollNum,
-							'left': 0,
-							'display': 'none',
-						});
-						start_slip = true;
-						/*改变-当前滑动状态*/
-						side_eve.attr('data-start',2);
-						console.log('往右滑动',side_eve.attr('data-start'));
-					});
-					return false;
-				}
-				if(_start == 'hide'){
-					/*恢复-主页的滑动*/
-					$('#news_wrap').css({
-						'position':'',
-						'top': '',
-						'left': '',
-						'display': 'inherit',
-					});
-					console.log('回复-之前-滚动位置',newsScrollNum);
-					/*恢复当前用户滚动的位置！*/
-					$(document).scrollTop(newsScrollNum);
-					side_eve.animate({'left':'-100%'},300,function(){
-						start_slip = true;
-						side_eve.attr('data-start',1);
-						console.log('往左滑动',side_eve.attr('data-start'));
-					});
-					return false;
-				}
-			}
-			/** 页面左右切换 -e */
+			// });
+			// /*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
+			// function deviation(_start){
+			// 	start_slip = false;
+			// 	/*右滑动*/
+			// 	if(_start == 'show'){
+			// 		/*获取当前滚动条的位置*/
+			// 		newsScrollNum = $(document).scrollTop();
+			// 		/*右切换*/
+			// 		side_eve.animate({'left':0},300,function(){
+			// 			/*设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度**/
+			// 			$('#news_wrap').css({
+			// 				'position':'fixed',
+			// 				'top': -newsScrollNum,
+			// 				'left': 0,
+			// 				'display': 'none',
+			// 			});
+			// 			start_slip = true;
+			// 			/*改变-当前滑动状态*/
+			// 			side_eve.attr('data-start',2);
+			// 			console.log('往右滑动',side_eve.attr('data-start'));
+			// 		});
+			// 		return false;
+			// 	}
+			// 	if(_start == 'hide'){
+			// 		/*恢复-主页的滑动*/
+			// 		$('#news_wrap').css({
+			// 			'position':'',
+			// 			'top': '',
+			// 			'left': '',
+			// 			'display': 'inherit',
+			// 		});
+			// 		console.log('回复-之前-滚动位置',newsScrollNum);
+			// 		/*恢复当前用户滚动的位置！*/
+			// 		$(document).scrollTop(newsScrollNum);
+			// 		side_eve.animate({'left':'-100%'},300,function(){
+			// 			start_slip = true;
+			// 			side_eve.attr('data-start',1);
+			// 			console.log('往左滑动',side_eve.attr('data-start'));
+			// 		});
+			// 		return false;
+			// 	}
+			// }
+			// /** 页面左右切换 -e */
 
 			// 点击跳转到群页面
 			$('.group_chat').on('click',function(){
@@ -568,11 +618,11 @@
 			// $(document).on('click','.lb_headWrap_return, .touxx',function() {
 			// 	deviation('show');
 			// });
-			//点击头像,左侧出现
-			function head_portrait(){
-				deviation('show');
-				return false;
-			}
+			// //点击头像,左侧出现
+			// function head_portrait(){
+			// 	deviation('show');
+			// 	return false;
+			// }
 			//点击关闭按钮,左侧消失
 			$(document).on('click','.person_message_close, .close',function() {
 			// $(".person_message_close, .close").on('click', function(event) {
