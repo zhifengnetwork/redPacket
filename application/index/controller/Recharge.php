@@ -38,6 +38,7 @@ class Recharge extends Base
         if (Request::instance()->isPost()) {
             $amout = input('post.money');
             $base64_img = input('post.img');
+            $type = input('post.type');
             $img =  uploadImg($base64_img);
             if($img =='上传失败'){
                 $msg = '提交失败！';    
@@ -47,7 +48,7 @@ class Recharge extends Base
                 $id = session('user.id');
                 $data = ['uid' => $id, 
                         'amount' => $amout,
-                        'type' =>1,
+                        'type' =>$type,
                         'proof' =>$img,
                         'ordersn' =>$orderNumber,
                         'time' => $time,
