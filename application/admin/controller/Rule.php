@@ -51,6 +51,37 @@ class Rule extends Common
         return $this->fetch();
     }
 
+    // 规则海报
+    public function haibao(){
+        $query = "select id,title,url,create_time from poster where title ='海报'";
+        $info = Db::query($query);
+
+        $this->assign('list', $info[0]);
+        return $this->fetch();
+
+
+    }
+    // 更新海报
+    public function edit_haibao(){
+
+        $file = request()->file('img');
+   
+        $path = ROOT_PATH . 'public' . DS . 'uploads';
+
+        if($file){
+            $info = $file->move($path);
+            $path =  $info->getSaveName();
+     
+            Db::table('poster')->where('title', '海报')->update(['url' => $path]);
+
+            
+
+        }
+
+        $this->success('更新成功', 'rule/haibao');
+
+    }
+
 
 
 

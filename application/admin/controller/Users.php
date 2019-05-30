@@ -343,6 +343,36 @@ class Users extends Common
 
     }
 
+    //充值审核不通过
+    public function cancel_recharge(){
+        $msg = '';
+        $flag = 0;
+        $id = input('post.id');
+        if(Request::instance()->isPost()){
+            //更改提现记录表中交易状态
+            $res = Db::table('recharge')->where('id',$id)->update(['status' => 2]);
+            if($res){
+
+                $flag = 1;
+                $msg = '操作成功';
+            }else{
+
+                $msg = '操作失败！';
+
+            }
+
+        }else{
+
+            $msg = '非法请求';
+
+        }   
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+
+
+    }
 
 
 

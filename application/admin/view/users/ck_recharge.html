@@ -129,7 +129,32 @@
     }
 
     function cancel(id){
-        layer.msg(id);
+
+        if(id==''){
+            layer.msg('参数错误！');
+            return false;
+        }
+        $.ajax({
+        url: '/admin/users/cancel_recharge',//
+        dataType:'json',  
+        data: "id="+id,        
+        type: "POST",
+        success: function(json){
+
+            if(json.flag==1){
+
+                layer.msg(json.msg);
+                setTimeout(function(){
+                    self.location="{:url('/admin/users/ck_recharge_list')}";
+                },2000);
+               
+            }else{
+                layer.msg(json.msg);
+                
+            }
+        }
+    })
+
 
     }
 
