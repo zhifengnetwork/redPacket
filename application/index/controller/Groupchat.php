@@ -579,7 +579,7 @@ class Groupchat extends Base
                 'money' => $system_rebate_money,
                 'type' => 9,
                 'create_time' => $time,
-                'remake' => '平台返利'
+                'remake' => '抢包返利'
             ];
             $system_rebate_log_res = Db::name('chat_red_log')->insert($system_rebate_log);
 
