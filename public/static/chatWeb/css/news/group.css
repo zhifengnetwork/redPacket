@@ -1,6 +1,6 @@
 body{
     background: #fff !important;
-    padding-bottom: 2.8rem; 
+    padding-bottom: 1.8rem; 
 }
 /* 公告 */
 .group_notice{
@@ -82,8 +82,10 @@ body{
     margin-top: .1rem;
     text-align: center;
     color: #ffdc52;
-    width: 2.4rem;
-    height: 3rem;
+    /* width: 2.4rem;
+    height: 3rem; */
+    width: 2.5rem;
+    height: 2rem;
     border-radius: .1rem;
 }
 .group_content_opposite_pack:after{
@@ -122,19 +124,22 @@ body{
 /* 红包内容 */
 .pack_titie{
     position: absolute;
-    top: .5rem;
+    /* top: .5rem; */
+    top: .3rem;
     width: 100%;
-    font-size: .36rem;
+    /* font-size: .36rem; */
 }
 .pack_num{
     position: absolute;
-    top: 1.4rem;
+    /* top: 1.4rem; */
+    top: .8rem;
     width: 100%;
-    font-size: .32rem;
+    /* font-size: .32rem; */
 }
 .pack_state{
     position: absolute;
-    top: 2.3rem;
+    /* top: 2.3rem; */
+    top: 1.5rem;
     width: 100%;
     color: #9c1926;
 }
@@ -202,7 +207,7 @@ body{
 }
 /* 本人消息 */
 .group_content_oneself,.group_content_opposite{
-    margin-top:.5rem; 
+    margin-top:.2rem; 
     width: 100%;
     height: auto;
 }

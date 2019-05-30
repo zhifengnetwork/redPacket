@@ -448,6 +448,7 @@
 			/*+*/
 			document.getElementById('group_chat_1').addEventListener('tap',function(){
 				mui.openWindow('https:www.baidu.com','group_chat_1');
+				// alert('是否可以点击!');
 			})
 			
 			/**测试测试*/
@@ -455,6 +456,7 @@
 			//监听点击事件
 			btn.addEventListener("tap",function () {
 				console.log("tap event trigger");
+				alert('终于可以点击了。');
 			});
 			//触发submit按钮的点击事件
 			mui.trigger(btn,'tap');

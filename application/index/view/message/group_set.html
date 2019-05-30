@@ -121,7 +121,7 @@
                 $('.lb_headWrap').css('background','transparent');
             }
         })
-        $('.group_set_list_item').click(function(){
+        $('.group_set_list_item').on('click',function(){
             if($(this).find('.group_set_list_image').attr('src')=='__STATIC__/chatWeb/img/news/set_up/radio-b@2x.png'){
                 $(this).find('.group_set_list_image').attr('src','__STATIC__/chatWeb/img/news/set_up/radio-a@2x.png')
             }else{

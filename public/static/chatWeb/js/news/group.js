@@ -1,27 +1,29 @@
 $(function(){
     // 底部菜单两层显示
-    $('.group_menu_more').click(function(){
+    $('.group_menu_more').on('click',function(){
         if($(this).children().attr('src')=='/static/chatWeb/img/news/more.png'){
             $(this).children().attr('src','/static/chatWeb/img/news/more1.png');
             $('.group_menu_submenu').css('height','auto');
+            $('body').css('padding-bottom','3.2rem');
         }else{
             $(this).children().attr('src','/static/chatWeb/img/news/more.png');
             $('.group_menu_submenu').css('height','.45rem');
+            $('body').css('padding-bottom','1.8rem');
         }
     })
     // 红包弹框显示隐藏
-    $('.group_content_oneself_pack,.group_content_opposite_pack').click(function(){
+    $('.group_content_oneself_pack,.group_content_opposite_pack').on('click',function(){
         $('.group_packwrap').show();
     })
-    $('.group_packwrap').click(function(){
+    $('.group_packwrap').on('click',function(){
         $('.group_packwrap').hide();
     })
-    $('.group_pack').click(function(){
+    $('.group_pack').on('click',function(){
         event.stopPropagation();
     })
 
     // 发红包弹框
-    $('.givered_7,.givered_9').click(function(){
+    $('.givered_7,.givered_9').on('click',function(){
         $('.group_content').hide();
         $('.give_pack').show();
         $('body').css('padding','0')
@@ -31,7 +33,7 @@ $(function(){
             $('.num').val('9');
         }
     })
-    $('.lb_headWrap_return').click(function(){
+    $('.lb_headWrap_return').on('click',function(){
         $('.group_content').show();
         $('.give_pack').hide();
         $('body').css('padding-bottom','1.4rem');
