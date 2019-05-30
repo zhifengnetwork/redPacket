@@ -94,7 +94,7 @@ function AnalyticEmotion(s) {
 			$('.dialog_menu').append('<div id="emotions"></div>');
 			$('#emotions').css({
 //				top: eTop,
-                bottom:'1.35rem', 
+                bottom:'1.6rem', 
 				left: eLeft
 			});
 			$('#emotions').html('<div>正在加载，请稍候...</div>');
