@@ -367,8 +367,8 @@ class Groupchat extends Base
         if($is_get){
             $data = $this->getRedDetail2($is_get['m_id']);
             $data['master_info']['is_die_flag'] =  $is_get['is_ray']==2?'你已中雷':'你未中雷';
-            $data['master_info']['get_award_money'] =  $is_get['get_award_money']>0?$is_get['get_award_money']:0;
-            $data['master_info']['get_red_money'] = $is_get['money'];
+            $data['master_info']['award_money'] =  $is_get['get_award_money']>0?$is_get['get_award_money']:0;
+            $data['master_info']['get_award_flag'] = $is_get['get_award_money']>0?1:0;
             return message(101,'红包已抢过', $data);
         }
         // 判断红包是否过期 大于5分钟
@@ -485,8 +485,8 @@ class Groupchat extends Base
                     'remake' => '抢包奖励'
                 ];
                 $award_log_res = Db::name('chat_red_log')->insert($award_log);
-                // 抢到当前红包获得奖励金额标记
-                $award_flag_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['get_award_money'=>1]);
+                // 抢到当前红包获得奖励金额记录
+                $award_flag_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['get_award_money'=>$award_money]);
             }
 
             // 判断当前红包主表是否记录 发包奖励 返给发包人
@@ -778,7 +778,7 @@ class Groupchat extends Base
     {
   
         $m_id = $red_id;
-        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point')->where(['id'=>$m_id])->find();
+        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point,ray_point_num')->where(['id'=>$m_id])->find();
         if(!$master_info){
             return message(0,'红包不存在');
         }
