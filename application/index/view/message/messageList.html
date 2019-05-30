@@ -388,6 +388,7 @@
 			var start_slip = true;
 			//获取接触屏幕时的X和Y
 			$('body').bind('touchstart',function(e){
+				e.preventDefault();
 				startX = e.originalEvent.changedTouches[0].pageX,
 				startY = e.originalEvent.changedTouches[0].pageY;
 			});
@@ -396,6 +397,7 @@
 			 * 因为手滑动方向一般不是水平或者垂直的，所以可使用Math.abs()进行比较
 			 * **/
 			$('body').bind('touchmove', function(e) {
+				e.preventDefault();
 				//获取滑动屏幕时的X,Y
 				endX = e.originalEvent.changedTouches[0].pageX,
 				endY = e.originalEvent.changedTouches[0].pageY;
