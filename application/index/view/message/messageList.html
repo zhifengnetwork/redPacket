@@ -250,44 +250,45 @@
 				ws.send(login_data);
 			}
 
-			// // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
-			// function onmessage(e){
+			// 服务端发来消息时,根据业务类型type处理客户端页面相应业务
+			function onmessage(e){
 
-			// 	console.log(e.data);
-			// 	var message = eval("("+ e.data+")");
-			// 	switch (message.type){
-			// 		// 服务端ping客户端
-			// 		case 'ping':
-            //     		ws.send('{"type":"pong"}');
-            //     		break;
-			// 		case  "init":
-			// 			var bild = '{"type":"bind","fromid":"'+fromid+'"}';
-			// 			ws.send(bild);
-			// 			$(".friendChat").html("");
-			// 			list();
-			// 			return;
-			// 		case "text":
-			// 			$(".friendChat").html("");
-			// 			list();
-			// 			$('#audio')[0].play();
-			// 			if (navigator.vibrate) {
-			// 				navigator.vibrate([200,50,200]);
-			// 			} else if (navigator.webkitVibrate) {
-			// 				navigator.webkitVibrate([200,50,200]);
-			// 			}
-			// 			return;
-			// 		case "say_img":
-			// 			$(".friendChat").html("");
-			// 			$('#audio')[0].play();
-			// 			if (navigator.vibrate) {
-			// 				navigator.vibrate([200,50,200]);
-			// 			} else if (navigator.webkitVibrate) {
-			// 				navigator.webkitVibrate([200,50,200]);
-			// 			}
-			// 			list();
-			// 		return;
-			// 	}
-			// }
+				console.log(e.data);
+				var message = eval("("+ e.data+")");
+				switch (message.type){
+					// 服务端ping客户端
+					case 'ping':
+						// ws.send('{"type":"pong"}');
+						ws.send('{"type":"ping"}');
+                		break;
+					case  "init":
+						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
+						ws.send(bild);
+						$(".friendChat").html("");
+						list();
+						return;
+					case "text":
+						$(".friendChat").html("");
+						list();
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						return;
+					case "say_img":
+						$(".friendChat").html("");
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						list();
+					return;
+				}
+			}
 
 			// function list(){
 
