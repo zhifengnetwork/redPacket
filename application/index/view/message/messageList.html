@@ -225,125 +225,125 @@
 			// var fromid ={$fromid};
 
 			// // 连接服务端
-			// function connect() {
-			// 	console.log('连接服务端1');
-			// 	// 创建全局websocket
-			// 	ws =  new WebSocket("ws://47.107.185.253:8282");
-			// 	// 当socket连接打开时
-			// 	ws.onopen = login;
-			// 	// 当有消息时根据消息类型显示不同信息
-			// 	ws.onmessage = onmessage;
-			// 	ws.onclose = function() {
-			// 		console.log("连接关闭，定时重连...");
-			// 		connect();
-			// 	};
-			// 	ws.onerror = function() {
-			// 		console.log("出现错误");
-			// 	};
-			// }
+			function connect() {
+				console.log('连接服务端1');
+				// 创建全局websocket
+				ws =  new WebSocket("ws://47.107.185.253:8282");
+				// 当socket连接打开时
+				ws.onopen = login;
+				// 当有消息时根据消息类型显示不同信息
+				ws.onmessage = onmessage;
+				ws.onclose = function() {
+					console.log("连接关闭，定时重连...");
+					connect();
+				};
+				ws.onerror = function() {
+					console.log("出现错误");
+				};
+			}
 		
-			// function login(){
-			// 	console.log('发送登录到ws');
-			// 	// 登录
-			// 	var login_data = '{"type":"login","fromid":'+fromid+'}';
-			// 	console.log("websocket握手成功，发送登录数据:"+login_data);
-			// 	ws.send(login_data);
-			// }
+			function login(){
+				console.log('发送登录到ws');
+				// 登录
+				var login_data = '{"type":"login","fromid":'+fromid+'}';
+				console.log("websocket握手成功，发送登录数据:"+login_data);
+				ws.send(login_data);
+			}
 
-			// // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
-			// function onmessage(e){
+			// 服务端发来消息时,根据业务类型type处理客户端页面相应业务
+			function onmessage(e){
 
-			// 	console.log(e.data);
-			// 	var message = eval("("+ e.data+")");
-			// 	switch (message.type){
-			// 		// 服务端ping客户端
-			// 		case 'ping':
-            //     		ws.send('{"type":"pong"}');
-            //     		break;
-			// 		case  "init":
-			// 			var bild = '{"type":"bind","fromid":"'+fromid+'"}';
-			// 			ws.send(bild);
-			// 			$(".friendChat").html("");
-			// 			list();
-			// 			return;
-			// 		case "text":
-			// 			$(".friendChat").html("");
-			// 			list();
-			// 			$('#audio')[0].play();
-			// 			if (navigator.vibrate) {
-			// 				navigator.vibrate([200,50,200]);
-			// 			} else if (navigator.webkitVibrate) {
-			// 				navigator.webkitVibrate([200,50,200]);
-			// 			}
-			// 			return;
-			// 		case "say_img":
-			// 			$(".friendChat").html("");
-			// 			$('#audio')[0].play();
-			// 			if (navigator.vibrate) {
-			// 				navigator.vibrate([200,50,200]);
-			// 			} else if (navigator.webkitVibrate) {
-			// 				navigator.webkitVibrate([200,50,200]);
-			// 			}
-			// 			list();
-			// 		return;
-			// 	}
-			// }
+				console.log(e.data);
+				var message = eval("("+ e.data+")");
+				switch (message.type){
+					// 服务端ping客户端
+					case 'ping':
+                		ws.send('{"type":"pong"}');
+                		break;
+					case  "init":
+						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
+						ws.send(bild);
+						$(".friendChat").html("");
+						list();
+						return;
+					case "text":
+						$(".friendChat").html("");
+						list();
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						return;
+					case "say_img":
+						$(".friendChat").html("");
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						list();
+					return;
+				}
+			}
 
-			// function list(){
+			function list(){
 
-			// 	$.post(
-			// 		API_URL+"get_list",
-			// 		{id:fromid},
-			// 		function(res){
-			// 			$.each(res,function(index,content){
+				$.post(
+					API_URL+"get_list",
+					{id:fromid},
+					function(res){
+						$.each(res,function(index,content){
 
-			// 				if(content.countNoread==0){
-			// 					// <a href="'+content.chat_page+'">
-            //     				let str = '';
-            //     				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
-			// 						+ '<img src="'+content.head_url+'" />'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_text">'
-			// 						+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
-			// 						+ '<p class="chat_context">'+content.last_message.content+'</p>'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_time">'
-			// 						+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
-			// 						+ '</div></div>'
-            //     				$('.friendChat').append(str);
-            //     				bind_redurl($('.chat3'));
+							if(content.countNoread==0){
+								// <a href="'+content.chat_page+'">
+                				let str = '';
+                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
+									+ '<img src="'+content.head_url+'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
+									+ '<p class="chat_context">'+content.last_message.content+'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+									+ '</div></div>'
+                				$('.friendChat').append(str);
+                				bind_redurl($('.chat3'));
 
-			// 				}else{
+							}else{
 
-			// 					// 有未读消息显示
-			// 					let str = '';
+								// 有未读消息显示
+								let str = '';
 
-            //     				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
-			// 						+ '<img src="'+content.head_url+'" />'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_text">'
-			// 						+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
-			// 						+ '<p class="chat_context">'+content.last_message.content+'</p>'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_time">'
-			// 						+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
-			// 						+ '<p class="chat_message gray">'+content.countNoread+'</p>'
-			// 						+ '</div></div>'
-            //     				$('.friendChat').append(str);
-            //     				bind_redurl($('.chat3'));
-			// 				}
-			// 			})
-			// 		},'json'
-			// 	)
-			// }
+                				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
+									+ '<img src="'+content.head_url+'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
+									+ '<p class="chat_context">'+content.last_message.content+'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
+									+ '<p class="chat_message gray">'+content.countNoread+'</p>'
+									+ '</div></div>'
+                				$('.friendChat').append(str);
+                				bind_redurl($('.chat3'));
+							}
+						})
+					},'json'
+				)
+			}
 
-			// /**
-			// *根据时间戳格式化为日期形式
-			// */
-			// function mydate(nS){
+			/**
+			*根据时间戳格式化为日期形式
+			*/
+			function mydate(nS){
 
-			// 	return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
-			// }
+				return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+			}
 			/** 页面左右切换 -s */
 			/*存储-当前滚动条的位置*/
 			var newsScrollNum = null;
