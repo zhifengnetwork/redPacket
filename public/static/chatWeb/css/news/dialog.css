@@ -512,8 +512,8 @@ body{
 	
 }
 .ds_ds{
-	
-	
+    
+	display: table;
 	position: absolute;
 	left: 50%;
 	transform: translate(-50%,0);

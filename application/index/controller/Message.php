@@ -48,6 +48,7 @@ class Message extends Base
         return $this->fetch('messageList');
     }
 
+
     /**
      * [一对一聊天页面]
      * @return toid [聊天对象uid]

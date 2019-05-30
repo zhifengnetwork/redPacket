@@ -99,10 +99,10 @@
 			<!--public head-->
 			<div class="lb_headWrap">
 				<p class="lb_headWrap_return" data-num="1">
-					<img class="lb_headWrap_return_img touxx" src="{$user['head_imgurl']}" />
+					<img class="lb_headWrap_return_img touxx" id="submit_1" src="{$user['head_imgurl']}" />
 				</p>
 				<span>信息</span>
-				<p class="lb_headWrap_share" data-num="1">
+				<p class="lb_headWrap_share" id="group_chat_1" data-num="1">
 					<img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/Plus sign@2x.png" />
 				</p>
 			</div>
@@ -133,6 +133,7 @@
 								<img src="__STATIC__/chatWeb/img/news/saoyisao@2x.png" class="qunliao_item_icon qunliao_item_icon3" />
 							</p>
 							<span class="qunliao_item_text">扫一扫</span>
+							<!-- <input class="qunliao_item_text" type="file" accept="image/*" capture="camera"> -->
 						</div>
 
 					</div>
@@ -442,8 +443,28 @@
 			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
 			// });
 			mui("body").on('tap','.lb_headWrap_return',function(){
-                mui('.mui-off-canvas-wrap').offCanvas('show');
-            })
+				mui('.mui-off-canvas-wrap').offCanvas('show');
+			})
+			/*+*/
+			document.getElementById('group_chat_1').addEventListener('tap',function(){
+				mui.openWindow('https:www.baidu.com','group_chat_1');
+				alert('是否可以点击!');
+			})
+			
+			/**测试测试*/
+			var btn = document.getElementById("submit_1");
+			//监听点击事件
+			btn.addEventListener("tap",function () {
+				console.log("tap event trigger");
+				alert('终于可以点击了。');
+			});
+			//触发submit按钮的点击事件
+			mui.trigger(btn,'tap');
+
+			
+
+
+
 			//点击关闭按钮,左侧消失
 			$(".person_message_close").on('tap', function(event) {
 				mui('.mui-off-canvas-wrap').offCanvas('show');

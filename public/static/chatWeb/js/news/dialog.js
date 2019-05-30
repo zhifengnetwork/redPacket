@@ -11,7 +11,11 @@ $(function(){
             $('.dialog_menu_send').css('background','#c3f4ff')
         }
     })
-
+    $('.dialog_menu_input').blur(function(){
+        $('html, body').animate({
+            scrollTop: $('html, body').height()
+        },100);
+    })
     
     // 显示转账弹框
     $('.transfer').on('click',function(){
@@ -121,6 +125,7 @@ $(function(){
                         $('.dialog_transfer_num').attr('data-account',msg.data.account);
 
                         $('.dialog_transfer_wrap').hide();
+                        $('.dialog_content').show(); 
                         $('.dialog_transfer_num_input').val('');
                         $('.bottom_alert_wrap').hide();
                         pass_val='';
@@ -150,7 +155,7 @@ $(function(){
                             $('.dialog_content').append(str);
                             $('html, body').animate({
                                 scrollTop: $('html, body').height()
-                            }, 'slow');
+                            }, 100);
 
                             // 保存数据入库
                             save_message(tr_num,type='transfer',fromid,toid);
@@ -182,7 +187,9 @@ $(function(){
         
         /*点击出现-底部弹窗*/
         $('.dialog_transfer_affirm').on('click',function(){
-            
+            $('html, body').animate({
+                scrollTop: $('html, body').height()
+            }, 100);
             var account = $('.dialog_transfer_num').attr('data-account');
             // 余额不足提示
             if(account<1){

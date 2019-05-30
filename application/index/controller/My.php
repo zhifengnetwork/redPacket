@@ -77,7 +77,7 @@ class My extends Base
         // $redbagList = Db::query("select id,get_uid,money,get_time,status from chat_red_detail where get_uid = $userid and type =1");
         // 红包记录
         $where['uid'] = $userid;
-        $where['type'] = ['in','1,2,7,8,9,10,11,12'];
+        $where['type'] = ['in','1,2,3,7,8,9,10,11,12,13'];
         $redbagList = Db::name('chat_red_log')->where($where)->order('create_time desc')->select();
         // var_dump($rechargeList);exit;
         $this->assign('rechargeList', $rechargeList);
@@ -129,22 +129,32 @@ class My extends Base
     {
         $userid = session('user.id');
         // 我的团队人数 当前用户的所有下线
-        $team_list =  getDownUserUids2($userid);
+        $team_list = getDownMemberIds2($userid,true,1,30);
         $team_num = count($team_list);
-        unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
+        unset($GLOBALS['g_down_ids']); // 清空上一次循环全局数据
        
         // 收益详情
         $map['d.uid'] = $userid;
-        $map['d.type'] = ['in','3,4,5,6'];
+        $map['d.type'] = ['in','4,5,6'];
         $income_info = Db::name('chat_red_log')->alias('d')
                         ->field('d.*,u.nickname')
                         ->join('users u','d.from_id = u.id')
                         ->where($map)
                         ->order('create_time desc')
                         ->select();
+        if($team_list && $income_info){
+            foreach ($team_list as $v) {
+                foreach ($income_info as $k => $vs) {
+                    if($v['id'] == $vs['from_id']){
+                        $income_info[$k]['level'] = $v['agent_level'];
+                    }
+                }
+            }
+        }
+        
         // 今日收益
         $where['uid'] = $userid;
-        $where['type'] = ['in','3,4,5,6'];
+        $where['type'] = ['in','4,5,6'];
         $toDay_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'today')->sum('money');
         // 月总收益
         $month_income = Db::name('chat_red_log')->where($where)->whereTime('create_time', 'month')->sum('money');
@@ -162,16 +172,15 @@ class My extends Base
      */
     public function myTeam()
     {
-        
         $userid = session('user.id');
-        // 当前用户的所有下线
-        $team_list =  getDownUserUids3($userid);
-        unset($GLOBALS['g_down_Uids']); // 清空上一次循环全局数据
+        // 当前用户的30级下线 返回等级
+        $team_list = getDownMemberIds2($userid,true,1,30);
+        unset($GLOBALS['g_down_ids']); // 清空上一次循环全局数据
         $team_list_in = '';
         $map['id'] = '';
         if($team_list){
             foreach ($team_list as $v) {
-                $team_list_in .= $v['uid'].',';
+                $team_list_in .= $v['id'].',';
             }
             $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
             $map['id'] = ['in',$team_list_in];
@@ -180,8 +189,8 @@ class My extends Base
         $list = Db::name('users')->field('id,nickname,head_imgurl')->where($map)->select();
         foreach($list as $k=>$v){
             foreach($team_list as $ks=>$vs){
-                if($v['id']==$vs['uid']){
-                    $list[$k]['level'] = $vs['level'];
+                if($v['id']==$vs['id']){
+                    $list[$k]['level'] = $vs['agent_level'];
                 }
             }
         }
