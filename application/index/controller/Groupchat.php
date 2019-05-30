@@ -631,6 +631,11 @@ class Groupchat extends Base
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
 
             Db::commit();
+            if($point_award_money||$award_money){
+                $get_award_flag = 1;
+            }else{
+                $get_award_flag = 0;
+            }
             $data = [
                 'get_red_money' => $red_detail['money'],
                 'is_die_flag' => $red_detail['is_ray']==2?'你已中雷':'你未中雷',
@@ -638,7 +643,7 @@ class Groupchat extends Base
                 'from_id' => $red_one['uid'],
                 'from_name' => $from_user['nickname'],
                 'from_head' => $from_user['head_imgurl'],
-                'get_award_money' => $award_money?$award_money:0
+                'get_award_money' => $get_award_flag //$award_money?$award_money:0
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {
