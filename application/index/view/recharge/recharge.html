@@ -57,7 +57,7 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type="text" id="money" placeholder="转账金额" />
+            							<input class="inp" type="text" id="weixin" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -77,7 +77,7 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type="text" placeholder="转账金额" />
+            							<input class="inp" type="text" id="zfb" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -157,9 +157,17 @@
 		</script>
         <script type="text/javascript">
             function submits(){
-                // alert(1);
-
-                var money = $("#money").val();
+           
+                var money = null;
+                var type = null;
+                if($('.pay_wrap').eq(0).children(".hook_wrap").hasClass('active')){
+                    money = $('#weixin').val();
+                    type = 2;
+                }else{
+                    money = $('#zfb').val();
+                    type = 1;
+                }
+ 
                 var FileImg = document.getElementById("file_img");//img file
                 var file = FileImg.src;
     
@@ -168,12 +176,13 @@
                     layer.msg('金额不能小于等于0');
                     return false;
                 }
-                console.log(file.indexOf('data:image'))
+
+     
                 if(file.indexOf('data:image')>-1){
                     $.ajax({
                         url: '/index/recharge/subrecharge',//
                         dataType:'json',  
-                        data: "money="+money+"&img="+file,        
+                        data: "money="+money+"&img="+file+"&type="+type,        
                         type: "POST",
                         success: function(json){
                             if(json.flag==1){
