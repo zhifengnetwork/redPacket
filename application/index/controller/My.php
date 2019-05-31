@@ -371,7 +371,56 @@ class My extends Base
     // 添加好友提交
     public function sub_friend(){
 
-        echo 1;exit;
+        $flag=0;
+        $msg='';
+        $userid = session('user.id');
+        if (Request::instance()->isPost()) {
+   
+            $friends_id = input('post.id');
+        
+            if($friends_id==''){
+                $msg='参数错误！';
+            }elseif($friends_id ==$userid){
+                $msg='不能添加自己为好友';
+            }else{
+                $res = Db::query("select id from users where id = $friends_id");
+                if(!$res){
+                   $msg='用户不存在'; 
+                }else{
+                    // 判断是否为好友
+                    $sql = "select id from chat_friends where (uid = {$friends_id} and friend_uid ={$userid}) or (friend_uid = {$friends_id} and uid ={$userid}) ";
+                    // echo $sql;exit;
+                    //判断是否为好友
+                    $isFriends = Db::query($sql);
+                    if($isFriends){
+                        $msg = "已经是好友";
+
+                    }else{ //不是好友关系
+                       $friend_data = [
+                        'uid' => $userid,  // 用户id
+                        'friend_uid' => $friends_id,    // 好友id      
+                        'create_time' => time()
+                        ];
+                        $friend_res = Db::table('chat_friends')->insertGetId($friend_data);
+                        if($friend_res>0){
+                            $flag = 1;
+                            $msg = '好友添加成功';
+                        }else{
+                            $msg = '好友添加失败';
+
+                        }
+                    }
+                }
+            }
+
+        }else{
+            $msg='非法请求';
+
+
+        }   
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
     }
 
 }

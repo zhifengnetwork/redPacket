@@ -111,19 +111,19 @@
 					<div class="jiasaosao">
 						<!--向上-三角形-->
 						<p class="triangle_border_up"></p>
-						<div class="qunliao_item" onclick="" style="cursor:pointer">
+						<div class="qunliao_item" data-url="" style="cursor:pointer">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/qunliao@2x.png" class="qunliao_item_icon" />
 							</p>
 							<span class="qunliao_item_text">创建群聊</span>
 						</div>
-						<div class="qunliao_item" onclick="">
+						<div class="qunliao_item" data-url="/index/my/add_friend">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/jiahaoyou@2x.png" class="qunliao_item_icon qunliao_item_icon2" />
 							</p>
 							<span class="qunliao_item_text">添加好友</span>
 						</div>
-						<div class="qunliao_item" onclick="">
+						<div class="qunliao_item" data-url="">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/saoyisao@2x.png" class="qunliao_item_icon qunliao_item_icon3" />
 							</p>
@@ -595,6 +595,10 @@
 
 			//点击显示个人信息
 			$(".personInfo").on('click', function(event) {
+				window.location.href = $(this).attr('data-url');
+			});
+			//点击显示添加好友
+			$(".qunliao_item").on('click', function(event) {
 				window.location.href = $(this).attr('data-url');
 			});
 		</script>
