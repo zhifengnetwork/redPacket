@@ -289,6 +289,23 @@
 					return;
 				}
 			}
+			/* ajax 请求 -s */
+			function list(){
+				$.ajax({
+					type: "POST", 
+					url: API_URL+"get_list",   
+				    dataType: "json",  
+				    async: true, /*是否异步请求，默认:异步*/
+				    data: {"id":fromid},   
+				    success:function(_data){
+						console.log(_data);
+				    },
+				    error:function(err){
+						alert('数据请求失败:'+ err);
+				    }
+				})
+
+			}
 
 			// function list(){
 
