@@ -299,6 +299,43 @@
 				    data: {"id":fromid},   
 				    success:function(_data){
 						console.log(_data);
+						var str = ''
+						for(var i=0;i<_data.length;i++){
+							if(_data[i]['countNoread'] == 0){
+								str = '';
+								str += '<div class="chat chat3" onlick="window.location.href='+ _data[i].chat_page +'">'
+										+ '<div class="chat_img">'
+										+ '<img src="'+ _data[i].head_url +'" />'
+										+ '</div>'
+										+ '<div class="chat_text">'
+										+ '<p class="chat_name publicEllipsis">' +_data[i].username +'</p>'
+										+ '<p class="chat_context">'+ _data[i].last_message.content +'</p>'
+										+ '</div>'
+										+ '<div class="chat_time">'
+										+ '<p class="chat_timer">'+ mydate(_data[i].last_message.time) +'</p>'
+										+ '</div>'
+										+ '</div>'
+							} else {
+								// 有未读消息显示
+								str = '';
+								str += '<div class="chat chat3" onlick="window.location.href='+ _data[i].chat_page +'">'
+									+ '<div class="chat_img">'
+									+ '<img src="'+ _data[i].head_url +'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+ _data[i].username +'</p>'
+									+ '<p class="chat_context">'+ _data[i].last_message.content +'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+ mydate(_data[i].last_message.time) +'</p>'
+									+ '<p class="chat_message gray">'+ _data[i].countNoread +'</p>'
+									+ '</div>'
+									+ '</div>'
+							}
+							/*追加-元素*/
+							$('.friendChat').append(str);
+						}
+
 				    },
 				    error:function(err){
 						alert('数据请求失败:'+ err);
@@ -453,14 +490,16 @@
 			});
 
 			// 点击跳转到聊天页面
-			function bind_redurl(_eve){
-				/*遍历--绑定页面跳转*/
-				_eve.each(function(_index) {
-					_eve.eq(_index).on('click', function() {
-						window.location.href = $(this).attr('data-url');
-					});
-				})
-			}
+			// function bind_redurl(_eve){
+			// 	/*遍历--绑定页面跳转*/
+			// 	_eve.each(function(_index) {
+			// 		_eve.eq(_index).on('click', function() {
+			// 			window.location.href = $(this).attr('data-url');
+			// 		});
+			// 	})
+			// }
+
+			
 
 			//搜索框
 			$(".search-input").focus(function() {
