@@ -922,7 +922,7 @@ class Groupchat extends Base
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
 
-            if($ray_die_num>=$master_info['ray_point_num'] && $master_info['is_ray']==1){
+            if($ray_die_num>=$master_info['ray_point_num'] && $v['is_ray']==1){
                 $detail_info[$k]['is_ray'] = 1; // 中雷显示
             }else{
                 $detail_info[$k]['is_ray'] = 0; // 中雷显示
