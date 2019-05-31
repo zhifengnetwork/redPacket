@@ -178,7 +178,7 @@
 			{/if}
 			{/foreach}
 			<div class="chat_list friendChat">
-				<!-- 一对一聊天列表 -->
+				<!-- 追加元素，一对一聊天列表 -->
 			</div>
 
 			<!-- 底部导航 -->
@@ -285,7 +285,7 @@
 							href_url =  "'" + _data[i].chat_page + "'";
 							if(_data[i]['countNoread'] == 0){
 								console.log(1111);
-								str += '<div class="chat chat3" onlick="window.location.href='+ href_url +'">'
+								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
 										+ '<div class="chat_img">'
 										+ '<img src="'+ _data[i].head_url +'" />'
 										+ '</div>'
@@ -300,7 +300,7 @@
 							} else {
 								console.log(222);
 								// 有未读消息显示
-								str += '<div class="chat chat3" onlick="window.location.href='+ href_url +'">'
+								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
 									+ '<div class="chat_img">'
 									+ '<img src="'+ _data[i].head_url +'" />'
 									+ '</div>'
