@@ -742,7 +742,7 @@ class Groupchat extends Base
                                     // 中雷者,如果是发红包本人中雷不操作
                                     if($value['get_uid'] != $red_one['uid']){
                                         // 扣除中雷者金额=红包本金*赔率
-                                        $dec_money = $value['money']*$red_one['mulriple'];
+                                        $dec_money = $red_one['money']*$red_one['mulriple'];
                                         $dec_res = Db::name('users')->where(['id'=>$value['get_uid']])->setDec('account', $dec_money);
                                         $dec_log = [
                                             'from_id' => $red_one['uid'],
