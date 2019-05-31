@@ -70,13 +70,17 @@ $(function(){
 
     // })
     // 领取详情
-    $('.group_pack_info').on('click',function(){
+    $('.group_pack_info').on('click',function(event,red_id='',key=''){
         $('.group_content').hide();
         $('.red_details').show();
         $('body').css('padding','0')
-
-        var red_id = $(this).attr("data-red-id");
-        var key = $('.give_btn').attr('data-key');
+        if(red_id && key){
+            var red_id = red_id;
+            var key = key;
+        }else{
+            var red_id = $(this).attr("data-red-id");
+            var key = $('.give_btn').attr('data-key');
+        }
         if(!red_id || !key){
             layer.msg('缺失参数-');return;
         }
