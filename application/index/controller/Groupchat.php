@@ -374,7 +374,7 @@ class Groupchat extends Base
         if($is_get){
             $data = $this->getRedDetail2($is_get['m_id']);
             // 循环把所有中雷红包金额尾数获取组装成数组
-            $ray_red_list_last2 = [];
+            $ray_red_list_last2 = '';
             $ray_die_num2 = 0;
 
             $ray_last_number = substr($is_get['money'],-1);
@@ -413,9 +413,9 @@ class Groupchat extends Base
             $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->lock(true)->find();
             
             $time = time();
-            // if(!$red_detail['money']){
-            //     return message(0,'网络异常,稍后再试');
-            // }
+            if(!$red_detail['money']){
+                return message(0,'已抢完-');
+            }
 
             // 增加抢到的红包金额到对应用户
             $get_red_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $red_detail['money']);
@@ -923,7 +923,7 @@ class Groupchat extends Base
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
 
             if($ray_die_num>=$master_info['ray_point_num']){
-                $detail_info[$k]['is_die'] = 1; // 中雷显示
+                $detail_info[$k]['is_ray'] = 1; // 中雷显示
             }
         }
         // array_unshift($detail_info, array_pop($detail_info));
