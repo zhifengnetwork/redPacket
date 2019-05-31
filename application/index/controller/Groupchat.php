@@ -1011,6 +1011,10 @@ class Groupchat extends Base
         $master_info['get_num'] = count($detail_info);
         $master_info['nickname'] = $master_user['nickname'];
         $master_info['head_imgurl'] = $master_user['head_imgurl'];
+
+        // 循环把所有中雷红包金额尾数获取组装成数组
+        $ray_red_list_last3 = [];
+        $ray_die_num3 = 0;
        
         foreach($detail_info as $k=>$v){
             if($v['get_uid']==113){ // 免死机器人
@@ -1021,6 +1025,22 @@ class Groupchat extends Base
             }
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
+
+            $ray_last_number = substr($v['money'],-1);
+            $ray_red_list_last3[] = $ray_last_number;
+        }
+
+        // 判断雷点数和红包金额中雷数
+        $ray_point_arr2 = explode(',', $master_info['ray_point']);
+        foreach ($ray_point_arr2 as $vv) {
+            if(in_array($vv, $ray_red_list_last3)){
+                $ray_die_num3++;
+            }
+        }
+        if($ray_die_num3>=$master_info['ray_point_num']){
+            $detail_info[$k]['is_ray'] =1;
+        }else{
+            $detail_info[$k]['get_time'] = 0;
         }
         
         $data = [
