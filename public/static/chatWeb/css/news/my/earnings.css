@@ -17,7 +17,10 @@
 }
 
 .record {
-	padding: .6rem .28rem;
+	padding: .6rem 0;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	width: 100%;
 	background: url(../../../img/news/earnings.png) no-repeat;
 	background-size: 100% 100%;
@@ -38,7 +41,8 @@
 }
 
 .unit {
-	padding-left: .28rem;
+	display: table;
+    margin: 0 auto;
 	line-height: .65rem;
 }
 .unit div {
