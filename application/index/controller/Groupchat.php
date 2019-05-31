@@ -191,13 +191,13 @@ class Groupchat extends Base
                 }
                 // 如果雷点两个以上时,必须2个人尾数都中雷才算中雷
                 if($ray_point_num > 1){
-                    $ray_num = 0;
                     // 循环把所有红包金额尾数获取组装成数组
                     $red_list_last = [];
                     foreach ($red_list['redMoneyList'] as $k=>$vs) {
                         $last_number = substr($vs,-1);
                         $red_list_last[$k] = $last_number;
                     }
+                    $ray_num = 0;
                     // 判断雷点数和红包金额中雷数
                     foreach ($ray_points as $vv) {
                         if(in_array($vv, $red_list_last)){
@@ -592,7 +592,13 @@ class Groupchat extends Base
             ];
             $system_rebate_log_res = Db::name('chat_red_log')->insert($system_rebate_log);
 
+            // +--------------中雷处理以及显示--------------+
             // 中雷 如果中雷是发包本人不作处理
+            // 如果中雷判断当前领取到的红包记录是否已经中雷赔付
+            // 获取当前红包的雷点, 
+            // 
+           
+            //-------------------------------------原-----------------------------------------------
             $dec_res = true;
             $dec_log_res = true;
             $dec_log_res = true;
@@ -613,6 +619,7 @@ class Groupchat extends Base
                     'remake' => '中雷'
                 ];
                 $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
+
                 // 累加发包者金额
                 $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
                 $send_red_log = [
@@ -628,6 +635,9 @@ class Groupchat extends Base
                 ];
                 $dec_log_res = Db::name('chat_red_log')->insert($send_red_log);
             }
+            //------------------------------------------------------------------------------------
+
+
             // 获取发包者的信息
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
 
@@ -642,6 +652,8 @@ class Groupchat extends Base
                 $award_money = 0;
                 $get_award_flag = 0;
             }
+
+            // 中雷显示:
             $data = [
                 'get_red_money' => $red_detail['money'],
                 'is_die_flag' => $red_detail['is_ray']==2?'你已中雷':'你未中雷',
