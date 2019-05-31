@@ -268,7 +268,7 @@
                 // 判断是否属于当前聊天对象,向页面追加内容并显示
                 // 当前页面和对方聊天的toid,fromid另外一个页面发送者uid
                 if(toid==message.fromid) {
-                    let str = '';
+                    var str = '';
                     str += '<div class="dialog_content_opposite clearfloat">'
                         + '<div class="dialog_content_opposite_imgwrap">'
                         + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
@@ -302,7 +302,7 @@
             case "say_img":
                 // 接收图片
                 if(toid==message.fromid) {
-                    let str = '';
+                    var str = '';
                     str +='<div class="dialog_content_opposite clearfloat">'
                         +'<div class="dialog_content_opposite_imgwrap">'
                         +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
@@ -333,7 +333,7 @@
             case "transfer":
                 if(toid==message.fromid) {
 
-                let str = '';
+                var str = '';
                     str += '<div class="dialog_content_opposite clearfloat">'
                         + '<div class="dialog_content_opposite_imgwrap">'
                         + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
@@ -418,7 +418,7 @@
         }
         var message = '{"data":"'+text+'","type":"say","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
         // 向当前页面追加发送的内容并显示
-        let str = '';
+        var str = '';
         str +='<div class="dialog_content_oneself clearfloat">'
             +'<div class="dialog_content_oneself_imgwrap">'
             +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
@@ -453,7 +453,7 @@
                     if(fromid==content.fromid){ 
                         if(content.type==2){
                             // 图片类型内容
-                            let str = '';
+                            var str = '';
                             str +='<div class="dialog_content_oneself clearfloat">'
                                 +'<div class="dialog_content_oneself_imgwrap">'
                                 +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
@@ -469,7 +469,7 @@
                             $('html, body').scrollTop($('html, body').height());
                         }else if(content.type==1){
                             // 文本类型内容
-                            let str = '';
+                            var str = '';
                             str +='<div class="dialog_content_oneself clearfloat">'
                                         +'<div class="dialog_content_oneself_imgwrap">'
                                             +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
@@ -514,7 +514,7 @@
                         // 页面左边
                         if(content.type==2){
 
-                            let str = '';
+                            var str = '';
                             str +='<div class="dialog_content_opposite clearfloat">'
                                 +'<div class="dialog_content_opposite_imgwrap">'
                                 +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
@@ -529,7 +529,7 @@
                             $('.dialog_content').append(str);
                             $('html, body').scrollTop($('html, body').height());
                         }else if(content.type==1){
-                            let str = '';
+                            var str = '';
                             str += '<div class="dialog_content_opposite clearfloat">'
                                 + '<div class="dialog_content_opposite_imgwrap">'
                                 + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
@@ -543,7 +543,7 @@
 
                         }else{
 
-                            let str = '';
+                            var str = '';
                             str += '<div class="dialog_content_opposite clearfloat">'
                                 + '<div class="dialog_content_opposite_imgwrap">'
                                 + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
@@ -598,7 +598,7 @@
                 console.log(data);
                 if(data.code==1){
                     // 展示图片在发送者页面右下角上
-                    let str = '';
+                    var str = '';
                     str +='<div class="dialog_content_oneself clearfloat">'
                         +'<div class="dialog_content_oneself_imgwrap">'
                         +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
