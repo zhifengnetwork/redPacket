@@ -103,7 +103,7 @@
 			</div>
 
 			<!--mask遮罩层-->
-			<div class="mask">
+			<div class="mask" onclick="click_add_hide();">
 
 				<div class="mask_son">
 					<!--<img src="__STATIC__/chatWeb/img/news/d.png" class="jiantou" />-->
@@ -531,9 +531,14 @@
 				return false;
 			}
 			/**隐藏-创建群聊*/
-			$(document).on('click','.mask', function(event) {
+
+			function click_add_hide(){
 				$(".mask").hide();
-			});
+				return false;
+			}
+			// $(document).on('click','.mask', function(event) {
+			// 	$(".mask").hide();
+			// });
 			// /*+*/
 			// document.getElementById('group_chat_1').addEventListener('tap',function(){
 			// 	mui.openWindow('https:www.baidu.com','group_chat_1');

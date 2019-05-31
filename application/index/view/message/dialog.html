@@ -19,7 +19,7 @@
     </style>
 </head>
 
-<body onload="connect();window.scrollTo(0,1E+10);">
+<body onload="connect();">
    <div class="wrap_frame">
         <!--public head-->
         <div class="lb_headWrap">
@@ -199,6 +199,10 @@
 
 
 <script type="text/javascript">
+    function scrollToEnd(){//滚动到底部
+        var h = $(document).height()-$(window).height();
+        $(document).scrollTop(h); 
+    }
     // 一对一聊天
     var fromid = {$fromid}; // 当前用户uid
     var toid   = {$toid};   // 聊天对象用户uid
@@ -466,7 +470,6 @@
                                 +'</div>'
                                 +'</div>'
                             $('.dialog_content').append(str);
-                            $('html, body').scrollTop($('html, body').height());
                         }else if(content.type==1){
                             // 文本类型内容
                             let str = '';
@@ -480,7 +483,6 @@
                                         +'</div>'
                                     +'</div>'
                             $('.dialog_content').append(str);
-                            $('html, body').scrollTop($('html, body').height());
                             
                         }else{
                             // 转账记录
@@ -506,9 +508,7 @@
                                 +   '</div>'
                                 +   '</div>'
                             $('.dialog_content').append(str);
-                            $('html, body').animate({
-                                scrollTop: $('html, body').height()
-                            }, 'slow');
+                          
                         }
                     }else{
                         // 页面左边
@@ -568,6 +568,7 @@
                             }, 'slow');
                         }
                     }
+                    scrollToEnd();
                 })
             },'json'
         );
