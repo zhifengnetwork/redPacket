@@ -18,6 +18,12 @@ function red_return() {
     $('.red_money').val('');
 }
 
+/** 领取详情 */
+function receive() {
+    
+}
+
+
 $(function(){
     // 底部菜单两层显示
     $('.group_menu_more').on('click',function(){
@@ -82,8 +88,8 @@ $(function(){
                 $(".ray_points").html(msg.data.master_info.ray_point);
                 $(".get_ok").html(msg.data.master_info.get_num);
                 $(".total_num").html(msg.data.master_info.num);
-                let str = '';
-                for(let i = 0;i< msg.data.detail_info.length;i++){
+                var str = '';
+                for(var i = 0;i< msg.data.detail_info.length;i++){
                     if(msg.data.detail_info[i].is_ray == 2){
                         str +="<div class='item active'>"
                                 +"<div class='img'>"
@@ -150,7 +156,7 @@ $(function(){
    //点击图片放大
    $('.group_content').on('click','.group_content_oneself_textimg .group_content_oneself_img,.group_content_opposite_textimg .group_content_opposite_img',function(){
         if(!$(this).hasClass('magnify_active')){
-            let src = $(this).attr('src');
+            var src = $(this).attr('src');
             $(this).addClass('magnify_active');
             $('.magnify_mask').show();
             $('.magnify').attr('src',src);
