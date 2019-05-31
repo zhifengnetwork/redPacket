@@ -712,7 +712,7 @@ class Groupchat extends Base
                         
                     }else{
                         // 循环已经中雷但没赔付的红包记录进行赔付
-                        $where['get_uid'] = ['neq',0];
+                        $where['get_uid'] = ['>',0];
                         $where['type'] = ['=',1];   // 已领取
                         $where['is_die'] = ['=',0]; // 不包括免死1
                         $where['is_ray'] = ['=',1]; // 中雷
@@ -722,7 +722,7 @@ class Groupchat extends Base
                             // 判断当前红包是否已经达到设置的雷点中雷赔付条件
                             // 循环把所有中雷红包金额尾数获取组装成数组
                             $ray_red_list_last = [];
-                            $ray_die_num = 1; // 默认1, 包括当前中雷者
+                            $ray_die_num = 0; //中雷数
                             foreach ($die_ray_list as $k=>$vs) {
                                 $ray_last_number = substr($vs,-1);
                                 $ray_red_list_last[$k] = $ray_last_number;
