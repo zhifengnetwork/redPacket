@@ -13,35 +13,8 @@
 	<!--头部-->
 	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
 	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/bottom_nav.css" />
-	<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/news.css" />
-	<style>
-		.new_wrapper {
-			position: relative;
-			width: 100%;
-			height: 100vh;
-			overflow-x: hidden;
-			overflow-y: scroll;
-		}
-		/* 侧边页面 */
-		#measure_wrap {
-			position: absolute;
-			top: 0;
-			left: -100%;
-			z-index: 100;
-			width: 100%;
-			height: 100vh;
-			background: #F5F5F5;
-		}
-		#news_wrap {
-			position: relative;
-			padding-top: 1rem;
-			box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			-webkit-box-sizing: border-box;
-			width: 100%;
-			height: 100%;
-		}
-	</style>
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/news.css?v=20190531" />
+	
 </head>
 
 <body onload="connect();">
@@ -130,7 +103,7 @@
 			</div>
 
 			<!--mask遮罩层-->
-			<div class="mask">
+			<div class="mask" onclick="click_add_hide();">
 
 				<div class="mask_son">
 					<!--<img src="__STATIC__/chatWeb/img/news/d.png" class="jiantou" />-->
@@ -138,19 +111,19 @@
 					<div class="jiasaosao">
 						<!--向上-三角形-->
 						<p class="triangle_border_up"></p>
-						<div class="qunliao_item" onclick="" style="cursor:pointer">
+						<div class="qunliao_item" data-url="" style="cursor:pointer">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/qunliao@2x.png" class="qunliao_item_icon" />
 							</p>
 							<span class="qunliao_item_text">创建群聊</span>
 						</div>
-						<div class="qunliao_item" onclick="">
+						<div class="qunliao_item" data-url="/index/my/add_friend">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/jiahaoyou@2x.png" class="qunliao_item_icon qunliao_item_icon2" />
 							</p>
 							<span class="qunliao_item_text">添加好友</span>
 						</div>
-						<div class="qunliao_item" onclick="">
+						<div class="qunliao_item" data-url="">
 							<p class="qunliao_item_icon_box">
 								<img src="__STATIC__/chatWeb/img/news/saoyisao@2x.png" class="qunliao_item_icon qunliao_item_icon3" />
 							</p>
@@ -204,6 +177,10 @@
 			</div>	
 			{/if}
 			{/foreach}
+			<div class="chat_list friendChat">
+				<!-- 追加元素，一对一聊天列表 -->
+			</div>
+
 			<!-- 底部导航 -->
 			<div class="bottomNavWrap container" id="bottomNavWrap" data-id="0"></div>
 				
@@ -288,6 +265,66 @@
 						list();
 					return;
 				}
+			}
+			/* ajax 请求 -s */
+			function list(){
+				$.ajax({
+					type: "POST", 
+					url: API_URL+"get_list",   
+				    dataType: "json",  
+				    async: true, /*是否异步请求，默认:异步*/
+				    data: {"id":fromid},   
+				    success:function(_data){
+						console.log(_data);
+						/**拼接标签*/
+						var str = '';
+						/**把跳转路径 /index/ => '/index/' */
+						var href_url = '';
+						for(var i=0;i<_data.length;i++){
+							str = '';
+							href_url =  "'" + _data[i].chat_page + "'";
+							if(_data[i]['countNoread'] == 0){
+								console.log(1111);
+								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
+										+ '<div class="chat_img">'
+										+ '<img src="'+ _data[i].head_url +'" />'
+										+ '</div>'
+										+ '<div class="chat_text">'
+										+ '<p class="chat_name publicEllipsis">' +_data[i].username +'</p>'
+										+ '<p class="chat_context">'+ _data[i].last_message.content +'</p>'
+										+ '</div>'
+										+ '<div class="chat_time">'
+										+ '<p class="chat_timer">'+ mydate(_data[i].last_message.time) +'</p>'
+										+ '</div>'
+										+ '</div>'
+							} else {
+								console.log(222);
+								// 有未读消息显示
+								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
+									+ '<div class="chat_img">'
+									+ '<img src="'+ _data[i].head_url +'" />'
+									+ '</div>'
+									+ '<div class="chat_text">'
+									+ '<p class="chat_name publicEllipsis">'+ _data[i].username +'</p>'
+									+ '<p class="chat_context">'+ _data[i].last_message.content +'</p>'
+									+ '</div>'
+									+ '<div class="chat_time">'
+									+ '<p class="chat_timer">'+ mydate(_data[i].last_message.time) +'</p>'
+									+ '<p class="chat_message gray">'+ _data[i].countNoread +'</p>'
+									+ '</div>'
+									+ '</div>'
+							}
+							console.log(str);
+							/*追加-元素*/
+							$('.friendChat').append(str);
+						}
+
+				    },
+				    error:function(err){
+						alert('数据请求失败:'+ err);
+				    }
+				})
+
 			}
 
 			// function list(){
@@ -436,14 +473,16 @@
 			});
 
 			// 点击跳转到聊天页面
-			function bind_redurl(_eve){
-				/*遍历--绑定页面跳转*/
-				_eve.each(function(_index) {
-					_eve.eq(_index).on('click', function() {
-						window.location.href = $(this).attr('data-url');
-					});
-				})
-			}
+			// function bind_redurl(_eve){
+			// 	/*遍历--绑定页面跳转*/
+			// 	_eve.each(function(_index) {
+			// 		_eve.eq(_index).on('click', function() {
+			// 			window.location.href = $(this).attr('data-url');
+			// 		});
+			// 	})
+			// }
+
+			
 
 			//搜索框
 			$(".search-input").focus(function() {
@@ -492,9 +531,14 @@
 				return false;
 			}
 			/**隐藏-创建群聊*/
-			$(document).on('click','.mask', function(event) {
+
+			function click_add_hide(){
 				$(".mask").hide();
-			});
+				return false;
+			}
+			// $(document).on('click','.mask', function(event) {
+			// 	$(".mask").hide();
+			// });
 			// /*+*/
 			// document.getElementById('group_chat_1').addEventListener('tap',function(){
 			// 	mui.openWindow('https:www.baidu.com','group_chat_1');
@@ -551,6 +595,10 @@
 
 			//点击显示个人信息
 			$(".personInfo").on('click', function(event) {
+				window.location.href = $(this).attr('data-url');
+			});
+			//点击显示添加好友
+			$(".qunliao_item").on('click', function(event) {
 				window.location.href = $(this).attr('data-url');
 			});
 		</script>
