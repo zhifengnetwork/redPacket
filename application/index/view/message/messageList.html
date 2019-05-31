@@ -299,13 +299,16 @@
 				    data: {"id":fromid},   
 				    success:function(_data){
 						console.log(_data);
-						var str = ''
+						/**拼接标签*/
+						var str = '';
+						/**把跳转路径 /index/ => '/index/' */
+						var href_url = '',
 						for(var i=0;i<_data.length;i++){
-							
+							str = '';
+							href_url =  "'" + _data[i].chat_page + "'";
 							if(_data[i]['countNoread'] == 0){
 								console.log(1111);
-								str = '';
-								str += '<div class="chat chat3" onlick="window.location.href='+ _data[i].chat_page +'">'
+								str += '<div class="chat chat3" onlick="window.location.href='+ href_url +'">'
 										+ '<div class="chat_img">'
 										+ '<img src="'+ _data[i].head_url +'" />'
 										+ '</div>'
@@ -320,8 +323,7 @@
 							} else {
 								console.log(222);
 								// 有未读消息显示
-								str = '';
-								str += '<div class="chat chat3" onlick="window.location.href='+ _data[i].chat_page +'">'
+								str += '<div class="chat chat3" onlick="window.location.href='+ href_url +'">'
 									+ '<div class="chat_img">'
 									+ '<img src="'+ _data[i].head_url +'" />'
 									+ '</div>'
