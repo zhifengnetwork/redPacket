@@ -364,7 +364,9 @@ class Groupchat extends Base
         }
 
         $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
-        if($is_get){
+        $red_detail_all = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->find();
+
+        if($is_get || !$red_detail_all){
             $data = $this->getRedDetail2($is_get['m_id']);
             // 循环把所有中雷红包金额尾数获取组装成数组
             $ray_red_list_last2 = [];
@@ -403,13 +405,12 @@ class Groupchat extends Base
         Db::startTrans();
         try{
             // 获取一个红包记录
-            // $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->lock(true)->find();
-            $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->find();
+            $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->lock(true)->find();
             
             $time = time();
-            if(!$red_detail['money']){
-                return message(0,'网络异常,稍后再试');
-            }
+            // if(!$red_detail['money']){
+            //     return message(0,'网络异常,稍后再试');
+            // }
 
             // 增加抢到的红包金额到对应用户
             $get_red_res = Db::name('users')->where(['id'=>$user['id']])->setInc('account', $red_detail['money']);
