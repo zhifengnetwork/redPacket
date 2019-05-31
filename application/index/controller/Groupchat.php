@@ -785,7 +785,7 @@ class Groupchat extends Base
                 }
             }
 
-            if($red_detail['is_ray'] == 1 && $user['id'] == $red_one['uid']){
+            if($is_ray_flag == 1 && $user['id'] == $red_one['uid']){
                 $is_ray_flag = 1; //中雷标记
             }
            
