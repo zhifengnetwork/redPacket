@@ -897,11 +897,11 @@ class Groupchat extends Base
 
 
         // 循环把所有中雷红包金额尾数获取组装成数组
-        $ray_red_list_last = [];
+        $ray_red_list_last = '';
         $ray_die_num = 0; // 默认1, 包括当前中雷者
         foreach ($detail_info as $k=>$vs) {
             $ray_last_number = substr($vs['money'],-1);
-            $ray_red_list_last[$k] = $ray_last_number;
+            $ray_red_list_last[] = $ray_last_number;
         }
         // 判断雷点数和红包金额中雷数
         $ray_point_arr = explode(',', $master_info['ray_point']);
@@ -924,6 +924,8 @@ class Groupchat extends Base
 
             if($ray_die_num>=$master_info['ray_point_num']){
                 $detail_info[$k]['is_ray'] = 1; // 中雷显示
+            }else{
+                 $detail_info[$k]['is_ray'] = 0; // 中雷显示
             }
         }
         // array_unshift($detail_info, array_pop($detail_info));
