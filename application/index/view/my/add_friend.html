@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />    
+	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>    
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
+    <title>添加好友</title>
+    <style>
+        .addfriend_search{
+            width: 100%;
+            height: .88rem;
+            padding: .2rem .28rem;
+            background: #e5e5e5;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        .addfriend_label{
+            width: 100%;
+            height: 100%;
+            line-height: .48rem;
+        }
+        .addfriend_input{
+            width: 85%;
+            height: 100%;
+            border: 0;
+            outline: none;
+            border-radius: .2rem;
+            text-indent: .2rem;
+            vertical-align: top;
+        }
+        .addfriend_buttom{
+            margin-left: .1rem;
+            padding: .08rem .16rem;
+            background: #00a7ff;
+            border-radius: .2rem;
+            color: #fff;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        .search_list{
+            margin-top: .2rem;
+            padding: 0 .28rem;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        .search_item{
+            position: relative;
+            height: 1rem;
+            line-height: .5rem;
+            padding: .2rem 0;
+            border-bottom: .02rem solid #ccc;
+        }
+        .search_item:last-child{
+            border: 0;
+        }
+        .search_picture{
+            float: left;
+            margin-right: .2rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        .search_img{
+            width: 100%;
+            height: 100%;
+        }
+        .search_info{
+            float: left;
+            width: 82%;
+        }
+        .search_button{
+            position: absolute;
+            right: .2rem;
+            top: 0;
+            bottom: 0;
+            width: 1rem;
+            height: .6rem;
+            text-align: center;
+            line-height: .6rem;
+            border-radius: .2rem;
+            padding: 0 .2rem;
+            margin: auto;
+            color: #fff;
+            background: #00a7ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap_frame">
+        <!--public head-->
+        <div class="lb_headWrap">
+            <p class="lb_headWrap_return" data-num="1" onclick="returnFun()">
+                <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/left.png"/>
+            </p>
+            <span>添加好友</span>
+        </div>
+        <div class="addfriend_search">
+            <label class="addfriend_label">
+                <input class="addfriend_input" type="text" id="mobile" onkeyup="this.value=this.value.replace(/\D/g,'')" placeholder="请输入手机号" maxlength="11">
+                <button class="addfriend_buttom" onclick="search()">搜索</button>
+            </label>
+        </div>
+        <!-- 搜索结果 -->
+        <div class="search_list">
+            
+        </div>
+    </div>
+{include file="common/footer_js"}
+<script type="text/javascript">
+    function search(){
+
+        var mobile = $("#mobile").val();
+        var reg =/^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
+        var flag = reg.test(mobile);
+        if(!flag){
+            layer.msg('请输入正确的手机号');
+            return false;
+        }
+
+        $.ajax({
+            type: "post", 
+            url : "/index/my/search_friend",
+            dataType:'json',
+            data: "mobile="+mobile,
+
+            success: function(json){
+                let str = '';
+                let val = '';
+                if(json.flag == 2){
+                    val = '已添加';
+                    $('.search_button').css('pointer-events','none')
+                }else{
+                    val = '添加好友';
+                    
+                }
+
+                str +="<div class='search_item clearfloat' userid='"+json.msg.id+"'>"
+                +"<div class='search_picture'>"
+                +"<img class='search_img' src='"+json.msg.head_imgurl+"'>"
+                +"</div>"
+                +" <div class='search_info'>"
+                +"<div class='search_name'>"+json.msg.nickname+"</div>"
+                +"<div class='search_phone'>"+json.msg.mobile+"</div>"
+                +"</div>"
+                +"<div class='search_button' onclick='send("+json.flag+","+json.msg.id+")'>"+val+"</div>"
+                +"</div>";
+
+                if(json.flag==1 || json.flag==2){
+
+                    $('.search_list').html(str);
+
+
+                }else{
+                    layer.msg(json.msg);
+     
+                }
+       
+
+
+            }
+        });
+
+
+    }
+    function send(flag,id){
+
+        $.ajax({
+            type: "post", 
+            url : "/index/my/sub_friend",
+            dataType:'json',
+            data: "id="+id,
+            success: function(json){
+                if(json.flag==1){
+
+                    layer.msg(json.msg);
+                }else{
+                    layer.msg(json.msg);
+
+                }
+
+                
+            }
+        });
+    }
+
+</script>
+
+
+</body>
+</html>
