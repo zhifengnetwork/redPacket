@@ -191,13 +191,13 @@ class Groupchat extends Base
                 }
                 // 如果雷点两个以上时,必须2个人尾数都中雷才算中雷
                 if($ray_point_num > 1){
-                    $ray_num = 0;
                     // 循环把所有红包金额尾数获取组装成数组
                     $red_list_last = [];
                     foreach ($red_list['redMoneyList'] as $k=>$vs) {
                         $last_number = substr($vs,-1);
                         $red_list_last[$k] = $last_number;
                     }
+                    $ray_num = 0;
                     // 判断雷点数和红包金额中雷数
                     foreach ($ray_points as $vv) {
                         if(in_array($vv, $red_list_last)){
@@ -363,10 +363,36 @@ class Groupchat extends Base
             }
         }
 
+        // 抢完
+        $red_detail_all = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->find();
+        if(!$red_detail_all){
+            return message(102,'已抢完');
+        }
+
         $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
+
         if($is_get){
             $data = $this->getRedDetail2($is_get['m_id']);
-            $data['master_info']['is_die_flag'] =  $is_get['is_ray']==2?'你已中雷':'你未中雷';
+            // 循环把所有中雷红包金额尾数获取组装成数组
+            $ray_red_list_last2 = '';
+            $ray_die_num2 = 0;
+
+            $ray_last_number = substr($is_get['money'],-1);
+            $ray_red_list_last2[] = $ray_last_number;
+
+            // 判断雷点数和红包金额中雷数
+            $ray_point_arr2 = explode(',', $red_one['ray_point']);
+            foreach ($ray_point_arr2 as $vv) {
+                if(in_array($vv, $ray_red_list_last2)){
+                    $ray_die_num2++;
+                }
+            }
+            if($ray_die_num2>=$red_one['ray_point_num']){
+                $is_die_flag2 =  '你已中雷';
+            }else{
+                $is_die_flag2 =  '你未中雷';
+            }
+            $data['master_info']['is_die_flag'] = $is_die_flag2;
             $data['master_info']['award_money'] =  $is_get['get_award_money']>0?$is_get['get_award_money']:0;
             $data['master_info']['get_award_flag'] = $is_get['get_award_money']>0?1:0;
             $data['master_info']['get_red_money'] = $is_get['money'];
@@ -388,7 +414,7 @@ class Groupchat extends Base
             
             $time = time();
             if(!$red_detail['money']){
-                return message(0,'红包异常-00');
+                return message(0,'已抢完-');
             }
 
             // 增加抢到的红包金额到对应用户
@@ -592,10 +618,181 @@ class Groupchat extends Base
             ];
             $system_rebate_log_res = Db::name('chat_red_log')->insert($system_rebate_log);
 
-            // 中雷 如果中雷是发包本人不作处理
+            // +--------------中雷处理以及显示--------------+
+            // +中雷 如果中雷是发包本人不作处理
+            // +如果中雷,判断当前领取到的红包记录是否已经标记中雷赔付,如果标记不赔付,否则赔付
+            // 获取当前红包的雷点
+            $die_ray_point = $red_one['ray_point']; // 雷点
+            $die_ray_point_num = $red_one['ray_point_num']; // 雷点数
+            // 当前用户中雷
             $dec_res = true;
             $dec_log_res = true;
+            $dec_log_res2 = true;
+            $dec_ray_update_res = true;
+            $detail_update_res = true;
+            // 中雷如果是发包者不操作
+            
+            $is_ray_flag = 0;
+            if($red_detail['is_ray'] == 2 && $user['id'] != $red_one['uid']){
+                // 扣除中雷者金额=红包本金*赔率
+                $dec_money = $red_one['money']*$red_one['mulriple'];
+                // 雷点1个时
+                if($die_ray_point_num == 1 && $red_one['is_die_send_flag'] == 0 ){
+
+                    $is_ray_flag = 1; //中雷标记
+                    $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
+                        $dec_log = [
+                            'from_id' => $red_one['uid'],
+                            'uid' => $user['id'],
+                            'm_id' => $red_one['id'],
+                            'd_id' => $red_detail['id'],
+                            'red_money' => $red_one['money'],
+                            'money' => '-'.$dec_money,
+                            'type' => 10,
+                            'create_time' => $time,
+                            'remake' => '中雷'
+                        ];
+                        $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
+
+                        // 累加发包者金额
+                        $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
+                        $send_red_log = [
+                            'from_id' => $user['id'], // 中雷者
+                            'uid' => $red_one['uid'], // 发包者
+                            'm_id' => $red_one['id'],
+                            'd_id' => $red_detail['id'],
+                            'red_money' => $red_one['money'],
+                            'money' => '+'.$dec_money,
+                            'type' => 13,
+                            'create_time' => $time,
+                            'remake' => '中雷(返)'
+                        ];
+                        $dec_log_res2 = Db::name('chat_red_log')->insert($send_red_log);
+                        // 修改主表主表中雷赔付标记is_die_send_flag=1
+                        $master_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_die_send_flag'=>1]);
+                        // 修改从表的is_die_flag=1已赔付标记
+                        $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['is_die_flag'=>1]);
+                }else{
+
+                    if($red_one['is_die_send_flag']==1){// +获取主表中雷赔付标记,如果已赔付过,则判断当前红包记录是否需要赔付
+                        // 中雷者,如果是发红包本人中雷不操作
+                        if($user['id'] != $red_one['uid']){
+
+                            $is_ray_flag = 1; //中雷标记
+                            $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
+                            $dec_log = [
+                                'from_id' => $red_one['uid'],
+                                'uid' => $user['id'],
+                                'm_id' => $red_one['id'],
+                                'd_id' => $red_detail['id'],
+                                'red_money' => $red_one['money'],
+                                'money' => '-'.$dec_money,
+                                'type' => 10,
+                                'create_time' => $time,
+                                'remake' => '中雷'
+                            ];
+                            $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
+
+                            // 累加发包者金额
+                            $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
+                            $send_red_log = [
+                                'from_id' => $user['id'], // 中雷者
+                                'uid' => $red_one['uid'], // 发包者
+                                'm_id' => $red_one['id'],
+                                'd_id' => $red_detail['id'],
+                                'red_money' => $red_one['money'],
+                                'money' => '+'.$dec_money,
+                                'type' => 13,
+                                'create_time' => $time,
+                                'remake' => '中雷(返)'
+                            ];
+                            $dec_log_res2 = Db::name('chat_red_log')->insert($send_red_log);
+                            // 修改主表主表中雷赔付标记is_die_send_flag=1
+                            $master_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_die_send_flag'=>1]);
+                            // 修改从表的is_die_flag=1已赔付标记
+                            $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['is_die_flag'=>1]);
+                        }
+                    }else{
+                        // 循环已经中雷但没赔付的红包记录进行赔付
+                        $where['get_uid'] = ['!=',0];
+                        $where['type'] = ['=',1];   // 已领取
+                        $where['is_die'] = ['=',0]; // 不包括免死1
+                        $where['is_ray'] = ['=',1]; // 中雷
+                        $where['is_die_flag'] = ['=',0]; // 没赔付
+                        $die_ray_list = Db::name('chat_red_detail')->where($where)->select();
+                        if($die_ray_list){
+                            // 判断当前红包是否已经达到设置的雷点中雷赔付条件
+                            // 循环把所有中雷红包金额尾数获取组装成数组
+                            $ray_red_list_last = [];
+                            $ray_die_num = 1; // 默认1, 包括当前中雷者
+                            foreach ($die_ray_list as $k=>$vs) {
+                                $ray_last_number = substr($vs,-1);
+                                $ray_red_list_last[$k] = $ray_last_number;
+                            }
+                            
+                            // 判断雷点数和红包金额中雷数
+                            $die_ray_point = explode(',', $die_ray_point);
+                            foreach ($die_ray_point as $vv) {
+                                if(in_array($vv, $ray_red_list_last)){
+                                    $ray_die_num++;
+                                }
+                            }
+                            // 中雷人数大于等于雷点数时循环执行已中雷红包赔付
+                            if($ray_die_num >= $die_ray_point_num){
+                                $is_ray_flag = 1; //中雷标记
+                                foreach ($die_ray_list as $key => $value) {
+                                    // 中雷者,如果是发红包本人中雷不操作
+                                    if($value['get_uid'] != $red_one['uid']){
+                                        // 扣除中雷者金额=红包本金*赔率
+                                        $dec_money = $value['money']*$red_one['mulriple'];
+                                        $dec_res = Db::name('users')->where(['id'=>$value['get_uid']])->setDec('account', $dec_money);
+                                        $dec_log = [
+                                            'from_id' => $red_one['uid'],
+                                            'uid' => $value['get_uid'],
+                                            'm_id' => $red_one['id'],
+                                            'd_id' => $value['id'],
+                                            'red_money' => $red_one['money'],
+                                            'money' => '-'.$dec_money,
+                                            'type' => 10,
+                                            'create_time' => $time,
+                                            'remake' => '中雷'
+                                        ];
+                                        $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
+
+                                        // 累加发包者金额
+                                        $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
+                                        $send_red_log = [
+                                            'from_id' => $value['get_uid'], // 中雷者
+                                            'uid' => $red_one['uid'], // 发包者
+                                            'm_id' => $red_one['id'],
+                                            'd_id' => $value['id'],
+                                            'red_money' => $red_one['money'],
+                                            'money' => '+'.$dec_money,
+                                            'type' => 13,
+                                            'create_time' => $time,
+                                            'remake' => '中雷(返)'
+                                        ];
+                                        $dec_log_res2 = Db::name('chat_red_log')->insert($send_red_log);
+                                        // 修改主表主表中雷赔付标记is_die_send_flag=1
+                                        $master_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_die_send_flag'=>1]);
+                                        // 修改从表的is_die_flag=1已赔付标记
+                                        $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$value['id']])->update(['is_die_flag'=>1]);
+                                    }
+                                }
+                            } 
+                        }                       
+                    }
+                }
+            }
+
+            if($red_detail['is_ray'] == 2 && $user['id'] == $red_one['uid']){
+                $is_ray_flag = 1; //中雷标记
+            }
+           
+            //-------------------------------------原code-----------------------------------------------
+            /*$dec_res = true;
             $dec_log_res = true;
+            $dec_log_res2 = true;
             if($red_detail['is_ray'] == 2 && $user['id'] != $red_one['uid']){
 
                 // 扣除中雷者金额=红包本金*赔率
@@ -613,6 +810,7 @@ class Groupchat extends Base
                     'remake' => '中雷'
                 ];
                 $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
+
                 // 累加发包者金额
                 $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
                 $send_red_log = [
@@ -626,8 +824,11 @@ class Groupchat extends Base
                     'create_time' => $time,
                     'remake' => '中雷(返)'
                 ];
-                $dec_log_res = Db::name('chat_red_log')->insert($send_red_log);
-            }
+                $dec_log_res2 = Db::name('chat_red_log')->insert($send_red_log);
+            }*/
+            //------------------------------------------------------------------------------------
+
+
             // 获取发包者的信息
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
 
@@ -642,9 +843,11 @@ class Groupchat extends Base
                 $award_money = 0;
                 $get_award_flag = 0;
             }
+
+            // 中雷显示:
             $data = [
                 'get_red_money' => $red_detail['money'],
-                'is_die_flag' => $red_detail['is_ray']==2?'你已中雷':'你未中雷',
+                'is_die_flag' => $is_ray_flag==1?'你已中雷':'你未中雷',
                 'red_id' => $red_one['id'],
                 'from_id' => $red_one['uid'],
                 'from_name' => $from_user['nickname'],
@@ -677,7 +880,7 @@ class Groupchat extends Base
         if(!$m_id){
             return message(0,'缺少参数-');
         }
-        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point')->where(['id'=>$m_id])->find();
+        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point,ray_point_num')->where(['id'=>$m_id])->find();
         if(!$master_info){
             return message(0,'红包不存在');
         }
@@ -691,6 +894,23 @@ class Groupchat extends Base
         $master_info['get_num'] = count($detail_info);
         $master_info['nickname'] = $master_user['nickname'];
         $master_info['head_imgurl'] = $master_user['head_imgurl'];
+
+
+        // 循环把所有中雷红包金额尾数获取组装成数组
+        $ray_red_list_last = [];
+        $ray_die_num = 0; // 默认1, 包括当前中雷者
+        foreach ($detail_info as $k=>$vs) {
+            $ray_last_number = substr($vs['money'],-1);
+            $ray_red_list_last[$k] = $ray_last_number;
+        }
+        // 判断雷点数和红包金额中雷数
+        $ray_point_arr = explode(',', $master_info['ray_point']);
+        foreach ($ray_point_arr as $vv) {
+            if(in_array($vv, $ray_red_list_last)){
+                $ray_die_num++;
+            }
+        }
+
         foreach($detail_info as $k=>$v){
             if($v['get_uid']==113){ // 免死机器人
                 $detail_info[$k]['nickname'] = '免死金牌';
@@ -698,10 +918,15 @@ class Groupchat extends Base
             if($v['get_uid']==112){ // 平台抢红包机器人
                 $detail_info[$k]['nickname'] = '平台';
             }
+
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
+
+            if($ray_die_num>=$master_info['ray_point_num']){
+                $detail_info[$k]['is_ray'] = 1; // 中雷显示
+            }
         }
-        
+        // array_unshift($detail_info, array_pop($detail_info));
         $data = [
             'master_info' => $master_info,
             'detail_info' => $detail_info
@@ -793,6 +1018,10 @@ class Groupchat extends Base
         $master_info['get_num'] = count($detail_info);
         $master_info['nickname'] = $master_user['nickname'];
         $master_info['head_imgurl'] = $master_user['head_imgurl'];
+
+        // 循环把所有中雷红包金额尾数获取组装成数组
+        $ray_red_list_last3 = [];
+        $ray_die_num3 = 0;
        
         foreach($detail_info as $k=>$v){
             if($v['get_uid']==113){ // 免死机器人
@@ -803,6 +1032,22 @@ class Groupchat extends Base
             }
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
+
+            $ray_last_number = substr($v['money'],-1);
+            $ray_red_list_last3[] = $ray_last_number;
+        }
+
+        // 判断雷点数和红包金额中雷数
+        $ray_point_arr2 = explode(',', $master_info['ray_point']);
+        foreach ($ray_point_arr2 as $vv) {
+            if(in_array($vv, $ray_red_list_last3)){
+                $ray_die_num3++;
+            }
+        }
+        if($ray_die_num3>=$master_info['ray_point_num']){
+            $detail_info[$k]['is_ray'] =1;
+        }else{
+            $detail_info[$k]['get_time'] = 0;
         }
         
         $data = [

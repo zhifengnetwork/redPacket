@@ -13,7 +13,7 @@
     <title>群聊</title>
 </head>
 
-<body onload="connect();window.scrollTo(0,1E+10);">
+<body onload="connect();">
     <div class="wrap_frame">
         <!--public head-->
         <div class="lb_headWrap">
@@ -102,11 +102,11 @@
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/bill.png" alt="">
                             <span>账单</span>
                         </p>
-                        <p class="group_menu_submenu_item givered_7">
+                        <p class="group_menu_submenu_item givered_7" onclick="hair_red_envelopes(this);" style="cursor :pointer;">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/snatch_7.png" alt="">
                             <span>7个红包</span>
                         </p>
-                        <p class="group_menu_submenu_item givered_9">
+                        <p class="group_menu_submenu_item givered_9" onclick="hair_red_envelopes(this);" style="cursor :pointer;">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/snatch_9.png" alt="">
                             <span>9个红包</span>
                         </p>
@@ -209,7 +209,7 @@
                 <div class="wrap_frame">
                     <!--public head-->
                     <div class="headWrap">
-                        <p class="lb_headWrap_return">
+                        <p class="lb_headWrap_return" onclick="red_return()">
                             <img class="lb_headWrap_return_img" src="__STATIC__/chatWeb/img/public/left.png" />
                         </p>
                         <span>发红包</span>
@@ -343,7 +343,11 @@
     <script src="__STATIC__/chatWeb/js/news/jquery.sinaEmotion.js"></script>
     <script src="__STATIC__/chatWeb/js/news/group.js"></script>
     <script>
-
+        /*滚动到底部*/
+        function scrollToEnd(){ 
+            var h = $(document).height()-$(window).height();
+            $(document).scrollTop(h); 
+        };
         // ws begin
         var API_URL = "/index.php/api/chat/"; // 请求地址
         var fromid  = {$user.id};
@@ -414,7 +418,7 @@
                     console.log(fromid);
                     console.log(message.from_id);// && fromid != message.from_id
                     if(room_id == message.room_id) {
-                        let str ='';
+                        var str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
                                 +  '<span class="group_award_title">'
@@ -430,7 +434,7 @@
                     // console.log(fromid);
                     // console.log(message.from_id);
                     if(room_id == message.room_id && fromid == message.from_id) {
-                        let str ='';
+                        var str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
                                 +  '<span class="group_award_title">'
@@ -444,7 +448,7 @@
                 case "get_group_red":
                     // 接收对方红包推送
                     if(room_id == message.room_id && fromid != message.fromid) {
-                        let str = '';
+                        var str = '';
                         str += '<div class="group_content_opposite clearfloat open_red" data-m-id="'+message.red_id+'">'
                             + '<div class="group_content_opposite_imgwrap">'
                             + '<img class="group_content_opposite_img" src='+message.from_head+'>'
@@ -485,7 +489,7 @@
             /*获取支付密码（后台*/
             var pass_val = '';
             /*雷点-选择*/
-            let num = 1;
+            var num = 1;
             $(".ray_wrap ul li").on('click',function() {
                 var red_num = $('.num').val();
                 if(red_num == 7){
@@ -500,7 +504,7 @@
                         num++;
                     }
                 })
-                let sum = 0;
+                var sum = 0;
                 // 7为最大选择数量
                 if(set_point==1){
                     $(".ray_wrap ul li").each(function(){
@@ -596,7 +600,7 @@
                     }
                     // 填充发红包金额
                     $('.red_money').html(red_money);
-                    let arr=[];
+                    var arr=[];
                     $(".ray_wrap ul li").each(function(){
                         if($(this).hasClass('active')){
                             arr.push($(this).html());
@@ -695,7 +699,7 @@
                                 pass_val='';
                                 $('.trem_box').removeClass('show_box');
 
-                                let str = '';
+                                var str = '';
                                     str +=  '<div class="dialog_content_oneself clearfloat open_red"  open_red" data-m-id="'+red_id+'">'
                                         +   '<div class="group_content_oneself clearfloat">'
                                         +   '<div class="group_content_oneself_imgwrap">'
@@ -829,8 +833,6 @@
                         }
                         
                         var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.award_money+'"}';
-                        console.log(get_award_data)
-
                         ws.send(get_award_data);
                     }
                     // 自己领取不推送
@@ -882,7 +884,7 @@
                     $.each(e,function(index,content){
                         // 当前登录用户发送的放右边 
                         if(fromid==content.uid){ 
-                            let str = '';
+                            var str = '';
                             str +=  '<div class="dialog_content_oneself clearfloat open_red"  open_red" data-m-id="'+content.id+'">'
                                 +   '<div class="group_content_oneself clearfloat">'
                                 +   '<div class="group_content_oneself_imgwrap">'
@@ -903,7 +905,7 @@
                             $('.group_content').append(str);
                         }else{
                             // 页面左边
-                            let str = '';
+                            var str = '';
                             str += '<div class="group_content_opposite clearfloat open_red" data-m-id="'+content.id+'">'
                                 + '<div class="group_content_opposite_imgwrap">'
                                 + '<img class="group_content_opposite_img" src='+content.head_imgurl+'>'
@@ -923,6 +925,7 @@
                             $('.group_content').append(str);
                         }
                     })
+                    scrollToEnd();
                 },'json'
             );
         }

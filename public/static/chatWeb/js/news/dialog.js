@@ -242,5 +242,23 @@ $(function(){
         })
     });
 
+     //点击图片放大
+     $('.dialog_content').on('click','.dialog_content_oneself_textimg .dialog_content_oneself_img,.dialog_content_opposite_textimg .dialog_content_opposite_img',function(){
+        if(!$(this).hasClass('magnify_active')){
+            let src = $(this).attr('src');
+            $(this).addClass('magnify_active');
+            $('.magnify_mask').show();
+            $('.magnify').attr('src',src);
+        }else{
+            $(this).removeClass('magnify_active');
+            $('.magnify_mask').hide();
+            $('.magnify').attr('src','');
+        }
+    });
+	$('.magnify_mask').on('click',function(){
+        $('.dialog_content_oneself_textimg .dialog_content_oneself_img,.dialog_content_opposite_textimg .dialog_content_opposite_img').removeClass('magnify_active');
+        $('.magnify').attr('src','')
+        $(this).hide();
+    });
 	
 })
