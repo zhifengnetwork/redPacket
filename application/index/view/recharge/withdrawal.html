@@ -24,18 +24,14 @@
             <div class="content">
             	<!--选择提现方式-->
             	<div class="basic_wrap">
-        
-            		<div class="data">
-            			<!--提现方式名称-->
-            			<div class="way">选择提现方式
-            				<select class="way" name="method" id="method" value="" style="width:181px;height: 30px;">
-   								<option value="1" selected >支付宝</option>
-   								<option value="2">银行卡</option>
-							</select>
-            			</div>
-            						
-            		</div>
-        
+            		<a href="withdrawal_way.html">
+	            		<div class="data">
+	            			<!--提现方式名称-->
+	            			<div class="way">选择提现方式</div>
+	            			
+	            			<div class="run"></div>
+	            		</div>
+            		</a>	
             	</div>
             	
             	<div class="item_wrap">
@@ -46,7 +42,7 @@
 	            			<div class="dl"></div>
 	            			
 	            			<div class="inp_wrap">
-	            				<input class="inp" type="number" placeholder="请输入提现金额" id="money" />
+	            				<input class="inp" type="number" placeholder="请输入提现金额" id="money"/>
 	            			</div>
             			</div>
             		</div>
@@ -57,7 +53,7 @@
             		</div>
             		<!--提现按钮-->
 	            	<div class="all_btn">
-	            		<a onclick="submits()" >申请提现</a>
+	            		<a onclick="submits()">申请提现</a>
 	            	</div>
 	            	<!--时间-->
 	            	<div class="time">
@@ -70,27 +66,37 @@
             
 		</div>
 		
-		{include file="common/footer_js"}  
+		{include file="common/footer_js"}
 		<script>
 			//input输入框失去焦点，页面视觉回弹
 			$(".inp").blur(function(){
 			  	document.body.scrollTop = 0;
 				document.documentElement.scrollTop = 0;
 			});
-
 			function submits(){
+
+				function GetQueryString(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]); return null;
+				}
+				let method = GetQueryString("type");
 				var money=$("#money").val();
-				var method=$("#method").val();
+	
 				if(money<100){
 			        layer.msg('提现金额不能小于100');
 			        $("#money").focus();
 			        return false;
 			    }
-			    if(method ==''){
+			
+			    if(method == null){
 			        layer.msg('请选择提现方式');
 			        $("#method").focus();
 			        return false;
 			    }
+
+				
+
 			    $.ajax({
 	                type: "post", 
 	                url : "/index/recharge/sub_tixian",
@@ -119,7 +125,6 @@
 
 
 			}
-
 
 		</script>
 	</body>

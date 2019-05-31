@@ -39,7 +39,7 @@
 						<a href="/index/my/editname">
 							<div class="fl">名字</div>
 							<div class="fr">
-								<span class="text userName">{$info.nickname}</span>
+								<span class="text userName" id="nickname">{$info.nickname}</span>
 								<span class="right-arrow"></span>
 							</div>
 						</a>
@@ -86,6 +86,13 @@
 {include file="common/footer_js"}
 
 		<script>
+
+			var nickname = $("#nickname").html();
+			var img =  $('#avatarPic').attr('src');
+			if(nickname =='' || img ==''){
+				layer.msg('请完善个人用户信息');
+			}
+
 			$(function(){
 				
 				// 上拉菜单
