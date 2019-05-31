@@ -895,7 +895,7 @@ class Groupchat extends Base
 
 
         // 循环把所有中雷红包金额尾数获取组装成数组
-        $ray_red_list_last = '';
+        $ray_red_list_last = [];
         $ray_die_num = 0; // 默认1, 包括当前中雷者
         foreach ($detail_info as $k=>$vs) {
             $ray_last_number = substr($vs['money'],-1);
