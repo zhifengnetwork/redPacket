@@ -403,7 +403,8 @@ class Groupchat extends Base
         Db::startTrans();
         try{
             // 获取一个红包记录
-            $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->lock(true)->find();
+            // $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->lock(true)->find();
+            $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->find();
             
             $time = time();
             if(!$red_detail['money']){
