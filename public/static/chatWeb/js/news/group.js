@@ -1,3 +1,23 @@
+/**发红包弹窗 */
+function hair_red_envelopes() {
+    $('.group_content').hide();
+    $('.give_pack').show();
+    $('body').css('padding','0')
+    if($(this).hasClass('givered_7')){
+        $('.num').val('7');
+    }else{
+        $('.num').val('9');
+    }
+}
+/**红包页面-返回 */
+function red_return() {
+    $('.group_content').show();
+    $('.give_pack').hide();
+    $('body').css('padding-bottom','1.4rem');
+    $(".ray_wrap ul li").removeClass('active');
+    $('.red_money').val('');
+}
+
 $(function(){
     // 底部菜单两层显示
     $('.group_menu_more').on('click',function(){
@@ -23,24 +43,26 @@ $(function(){
     })
 
     // 发红包弹框
-    $('.givered_7,.givered_9').on('click',function(){
-        $('.group_content').hide();
-        $('.give_pack').show();
-        $('body').css('padding','0')
-        if($(this).hasClass('givered_7')){
-            $('.num').val('7');
-        }else{
-            $('.num').val('9');
-        }
-    })
-    $('.lb_headWrap_return').on('click',function(){
-        $('.group_content').show();
-        $('.give_pack').hide();
-        $('body').css('padding-bottom','1.4rem');
-        $(".ray_wrap ul li").removeClass('active');
-        $('.red_money').val('');
+    
+    // $('.givered_7,.givered_9').on('click',function(){
+    //     $('.group_content').hide();
+    //     $('.give_pack').show();
+    //     $('body').css('padding','0')
+    //     if($(this).hasClass('givered_7')){
+    //         $('.num').val('7');
+    //     }else{
+    //         $('.num').val('9');
+    //     }
+    // })
+    /**红包页面返回 */
+    // $('.lb_headWrap_return').on('click',function(){
+    //     $('.group_content').show();
+    //     $('.give_pack').hide();
+    //     $('body').css('padding-bottom','1.4rem');
+    //     $(".ray_wrap ul li").removeClass('active');
+    //     $('.red_money').val('');
 
-    })
+    // })
     // 领取详情
     $('.group_pack_info').on('click',function(){
         $('.group_content').hide();
