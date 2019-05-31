@@ -414,7 +414,7 @@
                     console.log(fromid);
                     console.log(message.from_id);// && fromid != message.from_id
                     if(room_id == message.room_id) {
-                        let str ='';
+                        var str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
                                 +  '<span class="group_award_title">'
@@ -430,7 +430,7 @@
                     // console.log(fromid);
                     // console.log(message.from_id);
                     if(room_id == message.room_id && fromid == message.from_id) {
-                        let str ='';
+                        var str ='';
                             str += '<div class="group_content_tips">'
                                 +  '<p class="group_content_tips_text">'
                                 +  '<span class="group_award_title">'
@@ -444,7 +444,7 @@
                 case "get_group_red":
                     // 接收对方红包推送
                     if(room_id == message.room_id && fromid != message.fromid) {
-                        let str = '';
+                        var str = '';
                         str += '<div class="group_content_opposite clearfloat open_red" data-m-id="'+message.red_id+'">'
                             + '<div class="group_content_opposite_imgwrap">'
                             + '<img class="group_content_opposite_img" src='+message.from_head+'>'
@@ -485,7 +485,7 @@
             /*获取支付密码（后台*/
             var pass_val = '';
             /*雷点-选择*/
-            let num = 1;
+            var num = 1;
             $(".ray_wrap ul li").on('click',function() {
                 var red_num = $('.num').val();
                 if(red_num == 7){
@@ -500,7 +500,7 @@
                         num++;
                     }
                 })
-                let sum = 0;
+                var sum = 0;
                 // 7为最大选择数量
                 if(set_point==1){
                     $(".ray_wrap ul li").each(function(){
@@ -596,7 +596,7 @@
                     }
                     // 填充发红包金额
                     $('.red_money').html(red_money);
-                    let arr=[];
+                    var arr=[];
                     $(".ray_wrap ul li").each(function(){
                         if($(this).hasClass('active')){
                             arr.push($(this).html());
@@ -695,7 +695,7 @@
                                 pass_val='';
                                 $('.trem_box').removeClass('show_box');
 
-                                let str = '';
+                                var str = '';
                                     str +=  '<div class="dialog_content_oneself clearfloat open_red"  open_red" data-m-id="'+red_id+'">'
                                         +   '<div class="group_content_oneself clearfloat">'
                                         +   '<div class="group_content_oneself_imgwrap">'
@@ -882,7 +882,7 @@
                     $.each(e,function(index,content){
                         // 当前登录用户发送的放右边 
                         if(fromid==content.uid){ 
-                            let str = '';
+                            var str = '';
                             str +=  '<div class="dialog_content_oneself clearfloat open_red"  open_red" data-m-id="'+content.id+'">'
                                 +   '<div class="group_content_oneself clearfloat">'
                                 +   '<div class="group_content_oneself_imgwrap">'
@@ -903,7 +903,7 @@
                             $('.group_content').append(str);
                         }else{
                             // 页面左边
-                            let str = '';
+                            var str = '';
                             str += '<div class="group_content_opposite clearfloat open_red" data-m-id="'+content.id+'">'
                                 + '<div class="group_content_opposite_imgwrap">'
                                 + '<img class="group_content_opposite_img" src='+content.head_imgurl+'>'
