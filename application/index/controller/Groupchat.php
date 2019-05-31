@@ -186,7 +186,7 @@ class Groupchat extends Base
                 // 如果雷点数是1个时
                 if($ray_point_num == 1){
                     if(in_array($last_number, $ray_points)){
-                        $detail_data['is_ray'] = 2; // 中雷
+                        $detail_data['is_ray'] = 1; // 中雷
                     }
                 }
                 // 如果雷点两个以上时,必须2个人尾数都中雷才算中雷
@@ -208,7 +208,7 @@ class Groupchat extends Base
                     if($ray_num == $ray_point_num){
                         $last_number_new = substr($v,-1);
                         if(in_array($last_number_new, $ray_points)){
-                            $detail_data['is_ray'] = 2; // 中雷
+                            $detail_data['is_ray'] = 1; // 中雷
                         }
                     }
                 }
