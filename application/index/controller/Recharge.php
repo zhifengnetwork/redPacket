@@ -154,11 +154,12 @@ class Recharge extends Base
     //提现方式
     public function withdrawal_way(){
         $userid =  session('user.id');
-        $zfb = Db::query("select id,name,uid,account from alipay where uid = $userid");
-        $card = Db::query("select id,name,uid,account,bank_name,bank_address from card where uid = $userid");
-        // var_dump($res);exit;
-        $this->assign('zfb', $zfb[0]);
-        $this->assign('card', $card[0]);
+        $zfb = Db::table('alipay')->where('uid',$userid)->field('id,name,uid,account')->find();
+        $card = Db::table('card')->where('uid',$userid)->field('id,name,uid,account,bank_name,bank_address')->find();
+        $this->assign('zfb', $zfb);
+        $this->assign('card', $card);
+        
+        
         return $this->fetch();
 
     }
