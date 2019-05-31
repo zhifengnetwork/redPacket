@@ -199,6 +199,10 @@
 
 
 <script type="text/javascript">
+    function scrollToEnd(){//滚动到底部
+        var h = $(document).height()-$(window).height();
+        $(document).scrollTop(h); 
+    }
     // 一对一聊天
     var fromid = {$fromid}; // 当前用户uid
     var toid   = {$toid};   // 聊天对象用户uid
@@ -466,7 +470,6 @@
                                 +'</div>'
                                 +'</div>'
                             $('.dialog_content').append(str);
-                            $('html, body').scrollTop($('html, body').height());
                         }else if(content.type==1){
                             // 文本类型内容
                             var str = '';
@@ -480,7 +483,6 @@
                                         +'</div>'
                                     +'</div>'
                             $('.dialog_content').append(str);
-                            $('html, body').scrollTop($('html, body').height());
                             
                         }else{
                             // 转账记录
@@ -506,9 +508,7 @@
                                 +   '</div>'
                                 +   '</div>'
                             $('.dialog_content').append(str);
-                            $('html, body').animate({
-                                scrollTop: $('html, body').height()
-                            }, 'slow');
+                           
                         }
                     }else{
                         // 页面左边
@@ -527,7 +527,6 @@
                                 +'</div>'
                                 +'</div>'
                             $('.dialog_content').append(str);
-                            $('html, body').scrollTop($('html, body').height());
                         }else if(content.type==1){
                             var str = '';
                             str += '<div class="dialog_content_opposite clearfloat">'
@@ -539,7 +538,6 @@
                                 + '<div class="dialog_content_opposite_text">'
                                 + AnalyticEmotion(content.content)+'</div></div></div>'
                             $('.dialog_content').append(str);
-                            $('html, body').scrollTop($('html, body').height());
 
                         }else{
 
@@ -563,11 +561,9 @@
                                 + '<p class="opposite_transfer_text">收款</p>'
                                 + ' </div></div></div>'
                             $('.dialog_content').append(str);
-                            $('html, body').animate({
-                                scrollTop: $('html, body').height()
-                            }, 'slow');
                         }
                     }
+                    scrollToEnd();
                 })
             },'json'
         );
@@ -598,7 +594,7 @@
                 console.log(data);
                 if(data.code==1){
                     // 展示图片在发送者页面右下角上
-                    var str = '';
+                     str = '';
                     str +='<div class="dialog_content_oneself clearfloat">'
                         +'<div class="dialog_content_oneself_imgwrap">'
                         +'<img class="dialog_content_oneself_img" src="'+from_head+'" alt="">'
