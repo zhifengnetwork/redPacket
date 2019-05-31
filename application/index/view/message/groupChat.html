@@ -13,7 +13,7 @@
     <title>群聊</title>
 </head>
 
-<body onload="connect();window.scrollTo(0,1E+10);">
+<body onload="connect();">
     <div class="wrap_frame">
         <!--public head-->
         <div class="lb_headWrap">
@@ -343,7 +343,11 @@
     <script src="__STATIC__/chatWeb/js/news/jquery.sinaEmotion.js"></script>
     <script src="__STATIC__/chatWeb/js/news/group.js"></script>
     <script>
-
+        /*滚动到底部*/
+        function scrollToEnd(){ 
+            var h = $(document).height()-$(window).height();
+            $(document).scrollTop(h); 
+        };
         // ws begin
         var API_URL = "/index.php/api/chat/"; // 请求地址
         var fromid  = {$user.id};
@@ -921,6 +925,7 @@
                             $('.group_content').append(str);
                         }
                     })
+                    scrollToEnd();
                 },'json'
             );
         }
