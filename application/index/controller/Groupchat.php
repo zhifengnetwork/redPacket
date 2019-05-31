@@ -724,7 +724,7 @@ class Groupchat extends Base
                             $ray_red_list_last = [];
                             $ray_die_num = 0; //中雷数
                             foreach ($die_ray_list as $k=>$vs) {
-                                $ray_last_number = substr($vs,-1);
+                                $ray_last_number = substr($vs['money'],-1);
                                 $ray_red_list_last[$k] = $ray_last_number;
                             }
                             
