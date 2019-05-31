@@ -363,10 +363,15 @@ class Groupchat extends Base
             }
         }
 
-        $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
+        // 抢完
         $red_detail_all = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->find();
+        if(!$red_detail_all){
+            return message(102,'已抢完');
+        }
 
-        if($is_get || !$red_detail_all){
+        $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
+
+        if($is_get){
             $data = $this->getRedDetail2($is_get['m_id']);
             // 循环把所有中雷红包金额尾数获取组装成数组
             $ray_red_list_last2 = [];
