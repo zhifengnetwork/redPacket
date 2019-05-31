@@ -855,7 +855,7 @@ class Groupchat extends Base
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {
-            回滚事务
+            //回滚事务
             Db::rollback();
             return message(0, '网络异常,稍后再试');
         }
