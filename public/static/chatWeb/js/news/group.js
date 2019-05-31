@@ -91,6 +91,8 @@ $(function(){
                 var str = '';
                 for(var i = 0;i< msg.data.detail_info.length;i++){
                     if(msg.data.detail_info[i].is_ray != 0){
+                        console.log(msg.data.detail_info[i].is_ray);
+                        console.log('23423423');
                         str +="<div class='item active'>"
                                 +"<div class='img'>"
                                 +"<img src='"+msg.data.detail_info[i].head_imgurl+"' />"

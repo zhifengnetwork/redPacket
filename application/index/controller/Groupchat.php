@@ -525,7 +525,7 @@ class Groupchat extends Base
                 // 获取红包明细，中雷人数是否和雷点个数一致
                 $where['m_id'] = $red_one['id'];
                 $where['type'] = 1;
-                $where['is_ray'] = 2;
+                $where['is_ray'] = 1;
                 $where['get_uid'] = ['>', 0]; 
                 $where['is_die'] = ['=', 0]; // 不含免死
 
@@ -633,7 +633,7 @@ class Groupchat extends Base
             // 中雷如果是发包者不操作
             
             $is_ray_flag = 0;
-            if($red_detail['is_ray'] == 2 && $user['id'] != $red_one['uid']){
+            if($red_detail['is_ray'] == 1 && $user['id'] != $red_one['uid']){
                 // 扣除中雷者金额=红包本金*赔率
                 $dec_money = $red_one['money']*$red_one['mulriple'];
                 // 雷点1个时
@@ -785,7 +785,7 @@ class Groupchat extends Base
                 }
             }
 
-            if($red_detail['is_ray'] == 2 && $user['id'] == $red_one['uid']){
+            if($red_detail['is_ray'] == 1 && $user['id'] == $red_one['uid']){
                 $is_ray_flag = 1; //中雷标记
             }
            
@@ -903,6 +903,7 @@ class Groupchat extends Base
             $ray_last_number = substr($vs['money'],-1);
             $ray_red_list_last[] = $ray_last_number;
         }
+
         // 判断雷点数和红包金额中雷数
         $ray_point_arr = explode(',', $master_info['ray_point']);
         foreach ($ray_point_arr as $vv) {
@@ -910,7 +911,6 @@ class Groupchat extends Base
                 $ray_die_num++;
             }
         }
-
         foreach($detail_info as $k=>$v){
             if($v['get_uid']==113){ // 免死机器人
                 $detail_info[$k]['nickname'] = '免死金牌';
@@ -922,10 +922,10 @@ class Groupchat extends Base
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
 
-            if($ray_die_num>=$master_info['ray_point_num']){
+            if($ray_die_num>=$master_info['ray_point_num'] && $master_info['is_ray']==1){
                 $detail_info[$k]['is_ray'] = 1; // 中雷显示
             }else{
-                 $detail_info[$k]['is_ray'] = 0; // 中雷显示
+                $detail_info[$k]['is_ray'] = 0; // 中雷显示
             }
         }
         // array_unshift($detail_info, array_pop($detail_info));
