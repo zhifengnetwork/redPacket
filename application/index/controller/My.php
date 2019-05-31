@@ -230,7 +230,7 @@ class My extends Base
 
         $info = Db::table('users')->where('id',session('user.id'))->field('id,nickname,head_imgurl,mobile')->find();
         // var_dump($info);exit;
-         $this->assign('info', $info);
+        $this->assign('info', $info);
         return $this->fetch('personal_center');
 
     }
@@ -250,17 +250,22 @@ class My extends Base
             if($nickname==''){
                 $msg='昵称不能为空！';
             }else{
-                $res = Db::table('users')->where('id',$userid)->update(['nickname' => $nickname]);
-                if( $res ){
-                    $flag = 1;
-                    $msg = '成功！';
+                $is_eixst = Db::table('users')->where('nickname',$nickname)->field('id')->find();
+                if($is_eixst){
+                    $msg='昵称已存在！';
+
                 }else{
+                    $res = Db::table('users')->where('id',$userid)->update(['nickname' => $nickname]);
+                    if( $res ){
+                        $flag = 1;
+                        $msg = '成功！';
+                    }else{
 
-                    $flag = 0;
-                    $msg = '失败！';
+          
+                        $msg = '失败！';
+                    }
+
                 }
-
-
             }
 
         }else{
