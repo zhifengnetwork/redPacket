@@ -371,7 +371,7 @@ class Groupchat extends Base
 
         $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
 
-        if($is_get || !$red_detail_all){
+        if($is_get){
             $data = $this->getRedDetail2($is_get['m_id']);
             // 循环把所有中雷红包金额尾数获取组装成数组
             $ray_red_list_last2 = '';
@@ -407,8 +407,8 @@ class Groupchat extends Base
         }
 
         // 启动事务
-        Db::startTrans();
-        try{
+        // Db::startTrans();
+        // try{
             // 获取一个红包记录
             $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->lock(true)->find();
             
@@ -673,48 +673,46 @@ class Groupchat extends Base
                         // 修改从表的is_die_flag=1已赔付标记
                         $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['is_die_flag'=>1]);
                 }else{
-
+                   
                     if($red_one['is_die_send_flag']==1){// +获取主表中雷赔付标记,如果已赔付过,则判断当前红包记录是否需要赔付
-                        // 中雷者,如果是发红包本人中雷不操作
-                        if($user['id'] != $red_one['uid']){
+                        
+                        $is_ray_flag = 1; //中雷标记
+                        $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
+                        $dec_log = [
+                            'from_id' => $red_one['uid'],
+                            'uid' => $user['id'],
+                            'm_id' => $red_one['id'],
+                            'd_id' => $red_detail['id'],
+                            'red_money' => $red_one['money'],
+                            'money' => '-'.$dec_money,
+                            'type' => 10,
+                            'create_time' => $time,
+                            'remake' => '中雷'
+                        ];
+                        $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
 
-                            $is_ray_flag = 1; //中雷标记
-                            $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
-                            $dec_log = [
-                                'from_id' => $red_one['uid'],
-                                'uid' => $user['id'],
-                                'm_id' => $red_one['id'],
-                                'd_id' => $red_detail['id'],
-                                'red_money' => $red_one['money'],
-                                'money' => '-'.$dec_money,
-                                'type' => 10,
-                                'create_time' => $time,
-                                'remake' => '中雷'
-                            ];
-                            $dec_log_res = Db::name('chat_red_log')->insert($dec_log);
-
-                            // 累加发包者金额
-                            $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
-                            $send_red_log = [
-                                'from_id' => $user['id'], // 中雷者
-                                'uid' => $red_one['uid'], // 发包者
-                                'm_id' => $red_one['id'],
-                                'd_id' => $red_detail['id'],
-                                'red_money' => $red_one['money'],
-                                'money' => '+'.$dec_money,
-                                'type' => 13,
-                                'create_time' => $time,
-                                'remake' => '中雷(返)'
-                            ];
-                            $dec_log_res2 = Db::name('chat_red_log')->insert($send_red_log);
-                            // 修改主表主表中雷赔付标记is_die_send_flag=1
-                            $master_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_die_send_flag'=>1]);
-                            // 修改从表的is_die_flag=1已赔付标记
-                            $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['is_die_flag'=>1]);
-                        }
+                        // 累加发包者金额
+                        $send_red_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $dec_money);
+                        $send_red_log = [
+                            'from_id' => $user['id'], // 中雷者
+                            'uid' => $red_one['uid'], // 发包者
+                            'm_id' => $red_one['id'],
+                            'd_id' => $red_detail['id'],
+                            'red_money' => $red_one['money'],
+                            'money' => '+'.$dec_money,
+                            'type' => 13,
+                            'create_time' => $time,
+                            'remake' => '中雷(返)'
+                        ];
+                        $dec_log_res2 = Db::name('chat_red_log')->insert($send_red_log);
+                        // 修改主表主表中雷赔付标记is_die_send_flag=1
+                        $master_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_die_send_flag'=>1]);
+                        // 修改从表的is_die_flag=1已赔付标记
+                        $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['is_die_flag'=>1]);
+                        
                     }else{
                         // 循环已经中雷但没赔付的红包记录进行赔付
-                        $where['get_uid'] = ['!=',0];
+                        $where['get_uid'] = ['neq',0];
                         $where['type'] = ['=',1];   // 已领取
                         $where['is_die'] = ['=',0]; // 不包括免死1
                         $where['is_ray'] = ['=',1]; // 中雷
@@ -856,11 +854,11 @@ class Groupchat extends Base
                 'get_award_flag' => $get_award_flag //$award_money?$award_money:0
             ];
             return message(1, 'ok', $data);
-        }catch (\Exception $e) {
+        // }catch (\Exception $e) {
             // 回滚事务
-            Db::rollback();
+            // Db::rollback();
             return message(0, '网络异常,稍后再试');
-        }
+        // }
     }
 
     /**
