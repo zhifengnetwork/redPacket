@@ -783,9 +783,9 @@ class Groupchat extends Base
                 }
             }
 
-            if($is_ray_flag == 1 && $user['id'] == $red_one['uid']){
-                $is_ray_flag = 1; //中雷标记
-            }
+            // if($is_ray_flag == 1 && $user['id'] == $red_one['uid']){
+            //     $is_ray_flag = 1; //中雷标记
+            // }
            
             //-------------------------------------原code-----------------------------------------------
             /*$dec_res = true;
