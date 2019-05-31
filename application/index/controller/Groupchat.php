@@ -758,6 +758,10 @@ class Groupchat extends Base
                     }
                 }
             }
+
+            if($red_detail['is_ray'] == 2 && $user['id'] == $red_one['uid']){
+                $is_ray_flag = 1; //中雷标记
+            }
            
             //-------------------------------------原code-----------------------------------------------
             /*$dec_res = true;
