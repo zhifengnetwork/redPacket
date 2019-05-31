@@ -407,7 +407,7 @@ class Groupchat extends Base
             
             $time = time();
             if(!$red_detail['money']){
-                return message(0,'红包异常-00');
+                return message(0,'网络异常,稍后再试');
             }
 
             // 增加抢到的红包金额到对应用户
