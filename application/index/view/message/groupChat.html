@@ -829,8 +829,6 @@
                         }
                         
                         var get_award_data = '{"type":"send_award_notice","from_id":"'+fromid+'","from_name":"'+from_name+'","room_id":"'+room_id+'","award_money":"'+msg.data.award_money+'"}';
-                        console.log(get_award_data)
-
                         ws.send(get_award_data);
                     }
                     // 自己领取不推送

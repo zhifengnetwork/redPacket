@@ -605,11 +605,15 @@ class Groupchat extends Base
             $dec_ray_update_res = true;
             $detail_update_res = true;
             // 中雷如果是发包者不操作
+            
+            $is_ray_flag = 0;
             if($red_detail['is_ray'] == 2 && $user['id'] != $red_one['uid']){
                 // 扣除中雷者金额=红包本金*赔率
                 $dec_money = $red_one['money']*$red_one['mulriple'];
                 // 雷点1个时
                 if($die_ray_point_num == 1 && $red_one['is_die_send_flag'] == 0 ){
+
+                    $is_ray_flag = 1; //中雷标记
                     $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
                         $dec_log = [
                             'from_id' => $red_one['uid'],
@@ -648,6 +652,7 @@ class Groupchat extends Base
                         // 中雷者,如果是发红包本人中雷不操作
                         if($user['id'] != $red_one['uid']){
 
+                            $is_ray_flag = 1; //中雷标记
                             $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
                             $dec_log = [
                                 'from_id' => $red_one['uid'],
@@ -700,6 +705,7 @@ class Groupchat extends Base
                             }
                             
                             // 判断雷点数和红包金额中雷数
+                            $die_ray_point = explode(',', $die_ray_point);
                             foreach ($die_ray_point as $vv) {
                                 if(in_array($vv, $ray_red_list_last)){
                                     $ray_die_num++;
@@ -707,7 +713,7 @@ class Groupchat extends Base
                             }
                             // 中雷人数大于等于雷点数时循环执行已中雷红包赔付
                             if($ray_die_num >= $die_ray_point_num){
-                               
+                                $is_ray_flag = 1; //中雷标记
                                 foreach ($die_ray_list as $key => $value) {
                                     // 中雷者,如果是发红包本人中雷不操作
                                     if($value['get_uid'] != $red_one['uid']){
@@ -751,6 +757,10 @@ class Groupchat extends Base
                         }                       
                     }
                 }
+            }
+
+            if($red_detail['is_ray'] == 2 && $user['id'] == $red_one['uid']){
+                $is_ray_flag = 1; //中雷标记
             }
            
             //-------------------------------------原code-----------------------------------------------
@@ -811,7 +821,7 @@ class Groupchat extends Base
             // 中雷显示:
             $data = [
                 'get_red_money' => $red_detail['money'],
-                'is_die_flag' => $red_detail['is_ray']==2?'你已中雷':'你未中雷',
+                'is_die_flag' => $is_ray_flag==1?'你已中雷':'你未中雷',
                 'red_id' => $red_one['id'],
                 'from_id' => $red_one['uid'],
                 'from_name' => $from_user['nickname'],
@@ -844,7 +854,7 @@ class Groupchat extends Base
         if(!$m_id){
             return message(0,'缺少参数-');
         }
-        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point')->where(['id'=>$m_id])->find();
+        $master_info = Db::name('chat_red_master')->field('id,uid,room_id,num,money,ray_point,ray_point_num')->where(['id'=>$m_id])->find();
         if(!$master_info){
             return message(0,'红包不存在');
         }
@@ -858,6 +868,23 @@ class Groupchat extends Base
         $master_info['get_num'] = count($detail_info);
         $master_info['nickname'] = $master_user['nickname'];
         $master_info['head_imgurl'] = $master_user['head_imgurl'];
+
+
+        // 循环把所有中雷红包金额尾数获取组装成数组
+        $ray_red_list_last = [];
+        $ray_die_num = 0; // 默认1, 包括当前中雷者
+        foreach ($detail_info as $k=>$vs) {
+            $ray_last_number = substr($vs['money'],-1);
+            $ray_red_list_last[$k] = $ray_last_number;
+        }
+        // 判断雷点数和红包金额中雷数
+        $ray_point_arr = explode(',', $master_info['ray_point']);
+        foreach ($ray_point_arr as $vv) {
+            if(in_array($vv, $ray_red_list_last)){
+                $ray_die_num++;
+            }
+        }
+
         foreach($detail_info as $k=>$v){
             if($v['get_uid']==113){ // 免死机器人
                 $detail_info[$k]['nickname'] = '免死金牌';
@@ -867,6 +894,10 @@ class Groupchat extends Base
             }
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
+
+            if($ray_die_num>=$master_info['ray_point_num']){
+                $detail_info[$k]['is_die'] = 1; // 中雷显示
+            }
         }
         
         $data = [
