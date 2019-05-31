@@ -1,5 +1,6 @@
 
 $(function(){
+    console.log(document.body.scrollHeight)
     //改变发送按钮样式
     $('.dialog_menu_input').keyup(function(){
         if($(this).html()!=''){
