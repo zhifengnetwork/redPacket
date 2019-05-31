@@ -301,7 +301,9 @@
 						console.log(_data);
 						var str = ''
 						for(var i=0;i<_data.length;i++){
+							
 							if(_data[i]['countNoread'] == 0){
+								console.log(1111);
 								str = '';
 								str += '<div class="chat chat3" onlick="window.location.href='+ _data[i].chat_page +'">'
 										+ '<div class="chat_img">'
@@ -316,6 +318,7 @@
 										+ '</div>'
 										+ '</div>'
 							} else {
+								console.log(222);
 								// 有未读消息显示
 								str = '';
 								str += '<div class="chat chat3" onlick="window.location.href='+ _data[i].chat_page +'">'
@@ -332,6 +335,7 @@
 									+ '</div>'
 									+ '</div>'
 							}
+							console.log(str);
 							/*追加-元素*/
 							$('.friendChat').append(str);
 						}
