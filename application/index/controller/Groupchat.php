@@ -407,14 +407,14 @@ class Groupchat extends Base
         }
 
         // 启动事务
-        // Db::startTrans();
-        // try{
+        Db::startTrans();
+        try{
             // 获取一个红包记录
             $red_detail = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>0, 'type'=>0])->lock(true)->find();
             
             $time = time();
             if(!$red_detail['money']){
-                return message(0,'已抢完-');
+                return message(102,'已抢完-');
             }
 
             // 增加抢到的红包金额到对应用户
@@ -854,11 +854,11 @@ class Groupchat extends Base
                 'get_award_flag' => $get_award_flag //$award_money?$award_money:0
             ];
             return message(1, 'ok', $data);
-        // }catch (\Exception $e) {
-            // 回滚事务
-            // Db::rollback();
+        }catch (\Exception $e) {
+            回滚事务
+            Db::rollback();
             return message(0, '网络异常,稍后再试');
-        // }
+        }
     }
 
     /**
