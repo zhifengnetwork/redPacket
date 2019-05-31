@@ -122,7 +122,7 @@
     $(function(){
         $('.lb_headWrap').css('background','transparent');
         $(window).scroll(function(){
-            let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
             if(scrollTop >= 100){
                 $('.lb_headWrap').css('background','linear-gradient(to right,#00dafd,#00a7ff)');
             }else{
