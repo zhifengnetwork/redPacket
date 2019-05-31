@@ -1,9 +1,9 @@
 /**发红包弹窗 */
-function hair_red_envelopes() {
+function hair_red_envelopes(_this) {
     $('.group_content').hide();
     $('.give_pack').show();
     $('body').css('padding','0')
-    if($(this).hasClass('givered_7')){
+    if($(_this).hasClass('givered_7')){
         $('.num').val('7');
     }else{
         $('.num').val('9');
@@ -20,7 +20,7 @@ function red_return() {
 
 /** 领取详情 */
 function receive() {
-    
+
 }
 
 
