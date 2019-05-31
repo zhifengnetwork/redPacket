@@ -812,7 +812,8 @@
             }
             $.post("/index/groupchat/openToRed",{"room_id":room_id,"red_id":red_id,"key":key},function(msg){
                 if(msg.code == 1 ){
-                    console.log(msg);
+                    $('.get_award').hide();
+                    $('.award_money').html('');
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.is_die_flag);
                     $('.get_red_money').html(msg.data.get_red_money);
