@@ -6,6 +6,7 @@
 	<script src="__STATIC__/chatWeb/js/public/rem.js"></script>    
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/dropload.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/transfer.css">
     <title>转账记录</title>
 </head>
@@ -57,5 +58,67 @@
     </div>
     <script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
     <script src="__STATIC__/chatWeb/js/public/public.js"></script>
+    <script src="__STATIC__/chatWeb/js/public/dropload.min.js"></script>
+    <script>
+        $(function(){
+            // 页数
+            var page = 0;
+            // 每页展示5个
+            var size = 5;
+            // dropload
+            $('.transfer_content').dropload({
+                scrollArea : window,
+                loadDownFn : function(me){
+                    page++;
+                    // 拼接HTML
+                    var result = '';
+                    $.ajax({
+                        type: 'GET',
+                        url: 'http://ons.me/tools/dropload/json.php?page='+page+'&size='+size,
+                        dataType: 'json',
+                        success: function(data){
+                            var arrLen = data.length;
+                            if(arrLen > 0){
+                                for(var i=0; i<arrLen; i++){
+                                    result +=   "<div class='transfer_content_item clearfloat'>"
+                                                +"<div class='transfer_content_item_imgwrap'>"
+                                                    +"<img class='transfer_content_item_img' src='"+{$vo.head_imgurl}+"'>"
+                                                +"</div>"
+                                                +"<div class='transfer_content_item_content'>"
+                                                    +"<p class='transfer_content_item_info clearfloat'>"
+                                                        +"<span class='transfer_content_item_name'>"+{$vo.username}+"</span>"
+                                                        +"<span class='transfer_content_item_price'>"+{$vo.flag}{$vo.money}+"</span>"
+                                                    +"</p>"
+                                                    +"<p class='transfer_content_item_time'>"
+                                                        +{$vo.create_time}+
+                                                    +"</p>"
+                                                +"</div>"
+                                            +"</div>"
+                                }
+                            // 如果没有数据
+                            }else{
+                                // 锁定
+                                me.lock();
+                                // 无数据
+                                me.noData();
+                            }
+                            // 为了测试，延迟1秒加载
+                            setTimeout(function(){
+                                // 插入数据到页面，放到最后面
+                                $('.transfer_content').append(result);
+                                // 每次数据插入，必须重置
+                                me.resetload();
+                            },1000);
+                        },
+                        error: function(xhr, type){
+                            alert('Ajax error!');
+                            // 即使加载出错，也得重置
+                            me.resetload();
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
