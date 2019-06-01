@@ -30,6 +30,7 @@ class Register extends Controller
     	}
     	$param = input("post.");
     	$nivite_code = $param['invite_code'];
+        $smscode = $param['smscode'];
         $password = trim($param['password']);
     	if(!isMobile($param['mobile'])){
             return message(0, '手机号无效');
@@ -50,7 +51,11 @@ class Register extends Controller
 
     	// 判断手机验证码
     	// todo
+        if($smscode!=session('regist_code')){
+            return message(0, '短信验证码错误');
 
+
+        }
     	// 判断上级注册码是否存在
     	$pid_invite_code = Db::table('users')->where('invite_code', $nivite_code)->field('id,invite_code')->find();
     	if(!$pid_invite_code){

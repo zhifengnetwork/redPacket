@@ -1,7 +1,7 @@
 <?php
 use think\Db;
 use think\Request;
-
+use think\Session;
 
     /**
      * type:发红包=1、点击红包=2、转账=3、提现=4
@@ -87,6 +87,15 @@ function getPhoneCode($data){
     }
     $code = rand(123456,999999);
     $tpl = '【Q霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
+    if($data['sms_type']==1){    
+
+        Session::set('smscode',$code);
+    }else{ //注册
+
+        Session::set('regist_code',$code);
+    }
+    
+    $tpl = '【QQ争霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
     // $content=str_replace('{$code}',$code,$tpl);
     $content = $tpl;
     $result=sendSms($data['phone'],$content);
@@ -105,7 +114,7 @@ function getPhoneCode($data){
         // 'create_ip'=>CLIENT_IP,
         'sms_con'=>$content
     );
-    $res = Db::name('verify_code')->insert($db_data);
+    $res = Db::name('chat_verify_code')->insert($db_data);
     if(!$res){
         return array('code' => 0, 'msg' => '系统繁忙请稍后再试');
     }
