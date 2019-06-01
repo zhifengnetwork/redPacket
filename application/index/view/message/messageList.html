@@ -397,6 +397,16 @@
 			// 点击跳转到群页面
 			$('.group_chat').on('click',function(){
 				window.location.href = $(this).attr('data-url');
+				var group_list = <?php echo json_encode($group_list);?>;
+				group_list = eval(group_list);
+				$.each(group_list,function(index,content){
+					if(content.id == message.room_id){
+						$('.group_send_time').eq(index).hide();
+						$('.group_chat_time').eq(index).html('');
+						// $('.chat_context').eq(index).html('');
+						$('.group_chat_message').eq(index).html(0);
+					}
+				});
 			});
 			//搜索框
 			$(".search-input").focus(function() {
