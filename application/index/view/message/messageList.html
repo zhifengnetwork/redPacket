@@ -266,7 +266,7 @@
 								$('.group_send_time').eq(index).show();
 								$('.group_chat_time').eq(index).html(message.time);
 								$('.chat_context').eq(index).html(message.from_name+'发了红包');
-								var num = $('.group_chat_message').html();
+								var num = $('.group_chat_message').eq(index).html();
 								num++;
 								$('.group_chat_message').eq(index).html(num);
 							}
