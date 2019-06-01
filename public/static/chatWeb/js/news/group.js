@@ -70,7 +70,9 @@ $(function(){
 
     // })
     // 领取详情
+    var top = null;
     $('.group_pack_info').on('click',function(event,red_id='',key=''){
+        top = $(window).scrollTop();
         $('.group_content').hide();
         $('.red_details').show();
         $('body').css('padding','0')
@@ -142,7 +144,7 @@ $(function(){
         $(".ray_wrap ul li").removeClass('active');
         $('.red_money').val('');
         $('.rule_set').html(0);
-        scrollToEnd();
+        $(document).scrollTop(top); 
 
     })
 
