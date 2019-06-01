@@ -51,7 +51,7 @@ class Register extends Controller
 
     	// 判断手机验证码
     	// todo
-        if($smscode!=session('sms_code')){
+        if($smscode!=session('regist_code')){
             return message(0, '短信验证码错误');
 
 

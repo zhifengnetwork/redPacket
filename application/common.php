@@ -87,6 +87,8 @@ function getPhoneCode($data){
     }
     $code = rand(123456,999999);
     $tpl = '【Q霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
+    if($data['sms_type']==1){    
+
         Session::set('smscode',$code);
     }else{ //注册
 
