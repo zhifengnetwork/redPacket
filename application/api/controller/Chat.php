@@ -268,16 +268,24 @@ class Chat extends Controller{
         }
         $room_id = input('room_id/d');
         $map['room_id'] = $room_id;
-        $info = Db::name('chat_red_master')->alias('d')
-                ->field('d.id,d.uid,d.room_id,d.ray_point,d.ray_point_num,d.money,u.nickname,head_imgurl')
-                ->join('users u','d.uid = u.id')
+        $uid = input('uid/d');
+        $info = Db::name('chat_red_master')->alias('m')
+                ->field('m.id,m.uid,m.room_id,m.ray_point,m.ray_point_num,m.money,u.nickname,u.head_imgurl')
+                // ->join('chat_red_detail d', 'm.id=d.m_id')
+                ->join('users u','m.uid = u.id')
                 ->where($map)
-                ->whereTime('d.create_time','-35 minute')
+                ->whereTime('m.create_time','-35 minute')
                 ->select();
         foreach($info as $k => $value) {
+
+            $red_detail_one = Db::name('chat_red_detail')->field('id,m_id,get_uid,type')->where(['m_id'=>$value['id'],'get_uid'=>$uid])->find();
+            if($red_detail_one['type']==1 && $red_detail_one['get_uid']==$uid){
+                $info[$k]['get_uid'] = $uid;
+            }else{
+                $info[$k]['get_uid'] = 0;
+            }
             if(!$value['ray_point_num']){
                 $info[$k]['ray_point'] = '';
-                // $info[$k]['money'] = floatval($value['money']);
             }
         }
         return $info;

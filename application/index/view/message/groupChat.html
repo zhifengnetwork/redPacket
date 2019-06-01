@@ -892,13 +892,13 @@
         function red_list_load(){
             $.post(
                 API_URL +"getRedList",
-                {"room_id":room_id},
+                {"room_id":room_id,"uid":fromid},
                 function(e){
-                    console.log(e);
-                    console.log('load 红包');
+
                     $.each(e,function(index,content){
+                        console.log(content.get_uid);
                         // 当前登录用户发送的放右边 
-                        if(fromid==content.uid){ 
+                        if(fromid==content.uid){
                             var str = '';
                             str +=  '<div class="dialog_content_oneself clearfloat open_red"  open_red" data-m-id="'+content.id+'">'
                                 +   '<div class="group_content_oneself clearfloat">'
@@ -908,15 +908,25 @@
                                 +   '<div class="group_content_oneself_info">'
                                 +   '<p class="group_content_oneself_name">'+from_name+'</p>'
                                 +   '<div class="group_content_oneself_pack">'
-                                +   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack.png">'
-                                +   '<div class="pack_titie">拆</div>'
+
+                                if(content.get_uid && content.get_uid==fromid){
+                                    str +=   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack1.png">'
+                                }else{
+                                    str +=   '<img class="group_content_oneself_img" src="__STATIC__/chatWeb/img/news/pack.png">'
+                                }
+                                
+                               str +=   '<div class="pack_titie">拆</div>' 
                                 +   '<div class="pack_num">'
                                 +   '<p>恭喜发财</p>'
                                 +   '<p>'+content.money+'/'+content.ray_point+'</p>'
                                 +   '</div>'
                                 +   '<div class="pack_state">'
-                                +   '未拆开'
-                                +   '</div></div></div></div>'
+                                if(content.get_uid && content.get_uid==fromid){
+                                    str +=  '已拆开'
+                                }else{
+                                    str +=  '未拆开'
+                                }
+                                str +=  '</div></div></div></div>'
                             $('.group_content').append(str);
                         }else{
                             // 页面左边
@@ -928,15 +938,23 @@
                                 + '<div class="group_content_opposite_info">'
                                 + '<p class="group_content_opposite_name">'+content.nickname+'</p>'
                                 + '<div class="group_content_opposite_pack">'
-                                + '<img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/news/pack.png">'
-                                + '<div class="pack_titie">拆</div>'
+                                if(content.get_uid && content.get_uid==fromid){
+                                    str += '<img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/news/pack1.png">'
+                                }else{
+                                    str += '<img class="group_content_opposite_img" src="__STATIC__/chatWeb/img/news/pack.png">'
+                                }
+                                str += '<div class="pack_titie">拆</div>'
                                 + '<div class="pack_num">'
                                 + '<p>恭喜发财</p>'
                                 + '<p>'+content.money+'/'+content.ray_point+'</p>'
                                 + '</div>'
                                 + '<div class="pack_state">'
-                                + '未拆开'
-                                + '</div></div></div></div>'
+                                if(content.get_uid && content.get_uid==fromid){
+                                    str +=  '已拆开'
+                                }else{
+                                    str +=  '未拆开'
+                                }
+                                str += '</div></div></div></div>'
                             $('.group_content').append(str);
                         }
                     })
