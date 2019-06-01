@@ -259,6 +259,7 @@ class Chat extends Controller{
 
     /**
      * 根据room_id来获取5分钟内的红包
+     * 处理是否拆开标记
      */
     public function getRedList(){
         
@@ -271,7 +272,7 @@ class Chat extends Controller{
                 ->field('d.id,d.uid,d.room_id,d.ray_point,d.ray_point_num,d.money,u.nickname,head_imgurl')
                 ->join('users u','d.uid = u.id')
                 ->where($map)
-                ->whereTime('d.create_time','-5 minute')
+                ->whereTime('d.create_time','-35 minute')
                 ->select();
         foreach($info as $k => $value) {
             if(!$value['ray_point_num']){

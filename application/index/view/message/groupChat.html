@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/group.css">
-    <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/givered.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/givered.css?v=201906011708">
     <link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/news/red_details.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/jquery.sinaEmotion.css">
     <title>群聊</title>
@@ -60,7 +60,7 @@
             <!-- 自己发红包 -->
           
             <!-- 红包弹出框 -->
-            <div class="group_packwrap" onclick="hide_red()" style="cursor :pointer;">
+            <div class="group_packwrap" onclick="hide_red()" style="cursor: pointer;">
                 <div class="group_pack">
                     <div class="group_pack_title">
                         <img class="group_pack_img" src="" alt="">
@@ -102,11 +102,11 @@
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/bill.png" alt="">
                             <span>账单</span>
                         </p>
-                        <p class="group_menu_submenu_item givered_7" onclick="hair_red_envelopes(this);" style="cursor :pointer;">
+                        <p class="group_menu_submenu_item givered_7" onclick="hair_red_envelopes(this);" style="cursor:pointer;">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/snatch_7.png" alt="">
                             <span>7个红包</span>
                         </p>
-                        <p class="group_menu_submenu_item givered_9" onclick="hair_red_envelopes(this);" style="cursor :pointer;">
+                        <p class="group_menu_submenu_item givered_9" onclick="hair_red_envelopes(this);" style="cursor:pointer;">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/snatch_9.png" alt="">
                             <span>9个红包</span>
                         </p>
@@ -848,21 +848,25 @@
                     }
                    
                 }else if(msg.code == 101){
-                    $('.group_packwrap').show();
-                    $('.group_pack_state').html(msg.data.master_info.is_die_flag);
-                    $('.get_red_money').html(msg.data.master_info.get_red_money);
-                    $('.from_nickname').html(msg.data.master_info.nickname);
-                    $(".group_pack_img").attr("src", msg.data.master_info.head_imgurl);
+                    // $('.group_packwrap').show();
+                    // $('.group_pack_state').html(msg.data.master_info.is_die_flag);
+                    // $('.get_red_money').html(msg.data.master_info.get_red_money);
+                    // $('.from_nickname').html(msg.data.master_info.nickname);
+                    // $(".group_pack_img").attr("src", msg.data.master_info.head_imgurl);
+                    // $(that).find(".pack_state").html('已拆开');
+                    // $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
+                    // $(".group_pack_info").attr("data-red-id", msg.data.master_info.id);
+                    // if(msg.data.master_info.get_award_flag!=0){
+                    //     $('.get_award').show();
+                    //     $('.award_money').html(msg.data.master_info.award_money);
+                    // }else{
+                    //     $('.get_award').hide();
+                    //     $('.award_money').html('');
+                    // }
+                    $(".group_pack_info").trigger("click", [msg.data.master_info.id, key]);
                     $(that).find(".pack_state").html('已拆开');
                     $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
-                    $(".group_pack_info").attr("data-red-id", msg.data.master_info.id);
-                    if(msg.data.master_info.get_award_flag!=0){
-                        $('.get_award').show();
-                        $('.award_money').html(msg.data.master_info.award_money);
-                    }else{
-                        $('.get_award').hide();
-                        $('.award_money').html('');
-                    }
+                    return;
                 }else if(msg.code == 102){
                     // 红包抢完,显示详情
                     layer.msg(msg.msg);

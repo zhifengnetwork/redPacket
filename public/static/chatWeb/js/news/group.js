@@ -23,9 +23,9 @@ function hide_red(){
 }
 
 /** 领取详情 */
-function receive() {
+// function receive() {
 
-}
+// }
 
 
 $(function(){
@@ -49,7 +49,7 @@ $(function(){
     // $('.group_packwrap').on('click',function(){
     //     $('.group_packwrap').hide();
     // })
-    $('.group_pack').on('click',function(){
+    $('.group_pack').on('click',function(event){
         event.stopPropagation();
     })
 
