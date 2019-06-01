@@ -219,7 +219,7 @@ class My extends Base
                 }
             }
         }
-        pre($list);die;
+        // pre($list);die;
         // 按照level排序
         $list = array_sort($list,'level','asc');
         $this->assign('list', $list);
