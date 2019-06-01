@@ -241,7 +241,7 @@
     function login(){
          // 登录
         var login_data = '{"type":"login","fromid":'+fromid+'}';
-        console.log("websocket握手成功，发送登录数据:"+login_data);
+        // console.log("websocket握手成功，发送登录数据:"+login_data);
         ws.send(login_data);
         // 获取用户头像及昵称
         get_head(fromid,toid);
@@ -251,7 +251,7 @@
     // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
     function onmessage(e){
 
-        console.log(e.data);
+        // console.log(e.data);
         var message =  eval("("+e.data+")"); //json数据转换为数据对象
         switch (message.type){
             // 服务端ping客户端
@@ -388,7 +388,6 @@
             API_URL+"get_head",
             {"fromid":fromid,"toid":toid},
             function(e){
-                console.log(e);
                 from_head = e.data.from_head;
                 to_head = e.data.to_head;
             },'json'
@@ -596,7 +595,6 @@
             processData:false,
             contentType:false,
             success:function(data,status,xhr){
-                console.log(data);
                 if(data.code==1){
                     // 展示图片在发送者页面右下角上
                      str = '';
@@ -623,7 +621,6 @@
                 }else{
                     layer.msg(data.msg);
                     return;                    
-                    console.log(data);
                 }
             }
         });
@@ -646,7 +643,7 @@
             // API_URL+"save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
             "/index/message/save_message", {data:text,type:type,fromid:fromid,toid:toid},function(data){
                 // 返回无需操作
-                console.log(data);
+                // console.log(data);
             },'json'
         )
     }

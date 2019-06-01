@@ -389,10 +389,10 @@
         }
     
         function login(){
-            console.log('发送登录到ws');
+            // console.log('发送登录到ws');
             // 登录
             var login_data = '{"type":"login","fromid":'+fromid+',"room_id":'+room_id+',"group_name":"'+group_name.replace(/"/g, '\\"')+'"}';
-            console.log("websocket握手成功，发送登录数据:"+login_data);
+            // console.log("websocket握手成功，发送登录数据:"+login_data);
             ws.send(login_data);
             red_list_load();
         }
@@ -400,7 +400,7 @@
         // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
         function onmessage(e){
 
-            console.log(e.data);
+            // console.log(e.data);
             var message = eval("("+ e.data+")");    
             switch (message.type){
                 // 服务端ping客户端
@@ -409,14 +409,12 @@
                     break;
                 // 进入群页面
                 case "in_group_chat":
-                    console.log('已进入红包群');
+                    // console.log('已进入红包群');
                     return;
 
                 // 用户获得奖励群通知
                 case "get_award_notice":
-                    console.log('奖励通知');
-                    console.log(fromid);
-                    console.log(message.from_id);// && fromid != message.from_id
+                   
                     if(room_id == message.room_id) {
                         var str ='';
                             str += '<div class="group_content_tips">'
@@ -750,7 +748,6 @@
                             layer.confirm(msg.msg, {
                             btn: ['设置','取消'], skin: 'layer-custom', title: '提示', closeBtn:0,icon:4
                                 }, function(){
-                                    console.log(11);
                                     window.location.href = '/index/recharge/paypwd';
                                 }, function(){
                                     $('.delete_img_box').trigger("click");
@@ -896,7 +893,6 @@
                 function(e){
 
                     $.each(e,function(index,content){
-                        console.log(content.get_uid);
                         // 当前登录用户发送的放右边 
                         if(fromid==content.uid){
                             var str = '';
