@@ -49,8 +49,6 @@ class Groupchat extends Base
             }
             $ray_point = rtrim($ray_point, ','); // 最终所有雷点1,2,3
         }
-        //  $as = $this->checkAccountEnough(session('user.id'));
-        // pre($as);die;
 
         if($key != $this->key){
             return message(0,'错误参数-key');
@@ -107,6 +105,11 @@ class Groupchat extends Base
         $red_list = createRedDate($red_money, $red_num);
         if(!$red_list){
             return message(0, '红包出错！');
+        }
+        // 检查待赔付余额是否足够
+        $check_res = checkAccountEnough(session('user.id'),1,$red_money);
+        if(!$check_res){
+            message(0,'余额有冻结');
         }
         // 启动事务
         Db::startTrans();
@@ -346,15 +349,19 @@ class Groupchat extends Base
         if(!$red_one){
             return message(0,'异常,稍后再试-02');
         }
-        // 判断用户是否有足够的金额，包括中雷赔付
-        if($red_one['ray_point'] && $red_one['mulriple']){
-            $compensate_money = $red_one['money']*$red_one['mulriple'];
-            if($user['account'] < $compensate_money){
-                return message(0,'余额不足-01');   
-            }
-        }else{
-            if($user['account'] < $red_one['money']){
-                return message(0,'余额不足-02');
+
+        // 如果是本人发包不判断余额是否足够
+        if($user['id']!=$red_one['uid']){
+            // 判断用户是否有足够的金额，包括中雷赔付
+            if($red_one['ray_point'] && $red_one['mulriple']){
+                $compensate_money = $red_one['money']*$red_one['mulriple'];
+                if($user['account'] < $compensate_money){
+                    return message(0,'余额不足-01');
+                }
+            }else{
+                if($user['account'] < $red_one['money']){
+                    return message(0,'余额不足-02');
+                }
             }
         }
 
@@ -393,6 +400,12 @@ class Groupchat extends Base
             if(time() > $ex_time){
                 return message(-1,'红包已过期');
             }
+        }
+
+        // 检查待赔付余额是否足够
+        $check_res = checkAccountEnough($user['id'], 2, $red_one['money'], $red_one['mulriple']);
+        if(!$check_res){
+            message(0,'余额有冻结');
         }
 
         // 启动事务
@@ -1001,46 +1014,6 @@ class Groupchat extends Base
             return false;
         }
         
-    }
-
-    /**
-     * type:发红包=1、点击红包=2、转账=3、提现=4
-     * 获取当前用户【5分钟内】参与的红包并且是is_ray=1的记录
-     * 循环统计所有记录，红包本金*赔率，如果当前用户余额小于统计金额，那么暂时不可以抢红包、转账、提现操作。
-     * 不包括当前用户
-     * @param int $uid           // 当前用户
-     * @param decimal $red_money // 当前红包金额
-     * @param varchar $mulriple  // 赔率
-     * @return boole true或false
-     */
-    public function checkAccountEnough($uid, $type=0, $red_money=0, $mulriple=0)
-    {
-        if(!$uid){return false;};
-        $where['m.uid'] = ['neq',$uid];
-        $where['d.get_uid'] = $uid;
-        $where['d.type'] = 1;        // 已领取
-        $where['d.is_ray'] = 1;      // 已经标记中雷
-        $where['d.is_die_flag'] = 0; // 中雷待赔付
-        $red_list = Db::name('chat_red_master')->alias('m')
-                    ->field('m.id,m.uid,m.money,m.ray_point,m.ray_point_num,m.mulriple,m.create_time,d.m_id d_mid,d.money dmoney,d.type dtype,d.is_ray,d.is_die_flag')
-                    ->join('chat_red_detail d', 'm.id=d.m_id')
-                    ->where($where)
-                    ->whereTime('m.create_time','-25 minute')
-                    // ->fetchSql(true)
-                    ->select();
-        $total_money = 0;
-        foreach ($red_list as $k => $v) {
-            
-            $total_money += $v['money']*$v['mulriple'];
-        }
-
-        $user_account = Db::name('users')->field('id,account')->where(['id'=>$uid])->find();
-        // 如果是抢红包则total_money抢红包金额*赔率
-        // if(){
-            
-        // }
-        // pre($red_list);
-
     }
 
 
