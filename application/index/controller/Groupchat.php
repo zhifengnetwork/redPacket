@@ -999,6 +999,17 @@ class Groupchat extends Base
         
     }
 
+    /**
+     * 用户点击红包或者转账、提现时获取当前用户【5分钟内】参与的红包并且是is_ray=1的记录
+     * 循环统计所有记录，红包本金*赔率，如果当前用户余额小于统计金额，那么暂时不可以抢红包、转账、提现操作。
+     * @param int $uid
+     * @return boole true或false
+     */
+    public function checkAccountEnough($uid)
+    {
+        
+    }
+
 
     
 }
