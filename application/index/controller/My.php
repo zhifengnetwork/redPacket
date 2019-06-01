@@ -185,41 +185,39 @@ class My extends Base
             $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
             $map['id'] = ['in',$team_list_in];
         }
-        
         $list = Db::name('users')->field('id,pid,nickname,head_imgurl')->where($map)->select();
-        // 获取下线上级昵称
+
+        // 获取下线的上级昵称
         if($list){
             $where['id'] = '';
             $up_list_in = '';
             foreach ($list as $v) {
-                $up_list_in .= $v['id'].',';
+                $up_list_in .= $v['pid'].',';
             }
             $up_list_in = rtrim($up_list_in, ','); // 最终1,2,3
             $where['id'] = ['in',$up_list_in];
-            $up_list = Db::name('users')->field('id,nickname')->where($where)->select();
+            // 上级列表
+            $up_list = Db::name('users')->field('id,pid,nickname')->where($where)->select();
+            foreach($team_list  as $ks=>$vs){
 
-            foreach($list as $k=>$v){
-                foreach($team_list as $ks=>$vs){
+                foreach($list as $k=>$v){
+                    // 判断当前list里面的数组和获取的下级比对
                     if($v['id']==$vs['id']){
-                        $list[$k]['level'] = $vs['agent_level'];
-                        
-                        if($up_list){
-                            foreach ($up_list as $vl) {
-                                echo $v['pid'];
-                                echo $vl['id'];
-                                if($v['pid']==$vl['id']){
-                                    echo 112;
-                                    $list[$k]['up_nickname'] = $vl['nickname'];
-                                }
+                        $list[$k]['level'] = $vs['agent_level'];  
+                    }
+
+                    if($up_list){
+                        foreach ($up_list as $vl) {
+                            if($v['pid']==$vl['id']){
+                                $list[$k]['up_nickname'] = $vl['nickname'];
                             }
-                        }else{
-                            $list[$k]['up_nickname'] = '-';
                         }
+                    }else{
+                        $list[$k]['up_nickname'] = '-';
                     }
                 }
             }
         }
-        // pre($list);die;
         // 按照level排序
         $list = array_sort($list,'level','asc');
         $this->assign('list', $list);
