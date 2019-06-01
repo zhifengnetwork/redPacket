@@ -30,7 +30,7 @@
             			</div>
             			<!--输入手机号-->
             			<div class="inp">
-            				<input class="text name mobile" type="text" placeholder="手机号" autocomplete="off" onkeyup="this.value=this.value.replace(/\D/g,'')"  maxlength="11"/>
+            				<input class="text name mobile" type="text" placeholder="手机号" id='mobile' autocomplete="off" onkeyup="this.value=this.value.replace(/\D/g,'')"  maxlength="11"/>
             			</div>
             		</div>
             		<!--请输入短信验证码-->
@@ -79,18 +79,41 @@
 <script src="__STATIC__/chatWeb/js/public/public.js"></script>
 <script>
 	//获取验证码
-		var countdown=60; 
+	var countdown=60; 
+
+
 	function settime(val) { 
+            var mobile = $("#mobile").val();
+            var reg =/^0?1[3|4|5|6|7|8][0-9]\d{8}$/;
+            if(!reg.test(mobile)){
+           
+                  layer.msg('请输入正确的手机号');
+                  return false;
+            }
+
+            if(countdown == 60){  
+                  $.ajax({
+                        type: "post", 
+                        url : "/index/index/sms_code",
+                        dataType:'json',
+                        data: "mobile="+mobile,
+                        success: function(json){ 
+                        }
+                  });
+                  layer.msg('短信发送成功');  
+            }
+
 		if (countdown == 0) { 
 			val.removeAttribute("disabled");    
 			val.value="免费获取验证码"; 
-			countdown = 60; 
-		} else { 
+			countdown = 60;
+                  clearInterval(time)
+		}else{ 
 			val.setAttribute("disabled", true); 
 			val.value="重新发送(" + countdown + ")"; 
 			countdown--; 
 		} 
-		setTimeout(function() { 
+		let time = setTimeout(function() { 
 			settime(val) 
 		},1000) 
 	}

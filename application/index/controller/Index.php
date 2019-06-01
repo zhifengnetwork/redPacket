@@ -30,35 +30,24 @@ class Index extends Controller
 
     }
 
-    // 获取短信验证码
+    // 获取短信验证码  找回密码
     public function smscode(){
+        $mobile = input('post.mobile');
+        $data['phone'] = $mobile;
+        $data['sms_type'] = 1;
+        $res = getPhoneCode($data);
+        echo json_encode($res);
+                
+    }
 
-        $flag = 0;
-        $msg = '';
-        if (Request::instance()->isPost()){
-            $mobile = input('post.mobile');
-            // $code = rand('100000','999999');
-            $res = Db::query("select mobile from users where mobile = $mobile");
-            if(!$res){
-                $msg = '用户不存在';   
-            }else{
-                $code = '888888';//短信接口调用
-                Session::set('smscode',$code);
-                $flag = 1;
-                $msg = '发送成功';   
-
-            }   
-        }else{
-
-            $msg = '非法请求';
-
-
-        }
-        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
-        echo $string;
-
-
-
+    // 获取短信验证码  注册
+    public function sms_code(){
+        $mobile = input('post.mobile');
+        $data['phone'] = $mobile;
+        $data['sms_type'] = 2;
+        $res = getPhoneCode($data);
+        echo json_encode($res);
+                
     }
 
     //找回密码
