@@ -27,14 +27,14 @@ function getPhoneCode($data){
     $where['phone'] = $data['phone'];
     $where['sms_type'] = $data['sms_type'];
     $nowTime = time();
-    $list = Db::query("select * from htd_verify_code where phone={$data['phone']} and sms_type={$data['sms_type']} and '{$nowTime}'-create_time<{$limit_time} limit 0,5");
+    $list = Db::query("select * from chat_verify_code where phone={$data['phone']} and sms_type={$data['sms_type']} and '{$nowTime}'-create_time<{$limit_time} limit 0,5");
     $cnt=count($list);
     // 1分钟
     if($cnt>1){
         return array('code' => 0, 'msg' => '获取验证码过于频繁，请稍后再试');
     }
     $code = rand(123456,999999);
-    $tpl = '【HTD】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
+    $tpl = '【QQ争霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
     // $content=str_replace('{$code}',$code,$tpl);
     $content = $tpl;
     $result=sendSms($data['phone'],$content);
