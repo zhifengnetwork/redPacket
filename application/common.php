@@ -9,7 +9,7 @@ function getPhoneCode($data){
         return array('code' => 0, 'msg' => '缺少验证参数');
     }
     // 判断手机号是否合法
-    $check_phone = check_mobile_number($data['phone']);
+    $check_phone = isMobile($data['phone']);
     if(!$check_phone){
         return array('code' => 0, 'msg' => '手机号格式不正确');
     }
