@@ -1036,10 +1036,10 @@ class Groupchat extends Base
 
         $user_account = Db::name('users')->field('id,account')->where(['id'=>$uid])->find();
         // 如果是抢红包则total_money抢红包金额*赔率
-        if(){
+        // if(){
             
-        }
-        pre($red_list);
+        // }
+        // pre($red_list);
 
     }
 
