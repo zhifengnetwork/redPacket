@@ -274,7 +274,7 @@ class Chat extends Controller{
                 // ->join('chat_red_detail d', 'm.id=d.m_id')
                 ->join('users u','m.uid = u.id')
                 ->where($map)
-                ->whereTime('m.create_time','-35 minute')
+                ->whereTime('m.create_time','-5 minute')
                 ->select();
         foreach($info as $k => $value) {
 
