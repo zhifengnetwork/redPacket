@@ -151,9 +151,9 @@
 					<p class="chat_name publicEllipsis">{$v.name}</p>
 					<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
 				</div>
-				<div class="chat_time">
-					<!-- <p class="chat_timer">2019-02-14</p>
-					<p class="chat_message">3</p> -->
+				<div class="chat_time group_send_time" style="display: none;" data-room-id="{$v.id}">
+					<p class="chat_timer group_chat_time"></p>
+					<p class="chat_message group_chat_message">0</p>
 				</div>
 			</div>
 			{else/}
@@ -256,11 +256,29 @@
 							navigator.webkitVibrate([200,50,200]);
 						}
 						list();
-					return;
+						return;
 					// 群发红包
 					case "group_send_red":
-						
-					return;
+   						var group_list = <?php echo json_encode($group_list);?>;
+						group_list = eval(group_list);
+						$.each(group_list,function(index,content){
+							if(content.id == message.room_id){
+								$('.group_send_time').eq(index).show();
+								$('.group_chat_time').eq(index).html(message.time);
+								$('.chat_context').eq(index).html(message.from_name+'发了红包');
+								var num = $('.group_chat_message').html();
+								num++;
+								$('.group_chat_message').eq(index).html(num);
+							}
+						});
+
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						return;
 				}
 			}
 			/* ajax 请求 -s */
