@@ -2,6 +2,58 @@
 use think\Db;
 use think\Request;
 
+
+    /**
+     * type:发红包=1、点击红包=2、转账=3、提现=4
+     * 获取当前用户【5分钟内】参与的红包并且是is_ray=1的记录
+     * 循环统计所有记录，红包本金*赔率，如果当前用户余额小于统计金额，那么暂时不可以抢红包、转账、提现操作。
+     * 不包括当前用户
+     * @param int $uid           // 当前用户
+     * @param decimal $red_money // 当前红包金额
+     * @param varchar $mulriple  // 赔率
+     * @return boole true或false
+     */
+    function checkAccountEnough($uid, $type=0, $red_money=0, $mulriple=0)
+    {
+        if(!$uid){return false;};
+        $where['m.uid'] = ['neq',$uid];
+        $where['d.get_uid'] = $uid;
+        $where['d.type'] = 1;        // 已领取
+        $where['d.is_ray'] = 1;      // 已经标记中雷
+        $where['d.is_die_flag'] = 0; // 中雷待赔付
+        $red_list = Db::name('chat_red_master')->alias('m')
+                    ->field('m.id,m.uid,m.money,m.ray_point,m.ray_point_num,m.mulriple,m.create_time,d.m_id d_mid,d.money dmoney,d.type dtype,d.is_ray,d.is_die_flag')
+                    ->join('chat_red_detail d', 'm.id=d.m_id')
+                    ->where($where)
+                    ->whereTime('m.create_time','-25 minute')
+                    // ->fetchSql(true)
+                    ->select();
+        $total_money = 0;
+        foreach ($red_list as $k => $v) {
+            $total_money += $v['money']*$v['mulriple'];
+        }
+
+        $user_account = Db::name('users')->field('id,account')->where(['id'=>$uid])->find();
+        // 如果是发红包当前余额需要减去当前要发红包金额
+        if($type==1){
+            // 新余额
+            $user_account['account'] = $user_account['account']-$red_money;
+        }elseif($type==2){
+            // 如果是抢红包，当前红包可能赔付的金额+已经待赔付的金额
+            $now_get_red = $red_money*$mulriple;
+            $total_money = $total_money+$now_get_red;
+        }
+        
+        // 如果是抢红包则total_money抢红包金额*赔率
+        if($user_account['account']>=$total_money){
+            // 余额足够
+            return true;
+        }else{
+            // 余额不够
+            return false;
+        }
+    }
+
 //获取验证码短信
 function getPhoneCode($data){
     
