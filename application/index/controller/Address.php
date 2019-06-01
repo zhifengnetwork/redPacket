@@ -27,14 +27,14 @@ class Address extends Base
     public function addressList()
     {
 
-        if( !is_complete(session('user.id')) ){
+/*        if( !is_complete(session('user.id')) ){
 
             $info['msg'] = '请完善个人信息';
             $info['url'] = '/index/my/personInfo';
             $this->assign('info',$info);
             return $this->fetch('/message/redirect');
         };
-
+*/
         // 获取当前用户所有好友
         $list = getAllFriends($this->user['id']);
         // 将数组按字母A-Z排序

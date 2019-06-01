@@ -3,6 +3,193 @@ use think\Db;
 use think\Request;
 
 
+    /**
+     * type:发红包=1、点击红包=2、转账=3、提现=4
+     * 获取当前用户【5分钟内】参与的红包并且是is_ray=1的记录
+     * 循环统计所有记录，红包本金*赔率，如果当前用户余额小于统计金额，那么暂时不可以抢红包、转账、提现操作。
+     * 不包括当前用户
+     * @param int $uid           // 当前用户
+     * @param decimal $red_money // 当前红包金额
+     * @param varchar $mulriple  // 赔率
+     * @return boole true或false
+     */
+    function checkAccountEnough($uid, $type=0, $red_money=0, $mulriple=0)
+    {
+        if(!$uid){return false;};
+        $where['m.uid'] = ['neq',$uid];
+        $where['d.get_uid'] = $uid;
+        $where['d.type'] = 1;        // 已领取
+        $where['d.is_ray'] = 1;      // 已经标记中雷
+        $where['d.is_die_flag'] = 0; // 中雷待赔付
+        $red_list = Db::name('chat_red_master')->alias('m')
+                    ->field('m.id,m.uid,m.money,m.ray_point,m.ray_point_num,m.mulriple,m.create_time,d.m_id d_mid,d.money dmoney,d.type dtype,d.is_ray,d.is_die_flag')
+                    ->join('chat_red_detail d', 'm.id=d.m_id')
+                    ->where($where)
+                    ->whereTime('m.create_time','-25 minute')
+                    // ->fetchSql(true)
+                    ->select();
+        $total_money = 0;
+        foreach ($red_list as $k => $v) {
+            $total_money += $v['money']*$v['mulriple'];
+        }
+
+        $user_account = Db::name('users')->field('id,account')->where(['id'=>$uid])->find();
+        // 如果是发红包当前余额需要减去当前要发红包金额
+        if($type==1){
+            // 新余额
+            $user_account['account'] = $user_account['account']-$red_money;
+        }elseif($type==2){
+            // 如果是抢红包，当前红包可能赔付的金额+已经待赔付的金额
+            $now_get_red = $red_money*$mulriple;
+            $total_money = $total_money+$now_get_red;
+        }
+        
+        // 如果是抢红包则total_money抢红包金额*赔率
+        if($user_account['account']>=$total_money){
+            // 余额足够
+            return true;
+        }else{
+            // 余额不够
+            return false;
+        }
+    }
+
+//获取验证码短信
+function getPhoneCode($data){
+    
+    if(!$data['sms_type']||!$data['phone']){
+        return array('code' => 0, 'msg' => '缺少验证参数');
+    }
+    // 判断手机号是否合法
+    $check_phone = isMobile($data['phone']);
+    if(!$check_phone){
+        return array('code' => 0, 'msg' => '手机号格式不正确');
+    }
+    // 判断手机号是否存在数据库
+    // if($check_phone){
+    //     $is_phone_db = Db::name('user')->where(['mobile'=>$data['phone']])->find();
+    //     if(!$is_phone_db){
+    //         return array('code' => 0, 'msg' => '非法手机号！');
+    //     }
+    // }else{
+    //     return array('code' => 0, 'msg' => '手机号格式不正确');
+    // }
+    
+    $limit_time = 60;// 60秒以内不能重复获取
+    $where['phone'] = $data['phone'];
+    $where['sms_type'] = $data['sms_type'];
+    $nowTime = time();
+    $list = Db::query("select * from chat_verify_code where phone={$data['phone']} and sms_type={$data['sms_type']} and '{$nowTime}'-create_time<{$limit_time} limit 0,5");
+    $cnt=count($list);
+    // 1分钟
+    if($cnt>1){
+        return array('code' => 0, 'msg' => '获取验证码过于频繁，请稍后再试');
+    }
+    $code = rand(123456,999999);
+    $tpl = '【QQ争霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
+    // $content=str_replace('{$code}',$code,$tpl);
+    $content = $tpl;
+    $result=sendSms($data['phone'],$content);
+    if($result!='1'){
+    // $res_num = strpos($result,'ok');
+    // if($res_num != 8){
+        return array('code' => 0, 'msg' => '短信发送失败-');
+    }
+    
+    // 插入verify_code记录
+    $db_data=array(
+        'code'=>$code,
+        'phone'=>$data['phone'],
+        'sms_type'=>$data['sms_type'],
+        'create_time'=> time(),
+        // 'create_ip'=>CLIENT_IP,
+        'sms_con'=>$content
+    );
+    $res = Db::name('verify_code')->insert($db_data);
+    if(!$res){
+        return array('code' => 0, 'msg' => '系统繁忙请稍后再试');
+    }
+    return array('code' => 200, 'msg' => '已发送成功');
+    
+}
+// 获取短信验证码接口
+function sendSms($phone,$content){
+    $smsCode = rand(123456,999999);
+    $post_data = array();
+    $post_data['userid'] = 2960;
+    $post_data['account'] = 'qx3918';
+    $post_data['password'] = '123456789';
+    $post_data['content'] = $content; // 短信的内容，内容需要UTF-8编码
+    $post_data['mobile'] = $phone; // 发信发送的目的号码.多个号码之间用半角逗号隔开 
+    $post_data['sendtime'] = ''; // 为空表示立即发送，定时发送格式2010-10-24 09:08:10
+    $url='http://120.25.105.164:8888/sms.aspx?action=send';
+    $o='';
+    foreach ($post_data as $k=>$v)
+    {
+    $o.="$k=".urlencode($v).'&';
+    }
+    $post_data=substr($o,0,-1);
+    $result= curl_post($url,$post_data);
+    // return $result['output'];
+    return $result;
+}
+
+// 校验手机验证码
+function checkPhoneCode($data){
+    if(!$data['sms_type']||!$data['code']||!$data['phone']){
+        return array('code' => 0, 'msg' => '缺少验证参数');
+    }
+    $item = Db::name('verify_code')->where(['phone'=>$data['phone'], 'sms_type'=>$data['sms_type']])->order('id desc')->find();
+    if(!$item['id']){
+        return array('code' => 0, 'msg' => '该验证码不正确');
+    }
+    if($item['status']||$item['verify_num']>2){
+        return array('code' => 0, 'msg' => '请重新获取验证码');
+    }
+    
+    //查到验证码且验证使用未达到限制次数
+    $msg='';
+    $db_data=array('verify_num'=>$item['verify_num']+1);
+    if($data['code']==$item['code']){
+        //检测验证码有效期
+        if(time()-$item['create_time']>1800){
+            $msg='该验证码已失效';
+            $db_data['status']=1;
+        }else{
+            $db_data['status']=2;
+        }
+    }else{
+        $msg='该验证码不正确';
+        if($db_data['verify_num']>2){
+            $db_data['status']=1;
+        }
+    }
+    $db_data['verify_time'] = time();
+    $res = Db::name('verify_code')->where(['id'=>$item['id']])->update($db_data);
+    if(!$res){
+        $msg='该验证码不正确';
+    }
+    if($msg){
+        return array('code' => 0, 'msg' => $msg);
+    }
+    return array('code' => 200, 'msg' => '验证通过');
+}
+
+// 发送验证码
+function curl_post($url,$data='',$timeout=30){
+    $arrCurlResult = array();
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    unset($ch);
+    return $result;
+}
+
+// 根据字段排序
 function array_sort($arr, $keys, $type = 'desc'){  
     $key_value = $new_array = array();  
     foreach ($arr as $k => $v) {  

@@ -161,6 +161,16 @@ $(function(){
                             var message = '{"data":"'+tr_num+'","type":"transfer","fromid":"'+fromid+'","toid":"'+toid+'","send_key":"'+send_key+'"}';
                             ws.send(message); // 向服务器发送信息
 
+                    }else if(msg.code==101){
+                        layer.confirm(msg.msg, {
+                        btn: ['设置','取消'], skin: 'layer-custom', title: '提示', closeBtn:0,icon:4
+                            }, function(){
+                                window.location.href = '/index/recharge/paypwd';
+                            }, function(){
+                                $('.delete_img_box').trigger("click");
+                                layer.closeAll('dialog');
+                                return false;
+                            });
                     }else{
                         layer.msg(msg.msg);
                         $('.mask_text').show();

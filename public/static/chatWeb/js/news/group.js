@@ -1,9 +1,9 @@
 /**发红包弹窗 */
-function hair_red_envelopes() {
+function hair_red_envelopes(_this) {
     $('.group_content').hide();
     $('.give_pack').show();
     $('body').css('padding','0')
-    if($(this).hasClass('givered_7')){
+    if($(_this).hasClass('givered_7')){
         $('.num').val('7');
     }else{
         $('.num').val('9');
@@ -17,10 +17,14 @@ function red_return() {
     $(".ray_wrap ul li").removeClass('active');
     $('.red_money').val('');
 }
+/**关闭 红包弹框 */
+function hide_red(){
+    $('.group_packwrap').hide();
+}
 
 /** 领取详情 */
 function receive() {
-    
+
 }
 
 
@@ -41,9 +45,10 @@ $(function(){
     $('.group_content_oneself_pack,.group_content_opposite_pack').on('click',function(){
         $('.group_packwrap').show();
     })
-    $('.group_packwrap').on('click',function(){
-        $('.group_packwrap').hide();
-    })
+    /**关闭 红包弹框 */
+    // $('.group_packwrap').on('click',function(){
+    //     $('.group_packwrap').hide();
+    // })
     $('.group_pack').on('click',function(){
         event.stopPropagation();
     })
@@ -70,13 +75,19 @@ $(function(){
 
     // })
     // 领取详情
-    $('.group_pack_info').on('click',function(){
+    var top = null;
+    $('.group_pack_info').on('click',function(event,red_id='',key=''){
+        top = $(window).scrollTop();
         $('.group_content').hide();
         $('.red_details').show();
         $('body').css('padding','0')
-
-        var red_id = $(this).attr("data-red-id");
-        var key = $('.give_btn').attr('data-key');
+        if(red_id && key){
+            var red_id = red_id;
+            var key = key;
+        }else{
+            var red_id = $(this).attr("data-red-id");
+            var key = $('.give_btn').attr('data-key');
+        }
         if(!red_id || !key){
             layer.msg('缺失参数-');return;
         }
@@ -90,7 +101,7 @@ $(function(){
                 $(".total_num").html(msg.data.master_info.num);
                 var str = '';
                 for(var i = 0;i< msg.data.detail_info.length;i++){
-                    if(msg.data.detail_info[i].is_ray == 2){
+                    if(msg.data.detail_info[i].is_ray == 1){
                         str +="<div class='item active'>"
                                 +"<div class='img'>"
                                 +"<img src='"+msg.data.detail_info[i].head_imgurl+"' />"
@@ -138,6 +149,7 @@ $(function(){
         $(".ray_wrap ul li").removeClass('active');
         $('.red_money').val('');
         $('.rule_set').html(0);
+        $(document).scrollTop(top); 
 
     })
 

@@ -153,7 +153,13 @@ class Recharge extends Base
 
     //提现方式
     public function withdrawal_way(){
-
+        $userid =  session('user.id');
+        $zfb = Db::table('alipay')->where('uid',$userid)->field('id,name,uid,account')->find();
+        $card = Db::table('card')->where('uid',$userid)->field('id,name,uid,account,bank_name,bank_address')->find();
+        $this->assign('zfb', $zfb);
+        $this->assign('card', $card);
+        
+        
         return $this->fetch();
 
     }
@@ -171,6 +177,7 @@ class Recharge extends Base
 
     // 支付宝编辑提交
     public function edit_pay(){
+        // var_dump($_POST);exit;
         $msg = '';
         $flag = 0;
         $userid =  session('user.id');
@@ -179,13 +186,14 @@ class Recharge extends Base
         if(Request::instance()->isPost()){
            $info = Db::table('alipay')->where('uid',$userid)->find();
            if( $info ){ //存在 编辑
-                $res = Db::table('alipay')->where('uid',$userid)->update(['name' => $name],['account' => $account]);
+                $res = Db::table('alipay')->where('uid',$userid)->update(['name' => $name,'account' => $account]);
+
                 if( $res ){
                     $flag = 1;
                     $msg = '更新成功！';
                 }else{
 
-                    $flag = 0;
+
                     $msg = '更新失败！';
                 }
            }else{   //不存在 添加
@@ -196,7 +204,7 @@ class Recharge extends Base
                     $msg = '添加成功！';
                 }else{
 
-                    $flag = 0;
+
                     $msg = '添加失败！';
                 }
            }

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/group.css">
-    <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/givered.css">
+    <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/givered.css?v=201906011708">
     <link rel="stylesheet" type="text/css" href="__STATIC__/chatWeb/css/news/red_details.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/jquery.sinaEmotion.css">
     <title>群聊</title>
@@ -60,7 +60,7 @@
             <!-- 自己发红包 -->
           
             <!-- 红包弹出框 -->
-            <div class="group_packwrap">
+            <div class="group_packwrap" onclick="hide_red()" style="cursor: pointer;">
                 <div class="group_pack">
                     <div class="group_pack_title">
                         <img class="group_pack_img" src="" alt="">
@@ -102,11 +102,11 @@
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/bill.png" alt="">
                             <span>账单</span>
                         </p>
-                        <p class="group_menu_submenu_item givered_7" onclick="hair_red_envelopes();" style="cursor :pointer;">
+                        <p class="group_menu_submenu_item givered_7" onclick="hair_red_envelopes(this);" style="cursor:pointer;">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/snatch_7.png" alt="">
                             <span>7个红包</span>
                         </p>
-                        <p class="group_menu_submenu_item givered_9" onclick="hair_red_envelopes();" style="cursor :pointer;">
+                        <p class="group_menu_submenu_item givered_9" onclick="hair_red_envelopes(this);" style="cursor:pointer;">
                             <img class="group_menu_submenu_img" src="__STATIC__/chatWeb/img/news/snatch_9.png" alt="">
                             <span>9个红包</span>
                         </p>
@@ -607,6 +607,10 @@
                         }
                     })
                     ray_point = arr;
+                    // 判断是否选择雷点
+                    if(Array.isArray(ray_point)&&ray_point.length === 0){
+                        layer.msg('请选择雷点');return;
+                    }
                     $('.bottom_alert_wrap').show();
                     /*底部弹窗(出现)*/
                     $('.bottom_alert_box').animate({'bottom':'0'})
@@ -812,7 +816,8 @@
             }
             $.post("/index/groupchat/openToRed",{"room_id":room_id,"red_id":red_id,"key":key},function(msg){
                 if(msg.code == 1 ){
-                    console.log(msg);
+                    $('.get_award').hide();
+                    $('.award_money').html('');
                     $('.group_packwrap').show();
                     $('.group_pack_state').html(msg.data.is_die_flag);
                     $('.get_red_money').html(msg.data.get_red_money);
@@ -858,11 +863,17 @@
                         $('.get_award').hide();
                         $('.award_money').html('');
                     }
+                }else if(msg.code == 102){
+                    // 红包抢完,显示详情
+                    layer.msg(msg.msg);
+                    $(".group_pack_info").trigger("click", [msg.data.master_info.id, key]);
+                    $(that).find(".pack_state").html('已拆开');
+                    $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
+                    return;
                 }else if(msg.code == '-1'){
                     layer.msg(msg.msg,function(){
                         $(that).find(".pack_state").html('已过期');
                         $(that).find(".group_content_opposite_pack .group_content_opposite_img,.group_content_oneself_pack .group_content_oneself_img").attr('src',"__STATIC__/chatWeb/img/news/pack1.png");
-                        // $(".group_pack_info").trigger("click");
                     });
                     return;
                 }else{

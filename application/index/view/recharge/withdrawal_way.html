@@ -38,13 +38,16 @@
             				<div class="ive">
             					<div class="name">
             						<!--编辑后银行名称-->
-        							<span>中国工商银行</span>
+        							<span>{$card.bank_name}
+
+
+                                                </span>
         							<!--编辑后银行卡姓名-->
-        							<span class="small">*小明</span>
+        							<span class="small">*{$card.name}</span>
             					</div>
             					<!--编辑后银行卡卡号-->
             					<div class="card">
-            						<span>6221 ********88</span>
+            						<span>{$card.account}</span>
             					</div>
             				</div>
             			</div>
@@ -67,11 +70,11 @@
             				<div class="ive">
             					<div class="name">
             						<!--编辑后支付宝名称-->
-            						<span>*小明</span>
+            						<span>*{$zfb.name}</span>
             					</div>
             					<!--编辑后支付宝账号-->
             					<div class="card">
-            						<span>138****8000</span>
+            						<span>{$zfb.account}</span>
             					</div>
             				</div>
             			</div>
@@ -80,7 +83,7 @@
             </div>
             <!--确认按钮-->
             <div class="ack_wrap">
-            	<a href="withdrawal.html" class="ack">确定</a>
+            	<a class="ack">确定</a>
             </div>
         </div>    
 		
@@ -93,6 +96,14 @@
 			        $(this).addClass('active');// 添加当前元素的样式
 			
 			    });
+
+                      $('.ack').click(function(){
+                         if($(".clip_wrap").eq(0).hasClass('active')){
+                              window.location.href='/index/recharge/tixian.html?type='+2
+                         }else{
+                              window.location.href='/index/recharge/tixian.html?type='+1
+                         }
+                      })
 			});
 		</script>
 	</body>

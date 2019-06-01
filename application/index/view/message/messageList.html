@@ -13,7 +13,7 @@
 	<!--头部-->
 	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/public_head.css" />
 	<link rel="stylesheet" href="__STATIC__/chatWeb/css/public/bottom_nav.css" />
-	<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/news.css?v=201905311604" />
+	<link rel="stylesheet" href="__STATIC__/chatWeb/css/news/news.css?v=201906011047" />
 	
 </head>
 
@@ -88,7 +88,6 @@
 
 		</div>
 
-
 		<!--主界面部分（信息-模块）-->
 		<div id="news_wrap">
 			<!--public head-->
@@ -130,11 +129,8 @@
 							<span class="qunliao_item_text">扫一扫</span>
 							<!-- <input class="qunliao_item_text" type="file" accept="image/*" capture="camera"> -->
 						</div>
-
 					</div>
-
 				</div>
-
 			</div>
 
 			<!-- 搜索 -->
@@ -155,9 +151,9 @@
 					<p class="chat_name publicEllipsis">{$v.name}</p>
 					<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
 				</div>
-				<div class="chat_time">
-					<!-- <p class="chat_timer">2019-02-14</p> -->
-					<!-- <p class="chat_message">3</p> -->
+				<div class="chat_time group_send_time" style="display: none;" data-room-id="{$v.id}">
+					<p class="chat_timer group_chat_time"></p>
+					<p class="chat_message group_chat_message">0</p>
 				</div>
 			</div>
 			{else/}
@@ -168,7 +164,7 @@
 				<div class="chat_text">
 
 					<p class="chat_name publicEllipsis">{$v.name}</p>
-					<p class="chat_context">本群为扫雷游戏群，快来争取大量佣金。。。</p>
+					<p class="chat_context">公告:本群为扫雷游戏群，快来争取大量佣金。。。</p>
 				</div>
 				<div class="chat_time">
 					<!-- <p class="chat_timer">2019-02-14</p> -->
@@ -195,9 +191,6 @@
 		<script src="__STATIC__/chatWeb/js/public/bottom_nav.js"></script>
 		<!--<script src="__STATIC__/chatWeb/js/news/news.js"></script>-->
 		<script>
-		
-		// window.onload = function() {
-
 			var API_URL = "/index.php/api/chat/"; // 请求地址
 			var fromid ={$fromid};
 
@@ -235,8 +228,7 @@
 				switch (message.type){
 					// 服务端ping客户端
 					case 'ping':
-						// ws.send('{"type":"pong"}');
-						ws.send('{"type":"ping"}');
+						ws.send('{"type":"pong"}');
                 		break;
 					case  "init":
 						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
@@ -263,7 +255,29 @@
 							navigator.webkitVibrate([200,50,200]);
 						}
 						list();
-					return;
+						return;
+					// 群发红包
+					case "group_send_red":
+   						var group_list = <?php echo json_encode($group_list);?>;
+						group_list = eval(group_list);
+						$.each(group_list,function(index,content){
+							if(content.id == message.room_id){
+								$('.group_send_time').eq(index).show();
+								$('.group_chat_time').eq(index).html(message.time);
+								$('.chat_context').eq(index).html(message.from_name+'发了红包');
+								var num = $('.group_chat_message').eq(index).html();
+								num++;
+								$('.group_chat_message').eq(index).html(num);
+							}
+						});
+
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						return;
 				}
 			}
 			/* ajax 请求 -s */
@@ -275,7 +289,6 @@
 				    async: true, /*是否异步请求，默认:异步*/
 				    data: {"id":fromid},   
 				    success:function(_data){
-						console.log(_data);
 						/**拼接标签*/
 						var str = '';
 						/**把跳转路径 /index/ => '/index/' */
@@ -284,7 +297,6 @@
 							str = '';
 							href_url =  "'" + _data[i].chat_page + "'";
 							if(_data[i]['countNoread'] == 0){
-								console.log(1111);
 								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
 										+ '<div class="chat_img">'
 										+ '<img src="'+ _data[i].head_url +'" />'
@@ -298,7 +310,6 @@
 										+ '</div>'
 										+ '</div>'
 							} else {
-								console.log(222);
 								// 有未读消息显示
 								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
 									+ '<div class="chat_img">'
@@ -314,66 +325,15 @@
 									+ '</div>'
 									+ '</div>'
 							}
-							console.log(str);
 							/*追加-元素*/
 							$('.friendChat').append(str);
 						}
-
 				    },
 				    error:function(err){
-						alert('数据请求失败:'+ err);
+						layer.msg('数据请求失败:'+ err);
 				    }
 				})
-
 			}
-
-			// function list(){
-
-			// 	$.post(
-			// 		API_URL+"get_list",
-			// 		{id:fromid},
-			// 		function(res){
-			// 			$.each(res,function(index,content){
-
-			// 				if(content.countNoread==0){
-			// 					// <a href="'+content.chat_page+'">
-            //     				let str = '';
-            //     				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
-			// 						+ '<img src="'+content.head_url+'" />'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_text">'
-			// 						+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
-			// 						+ '<p class="chat_context">'+content.last_message.content+'</p>'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_time">'
-			// 						+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
-			// 						+ '</div></div>'
-            //     				$('.friendChat').append(str);
-            //     				bind_redurl($('.chat3'));
-
-			// 				}else{
-
-			// 					// 有未读消息显示
-			// 					let str = '';
-
-            //     				str += '<div class="chat chat3" data-url="'+content.chat_page+'"><div class="chat_img">'
-			// 						+ '<img src="'+content.head_url+'" />'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_text">'
-			// 						+ '<p class="chat_name publicEllipsis">'+content.username+'</p>'
-			// 						+ '<p class="chat_context">'+content.last_message.content+'</p>'
-			// 						+ '</div>'
-			// 						+ '<div class="chat_time">'
-			// 						+ '<p class="chat_timer">'+mydate(content.last_message.time)+'</p>'
-			// 						+ '<p class="chat_message gray">'+content.countNoread+'</p>'
-			// 						+ '</div></div>'
-            //     				$('.friendChat').append(str);
-            //     				bind_redurl($('.chat3'));
-			// 				}
-			// 			})
-			// 		},'json'
-			// 	)
-			// }
 
 			/**
 			*根据时间戳格式化为日期形式
@@ -389,40 +349,6 @@
 			var side_eve = $('#measure_wrap');
 			//限制 频繁滑动
 			var start_slip = true;
-			//获取接触屏幕时的X和Y
-			// $('body').bind('touchstart',function(e){
-			// 	e.preventDefault();
-			// 	startX = e.originalEvent.changedTouches[0].pageX,
-			// 	startY = e.originalEvent.changedTouches[0].pageY;
-			// });
-			/**
-			 * 获取滑动的坐标，并使用后面的坐标减去前面的坐标，通过获取的值判断其滑动方向。
-			 * 因为手滑动方向一般不是水平或者垂直的，所以可使用Math.abs()进行比较
-			 * **/
-			// $('body').bind('touchmove', function(e) {
-			// 	e.preventDefault();
-			// 	//获取滑动屏幕时的X,Y
-			// 	endX = e.originalEvent.changedTouches[0].pageX,
-			// 	endY = e.originalEvent.changedTouches[0].pageY;
-			// 	//获取滑动距离
-			// 	distanceX = endX - startX;
-			// 	distanceY = endY - startY;
-				
-			// 	// console.log('滑动的距离:',distanceX,'角度问题',Math.abs(distanceY));
-			// 	/*判断滑动方向（滑动距离和方向 && 角度问题）*/
-			// 	if(distanceX > 80 && Math.abs(distanceY) < 10) {
-			// 		/*限制 频繁滑动 && 根据状态进行 滑动处理*/
-			// 		if(start_slip && side_eve.attr('data-start') == 'show'){
-			// 			deviation('show');
-			// 		}
-
-			// 	} else if(distanceX < -80 && Math.abs(distanceY) < 10) {
-			// 		if(start_slip  && side_eve.attr('data-start') == 'hide'){
-			// 			deviation('hide');
-			// 		}				
-			// 	}
-
-			// });
 			/*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
 			function deviation(_start){
 				start_slip = false;
@@ -470,20 +396,17 @@
 			// 点击跳转到群页面
 			$('.group_chat').on('click',function(){
 				window.location.href = $(this).attr('data-url');
+				var group_list = <?php echo json_encode($group_list);?>;
+				group_list = eval(group_list);
+				$.each(group_list,function(index,content){
+					if(content.id == message.room_id){
+						$('.group_send_time').eq(index).hide();
+						$('.group_chat_time').eq(index).html('');
+						// $('.chat_context').eq(index).html('');
+						$('.group_chat_message').eq(index).html(0);
+					}
+				});
 			});
-
-			// 点击跳转到聊天页面
-			// function bind_redurl(_eve){
-			// 	/*遍历--绑定页面跳转*/
-			// 	_eve.each(function(_index) {
-			// 		_eve.eq(_index).on('click', function() {
-			// 			window.location.href = $(this).attr('data-url');
-			// 		});
-			// 	})
-			// }
-
-			
-
 			//搜索框
 			$(".search-input").focus(function() {
 				$(".search-tip").hide();
@@ -495,16 +418,6 @@
 					$(".search-tip").show();
 				}
 			})
-		//
-
-			//点击头像,左侧出现
-			// $("body").on('tap touchstart','.lb_headWrap_return',function(event) {
-			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
-			// });
-			//点击头像,左侧出现
-			// $(document).on('click','.lb_headWrap_return, .touxx',function() {
-			// 	deviation('show');
-			// });
 			//点击头像,左侧出现
 			function head_portrait(){
 				deviation('show');
@@ -515,15 +428,6 @@
 				deviation('hide');
 				return false;
 			}
-			// $(document).on('click','.person_message_close, .close',function() {
-			// // $(".person_message_close, .close").on('click', function(event) {
-			// 	deviation('hide');
-			// });
-			/** '+'号 按钮*/
-			// $(document).on('click','.lb_headWrap_share', function() {
-			// 	$(".mask").show();
-			// 	$(".mask_son").slideDown();
-			// });
 			/** '+'号 按钮*/
 			function click_add(){
 				$(".mask").show();
@@ -536,57 +440,7 @@
 				$(".mask").hide();
 				return false;
 			}
-			// $(document).on('click','.mask', function(event) {
-			// 	$(".mask").hide();
-			// });
-			// /*+*/
-			// document.getElementById('group_chat_1').addEventListener('tap',function(){
-			// 	mui.openWindow('https:www.baidu.com','group_chat_1');
-			// })
-			
-			// /**测试测试*/
-			// var btn = document.getElementById("submit_1");
-			// //监听点击事件
-			// btn.addEventListener("tap",function () {
-			// 	console.log("tap event trigger");
-			// });
-			// //触发submit按钮的点击事件
-			// mui.trigger(btn,'tap');
-
-			//点击关闭按钮,左侧消失
-			// $(".person_message_close").on('tap', function(event) {
-			// 	mui('.mui-off-canvas-wrap').offCanvas('show');
-			// });
-
-			// $(".lb_headWrap_share").on('tap', function(event) {
-
-			// 	$(".mask").show();
-			// 	$(".mask_son").slideDown()
-
-			// });
-			// $(".mask").on('tap', function(event) {
-
-			// 	$(".mask").hide();
-
-			// });
-			/*遍历--绑定页面跳转*/
-			// $('.page_trrem').each(function(_index) {
-				// $(".page_trrem").eq(_index).on('click', function() {
-					/*$(location).attr('href', 'dialog.html');*/
-					// window.location.href = $(this).attr('data-url');
-				// });
-			// })
-			/**我的页面-项路径跳转*/
-			// function my_trem_but(_this){
-			// 	window.location.href = $(_this).attr('data-url');
-			// }
-			
-
-			/*底部导航-页面跳转*/
-			// $(".bottomNavWrap .bottomNavTerm").on('tap', function() {
-			// mui("body").on('tap','.bottomNavWrap .bottomNavTerm',function(){
-			// 	window.location.href = $(this).attr('onclick').split("'")[1];
-			// })
+		
 			/*跳转-二维码链接*/
 			$('.my_qrcodeyf').on('click', function() {
 				window.location.href = $(this).attr('data-url');
