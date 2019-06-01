@@ -17,6 +17,10 @@ function red_return() {
     $(".ray_wrap ul li").removeClass('active');
     $('.red_money').val('');
 }
+/**关闭 红包弹框 */
+function hide_red(){
+    $('.group_packwrap').hide();
+}
 
 /** 领取详情 */
 function receive() {
@@ -41,9 +45,10 @@ $(function(){
     $('.group_content_oneself_pack,.group_content_opposite_pack').on('click',function(){
         $('.group_packwrap').show();
     })
-    $('.group_packwrap').on('click',function(){
-        $('.group_packwrap').hide();
-    })
+    /**关闭 红包弹框 */
+    // $('.group_packwrap').on('click',function(){
+    //     $('.group_packwrap').hide();
+    // })
     $('.group_pack').on('click',function(){
         event.stopPropagation();
     })
