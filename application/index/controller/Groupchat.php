@@ -147,7 +147,7 @@ class Groupchat extends Base
             // 循环插入红包记录到从表
             $robot_dis = 1;
 
-            $robot_ones1 = $red_num==7?3:5;
+            // $robot_ones1 = $red_num==7?3:5;
             $robot_ones2 = $red_num==7?4:6;
             foreach($red_list['redMoneyList'] as $v){
                 $detail_data = [
@@ -155,12 +155,12 @@ class Groupchat extends Base
                     'money' => $v
                 ];
                 // 1号机器人获取红包
-                if($robot_dis == $robot_ones1){ // 第3个红包
-                    // 平台两个机器人获得红包处理
-                    $detail_data['get_uid'] = 112; // 1号机器人uid
-                    $detail_data['get_time'] = time();
-                    $detail_data['type'] = 1;
-                }
+                // if($robot_dis == $robot_ones1){ // 第3个红包
+                //     // 平台两个机器人获得红包处理
+                //     $detail_data['get_uid'] = 112; // 1号机器人uid
+                //     $detail_data['get_time'] = time();
+                //     $detail_data['type'] = 1;
+                // }
                 // 2免死机器人
                 if($robot_dis == $robot_ones2){ //第5个红包
                     $detail_data['get_uid'] = 113; // 2号机器人uid 免死
@@ -854,9 +854,9 @@ class Groupchat extends Base
             if($v['get_uid']==113){ // 免死机器人
                 $detail_info[$k]['nickname'] = '免死金牌';
             }
-            if($v['get_uid']==112){ // 平台抢红包机器人
-                $detail_info[$k]['nickname'] = '平台';
-            }
+            // if($v['get_uid']==112){ // 平台抢红包机器人
+            //     $detail_info[$k]['nickname'] = '平台';
+            // }
 
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
@@ -905,9 +905,9 @@ class Groupchat extends Base
             if($v['get_uid']==113){ // 免死机器人
                 $detail_info[$k]['nickname'] = '免死金牌';
             }
-            if($v['get_uid']==112){ // 平台抢红包机器人
-                $detail_info[$k]['nickname'] = '平台';
-            }
+            // if($v['get_uid']==112){ // 平台抢红包机器人
+            //     $detail_info[$k]['nickname'] = '平台';
+            // }
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
 
@@ -996,6 +996,17 @@ class Groupchat extends Base
         }else{
             return false;
         }
+        
+    }
+
+    /**
+     * 用户点击红包或者转账、提现时获取当前用户【5分钟内】参与的红包并且是is_ray=1的记录
+     * 循环统计所有记录，红包本金*赔率，如果当前用户余额小于统计金额，那么暂时不可以抢红包、转账、提现操作。
+     * @param int $uid
+     * @return boole true或false
+     */
+    public function checkAccountEnough($uid)
+    {
         
     }
 

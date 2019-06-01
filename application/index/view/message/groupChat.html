@@ -607,6 +607,10 @@
                         }
                     })
                     ray_point = arr;
+                    // 判断是否选择雷点
+                    if(Array.isArray(ray_point)&&ray_point.length === 0){
+                        layer.msg('请选择雷点');return;
+                    }
                     $('.bottom_alert_wrap').show();
                     /*底部弹窗(出现)*/
                     $('.bottom_alert_box').animate({'bottom':'0'})
