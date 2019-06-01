@@ -259,7 +259,7 @@ class Chat extends Controller{
 
     /**
      * 根据room_id来获取5分钟内的红包
-     * 处理是否拆开
+     * 处理是否拆开标记
      */
     public function getRedList(){
         
