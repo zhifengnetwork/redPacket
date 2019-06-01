@@ -147,7 +147,7 @@ class Groupchat extends Base
             // 循环插入红包记录到从表
             $robot_dis = 1;
 
-            $robot_ones1 = $red_num==7?3:5;
+            // $robot_ones1 = $red_num==7?3:5;
             $robot_ones2 = $red_num==7?4:6;
             foreach($red_list['redMoneyList'] as $v){
                 $detail_data = [
@@ -155,12 +155,12 @@ class Groupchat extends Base
                     'money' => $v
                 ];
                 // 1号机器人获取红包
-                if($robot_dis == $robot_ones1){ // 第3个红包
-                    // 平台两个机器人获得红包处理
-                    $detail_data['get_uid'] = 112; // 1号机器人uid
-                    $detail_data['get_time'] = time();
-                    $detail_data['type'] = 1;
-                }
+                // if($robot_dis == $robot_ones1){ // 第3个红包
+                //     // 平台两个机器人获得红包处理
+                //     $detail_data['get_uid'] = 112; // 1号机器人uid
+                //     $detail_data['get_time'] = time();
+                //     $detail_data['type'] = 1;
+                // }
                 // 2免死机器人
                 if($robot_dis == $robot_ones2){ //第5个红包
                     $detail_data['get_uid'] = 113; // 2号机器人uid 免死
@@ -854,9 +854,9 @@ class Groupchat extends Base
             if($v['get_uid']==113){ // 免死机器人
                 $detail_info[$k]['nickname'] = '免死金牌';
             }
-            if($v['get_uid']==112){ // 平台抢红包机器人
-                $detail_info[$k]['nickname'] = '平台';
-            }
+            // if($v['get_uid']==112){ // 平台抢红包机器人
+            //     $detail_info[$k]['nickname'] = '平台';
+            // }
 
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
@@ -905,9 +905,9 @@ class Groupchat extends Base
             if($v['get_uid']==113){ // 免死机器人
                 $detail_info[$k]['nickname'] = '免死金牌';
             }
-            if($v['get_uid']==112){ // 平台抢红包机器人
-                $detail_info[$k]['nickname'] = '平台';
-            }
+            // if($v['get_uid']==112){ // 平台抢红包机器人
+            //     $detail_info[$k]['nickname'] = '平台';
+            // }
             $detail_info[$k]['get_time_date'] = date('Y-m-d',$v['get_time']);
             $detail_info[$k]['get_time'] = date('H:i:s',$v['get_time']);
 

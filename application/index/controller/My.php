@@ -188,7 +188,6 @@ class My extends Base
         
         $list = Db::name('users')->field('id,pid,nickname,head_imgurl')->where($map)->select();
         // 获取下线上级昵称
-        
         if($list){
             $where['id'] = '';
             $up_list_in = '';
@@ -199,20 +198,28 @@ class My extends Base
             $where['id'] = ['in',$up_list_in];
             $up_list = Db::name('users')->field('id,nickname')->where($where)->select();
 
-        }
-
-        foreach($list as $k=>$v){
-            foreach($team_list as $ks=>$vs){
-                if($v['id']==$vs['id']){
-                    $list[$k]['level'] = $vs['agent_level'];
-                    foreach ($up_list as $vl) {
-                        if($v['pid']==$vl['id']){
-                            $list[$k]['up_nickname'] = $vs['nickname'];
+            foreach($list as $k=>$v){
+                foreach($team_list as $ks=>$vs){
+                    if($v['id']==$vs['id']){
+                        $list[$k]['level'] = $vs['agent_level'];
+                        
+                        if($up_list){
+                            foreach ($up_list as $vl) {
+                                echo $v['pid'];
+                                echo $vl['id'];
+                                if($v['pid']==$vl['id']){
+                                    echo 112;
+                                    $list[$k]['up_nickname'] = $vl['nickname'];
+                                }
+                            }
+                        }else{
+                            $list[$k]['up_nickname'] = '-';
                         }
                     }
                 }
             }
         }
+        pre($list);die;
         // 按照level排序
         $list = array_sort($list,'level','asc');
         $this->assign('list', $list);
