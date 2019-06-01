@@ -142,6 +142,7 @@ $(function(){
         $(".ray_wrap ul li").removeClass('active');
         $('.red_money').val('');
         $('.rule_set').html(0);
+        scrollToEnd();
 
     })
 
