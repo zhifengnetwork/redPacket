@@ -367,30 +367,31 @@ class Groupchat extends Base
 
         $is_get = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'get_uid'=>$user['id'], 'type'=>1])->find();
         if($is_get){
-            $data = $this->getRedDetail2($is_get['m_id']);
-            // 循环把所有中雷红包金额尾数获取组装成数组
-            $ray_red_list_last2 = '';
-            $ray_die_num2 = 0;
+            //$data = $this->getRedDetail2($is_get['m_id']);
+            // // 循环把所有中雷红包金额尾数获取组装成数组
+            // $ray_red_list_last2 = '';
+            // $ray_die_num2 = 0;
 
-            $ray_last_number = substr($is_get['money'],-1);
-            $ray_red_list_last2[] = $ray_last_number;
+            // $ray_last_number = substr($is_get['money'],-1);
+            // $ray_red_list_last2[] = $ray_last_number;
 
-            // 判断雷点数和红包金额中雷数
-            $ray_point_arr2 = explode(',', $red_one['ray_point']);
-            foreach ($ray_point_arr2 as $vv) {
-                if(in_array($vv, $ray_red_list_last2)){
-                    $ray_die_num2++;
-                }
-            }
-            if($ray_die_num2>=$red_one['ray_point_num']){
-                $is_die_flag2 =  '你已中雷';
-            }else{
-                $is_die_flag2 =  '你未中雷';
-            }
-            $data['master_info']['is_die_flag'] = $is_die_flag2;
-            $data['master_info']['award_money'] =  $is_get['get_award_money']>0?$is_get['get_award_money']:0;
-            $data['master_info']['get_award_flag'] = $is_get['get_award_money']>0?1:0;
-            $data['master_info']['get_red_money'] = $is_get['money'];
+            // // 判断雷点数和红包金额中雷数
+            // $ray_point_arr2 = explode(',', $red_one['ray_point']);
+            // foreach ($ray_point_arr2 as $vv) {
+            //     if(in_array($vv, $ray_red_list_last2)){
+            //         $ray_die_num2++;
+            //     }
+            // }
+            // if($ray_die_num2>=$red_one['ray_point_num']){
+            //     $is_die_flag2 =  '你已中雷';
+            // }else{
+            //     $is_die_flag2 =  '你未中雷';
+            // }
+            // $data['master_info']['is_die_flag'] = $is_die_flag2;
+            // $data['master_info']['award_money'] =  $is_get['get_award_money']>0?$is_get['get_award_money']:0;
+            // $data['master_info']['get_award_flag'] = $is_get['get_award_money']>0?1:0;
+            // $data['master_info']['get_red_money'] = $is_get['money'];
+            $data['master_info']['id'] = $red_one['id'];
             return message(101,'红包已抢过', $data);
         }
 
