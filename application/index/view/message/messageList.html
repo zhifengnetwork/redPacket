@@ -233,7 +233,6 @@
 					case  "init":
 						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
 						ws.send(bild);
-						$(".friendChat").html("");
 						list();
 						return;
 					case "text":
@@ -248,13 +247,13 @@
 						return;
 					case "say_img":
 						$(".friendChat").html("");
+						list();
 						$('#audio')[0].play();
 						if (navigator.vibrate) {
 							navigator.vibrate([200,50,200]);
 						} else if (navigator.webkitVibrate) {
 							navigator.webkitVibrate([200,50,200]);
 						}
-						list();
 						return;
 					// 群发红包
 					case "group_send_red":
@@ -296,6 +295,7 @@
 						for(var i=0;i<_data.length;i++){
 							str = '';
 							href_url =  "'" + _data[i].chat_page + "'";
+							console.log(_data[i]['countNoread']);
 							if(_data[i]['countNoread'] == 0){
 								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
 										+ '<div class="chat_img">'

@@ -121,10 +121,9 @@ class Chat extends Controller{
 
         $count = Db::name('chat_info')->where('(fromid=:fromid and toid=:toid) || (fromid=:toid1 and toid=:fromid1)',
             ['fromid'=>$fromid,'toid'=>$toid,'toid1'=>$toid,'fromid1'=>$fromid])->count('id');
-
         if($count>=10){
 
-         $message = Db::name('chat_info')->where('(fromid=:fromid and toid=:toid) || (fromid=:toid1 and toid=:fromid1)',['fromid'=>$fromid,'toid'=>$toid,'toid1'=>$toid,'fromid1'=>$fromid])->limit($count-20,20)->order('id')->select();
+         $message = Db::name('chat_info')->where('(fromid=:fromid and toid=:toid) || (fromid=:toid1 and toid=:fromid1)',['fromid'=>$fromid,'toid'=>$toid,'toid1'=>$toid,'fromid1'=>$fromid])->limit($count-10,30)->order('id')->select();
         }else{
           $message = Db::name('chat_info')->where('(fromid=:fromid and toid=:toid) || (fromid=:toid1 and toid=:fromid1)',['fromid'=>$fromid,'toid'=>$toid,'toid1'=>$toid,'fromid1'=>$fromid])->order('id')->select();
         }
@@ -210,15 +209,7 @@ class Chat extends Controller{
         return $fromhead['head_imgurl'];
     }
 
-    /**
-     * @param $fromid
-     * @param $toid
-     * 根据fromid来获取fromid与toid发送的未读消息。
-     */
-    public function getCountNoread($fromid,$toid){
-
-        return Db::name('chat_info')->where(['fromid'=>$fromid,'toid'=>$toid,'is_read'=>0])->count('id');
-    }
+    
 
     /**
      * @param $fromid
@@ -232,7 +223,6 @@ class Chat extends Controller{
         return $info;
     }
 
-
     /**
      * 根据fromid来获取当前用户聊天列表
      */
@@ -242,7 +232,12 @@ class Chat extends Controller{
             return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
         }
         $fromid = input('id');
+        // $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->whereOr('toid',$fromid)->whereOr()->group('fromid,toid')->select();
         $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->where('toid',$fromid)->group('fromid')->select();
+         
+        // echo Db::name('chat_info')->getLastSql();
+        // pre($info);
+        // echo 1;die;
         $rows = array_map(function($res){
             return [
                 'head_url'=>$this->get_head_one($res['fromid']),
@@ -252,9 +247,20 @@ class Chat extends Controller{
                 'chat_page'=>'/index/message/onetoonedialog.html?fromid='.$res['toid'].'&toid='.$res['fromid']
                 // 'chat_page'=>"{:url('index/message/oneToOnedialog',['fromid'=>".$res['toid'].','."'toid'=>".$res['fromid']."])}"
             ];
-
         },$info);
         return $rows;
+    }
+
+    /**
+     * @param $fromid
+     * @param $toid
+     * 根据fromid来获取fromid与toid发送的未读消息。
+     */
+    public function getCountNoread($fromid,$toid){
+
+        // return Db::name('chat_info')->where(['fromid'=>$fromid,'is_read'=>0])->whereOr(['toid'=>$toid,'is_read'=>0])->count('id');
+        return Db::name('chat_info')->where(['toid'=>$toid])->where(['fromid'=>$fromid])->where(['is_read'=>0])->count('id');
+        // echo Db::name('chat_info')->getLastSql();die;
     }
 
     /**
@@ -301,8 +307,9 @@ class Chat extends Controller{
         }
         $fromid = input('toid/d');
         $toid = input('fromid/d');
-        $res = Db::name('chat_info')->where(['fromid'=>$fromid,"toid"=>$toid])->update(['is_read'=>1]);
-        // $a = Db::name('chat_info')->getLastSql();
+        $res = Db::name('chat_info')->where(['fromid'=>$fromid])->whereOr(["toid"=>$toid])->update(['is_read'=>1]);
+        // echo  Db::name('chat_info')->getLastSql();die;
+
         return json(['code'=>1, 'msg'=>'update'.$res, 'data'=>'']);
     }
 
