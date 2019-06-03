@@ -80,6 +80,11 @@ class Groupchat extends Base
         if($red_money < $group_one['min_money'] || $red_money > $group_one['max_money']){
             return message(0,'红包范围'.$group_one['min_money'].'-'.$group_one['max_money']);
         }
+
+        if(!$ray_point_num){
+            return message(0,'请选择雷点');
+        }
+
         if($red_money>$user['account']){
             return message(0,'余额不足');
         }
