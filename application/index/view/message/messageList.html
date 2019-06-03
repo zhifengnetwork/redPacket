@@ -157,18 +157,18 @@
 				</div>
 			</div>
 			{else/}
-			<div class="chat chat1">
+			<div class="chat chat1 system_notice_list">
 				<div class="chat_img">
 					<img src="__STATIC__/{$v.img}" />
 				</div>
 				<div class="chat_text">
 
 					<p class="chat_name publicEllipsis">{$v.name}</p>
-					<p class="chat_context">公告:本群为扫雷游戏群，快来争取大量佣金。。。</p>
+					<p class="chat_context system_notice"></p>
 				</div>
-				<div class="chat_time">
-					<!-- <p class="chat_timer">2019-02-14</p> -->
-					<!-- <p class="chat_message">3</p> -->
+				<div class="chat_time send_system_notice" style="display: none;">
+					<p class="chat_timer system_notice_time"></p>
+					<p class="chat_message system_notice_num">0</p>
 				</div>
 			</div>	
 			{/if}
@@ -233,6 +233,7 @@
 					case  "init":
 						var bild = '{"type":"bind","fromid":"'+fromid+'"}';
 						ws.send(bild);
+						$(".friendChat").html("");
 						list();
 						return;
 					case "text":
@@ -264,9 +265,9 @@
 								$('.group_send_time').eq(index).show();
 								$('.group_chat_time').eq(index).html(message.time);
 								$('.chat_context').eq(index).html(message.from_name+'发了红包');
-								var num = $('.group_chat_message').eq(index).html();
+								var num = $('.system_notice_num').eq(index).html();
 								num++;
-								$('.group_chat_message').eq(index).html(num);
+								$('.system_notice_num').eq(index).html(num);
 							}
 						});
 
@@ -277,6 +278,33 @@
 							navigator.webkitVibrate([200,50,200]);
 						}
 						return;
+					case "system_notice":
+		                console.log('系统公告');
+
+		                var group_list = <?php echo json_encode($group_list);?>;
+						group_list = eval(group_list);
+						$.each(group_list,function(index,content){
+							console.log(content.id);
+							console.log(message.room_id);
+							console.log(message.content);
+							if(content.id == message.room_id){
+								$('.send_system_notice').show();
+								$('.system_notice_time').html(message.time);
+								$('.system_notice').html(message.content);
+								var num = $('.system_notice_num').html();
+								num++;
+								$('.system_notice_num').html(num);
+							}
+						});
+
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+						return;
+		                return;
 				}
 			}
 			/* ajax 请求 -s */

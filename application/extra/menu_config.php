@@ -143,6 +143,25 @@ return [
                     
                 ],
             ],
+             [
+                'id'    => 11005,
+                'title' => '平台公告',
+                'sort'  => 1,
+                'url'   => 'Notice/index',
+                'hide'  => 1,
+                'icon'  => 'fa-th-large',
+                'child' => [
+                    [
+                        'id'    => 11105,
+                        'title' => '公告列表',
+                        'sort'  => 1,
+                        'url'   => 'Notice/index',
+                        'hide'  => 1,
+                        'icon'  => 'fa-th-large',
+                    ],
+                    
+                ],
+            ],
         ],
     ],
 

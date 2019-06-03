@@ -1,0 +1,76 @@
+{extend name="common:cssjs" /}
+{block name="content"}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <!-- <form method="POST" class="form-horizontal" target="ajaxR"> -->
+                    <input type="hidden" name="id" value="{$info ? $info['id'] : 0}">
+                    <div class="form-group"><label class="col-sm-3 control-label">内容：</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="3" id="desc" name=content></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-5 col-sm-offset-2" style="padding-left:40%;">
+                            <button class="btn btn-primary" type="submit"  onclick="add_notice();">发布公告</button>
+                            <button class="btn btn-white" type="submit">取消</button>
+                        </div>
+                    </div>
+                <!-- </form> -->
+                <iframe name="ajaxR" style="display:none;width:100%;height:300px;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ws =  new WebSocket("ws://47.107.185.253:8282");
+    ws.onopen = function() {
+        // var msg_obj = { "type": "send_system_notice", "content": 1222,};
+        // var msg = JSON.stringify(msg_obj);
+        // ws.send(msg);
+    };
+    ws.onmessage = function(e) {
+        var msg = JSON.parse(e.data);
+        // console.log(msg);
+        switch (msg.type){
+            case "system_notice":
+                console.log('系统公告');
+                return;
+        }
+    };
+    var add_flag = false;
+    function add_notice(){
+        if(add_flag==true){
+            return false;
+        };
+        console.log(11);
+        var content = $('#desc').val();
+        if(!content){
+            layer.msg('请输入备内容',{icon:5});
+            false;
+        }
+        $.post('/admin/notice/add_notice',{content:content},function(res){
+
+            if(res.status == 1){
+                add_flag = false;
+                layer.msg(res.msg,{icon:6});
+                setTimeout(function(){
+                    parent.openClose();
+                },1500);
+                // 系统公告在数据库群组表id为4,所以这里room_id=4
+                var msg_obj = { "type": "send_system_notice", "content": content, "room_id":4};
+                var msg = JSON.stringify(msg_obj);
+                ws.send(msg);
+            }else{
+                layer.msg(res.msg,{icon:5});
+            }
+        });
+    }
+
+
+</script>
+{/block}
