@@ -1,5 +1,9 @@
+var stateUrl = true;
 /*返回 按钮*/
 function returnFun(){
+	if(!stateUrl){
+		return false;
+	}
 	/*返回上一页*/
 	if($('.lb_headWrap .lb_headWrap_return').attr('data-num') == 1 || $('.headWrap_lb .returnBut_lb').attr('data-num') == undefined ){
 		window.history.back();
@@ -7,6 +11,7 @@ function returnFun(){
 	}else {
 		/*页面跳转*/
 		window.location.href = $('.lb_headWrap .lb_headWrap_return').attr('data-num');
+		console.log("页面跳转");
 	}
 	return false;
 }
