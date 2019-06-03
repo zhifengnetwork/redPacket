@@ -40,6 +40,10 @@ class Message extends Base
             //     $group_list[$k]['id'] = 1002;
             // }
             $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id='.$v['id'];
+            // 系统公告id=4
+            if($v['id']==4){
+                $group_list[$k]['group_chat_url'] = '/index/message/noticShow';
+            }
         }
 
         $this->assign('group_list', $group_list);
@@ -68,6 +72,12 @@ class Message extends Base
         return $this->fetch('dialog');
     }
 
+    /**
+     * 公告显示页面
+     */
+    public function noticShow(){
+        return $this->fetch('notice');
+    }
 
     /**
      * [点击我的头像进入设置页面]
