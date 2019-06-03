@@ -202,3 +202,41 @@ body{
 .edit-content .edit-item .del-icon img{
     width: 100%;
 }
+
+
+/**图片上传 wrap*/
+.mask_upImg_wrap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,.5);
+}
+/*发送请求 wrap*/
+.loadingWrapRq {
+    display: table;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    padding: .25rem 0 0 2.8rem;
+    box-sizing: border-box;
+    width: auto;
+    height: .8rem;
+    font: .2rem/.26rem "微软雅黑";
+    color: #000;
+    /*background: red;*/ /*0*/
+}
+/*gif图*/
+.loadingWrapGif {
+    float: left;
+    display: block;
+    margin-right:.1rem;
+    width: .3rem;
+    height: .3rem;
+}

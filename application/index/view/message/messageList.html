@@ -469,6 +469,8 @@
 			//点击关闭按钮,左侧消失
 			function head_portrait_hide(){
 				deviation('hide');
+				/**防止，在消息页面刷新时，还在'我的'页面中*/
+				window.location.href ='/index/message/messageList';
 				return false;
 			}
 			/** '+'号 按钮*/

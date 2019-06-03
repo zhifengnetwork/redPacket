@@ -12,7 +12,7 @@ function returnFun(){
 		console.log("返回上一页");
 	}else {
 		/*页面跳转*/
-		window.location.href =  return_url;
+		window.location.href = return_url;
 		console.log("页面跳转");
 	}
 	return false;
