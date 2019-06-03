@@ -167,7 +167,7 @@
 					<p class="chat_context system_notice"></p>
 				</div>
 				<div class="chat_time send_system_notice" style="display: none;">
-					<p class="chat_timer system_notice_time"></p>
+					<p class="chat_timer system_notice_time">测试测试</p>
 					<p class="chat_message system_notice_num">0</p>
 				</div>
 			</div>	
@@ -280,7 +280,6 @@
 						return;
 					case "system_notice":
 		                console.log('系统公告');
-
 		                var group_list = <?php echo json_encode($group_list);?>;
 						group_list = eval(group_list);
 						$.each(group_list,function(index,content){
