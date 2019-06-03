@@ -539,15 +539,15 @@ class Groupchat extends Base
                 $get_detail_point = Db::name('chat_red_detail')->where($where)->count();
                 if($red_one['num'] == 7){ // 7包奖励
                     if($get_detail_point == 3){
-                        $point_award_money = $rule_set['pack7_3']['value'];
+                        $point_award_rate = $rule_set['pack7_3']['value'];
                     }else if($get_detail_point == 4){
-                        $point_award_money = $rule_set['pack7_4']['value'];
+                        $point_award_rate = $rule_set['pack7_4']['value'];
                     }else if($get_detail_point == 5){
-                        $point_award_money = $rule_set['pack7_5']['value'];
+                        $point_award_rate = $rule_set['pack7_5']['value'];
                     }else if($get_detail_point == 6){
-                        $point_award_money = $rule_set['pack7_6']['value'];
+                        $point_award_rate = $rule_set['pack7_6']['value'];
                     }else{
-                        $point_award_money = 0;
+                        $point_award_rate = 0;
                     }
 
                 }else{
@@ -558,39 +558,40 @@ class Groupchat extends Base
                         // 单雷奖
                         if($red_one['ray_point_num'] == 1){
                             if($get_detail_point == 4){
-                                $point_award_money = $rule_set['pack9_4_one']['value'];
+                                $point_award_rate = $rule_set['pack9_4_one']['value'];
                             }else if($get_detail_point == 5){
-                                $point_award_money = $rule_set['pack9_5_one']['value'];
+                                $point_award_rate = $rule_set['pack9_5_one']['value'];
                             }else if($get_detail_point == 6){
-                                $point_award_money = $rule_set['pack9_6_one']['value'];
+                                $point_award_rate = $rule_set['pack9_6_one']['value'];
                             }else if($get_detail_point == 7){
-                                $point_award_money = $rule_set['pack9_7_one']['value'];
+                                $point_award_rate = $rule_set['pack9_7_one']['value'];
                             }else{
-                                $point_award_money = 0;
+                                $point_award_rate = 0;
                             }
                         }else if($red_one['ray_point_num'] > 1){ //多雷
                             if($get_detail_point == 6){
-                                $point_award_money = $rule_set['pack9_6_two']['value'];
+                                $point_award_rate = $rule_set['pack9_6_two']['value'];
                             }else if($get_detail_point == 7){
-                                $point_award_money = $rule_set['pack9_7_two']['value'];
+                                $point_award_rate = $rule_set['pack9_7_two']['value'];
                             }else if($get_detail_point == 8){
-                                $point_award_money = $rule_set['pack9_8_two']['value'];
+                                $point_award_rate = $rule_set['pack9_8_two']['value'];
                             }else if($get_detail_point == 9){
-                                $point_award_money = $rule_set['pack9_9_two']['value'];
+                                $point_award_rate = $rule_set['pack9_9_two']['value'];
                             }else{
-                                $point_award_money = 0;
+                                $point_award_rate = 0;
                             }
                         }else{
-                            $point_award_money = 0;
+                            $point_award_rate = 0;
                         }
                     }else{
-                        $point_award_money = 0;
+                        $point_award_rate = 0;
                     }
                 }
 
                 // 累加奖励并记录 
-                if($point_award_money){
-                    $point_award_money = abs($point_award_money);
+                if($point_award_rate){
+                    // 奖励金额=当前红包本金*后台设置的陪数
+                    $point_award_money = $red_one['money']*$point_award_rate;
                     $point_award_money_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $point_award_money);
                     // 修改红包主表标记已奖励
                     $point_award_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_award'=>1]);
@@ -972,15 +973,25 @@ class Groupchat extends Base
         $rule_set = Db::name('setting')->field('name,value')->where(['flag'=>4])->select();
         $rule_set = arr2name($rule_set);
         $award1 = ['1' => 1.23,'2' => 2.34,'3' => 3.45,'4' => 5.67,'5' => 6.78,'6' => 7.89];
+
         $award2 = ['1'=>11.11,'2'=>22.22,'3'=>33.33,'4'=>44.44,'5'=>55.55];
+
         $award3 = ['1'=>9.87,'2'=>8.76,'3'=>7.65,'4'=>6.54,'5'=>5.43,'6'=>4.32,'7'=>3.21];
+
         $award4 = ['1'=>66.66,'2'=>77.77,'3'=>88.88,'4'=>99.99];
+
         $award5 = ['1'=>1.11,'2'=>2.22,'3'=>3.33,'4'=>4.44,'5'=>5.55,'6'=>6.66,'7'=>7.77,'8'=>8.88,'9'=>9.99];
+
         $award6 = ['1' =>12.34,'2' =>23.45,'3' =>34.56,'4' =>45.67,'5' =>56.78,'6' =>67.89];
+
         $award7 = ['1' =>5.20];
+
         $award8 = ['1' => 13.14];
+
         $award9 = ['1' =>0.01];
+
         $award10 = ['1' =>123.45,'2' =>234.56,'3' =>345.67];
+
         $award11 = ['1' =>111.11,'2' =>222.22,'3' =>333.33,'4' =>444.44];
         if(in_array($get_red_money, $award1)){
             $money = $rule_set['robbery_m1_23to7_89']['value'];
