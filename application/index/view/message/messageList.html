@@ -164,7 +164,7 @@
 				<div class="chat_text">
 
 					<p class="chat_name publicEllipsis">{$v.name}</p>
-					<p class="chat_context system_notice"></p>
+					<p class="chat_context system_notice">测试测试</p>
 				</div>
 				<div class="chat_time send_system_notice" style="display: none;">
 					<p class="chat_timer system_notice_time"></p>
@@ -278,32 +278,31 @@
 							navigator.webkitVibrate([200,50,200]);
 						}
 						return;
-					// case "system_notice":
-		   //              console.log('系统公告');
+					case "system_notice":
+		                console.log('系统公告');
+		                var group_list = <?php echo json_encode($group_list);?>;
+						group_list = eval(group_list);
+						$.each(group_list,function(index,content){
+							console.log(content.id);
+							console.log(message.room_id);
+							console.log(message.content);
+							if(content.id == message.room_id){
+								$('.send_system_notice').show();
+								$('.system_notice_time').html(message.time);
+								$('.system_notice').html(message.content);
+								var num = $('.system_notice_num').html();
+								num++;
+								$('.system_notice_num').html(num);
+							}
+						});
 
-		   //              var group_list = <?php echo json_encode($group_list);?>;
-					// 	group_list = eval(group_list);
-					// 	$.each(group_list,function(index,content){
-					// 		console.log(content.id);
-					// 		console.log(message.room_id);
-					// 		console.log(message.content);
-					// 		if(content.id == message.room_id){
-					// 			$('.send_system_notice').show();
-					// 			$('.system_notice_time').html(message.time);
-					// 			$('.system_notice').html(message.content);
-					// 			var num = $('.system_notice_num').html();
-					// 			num++;
-					// 			$('.system_notice_num').html(num);
-					// 		}
-					// 	});
-
-					// 	$('#audio')[0].play();
-					// 	if (navigator.vibrate) {
-					// 		navigator.vibrate([200,50,200]);
-					// 	} else if (navigator.webkitVibrate) {
-					// 		navigator.webkitVibrate([200,50,200]);
-					// 	}
-		   //              return;
+						$('#audio')[0].play();
+						if (navigator.vibrate) {
+							navigator.vibrate([200,50,200]);
+						} else if (navigator.webkitVibrate) {
+							navigator.webkitVibrate([200,50,200]);
+						}
+		                return;
 				}
 			}
 			/* ajax 请求 -s */
