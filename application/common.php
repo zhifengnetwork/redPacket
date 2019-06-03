@@ -1009,6 +1009,8 @@ function uploadImg($base64){
 } 
 //推广码专用
 function scerweima($url='',$id=''){
+     // 关闭错误报告
+    error_reporting(0);
     Vendor('phpqrcode.phpqrcode');
     $value = $url;         //二维码内容
     $errorCorrectionLevel = 'L';  //容错级别
@@ -1022,7 +1024,7 @@ function scerweima($url='',$id=''){
         $QR = $filename;        //已经生成的原始二维码图片文件
         $QR = imagecreatefromstring(file_get_contents($QR));
         //输出图片
-        imagepng($QR, 'qrcode.png');
+        @imagepng($QR, 'qrcode.png');
         imagedestroy($QR);
         
     }

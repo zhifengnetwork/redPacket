@@ -13,9 +13,11 @@ $(function(){
             scrollTop: $('html, body').height()
         },100);
     })
+    var top = null;
     
     // 显示转账弹框
     $('.transfer').on('click',function(){
+        top = $(window).scrollTop();
         $('.dialog_content').hide();
         $('.dialog_transfer_wrap').show();
         $('.dialog_transfer_user_name').html(to_name);
@@ -24,6 +26,7 @@ $(function(){
 
     // 隐藏转账弹框
     $('.dialog_transfer_back').on('click',function(){
+        $(document).scrollTop(top); 
         $('.dialog_content').show();        
         $('.dialog_transfer_wrap').hide();
         $('.dialog_transfer_num_input').val('');
