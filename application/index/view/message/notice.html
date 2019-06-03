@@ -19,7 +19,7 @@
     </style>
 </head>
 
-<body onload="connect();">
+<body>
    <div class="wrap_frame">
         <!--public head-->
         <div class="lb_headWrap">
@@ -79,6 +79,11 @@
         var h = $(document).height()-$(window).height();
         $(document).scrollTop(h); 
     }
+
+    var fromid  = {$room_id};
+
+    get_notice_list();
+ 
     var API_URL = "/index.php/api/chat/"; // 请求地址
     var domain = 'http://'+document.domain+'/upload/chat_img/'; // 图片路径
 
@@ -89,16 +94,12 @@
         // var msg = JSON.stringify(msg_obj);
         // ws.send(msg);
     };
-
-    //case "system_notice":
-    // console.log('系统公告');
-    //return;
     
     // 服务端发来消息时,根据业务类型type处理客户端页面相应业务
-    function onmessage(e){
+    ws.onmessage = function(e) {
 
-        // console.log(e.data);
-        var message =  eval("("+e.data+")"); //json数据转换为数据对象
+        var message = JSON.parse(e.data);
+        console.log(e.data);
         switch (message.type){
             // 服务端ping客户端
             case 'ping':
@@ -109,37 +110,32 @@
             case "init":
                 var bind = '{"type":"bind","fromid":"'+fromid+'"}';
                 ws.send(bind);
-                // 加载聊天记录
-                message_load();
-                // 获取对方是否在线
-                var online = '{"type":"online","toid":"'+toid+'","fromid":"'+fromid+'"}';
-                ws.send(online);
-                changeNoRead();
                 return;
 
             // 向当前页面追加普通文本内容并显示
-            case "text":
-                if(toid==message.fromid) {
-                    var str = '';
-                    str += '<div class="dialog_content_opposite clearfloat">'
-                        + '<div class="dialog_content_opposite_imgwrap">'
-                        + '<img class="dialog_content_opposite_img" src="/static/chatWeb/img/news/Announcement@2x.png" alt="">'
-                        + '</div>'
-                        + '<div class="dialog_content_opposite_info">'
-                        + '<div class="dialog_content_opposite_name">'+平台公告+'</div>'
-                        + '<div class="dialog_content_opposite_text">'
-                        + AnalyticEmotion(message.data)+'</div></div></div>'
-                    $('.dialog_content').append(str);
-                    $('html, body').animate({
-                        scrollTop: $('html, body').height()
-                    }, 'slow');
-                    changeNoRead();
-                    $('#audio')[0].play();
-                    if (navigator.vibrate) {
-                        navigator.vibrate([200,50,200]);
-                    } else if (navigator.webkitVibrate) {
-                        navigator.webkitVibrate([200,50,200]);
-                    }
+            case 'system_notice':
+                console.log(122132);
+                
+                var str = '';
+                str += '<div class="dialog_content_opposite clearfloat">'
+                    + '<div class="dialog_content_opposite_imgwrap">'
+                    + '<img class="dialog_content_opposite_img" src="/static/chatWeb/img/news/Announcement@2x.png" alt="">'
+                    + '</div>'
+                    + '<div class="dialog_content_opposite_info">'
+                    + '<div class="dialog_content_opposite_name">'+'平台公告 '+message.time+'</div>'
+                    + '<div class="dialog_content_opposite_text">'
+                    + AnalyticEmotion(message.content)+'</div></div></div>'
+                $('.dialog_content').append(str);
+                    console.log(str);
+
+                $('html, body').animate({
+                    scrollTop: $('html, body').height()
+                }, 'slow');
+                $('#audio')[0].play();
+                if (navigator.vibrate) {
+                    navigator.vibrate([200,50,200]);
+                } else if (navigator.webkitVibrate) {
+                    navigator.webkitVibrate([200,50,200]);
                 }
                 return;
 
@@ -149,10 +145,10 @@
                     var str = '';
                     str +='<div class="dialog_content_opposite clearfloat">'
                         +'<div class="dialog_content_opposite_imgwrap">'
-                        +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                        +'<img class="dialog_content_opposite_img" src="/static/chatWeb/img/news/Announcement@2x.png" alt="">'
                         +'</div>'
                         +'<div class="dialog_content_opposite_info">'
-                        +'<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                        +'<div class="dialog_content_opposite_name">'+'平台公告 '+message.time+'</div>'
                         +'<div class="dialog_content_opposite_textimg">'
                         +'<img class="dialog_content_opposite_img" src="'+domain+message.img_name+'" alt="">'
                         +'</div>'
@@ -162,7 +158,6 @@
                     $('html, body').animate({
                         scrollTop: $('html, body').height()
                     }, 'slow');
-                    changeNoRead();
                     $('#audio')[0].play();
                     if (navigator.vibrate) {
                         navigator.vibrate([200,50,200]);
@@ -172,78 +167,53 @@
                 }
                 return;
         }
-    }   
+    }
 
     //输入框按下
     $('.dialog_menu_input').keyup(function(){
         $(".dialog_menu_input1").html($(this).html())
-    })
+    });
 
-    // 页面加载返回公告列表
-    function message_load(){
+    // 获取公告列表数据
+    function  get_notice_list(){
         $.post(
-            API_URL +"load",
-            {"fromid":fromid,"toid":toid},
+            "/index/message/getNoticeList",
             function(e){
                 $.each(e,function(index,content){
                     // type=1文本 2图片
                     // 页面左边
                     if(content.type==2){
-
                         var str = '';
                         str +='<div class="dialog_content_opposite clearfloat">'
                             +'<div class="dialog_content_opposite_imgwrap">'
-                            +'<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                            +'<img class="dialog_content_opposite_img" src="/static/chatWeb/img/news/Announcement@2x.png" alt="">'
                             +'</div>'
                             +'<div class="dialog_content_opposite_info">'
-                            +'<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                            +'<div class="dialog_content_opposite_name">'+'平台公告 '+content.time+'</div>'
                             +'<div class="dialog_content_opposite_textimg">'
                             +'<img class="dialog_content_opposite_img" src="'+domain+content.content+'" alt="">'
                             +'</div>'
                             +'</div>'
                             +'</div>'
                         $('.dialog_content').append(str);
-
                     }else if(content.type==1){
                         var str = '';
                         str += '<div class="dialog_content_opposite clearfloat">'
                             + '<div class="dialog_content_opposite_imgwrap">'
-                            + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
+                            + '<img class="dialog_content_opposite_img" src="/static/chatWeb/img/news/Announcement@2x.png" alt="">'
                             + '</div>'
                             + '<div class="dialog_content_opposite_info">'
-                            + '<div class="dialog_content_opposite_name">'+to_name+'</div>'
+                            + '<div class="dialog_content_opposite_name">'+'平台公告 '+content.time+'</div>'
                             + '<div class="dialog_content_opposite_text">'
                             + AnalyticEmotion(content.content)+'</div></div></div>'
                         $('.dialog_content').append(str);
 
-                    }else{
-
-                        var str = '';
-                        str += '<div class="dialog_content_opposite clearfloat">'
-                            + '<div class="dialog_content_opposite_imgwrap">'
-                            + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
-                            + '</div>'
-                            + '<div class="dialog_content_opposite_info">'
-                            + '<p class="dialog_content_opposite_name">'+to_name+'</p>'
-                            + '<div class="dialog_content_oneself_transfer gathering">'
-                            + '<div class="opposite_transfer_info">'
-                            + '<div class="opposite_transfer_imgwrap">'
-                            + '<img class="opposite_transfer_img" src="/static/chatWeb/img/news/succeed.png" alt="">'
-                            + '</div>'
-                            + '<div class="opposite_transfer_price">'
-                            + '<div>已收'+fromid_name+'</div>'
-                            + '<div>￥'+content.content+'</div>'
-                            + '</div>'
-                            + '</div>'
-                            + '<p class="opposite_transfer_text">收款</p>'
-                            + ' </div></div></div>'
-                        $('.dialog_content').append(str);
                     }
                     scrollToEnd();
                 })
             },'json'
         );
-    }
+    }   
 
     // 把内容替换,查看表情结果
     function replace_em(str){

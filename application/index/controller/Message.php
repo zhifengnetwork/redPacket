@@ -76,8 +76,30 @@ class Message extends Base
      * 公告显示页面
      */
     public function noticShow(){
-        
+        $roomid = 4;
+        $room_id = Db::name('chat_group')->field('id,name')->where(['id'=>$roomid])->find();
+        $this->assign('room_id', $room_id['id']);
         return $this->fetch('notice');
+    }
+
+    /**
+     * 获取公告列表
+     */
+    public function getNoticeList(){
+
+        $list = Db::name('chat_system_notice')->limit(20)->select();
+        foreach ($list as $key => $value) {
+            $list[$key]['time'] = date('Y-m-d H:i:s', $value['create_time']);
+        }
+        return $list;
+    }
+
+    /**
+     * 获取最后一条公告
+     */
+    public function getLastNotice(){
+        $one_info = Db::name('chat_system_notice')->order('create_time desc')->limit(1)->find();
+        return $one_info;
     }
 
     /**
