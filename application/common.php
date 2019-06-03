@@ -87,12 +87,15 @@ function getPhoneCode($data){
     }
     $code = rand(123456,999999);
     $tpl = '【Q霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
-    if($data['sms_type']==1){    
+    if($data['sms_type']==1){  //忘记密码  
 
         Session::set('smscode',$code);
-    }else{ //注册
+    }elseif($data['sms_type']==2){ //注册
 
         Session::set('regist_code',$code);
+    }else{
+
+        Session::set('pwd_code',$code); //忘记支付密码
     }
     
     $tpl = '【QQ争霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
@@ -1012,6 +1015,7 @@ function scerweima($url='',$id=''){
     $matrixPointSize = 5;      //生成图片大小
     //生成二维码图片
     $filename = "uploads/ewm/".$id.'.png';
+
     if(!file_exists($filename)){
 
         QRcode::png($value,$filename , $errorCorrectionLevel, $matrixPointSize, 2);

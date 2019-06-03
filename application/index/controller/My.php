@@ -116,6 +116,7 @@ class My extends Base
         $res = Db::query("select invite_code from users where id = $userid");
         $url = 'http://'.$_SERVER['HTTP_HOST'].'/index/register/register?invite_code='.$res[0]['invite_code'];
         $img =  scerweima($url,$userid);
+        // echo $img;exit;
         $this->assign('img', $img);
         
         return $this->fetch('myQrCode');
