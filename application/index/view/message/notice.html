@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/dialog.css">
     <link rel="stylesheet" href="__STATIC__/chatWeb/css/news/jquery.sinaEmotion.css" />
 
-    <title>对话框</title>
+    <title>公告列表</title>
     <style>
         /*qq表情框样式*/
         .qqFace { margin-top: -180px; background: #fff; padding: 2px; border: 1px #dfe6f6 solid; }
@@ -54,38 +54,7 @@
         </div>
 
         <!-- 转账 -->
-        <div class="dialog_transfer_wrap">
-            <div class="dialog_transfer">
-                <!-- 头部返回菜单 -->
-                <div class="dialog_transfer_back">
-                    <p class="dialog_transfer_back_title">
-                        <img class="dialog_transfer_back_img" src="__STATIC__/chatWeb/img/public/left.png" alt="">
-                        <span>转账</span>
-                    </p>
-                </div>
-                <!-- 被转账用户 -->
-                <div class="dialog_transfer_user">
-                    <img class="dialog_transfer_user_img" src="" alt="">
-                    <div class="dialog_transfer_user_name">
-                        
-                    </div>
-                </div>
-                <!-- 转账金额 -->
-                <div class="dialog_transfer_num" data-account="{$user_arr['account']}">
-                    <div class="dialog_transfer_num_title">
-                        请输入金额
-                    </div>
-                    <label class="dialog_transfer_num_label">￥
-                        <input class="dialog_transfer_num_input" type="number" maxlength="7" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")'>
-                    </label>
-                </div>
-                <span style="margin-left: 10px;">我的余额: <span class="account_now">{$user_arr['account']}</span></span>
-                <!-- 确认转账 -->
-                <div class="dialog_transfer_affirm" data-key="{$key}" data-uid="{$user_arr['id']}">
-                    确认转账
-                </div>
-            </div>
-        </div>
+        
         <!-- 放大后的图片 -->
         <div class="magnify_mask">
             <img class="magnify" src="">
@@ -129,69 +98,7 @@
         </div>
 
         <!--(数字-键盘)底部弹窗（蒙版）body-->
-        <div class="bottom_alert_wrap">
-            <div class="mask_text">
-                <div class="red_envelope">
-                    输入密码
-                    <p class="delete_img_box">
-                        <img class="delete_img" src="__STATIC__/chatWeb/img/news/delete_icon.png" alt="" />
-                    </p>
-                    
-                </div>
-                <p class="red_envelope_money">￥<span class="tr_num"></span></p>
-                <div class="ds">
-                    <div class="ds_ds">
-                        <div class="dsds_item">
-                            <p class="dsds_item_icon_box">
-                                <img src="__STATIC__/chatWeb/img/news/qian.png" class="tixian_pic" />
-                            </p>
-                            <span class="qunliao_item_text">账号余额(<span class="now_account"></span>元)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="password_box">
-                    <p class="password_box_num"><span class="trem_box">·</span></p>
-                    <p class="password_box_num"><span class="trem_box">·</span></p>
-                    <p class="password_box_num"><span class="trem_box">·</span></p>
-                    <p class="password_box_num"><span class="trem_box">·</span></p>
-                    <p class="password_box_num"><span class="trem_box">·</span></p>
-                    <p class="password_box_num"><span class="trem_box">·</span></p>
-                </div>
-            </div>
-            
-            
-            <!--输入完密码 => 遮罩层-->
-            <!--报错 标签-->
-          <!--   <div class="loading_wrap">
-                输入的密码错误
-            </div>
-             -->
-            <!--底部弹窗（框）-->
-            <div class="bottom_alert_box">
-                <!--数字键盘-->
-                <div class="digital_keyboard_box">
-                    <!--data-num:下标-->
-                    <p class="number_trem digital_key" data_state="true">1</p>
-                    <p class="number_trem digital_key" data_state="true">2</p>
-                    <p class="number_trem digital_key" data_state="true">3</p>
-                    <p class="number_trem digital_key" data_state="true">4</p>
-                    <p class="number_trem digital_key" data_state="true">5</p>
-                    <p class="number_trem digital_key" data_state="true">6</p>
-                    <p class="number_trem digital_key" data_state="true">7</p>
-                    <p class="number_trem digital_key" data_state="true">8</p>
-                    <p class="number_trem digital_key" data_state="true">9</p>
-                    <!--最后三个无bottom边框-->
-                    <p class="number_trem number_trem_none"></p>
-                    <p class="number_trem number_trem_none digital_key" data_state="true">0</p>
-                    <div class="number_trem number_trem_none">
-                        <i class="eliminate_cion"></i>
-                        <!--删除按钮-->
-                        <p class="delete_box digital_key" data-state="delete"></p>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+        
     </div>
     <audio id="audio">
         <source src="__STATIC__/chatWeb/img/news/tips.mp3">
@@ -208,15 +115,7 @@
         var h = $(document).height()-$(window).height();
         $(document).scrollTop(h); 
     }
-    // 一对一聊天
-    var fromid = {$fromid}; // 当前用户uid
-    var toid   = {$toid};   // 聊天对象用户uid
-    var from_head  = '';    // 当前用户头像
-    var to_head    = '';    // 聊天对象头像
-    var to_name    = '';    // 聊天对象昵称
-    var fromid_name =  '';  // 当前用户昵称
-    var online     = 0;     // 是否在线
-    var send_key = "{$send_key}";
+
 
     var API_URL = "/index.php/api/chat/"; // 请求地址
     var domain = 'http://'+document.domain+'/upload/chat_img/'; // 图片路径
@@ -330,47 +229,6 @@
                         scrollTop: $('html, body').height()
                     }, 'slow');
                     changeNoRead();
-                    $('#audio')[0].play();
-                    if (navigator.vibrate) {
-                        navigator.vibrate([200,50,200]);
-                    } else if (navigator.webkitVibrate) {
-                        navigator.webkitVibrate([200,50,200]);
-                    }
-                }
-                return;
-            // 转账收款    
-            case "transfer":
-                if(toid==message.fromid) {
-
-                var str = '';
-                    str += '<div class="dialog_content_opposite clearfloat">'
-                        + '<div class="dialog_content_opposite_imgwrap">'
-                        + '<img class="dialog_content_opposite_img" src="'+to_head+'" alt="">'
-                        + '</div>'
-                        + '<div class="dialog_content_opposite_info">'
-                        + '<p class="dialog_content_opposite_name">'+to_name+'</p>'
-                        + '<div class="dialog_content_oneself_transfer gathering">'
-                        + '<div class="opposite_transfer_info">'
-                        + '<div class="opposite_transfer_imgwrap">'
-                        + '<img class="opposite_transfer_img" src="/static/chatWeb/img/news/succeed.png" alt="">'
-                        + '</div>'
-                        + '<div class="opposite_transfer_price">'
-                        + '<div>已收'+fromid_name+'</div>'
-                        + '<div>￥'+message.tr_num+'</div>'
-                        + '</div>'
-                        + '</div>'
-                        + '<p class="opposite_transfer_text">收款</p>'
-                        + ' </div></div></div>'
-                    $('.dialog_content').append(str);
-                    $('html, body').animate({
-                        scrollTop: $('html, body').height()
-                    }, 'slow');
-
-                    // 更新余额到页面
-                    $.post("/index/my/getAccount",{uid:fromid},function(msg){
-                        $('.account_now').html(msg.data.account);
-                        $('.dialog_transfer_num').attr('data-account',msg.data.account);
-                    });
                     $('#audio')[0].play();
                     if (navigator.vibrate) {
                         navigator.vibrate([200,50,200]);
