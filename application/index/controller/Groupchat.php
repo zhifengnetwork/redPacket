@@ -49,7 +49,6 @@ class Groupchat extends Base
             }
             $ray_point = rtrim($ray_point, ','); // 最终所有雷点1,2,3
         }
-
         if($key != $this->key){
             return message(0,'错误参数-key');
         }
@@ -131,7 +130,7 @@ class Groupchat extends Base
                 'ray_point_num' => $ray_point_num,
                 'create_time' => $time,
             ];
-            if($ray_point){
+            // if($ray_point_num){
                 $master_data['ray_point'] = $ray_point;
                 // 根据雷点获取倍数计算
                 $map['name'] = array('in', 'thunder_7_one,thunder_9_one,thunder_9_two,thunder_9_three,thunder_9_four,thunder_9_five');
@@ -154,7 +153,7 @@ class Groupchat extends Base
                         $master_data['mulriple'] = 0;
                     }
                 }
-            }
+            // }
             $res_id = Db::name('chat_red_master')->insertGetId($master_data);
             // 循环插入红包记录到从表
             $robot_dis = 1;

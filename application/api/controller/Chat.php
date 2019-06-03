@@ -232,8 +232,8 @@ class Chat extends Controller{
             return json(['code'=>0, 'msg'=>'非法请求', 'data'=>'']);
         }
         $fromid = input('id');
-        // $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->whereOr('toid',$fromid)->whereOr()->group('fromid,toid')->select();
-        $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->where('toid',$fromid)->whereOr('fromid',$fromid)->group('fromid')->select();
+        // $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->whereOr('toid',$fromid)->group('fromid,toid')->select();
+        $info  = Db::name('chat_info')->field(['fromid','toid','from_name'])->where('toid',$fromid)->whereOr('fromid',$fromid)->group('fromid,toid')->select();
          
         // echo Db::name('chat_info')->getLastSql();
         // pre($info);
