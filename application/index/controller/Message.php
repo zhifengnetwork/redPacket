@@ -42,7 +42,7 @@ class Message extends Base
             $group_list[$k]['group_chat_url'] = '/index/message/groupChat.html?room_id='.$v['id'];
             // 系统公告id=4
             if($v['id']==4){
-                $group_list[$k]['group_chat_url'] = '/index/message/noticShow';
+                $group_list[$k]['group_chat_url'] = '/index/message/noticShow.html';
             }
         }
 
@@ -76,6 +76,7 @@ class Message extends Base
      * 公告显示页面
      */
     public function noticShow(){
+        
         return $this->fetch('notice');
     }
 

@@ -157,7 +157,7 @@
 				</div>
 			</div>
 			{else/}
-			<div class="chat chat1 system_notice_list" data-url="{$v.group_chat_url}&fromid={$fromid}&group_name={$v.name}">
+			<div class="chat chat1 system_notice_list go_system_notice" data-url="{$v.group_chat_url}">
 				<div class="chat_img">
 					<img src="__STATIC__/{$v.img}" />
 				</div>
@@ -223,7 +223,6 @@
 			// 服务端发来消息时,根据业务类型type处理客户端页面相应业务
 			function onmessage(e){
 
-				console.log(e.data);
 				var message = eval("("+ e.data+")");
 				switch (message.type){
 					// 服务端ping客户端
@@ -283,9 +282,6 @@
 		                var group_list = <?php echo json_encode($group_list);?>;
 						group_list = eval(group_list);
 						$.each(group_list,function(index,content){
-							console.log(content.id);
-							console.log(message.room_id);
-							console.log(message.content);
 							if(content.id == message.room_id){
 								$('.send_system_notice').show();
 								$('.system_notice_time').html(message.time);
@@ -425,14 +421,19 @@
 				var group_list = <?php echo json_encode($group_list);?>;
 				group_list = eval(group_list);
 				$.each(group_list,function(index,content){
-					// 有错message.room_id
-					if(content.id == index){
+
+					// if(content.id == index){
 						$('.group_send_time').eq(index).hide();
 						$('.group_chat_time').eq(index).html('');
 						// $('.chat_context').eq(index).html('');
 						$('.group_chat_message').eq(index).html(0);
-					}
+					// }
 				});
+			});
+
+			// 跳转到公告
+			$('.go_system_notice').on('click', function(){
+				window.location.href = $(this).attr('data-url');
 			});
 			//搜索框
 			$(".search-input").focus(function() {
