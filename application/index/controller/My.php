@@ -263,6 +263,7 @@ class My extends Base
                 }else{
                     $res = Db::table('users')->where('id',$userid)->update(['nickname' => $nickname]);
                     if( $res ){
+                        Session::set('user.nickname',$nickname);
                         $flag = 1;
                         $msg = '成功！';
                     }else{
@@ -302,7 +303,9 @@ class My extends Base
                 }else{            
 
                     $res = Db::table('users')->where('id',$userid)->update(['head_imgurl' => $head_imgurl]);
+
                     if( $res ){
+                        Session::set('user.head_imgurl',$head_imgurl);
                         $flag = 1;
                         $msg = '成功！';
                     }else{

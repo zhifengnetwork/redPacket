@@ -3,6 +3,7 @@ namespace app\index\controller;
 use think\Db;
 use think\Config;
 use think\Request;
+use think\Session;
 
 // 消息与我的相关
 class Message extends Base
@@ -27,8 +28,10 @@ class Message extends Base
      */
     public function messageList()
     {
+
         // 获取平台群列表
         $group_list = Db::name('chat_group')->select();
+        // var_dump($group_list);exit;
         // 返回绑定群url
         foreach($group_list as $k=>$v){
             // if($v['id']==1){ // 10-30红包群
