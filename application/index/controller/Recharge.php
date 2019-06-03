@@ -408,7 +408,7 @@ class Recharge extends Base
             }elseif($code==''){
                $msg = '请输入验证码';     
 
-            }elseif($code!=session('smscode')){
+            }elseif($code!=session('pwd_code')){
 
                 $msg = '短信验证码错误';
 
@@ -447,8 +447,7 @@ class Recharge extends Base
     }    
 
 
-
-        // 获取短信验证码
+/*        // 获取短信验证码
     public function smscode(){
        
         $flag = 0;
@@ -476,6 +475,15 @@ class Recharge extends Base
         echo $string;
 
 
+    }*/
+    // 获取短信验证码  找回密码
+    public function smscode(){
+        $mobile = input('post.mobile');
+        $data['phone'] = $mobile;
+        $data['sms_type'] = 3;
+        $res = getPhoneCode($data);
+        echo json_encode($res);
+                
     }
 
 
