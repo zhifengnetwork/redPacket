@@ -496,6 +496,7 @@ class Groupchat extends Base
             }
             // +-------------奖励-------------+
             // 抢包奖励 抢到指定金额
+            $award_money = 0;
             $award_money = $this->awardList($red_detail['money']);
             $award_log_res = true;
             $award_rebate_res =true;
@@ -525,6 +526,7 @@ class Groupchat extends Base
             $point_award_money_res = true;
             $point_award_money_log_res = true;
             $point_award_update_res = true;
+            $point_award_money = 0;
             if(!$red_one['is_award']){
                 // 7包发包奖励 
                 // 获取红包明细，中雷人数是否和雷点个数一致
