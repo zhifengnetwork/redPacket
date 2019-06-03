@@ -30,7 +30,7 @@ class Register extends Controller
     	}
     	$param = input("post.");
     	$nivite_code = $param['invite_code'];
-        $smscode = $param['smscode'];
+        $smscode = @$param['smscode'];
         $password = trim($param['password']);
     	if(!isMobile($param['mobile'])){
             return message(0, '手机号无效');
