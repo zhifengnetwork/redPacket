@@ -376,10 +376,9 @@
 			//限制 频繁滑动
 			var start_slip = true;
 			/**当前url*/
-			var this_url = window.location.href;
+			var this_url = window.location.href.split('showPage=')[1];
 			/**根据传回的url是否有show=>唤起-我的页面*/
-			var state_val = this_url.split('showPage=')[1];
-			if(state_val.indexOf('show') != -1){
+			if(this_url && this_url.indexOf('show') != -1){
 				start_slip = false;
 				side_eve.css({'left':0});
 				$('#news_wrap').css({
