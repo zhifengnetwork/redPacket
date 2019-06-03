@@ -371,11 +371,28 @@
 			}
 			/** 页面左右切换 -s */
 			/*存储-当前滚动条的位置*/
-			var newsScrollNum = null;
+			var newsScrollNum = 0;
 			/**侧边页面-元素*/
 			var side_eve = $('#measure_wrap');
 			//限制 频繁滑动
 			var start_slip = true;
+			/**当前url*/
+			var this_url = window.location.href;
+			/**根据传回的url是否有show=>唤起-我的页面*/
+			var state_val = this_url.split('showPage=')[1];
+			if(state_val.indexOf('show') != -1){
+				start_slip = false;
+				side_eve.css({'left':0});
+				$('#news_wrap').css({
+					'position':'fixed',
+					'top': 0,
+					'left': 0,
+					'display': 'none',
+				});
+				start_slip = true;
+				/*改变-当前滑动状态*/
+				side_eve.attr('data-start',2);
+			}
 			/*左滑动=> 参数:'yes'、右滑动=> 参数:'no'*/
 			function deviation(_start){
 				start_slip = false;
