@@ -191,6 +191,16 @@
 		<script src="__STATIC__/chatWeb/js/public/bottom_nav.js"></script>
 		<!--<script src="__STATIC__/chatWeb/js/news/news.js"></script>-->
 		<script>
+			$(function(){
+				function getQueryString(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]); return null;
+				}
+				if(getQueryString('type')==1){
+					$('#measure_wrap').css('left','0');
+				}
+			});
 			var API_URL = "/index.php/api/chat/"; // 请求地址
 			var fromid ={$fromid};
 

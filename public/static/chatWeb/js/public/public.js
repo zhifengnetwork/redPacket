@@ -1,6 +1,9 @@
 var stateUrl = true;
 /*返回 按钮*/
-function returnFun(){
+function returnFun(flag){
+	if(flag){
+		window.location.href = '/index/message/messageList?type=1' ;
+	}
 	if(!stateUrl){
 		return false;
 	}
