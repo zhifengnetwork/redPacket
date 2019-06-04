@@ -249,12 +249,19 @@ class Users extends Common
             $action = intval($search['action']) - 1;
             $where['a.action'] = ['=', $action];
         }
+        //总充值金额
+        $total_in = Db::query("SELECT sum(money) as total_in FROM account_log WHERE action = 0");
+    
+        //总扣除金额
+        $total_out = Db::query("SELECT sum(money) as total_out FROM account_log WHERE action = 1");
+
 
         $list = Db::name('account_log')->where($where)->alias('a')->join('users b','a.user_id = b.id','left')->field('a.*,b.nickname,b.mobile')->order('a.addtime desc')->paginate(10);
         
-
         $this->assign('action', [0=>'充值',1=>'扣除']);
         $this->assign('list', $list);
+        $this->assign('total_in', $total_in[0]['total_in']);
+        $this->assign('total_out', $total_out[0]['total_out']);
         $this->assign('search', $search);
         return $this->fetch();
     }
@@ -271,6 +278,8 @@ class Users extends Common
             $where .= "and u.mobile = {$phone} ";    
         }
         // var_dump($where);exit;
+        //待充值金额
+        $total = Db::query("SELECT sum(amount) as total FROM recharge WHERE status = 3");
 
         $list = Db::table('recharge')->alias('r')
                 ->join('users u', 'u.id = r.uid', 'LEFT')
@@ -280,7 +289,8 @@ class Users extends Common
         $page = $list->render();
         // 模板变量赋值
         $this->assign('list', $list);
-        $this->assign('page', $page);           
+        $this->assign('page', $page);
+        $this->assign('total', $total[0]['total']);            
         return $this->fetch('ck_recharge');
     } 
 
@@ -414,7 +424,7 @@ class Users extends Common
 
     //提现审核列表
     public function tx_list(){
-        $where = "where r.status = 3 ";
+        $where = " r.status = 3 ";
         $name = input('get.name');
         $phone = input('get.mobile');
         if( $name != '' ){
@@ -424,7 +434,8 @@ class Users extends Common
             $where .= "and u.mobile = {$phone} ";    
         }
         // var_dump($where);exit;
-
+         //待提现总额
+        $total = Db::query("SELECT sum(amount) as total FROM tixian WHERE status = 3");
         $list = Db::table('tixian')->alias('r')
                 ->join('users u', 'u.id = r.uid', 'LEFT')
                 ->where($where)
@@ -434,11 +445,70 @@ class Users extends Common
         $page = $list->render();
         // 模板变量赋值
         $this->assign('list', $list);
+        $this->assign('total', $total[0]['total']);
         $this->assign('page', $page);  
 
         return $this->fetch();
 
 
+    }
+
+    //提现成功列表
+    public function tx_passlist(){
+        $where = " r.status = 1 ";
+        $name = input('get.name');
+        $phone = input('get.mobile');
+        if( $name != '' ){
+            $where .= "and u.nickname = '{$name}' ";    
+        }
+        if( $phone != '' ){
+            $where .= "and u.mobile = {$phone} ";    
+        }
+        // var_dump($where);exit;
+         //成功提现总额
+        $total = Db::query("SELECT sum(amount) as total FROM tixian WHERE status = 1");
+        $list = Db::table('tixian')->alias('r')
+                ->join('users u', 'u.id = r.uid', 'LEFT')
+                ->where($where)
+                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.ordersn,r.time,r.status')->order('r.time desc')->paginate(10);
+        // var_dump($list);exit;           
+         // 获取分页显示
+        $page = $list->render();
+        // 模板变量赋值
+        $this->assign('list', $list);
+        $this->assign('total', $total[0]['total']);
+        $this->assign('page', $page);  
+
+        return $this->fetch();
+
+    }
+    //充值审核通过列表
+    public function cz_passlist(){
+        $where = "r.status = 1 ";
+        $name = input('get.name');
+        $phone = input('get.mobile');
+        if( $name != '' ){
+            $where .= "and u.nickname = '{$name}' ";    
+        }
+        if( $phone != '' ){
+            $where .= "and u.mobile = {$phone} ";    
+        }
+        // var_dump($where);exit;
+        //待充值金额
+        $total = Db::query("SELECT sum(amount) as total FROM recharge WHERE status = 1");
+
+        $list = Db::table('recharge')->alias('r')
+                ->join('users u', 'u.id = r.uid', 'LEFT')
+                ->where($where)
+                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.proof,r.ordersn,r.time,r.status')->order('r.time desc')->paginate(10);               
+         // 获取分页显示
+        $page = $list->render();
+        // 模板变量赋值
+        $this->assign('list', $list);
+        $this->assign('page', $page);
+        $this->assign('total', $total[0]['total']);            
+        return $this->fetch();
+        
     }
 
     //查询提现账号
@@ -639,6 +709,8 @@ class Users extends Common
         if( $enddate!=''){
            $where .= " and from_unixtime(c.get_time,'%Y-%m-%d') <  {$enddate} ";
         }
+         //累计抢红包总额总额
+        $total = Db::query("SELECT sum(money) as total FROM chat_red_detail WHERE status = 0 and get_uid =113");
         // echo $where;exit;
         $list = Db::table('chat_red_detail')->alias('c')
                 ->join('users u', 'u.id = c.get_uid', 'LEFT')
@@ -650,6 +722,7 @@ class Users extends Common
 
         // 模板变量赋值
         $this->assign('list', $list);
+        $this->assign('total', $total[0]['total']);
         $this->assign('page', $page);  
 
         return $this->fetch();
