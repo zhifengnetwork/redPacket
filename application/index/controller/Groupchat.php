@@ -532,11 +532,9 @@ class Groupchat extends Base
                 // 获取红包明细，中雷人数是否和雷点个数一致
                 $where['m_id'] = $red_one['id'];
                 $where['type'] = 1;
-                $where['is_ray'] = 1;
+                $where['is_ray'] = 1; 
                 $where['get_uid'] = ['>', 0]; 
-                if($red_one['num'] != 7){ // 7包发包奖励含免死,如果是9包不含免死
-                    $where['is_die'] = ['=', 0]; 
-                }
+                $where['is_die'] = ['=', 0];  // 7/9包都不含免死
 
                 $get_detail_point = Db::name('chat_red_detail')->where($where)->count();
                 if($red_one['num'] == 7){ // 7包奖励
@@ -793,19 +791,28 @@ class Groupchat extends Base
                 }
             }
 
-            // 获取发包者的信息
-            $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
+            
 
             Db::commit();
-            if($point_award_money){ // 奖励给发包人
+
+            if($point_award_money){ // 奖励给发包人只显示推送奖励信息
+                // 获取发包者的信息
+                $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
                 $award_money = $point_award_money;
                 $get_award_flag = 1;
-            }elseif($award_money){ // 抢包奖励抢到指定金额
+
+            }elseif($award_money){ // 抢包奖励抢到指定金额,显示奖励金额到拆红包后的页面
+                // 获取抢包者的信息
+                $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$user['id'])->find();
+
                 $award_money = $award_money;
                 $get_award_flag = 1;
+                $show_award_info = 1;
             }else{
                 $award_money = 0;
                 $get_award_flag = 0;
+                $from_user['nickname'] = '';
+                $from_user['head_imgurl'] = '';
             }
 
             // 中雷显示:
@@ -817,7 +824,8 @@ class Groupchat extends Base
                 'from_name' => $from_user['nickname'],
                 'from_head' => $from_user['head_imgurl'],
                 'award_money' => $award_money,
-                'get_award_flag' => $get_award_flag //$award_money?$award_money:0
+                'get_award_flag' => $get_award_flag, //$award_money?$award_money:0
+                'show_award_info' => $show_award_info?$show_award_info:0 // 是否显示奖励到拆红包后的页面,1显示
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {
