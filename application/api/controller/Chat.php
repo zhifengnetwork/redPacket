@@ -152,8 +152,8 @@ class Chat extends Controller{
             // return ['status'=>'img type error'];
             return json(['code'=>0, 'msg'=>'图片类型错误', 'data'=>""]);
         }
-
-        if($file['size']/1024>9120){
+        // 图片大小2MB
+        if($file['size']/1024>2048){
             // return ['status'=>'img is too large'];
             return json(['code'=>0, 'msg'=>'图片过大', 'data'=>""]);
         }
@@ -261,7 +261,7 @@ class Chat extends Controller{
     public function getCountNoread($fromid,$toid){
 
         // return Db::name('chat_info')->where(['fromid'=>$fromid,'is_read'=>0])->whereOr(['toid'=>$toid,'is_read'=>0])->count('id');
-        return Db::name('chat_info')->where(['toid'=>$toid])->where(['fromid'=>$fromid])->where(['is_read'=>0])->count('id');
+        return Db::name('chat_info')->where(['toid'=>$toid, 'fromid'=>$fromid, 'is_read'=>0])->count('id');
         // echo Db::name('chat_info')->getLastSql();die;
     }
 

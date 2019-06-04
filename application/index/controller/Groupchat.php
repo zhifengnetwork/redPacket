@@ -494,7 +494,7 @@ class Groupchat extends Base
                     }
                 }
             }
-            // +-------------奖励-------------+
+            // +-------------奖励-----顺子--------+
             // 抢包奖励 抢到指定金额
             $award_money = 0;
             $award_money = $this->awardList($red_detail['money']);
@@ -797,10 +797,10 @@ class Groupchat extends Base
             $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
 
             Db::commit();
-            if($point_award_money){
+            if($point_award_money){ // 奖励给发包人
                 $award_money = $point_award_money;
                 $get_award_flag = 1;
-            }elseif($award_money){
+            }elseif($award_money){ // 抢包奖励抢到指定金额
                 $award_money = $award_money;
                 $get_award_flag = 1;
             }else{
