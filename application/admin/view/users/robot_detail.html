@@ -1,0 +1,100 @@
+{extend name="common:base" /}
+{block name="content"}
+<style>
+    .table thead tr th{
+        text-align: center;
+    }
+    .red{
+        color:red;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>机器人明细</h5>
+                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
+
+                </div>
+                <div class="ibox-content" method="GET">
+                    <form role="form" class="form-inline" style="display: flex;" action="robot_detail" method="get">
+
+                        <div class="layui-form">
+                            <div class="layui-form-item">
+                                <div class="layui-inline" style="display: flex;">
+                                    <label class="layui-form-label">开始日期</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" style="margin:0 20px;" class="layui-input timer" name="startdate" placeholder="选择开始日期">
+                                    </div>
+                                    <label class="layui-form-label">结束日期</label>
+                                    <div class="layui-input-inline">
+                                        <input type="text" style="margin:0 20px;" class="layui-input timer" name="enddate" placeholder="选择结束日期">
+                                    </div>
+                                </div>
+                            </div>  
+                        </div>
+
+                        <button class="btn btn-white" type="submit">搜索</button>
+                        <a class="btn btn-default" onclick="clear_search(this);">清空</a>
+                    </form>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th width="40">ID</th>
+                                <th width="40">会员昵称</th>
+                                <th width="60">金额</th>
+                                <th width="40">时间</th>
+                                <th width="40">类型</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {volist name="$list" id="vo"}
+                            <tr>
+                                <td>{$vo.id}</td>
+                                <td>{$vo.nickname}</td>
+                                <td>{$vo.money}</td>
+                                <td>{$vo.get_time|date="Y-m-d H:i:s",###}</td>
+                                <td>抢红包</td>
+              
+
+                            </tr>
+                            {/volist}
+                        </tbody>
+                    </table>
+                    {$list->render()}
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /*(function (){
+        $('#datetimepicker1').datetimepicker({
+            format: 'YYYY-MM-DD',
+            locale: moment.locale('zh-cn')
+        });
+        $('#datetimepicker2').datetimepicker({
+            format: 'YYYY-MM-DD hh:mm',
+            locale: moment.locale('zh-cn')
+        });
+    });*/
+
+    function clear_search(obj){
+        $(obj).parents('form').find('input').val('');
+        $('#select option').removeAttr('selected');
+        $('#select option[value=0]').attr('selected','selected');
+
+        $(obj).parents('form').find('button').click();
+    }
+
+
+
+
+</script>
+{/block}
+{block name="script"}

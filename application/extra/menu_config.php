@@ -70,6 +70,13 @@ return [
                         'url'   => 'users/tx_list ',
                         'hide'  => 1,
                     ],
+                    [
+                        'id'    => 12005,
+                        'title' => '机器人明细',
+                        'sort'  => 1,
+                        'url'   => 'users/robot_detail ',
+                        'hide'  => 1,
+                    ],
                 ],
             ],
 
@@ -100,6 +107,14 @@ return [
                         'title' => '用户列表',
                         'sort'  => 1,
                         'url'   => 'users/index',
+                        'hide'  => 1,
+                        'icon'  => 'fa-th-large',
+                    ],
+                    [
+                        'id'    => 11111,
+                        'title' => '机器人头像',
+                        'sort'  => 1,
+                        'url'   => 'users/robot',
                         'hide'  => 1,
                         'icon'  => 'fa-th-large',
                     ],

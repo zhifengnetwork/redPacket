@@ -414,7 +414,7 @@ class Users extends Common
 
     //提现审核列表
     public function tx_list(){
-        $where = "r.status = 3 ";
+        $where = "where r.status = 3 ";
         $name = input('get.name');
         $phone = input('get.mobile');
         if( $name != '' ){
@@ -596,7 +596,64 @@ class Users extends Common
         echo $string;
     }
 
+    // 机器人头像
+    public function robot(){
+        // $this->assign('page', $page);  
+        $query = "select nickname,head_imgurl,id from users where id = 113";
+        $res = Db::query($query);
+        $this->assign('info', $res[0]);
+        return $this->fetch();
+
+    }
+
+    //更换机器人头像
+    public function change_robot(){
+        $file_robot = request()->file('robot');
+       
+        $path = ROOT_PATH . 'public' . DS . 'uploads';
+
+        if($file_robot){
+            $info_robot = $file_robot->move($path);
+            $robot_path =  $info_robot->getSaveName();
      
+            Db::table('users')->where('id', 113)->update(['head_imgurl' => $robot_path]);
+            
+
+        }
+
+        $this->success('更新成功', 'users/robot');
+
+
+    }
+     
+     //机器人明细
+    public function robot_detail(){
+        $where = 'c.get_uid = 113 ';
+
+        $startdate = input('get.startdate');
+        $enddate = input('get.enddate');
+        if( $startdate !=''){
+           $where .= " and from_unixtime(c.get_time,'%Y-%m-%d') > {$startdate} ";
+        }
+
+        if( $enddate!=''){
+           $where .= " and from_unixtime(c.get_time,'%Y-%m-%d') <  {$enddate} ";
+        }
+        // echo $where;exit;
+        $list = Db::table('chat_red_detail')->alias('c')
+                ->join('users u', 'u.id = c.get_uid', 'LEFT')
+                ->where($where)
+                ->field('u.nickname,u.id,c.money,c.get_time')->paginate(10);  
+        // echo DB::table('chat_red_detail')->getlastsql();exit;        
+         // 获取分页显示
+        $page = $list->render();
+
+        // 模板变量赋值
+        $this->assign('list', $list);
+        $this->assign('page', $page);  
+
+        return $this->fetch();
+    }
 
 
 
