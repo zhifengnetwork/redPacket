@@ -529,7 +529,9 @@ class Groupchat extends Base
             $point_award_money = 0;
             $award_seven_money = 0; // 7包奖励金额
             $point_award_rate = 0;  // 9包赔率
-            if(!$red_one['is_award']){
+            // 获取红包是否抢完
+            $get_red_end_num = Db::name('chat_red_detail')->where(['m_id'=>$red_one['id'], 'type'=>0])->count();
+            if(!$red_one['is_award'] && !$get_red_end_num){
                 // 7包发包奖励是后台设置的奖励金额, 9包是后台设置的赔率*红包本金
                 // 获取红包明细，中雷人数是否和雷点个数一致
                 $where['m_id'] = $red_one['id'];
@@ -539,6 +541,7 @@ class Groupchat extends Base
                 $where['is_die'] = ['=', 0]; // 7/9包都不含免死
 
                 $get_detail_point = Db::name('chat_red_detail')->where($where)->count();
+
                 if($red_one['num'] == 7){ // 7包奖励是后台设置的奖励金额
                     if($get_detail_point == 3){
                         $award_seven_money = $rule_set['pack7_3']['value'];
@@ -551,7 +554,6 @@ class Groupchat extends Base
                     }else{
                         $award_seven_money = 0;
                     }
-
                 }else{
                     // 后台设置的赔率*红包本金
                     // 9包发包奖励（50以下没奖励）单雷奖 多雷奖

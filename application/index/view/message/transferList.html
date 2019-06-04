@@ -36,7 +36,8 @@
                 </div>
             </div>
             <!-- 交易项 -->
-            {foreach name="list" item="vo"}
+            {volist name="list" id="vo"}
+            
                 <div class="transfer_content_item clearfloat">
                     <div class="transfer_content_item_imgwrap">
                         <img class="transfer_content_item_img" src="{$vo.head_imgurl}" alt="">
@@ -51,8 +52,8 @@
                         </p>
                     </div>
                 </div>
-            {/foreach}
-           
+            {/volist}
+
          
         </div>
     </div>

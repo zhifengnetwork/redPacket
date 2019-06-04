@@ -230,7 +230,6 @@ class Message extends Base
      */
     public function transferList()
     {   
-        $list = [];
         $list1 = Db::name('user_transfer')->where(['from_uid'=>session('user.id'), 'type'=>1])->order('create_time')->select();  // 转入
         $list2 = Db::name('user_transfer')->where(['get_uid'=>session('user.id'), 'type'=>2])->order('create_time')->select(); // 转出
         $list = array_merge($list1,$list2);
@@ -254,7 +253,11 @@ class Message extends Base
         $this->assign('income_total', $income_total);
         $this->assign('expend_total', $expend_total);
         $this->assign('now_date', $now_date);
-        $this->assign('list', $list);
+        if($list){
+            $this->assign('list', $list);
+        }else{
+           $this->assign('list',[]); 
+        }
         return $this->fetch('transferList');
     }
 
