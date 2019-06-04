@@ -100,6 +100,16 @@ $(function(){
             /*密码长度为6时，ajax*/
             if(pass_val.length == 6){
                 remove_class($(this));
+                $('.loading_wrap').show();
+                $('.mask_text').hide();
+                $('.bottom_alert_box').hide();
+                setTimeout(function(){
+                    $('.loading_wrap').hide();
+                    $('.mask_text').show();
+                    $('.bottom_alert_box').show();
+                    pass_val='';
+                    $('.trem_box').removeClass('show_box');
+                },1100);
                 // $('.loading_wrap').show();
                 // 验证pwd
                 var key = $('.dialog_transfer_affirm').attr('data-key');
