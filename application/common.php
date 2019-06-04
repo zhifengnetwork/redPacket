@@ -1006,7 +1006,50 @@ function uploadImg($base64){
         return '上传失败'; 
     }    
         
-} 
+}
+function uploadImg2($base64){ 
+    header("content-type:text/html;charset=utf-8"); 
+    $base64_image = str_replace(' ', '+', $base64); 
+    //post的数据里面，加号会被替换为空格，需要重新替换回来，如果不是post的数据，则注释掉这一行 
+    if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image, $result)){ 
+        //匹配成功 
+        if($result[2] == 'jpeg'){ 
+            $image_name = uniqid().'.jpg'; 
+           //纯粹是看jpeg不爽才替换的 
+        }else{ 
+            $image_name = uniqid().'.'.$result[2]; 
+        } 
+
+        $uploadpath = ROOT_PATH.'public/upload/chat_img';
+        $month = date("Y-m-d");
+        //如果文件夹不存在则建立; 
+        $fileNewPath = $uploadpath.'/'.$month.'/'; 
+        if(!file_exists($fileNewPath)){ 
+            mkdir($fileNewPath,0755,true); 
+        } 
+
+        // $filename =  uniqid("chat_img_",false);
+        // $file_up = $fileNewPath.$filename.$suffix;
+        // $re = move_uploaded_file($file['tmp_name'],$file_up);
+
+
+        // $image_file = "./uploads/".date('Ymd',time()).'/'; 
+        // if (!file_exists($image_file)) { 
+        //         mkdir($image_file,0755,true); 
+        // } 
+        $image_url = $uploadpath.'/'."{$image_name}"; 
+        $res_url = $month.'/'."{$image_name}"; 
+        //服务器文件存储路径 
+        if (file_put_contents($image_url, base64_decode(str_replace($result[1], '', $base64_image)))){ 
+            return $res_url; 
+        }else{ 
+            return '上传失败'; 
+        } 
+    }else{ 
+        return '上传失败'; 
+    }    
+        
+}
 //推广码专用
 function scerweima($url='',$id=''){
      // 关闭错误报告

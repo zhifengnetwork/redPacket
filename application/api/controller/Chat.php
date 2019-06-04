@@ -190,10 +190,10 @@ class Chat extends Controller{
                     return json(['code'=>0, 'msg'=>'上传入库失败!', 'data'=>""]);
                 }
             }else{
-                return json(['code'=>0, 'msg'=>'上传失败!', 'data'=>""]);
+                return json(['code'=>0, 'msg'=>'上传失败!-1', 'data'=>""]);
             }
         }else{
-            return json(['code'=>0, 'msg'=>'上传失败!', 'data'=>""]);
+            return json(['code'=>0, 'msg'=>'上传失败!-2', 'data'=>""]);
         }
     }
 

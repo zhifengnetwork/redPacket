@@ -568,14 +568,14 @@ class Groupchat extends Base
                             }else{
                                 $point_award_rate = 0;
                             }
-                        }else if($red_one['ray_point_num'] > 1){ //多雷
+                        }elseif($red_one['ray_point_num'] > 1){ //多雷
                             if($get_detail_point == 6){
                                 $point_award_rate = $rule_set['pack9_6_two']['value'];
-                            }else if($get_detail_point == 7){
+                            }elseif($get_detail_point == 7){
                                 $point_award_rate = $rule_set['pack9_7_two']['value'];
-                            }else if($get_detail_point == 8){
+                            }elseif($get_detail_point == 8){
                                 $point_award_rate = $rule_set['pack9_8_two']['value'];
-                            }else if($get_detail_point == 9){
+                            }elseif($get_detail_point == 9){
                                 $point_award_rate = $rule_set['pack9_9_two']['value'];
                             }else{
                                 $point_award_rate = 0;
