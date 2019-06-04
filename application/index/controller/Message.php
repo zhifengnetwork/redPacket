@@ -154,6 +154,9 @@ class Message extends Base
         if(!is_numeric($money)){
             return message(0,'金额有误');
         }
+        if(!$money){
+            return message(0,'金额必须大于0');
+        }
         if($money>$user['account']){
             return message(0,'转账金额不足');
         }
@@ -227,6 +230,7 @@ class Message extends Base
      */
     public function transferList()
     {   
+        $list = [];
         $list1 = Db::name('user_transfer')->where(['from_uid'=>session('user.id'), 'type'=>1])->order('create_time')->select();  // 转入
         $list2 = Db::name('user_transfer')->where(['get_uid'=>session('user.id'), 'type'=>2])->order('create_time')->select(); // 转出
         $list = array_merge($list1,$list2);
