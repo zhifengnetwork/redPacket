@@ -527,32 +527,33 @@ class Groupchat extends Base
             $point_award_money_log_res = true;
             $point_award_update_res = true;
             $point_award_money = 0;
+            $award_seven_money = 0; // 7包奖励金额
+            $point_award_rate = 0;  // 9包赔率
             if(!$red_one['is_award']){
-                // 7包发包奖励 
+                // 7包发包奖励是后台设置的奖励金额, 9包是后台设置的赔率*红包本金
                 // 获取红包明细，中雷人数是否和雷点个数一致
                 $where['m_id'] = $red_one['id'];
                 $where['type'] = 1;
-                $where['is_ray'] = 1;
+                $where['is_ray'] = 1; 
                 $where['get_uid'] = ['>', 0]; 
-                if($red_one['num'] != 7){ // 7包发包奖励含免死,如果是9包不含免死
-                    $where['is_die'] = ['=', 0]; 
-                }
+                $where['is_die'] = ['=', 0]; // 7/9包都不含免死
 
                 $get_detail_point = Db::name('chat_red_detail')->where($where)->count();
-                if($red_one['num'] == 7){ // 7包奖励
+                if($red_one['num'] == 7){ // 7包奖励是后台设置的奖励金额
                     if($get_detail_point == 3){
-                        $point_award_rate = $rule_set['pack7_3']['value'];
+                        $award_seven_money = $rule_set['pack7_3']['value'];
                     }else if($get_detail_point == 4){
-                        $point_award_rate = $rule_set['pack7_4']['value'];
+                        $award_seven_money = $rule_set['pack7_4']['value'];
                     }else if($get_detail_point == 5){
-                        $point_award_rate = $rule_set['pack7_5']['value'];
+                        $award_seven_money = $rule_set['pack7_5']['value'];
                     }else if($get_detail_point == 6){
-                        $point_award_rate = $rule_set['pack7_6']['value'];
+                        $award_seven_money = $rule_set['pack7_6']['value'];
                     }else{
-                        $point_award_rate = 0;
+                        $award_seven_money = 0;
                     }
 
                 }else{
+                    // 后台设置的赔率*红包本金
                     // 9包发包奖励（50以下没奖励）单雷奖 多雷奖
                     // 判断是否大于50 不包含免死
                     if($red_one['money'] >= 50){
@@ -570,14 +571,14 @@ class Groupchat extends Base
                             }else{
                                 $point_award_rate = 0;
                             }
-                        }else if($red_one['ray_point_num'] > 1){ //多雷
+                        }elseif($red_one['ray_point_num'] > 1){ //多雷
                             if($get_detail_point == 6){
                                 $point_award_rate = $rule_set['pack9_6_two']['value'];
-                            }else if($get_detail_point == 7){
+                            }elseif($get_detail_point == 7){
                                 $point_award_rate = $rule_set['pack9_7_two']['value'];
-                            }else if($get_detail_point == 8){
+                            }elseif($get_detail_point == 8){
                                 $point_award_rate = $rule_set['pack9_8_two']['value'];
-                            }else if($get_detail_point == 9){
+                            }elseif($get_detail_point == 9){
                                 $point_award_rate = $rule_set['pack9_9_two']['value'];
                             }else{
                                 $point_award_rate = 0;
@@ -591,9 +592,14 @@ class Groupchat extends Base
                 }
 
                 // 累加奖励并记录 
-                if($point_award_rate){
-                    // 奖励金额=当前红包本金*后台设置的陪数
-                    $point_award_money = $red_one['money']*$point_award_rate;
+                if($point_award_rate || $award_seven_money){
+                    if($award_seven_money){
+                        // 7包奖后台设置奖励金额
+                        $point_award_money = $award_seven_money;
+                    }elseif($point_award_rate){
+                        // 9包奖励金额=当前红包本金*后台设置的陪数
+                        $point_award_money = $red_one['money']*$point_award_rate;
+                    }
                     $point_award_money_res = Db::name('users')->where(['id'=>$red_one['uid']])->setInc('account', $point_award_money);
                     // 修改红包主表标记已奖励
                     $point_award_update_res = Db::name('chat_red_master')->where(['id'=>$red_one['id']])->update(['is_award'=>1]);
@@ -793,19 +799,27 @@ class Groupchat extends Base
                 }
             }
 
-            // 获取发包者的信息
-            $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
+            
 
             Db::commit();
-            if($point_award_money){ // 奖励给发包人
+            $show_award_info = 0;
+            if($point_award_money){ // 奖励给发包人只显示推送奖励信息
+                // 获取发包者的信息
+                $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
                 $award_money = $point_award_money;
                 $get_award_flag = 1;
-            }elseif($award_money){ // 抢包奖励抢到指定金额
-                $award_money = $award_money;
+
+            }elseif($award_money){ // 抢包奖励抢到指定金额,显示奖励金额到拆红包后的页面
+                // 获取抢包者的信息
+                $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$user['id'])->find();
+                // $award_money = $award_money;
                 $get_award_flag = 1;
+                $show_award_info = 1;
             }else{
                 $award_money = 0;
                 $get_award_flag = 0;
+                $from_user['nickname'] = '';
+                $from_user['head_imgurl'] = '';
             }
 
             // 中雷显示:
@@ -817,7 +831,8 @@ class Groupchat extends Base
                 'from_name' => $from_user['nickname'],
                 'from_head' => $from_user['head_imgurl'],
                 'award_money' => $award_money,
-                'get_award_flag' => $get_award_flag //$award_money?$award_money:0
+                'get_award_flag' => $get_award_flag, //$award_money?$award_money:0
+                'show_award_info' => $show_award_info?$show_award_info:0 // 是否显示奖励到拆红包后的页面,1显示
             ];
             return message(1, 'ok', $data);
         }catch (\Exception $e) {
