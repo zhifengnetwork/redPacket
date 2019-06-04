@@ -197,43 +197,60 @@ $(function(){
         
         /*点击出现-底部弹窗*/
         $('.dialog_transfer_affirm').on('click',function(){
-            $('html, body').animate({
-                scrollTop: $('html, body').height()
-            }, 100);
-            var account = $('.dialog_transfer_num').attr('data-account');
-            // 余额不足提示
-            if(account<1){
-                layer.msg('当前余额为0');return;
-            }
 
-            // 判断是否输入转账金额
-            var tr_num = $('.dialog_transfer_num_input').val();
-            if(!tr_num){
-                layer.msg('请输入转账金额');return;
-            }
-            if(eval(tr_num)>eval(account)){
-                layer.msg('转账金额不足');return;
-            }
-            $('.tr_num').html(tr_num);
-            $('.now_account').html(account);
+            // 判断是否设置支付密码
+            $.post(
+                "/index/message/cehckPayPassword",
+                function(msgs){
+                    if(msgs.code==0){
+                        layer.confirm(msgs.msg, {
+                        btn: ['设置','取消'], skin: 'layer-custom', title: '提示', closeBtn:0,icon:4
+                        }, function(){
+                            window.location.href = '/index/recharge/paypwd';
+                        }, function(){
+                            $('.delete_img_box').trigger("click");
+                            layer.closeAll('dialog');
+                            return false;
+                        });
+                    }else{
+                        $('html, body').animate({
+                            scrollTop: $('html, body').height()
+                        }, 100);
+                        var account = $('.dialog_transfer_num').attr('data-account');
+                        // 余额不足提示
+                        if(account<1){
+                            layer.msg('当前余额为0');return;
+                        }
 
-            $('.bottom_alert_wrap').show();
-            /*底部弹窗(出现)*/
-            $('.bottom_alert_box').animate({'bottom':'0'});
-            /*获取当前滚动条的位置*/
-            thisScroll_num = $(document).scrollTop();
-            // console.log('获取当前滚动条的位置',thisScroll_num);
-            /**禁止底部滑动
-             * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
-             **/
-            $('.wrap').css({
-                'position':'fixed',
-                'top': -thisScroll_num,
-                'left': 0,
-            });
+                        // 判断是否输入转账金额
+                        var tr_num = $('.dialog_transfer_num_input').val();
+                        if(!tr_num){
+                            layer.msg('请输入转账金额');return;
+                        }
+                        if(eval(tr_num)>eval(account)){
+                            layer.msg('转账金额不足');return;
+                        }
+                        $('.tr_num').html(tr_num);
+                        $('.now_account').html(account);
 
-            // 收付款方头像与名称
-            
+                        $('.bottom_alert_wrap').show();
+                        /*底部弹窗(出现)*/
+                        $('.bottom_alert_box').animate({'bottom':'0'});
+                        /*获取当前滚动条的位置*/
+                        thisScroll_num = $(document).scrollTop();
+                        // console.log('获取当前滚动条的位置',thisScroll_num);
+                        /**禁止底部滑动
+                         * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
+                         **/
+                        $('.wrap').css({
+                            'position':'fixed',
+                            'top': -thisScroll_num,
+                            'left': 0,
+                        });
+                    }
+                // 收付款方头像与名称
+                },'json'
+            )
         })
         /*关闭遮罩层*/
         $('.delete_img_box').on('click',function(){

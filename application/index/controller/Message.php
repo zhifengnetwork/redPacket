@@ -356,4 +356,16 @@ class Message extends Base
         return $userinfo['nickname'];
     }
 
+    /**
+     * 检查交易密码是否设置
+     */
+    public function cehckPayPassword(){
+
+        $user_arr = Db::name('users')->field('id,pay_pwd')->where('id',session('user.id'))->find();
+        if(!$user_arr['pay_pwd']){
+            return json(['code'=>0, 'msg'=>'请先设置支付密码', 'data'=>'']);
+        }
+        return json(['code'=>1, 'msg'=>'ok', 'data'=>'']);
+    }
+
 }

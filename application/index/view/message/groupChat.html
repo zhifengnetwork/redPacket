@@ -574,60 +574,78 @@
             ray_point = '';
             /*点击发红包出现-底部弹窗*/
             $('.give_btn').on('click',function(){
-                
-                var red_num = $('.num').val();
-                var red_money = $('.red_money').val();
-                var key = $('.give_btn').attr('data-key');
-                if(!red_num){
-                    layer.msg('红包个数有误');return;
-                }
-                if(!red_money){
-                    layer.msg('红包金额'+min_money+'-'+max_money);return;
-                }
-                if(!room_id){
-                    layer.msg('群内异常,稍后再试');return;
-                }
-                // 判断金额是否在范围内
-                if(red_money >= min_money && red_money <= max_money && red_num){
-                    
-                    // if(red_money%multiple != 0){
-                    //     layer.msg('红包金额'+min_money+'-'+max_money+'('+multiple+'的倍数)');return;
-                    // }
-                    if(!key){
-                        layer.msg('缺少参数:key');return;
-                    }
-                    // 填充发红包金额
-                    $('.red_money').html(red_money);
-                    var arr=[];
-                    $(".ray_wrap ul li").each(function(){
-                        if($(this).hasClass('active')){
-                            arr.push($(this).html());
+
+                // 判断是否设置支付密码
+                $.post(
+                    "/index/message/cehckPayPassword",
+                    function(msgs){
+                        if(msgs.code==0){
+                            layer.confirm(msgs.msg, {
+                            btn: ['设置','取消'], skin: 'layer-custom', title: '提示', closeBtn:0,icon:4
+                            }, function(){
+                                window.location.href = '/index/recharge/paypwd';
+                            }, function(){
+                                $('.delete_img_box').trigger("click");
+                                layer.closeAll('dialog');
+                                return false;
+                            })
+                        }else{
+                            var red_num = $('.num').val();
+                            var red_money = $('.red_money').val();
+                            var key = $('.give_btn').attr('data-key');
+                            if(!red_num){
+                                layer.msg('红包个数有误');return;
+                            }
+                            if(!red_money){
+                                layer.msg('红包金额'+min_money+'-'+max_money);return;
+                            }
+                            if(!room_id){
+                                layer.msg('群内异常,稍后再试');return;
+                            }
+                            // 判断金额是否在范围内
+                            if(red_money >= min_money && red_money <= max_money && red_num){
+                                
+                                // if(red_money%multiple != 0){
+                                //     layer.msg('红包金额'+min_money+'-'+max_money+'('+multiple+'的倍数)');return;
+                                // }
+                                if(!key){
+                                    layer.msg('缺少参数:key');return;
+                                }
+                                // 填充发红包金额
+                                $('.red_money').html(red_money);
+                                var arr=[];
+                                $(".ray_wrap ul li").each(function(){
+                                    if($(this).hasClass('active')){
+                                        arr.push($(this).html());
+                                    }
+                                })
+                                ray_point = arr;
+                                // 判断是否选择雷点
+                                if(Array.isArray(ray_point)&&ray_point.length === 0){
+                                    layer.msg('请选择雷点');return;
+                                }
+                                $('.bottom_alert_wrap').show();
+                                /*底部弹窗(出现)*/
+                                $('.bottom_alert_box').animate({'bottom':'0'})
+                                /*获取当前滚动条的位置*/
+                                thisScroll_num = $(document).scrollTop();
+                                // console.log('获取当前滚动条的位置',thisScroll_num);
+                                /**禁止底部滑动
+                                 * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
+                                 **/
+                                $('.wrap').css({
+                                    'position':'fixed',
+                                    'top': -thisScroll_num,
+                                    'left': 0,
+                                });
+                            }else{
+                                // layer.msg('红包金额'+min_money+'-'+max_money+'('+multiple+'的倍数)');return;
+                                layer.msg('红包金额'+min_money+'-'+max_money);return;
+                            }
                         }
-                    })
-                    ray_point = arr;
-                    // 判断是否选择雷点
-                    if(Array.isArray(ray_point)&&ray_point.length === 0){
-                        layer.msg('请选择雷点');return;
-                    }
-                    $('.bottom_alert_wrap').show();
-                    /*底部弹窗(出现)*/
-                    $('.bottom_alert_box').animate({'bottom':'0'})
-                    /*获取当前滚动条的位置*/
-                    thisScroll_num = $(document).scrollTop();
-                    // console.log('获取当前滚动条的位置',thisScroll_num);
-                    /**禁止底部滑动
-                     * 设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
-                     **/
-                    $('.wrap').css({
-                        'position':'fixed',
-                        'top': -thisScroll_num,
-                        'left': 0,
-                    });
-                }else{
-                    // layer.msg('红包金额'+min_money+'-'+max_money+'('+multiple+'的倍数)');return;
-                    layer.msg('红包金额'+min_money+'-'+max_money);return;
-                }
-            })
+                    },'json'
+                )
+            });
 
             /*000*/
             $('.digital_key').on('click',function(){

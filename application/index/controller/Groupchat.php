@@ -347,11 +347,11 @@ class Groupchat extends Base
         }
         $group_one = Db::name('chat_group')->field('id,min_money,max_money,status')->where('id',$room_id)->find();
         if(!$group_one){
-            return message(0,'异常,稍后再试-01');
+            return message(0,'异常,稍后再试');
         }
         $red_one = Db::name('chat_red_master')->where('id',$m_id)->find();
         if(!$red_one){
-            return message(0,'异常,稍后再试-02');
+            return message(0,'异常,稍后再试');
         }
 
         // 如果是本人发包不判断余额是否足够
@@ -360,11 +360,11 @@ class Groupchat extends Base
             if($red_one['ray_point'] && $red_one['mulriple']){
                 $compensate_money = $red_one['money']*$red_one['mulriple'];
                 if($user['account'] < $compensate_money){
-                    return message(0,'余额不足-01');
+                    return message(0,'余额不足');
                 }
             }else{
                 if($user['account'] < $red_one['money']){
-                    return message(0,'余额不足-02');
+                    return message(0,'余额不足');
                 }
             }
         }
