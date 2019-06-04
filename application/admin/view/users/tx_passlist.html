@@ -14,9 +14,9 @@
             <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>提现待审列表</h5>
+                    <h5>提现审核通过列表</h5>
                     <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
-                    <h5 style="float:left; font-size:12px;padding-left: 20px;">待提现总额：{$total}</h5>
+                    <h5 style="float:left; font-size:12px;padding-left: 20px;">成功提现总额：{$total}</h5>
                 </div>
                 <div class="ibox-content" method="GET">
                     <form role="form" class="form-inline">
@@ -59,8 +59,8 @@
                                 <td>{$vo.amount}</td>
                                 <td><button onclick="detail({$vo.uid},{$vo.type})">查看详情</button></td>
                                 <td>{$vo.time|date='Y-m-d H:i:s',###}</td>
-                                <td>待审核</td>
-                                <td><a onclick="confirms({$vo.id},{$vo.type})" >通过</a>/<a onclick="cancel({$vo.id})">驳回</a></td>    
+                                <td>审核通过</td>
+                                <td>--</td>    
                             </tr>
                             {/volist}
                         </tbody>

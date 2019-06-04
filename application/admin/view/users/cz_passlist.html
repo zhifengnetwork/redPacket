@@ -35,7 +35,7 @@
                 <div class="ibox-title">
                     <h5>充值待审列表</h5>
                     <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
-                    <h5 style="float:left; font-size:12px;padding-left: 20px;">待充值总额：{$total}</h5>
+                    <h5 style="float:left; font-size:12px;padding-left: 20px;">成功充值总额：{$total}</h5>
                 </div>
                 <div class="ibox-content" method="GET">
                     <form role="form" class="form-inline">
@@ -99,8 +99,8 @@
                                     {/if}
 
                                 </td>
-                                <td>待充值</td>
-                                <td><a onclick="recharge('{$vo.id}')">通过</a>/<a onclick="cancel('{$vo.id}')">驳回</a></td>    
+                                <td>充值成功</td>
+                                <td>--</td>    
                             </tr>
                             {/volist}
                         </tbody>
