@@ -794,7 +794,7 @@ class Groupchat extends Base
             
 
             Db::commit();
-
+            $show_award_info = 0;
             if($point_award_money){ // 奖励给发包人只显示推送奖励信息
                 // 获取发包者的信息
                 $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$red_one['uid'])->find();
@@ -804,8 +804,7 @@ class Groupchat extends Base
             }elseif($award_money){ // 抢包奖励抢到指定金额,显示奖励金额到拆红包后的页面
                 // 获取抢包者的信息
                 $from_user = Db::name('users')->field('id,nickname,head_imgurl')->where('id',$user['id'])->find();
-
-                $award_money = $award_money;
+                // $award_money = $award_money;
                 $get_award_flag = 1;
                 $show_award_info = 1;
             }else{
