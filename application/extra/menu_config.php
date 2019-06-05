@@ -93,17 +93,33 @@ return [
                     ],
                 ],
             ],
-
-
-
-
-
-
-
-
-
-
-
+            [
+                'id'    => 11006,
+                'title' => '统计管理',
+                'sort'  => 1,
+                'url'   => 'Count/countList',
+                'hide'  => 1,
+                'icon'  => 'fa-th-large',
+                'child' => [
+                    [
+                        'id'    => 11106,
+                        'title' => '统计列表',
+                        'sort'  => 1,
+                        'url'   => 'Count/countList',
+                        'hide'  => 1,
+                        'icon'  => 'fa-th-large',
+                    ],
+                    [
+                        'id'    => 11107,
+                        'title' => '级别统计',
+                        'sort'  => 1,
+                        'url'   => 'Count/levelCount',
+                        'hide'  => 1,
+                        'icon'  => 'fa-th-large',
+                    ],
+                    
+                ],
+            ],
 
 
 

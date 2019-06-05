@@ -28,7 +28,6 @@ class Message extends Base
      */
     public function messageList()
     {
-
         // 获取平台群列表
         $group_list = Db::name('chat_group')->select();
         // var_dump($group_list);exit;
@@ -253,11 +252,8 @@ class Message extends Base
         $this->assign('income_total', $income_total);
         $this->assign('expend_total', $expend_total);
         $this->assign('now_date', $now_date);
-        if($list){
-            $this->assign('list', $list);
-        }else{
-           $this->assign('list',[]); 
-        }
+        $this->assign('list', $list);
+
         return $this->fetch('transferList');
     }
 

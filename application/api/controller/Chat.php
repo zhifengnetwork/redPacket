@@ -346,7 +346,7 @@ class Chat extends Controller{
                         $out_money_res = Db::name('users')->where(['id'=>$v['uid']])->setInc('account', $no_get_money);
                         if($out_money_res){
                             // 修改状态
-                            $out_update_res = Db::name('chat_red_detail')->where(['m_id'=>$v['id'], 'type'=>0])->update(['type'=>2]);
+                            $out_update_res = Db::name('chat_red_detail')->where(['m_id'=>$v['id'], 'type'=>0])->update(['type'=>2, 'out_time'=>time()]);
                             $out_update_res2 = Db::name('chat_red_master')->where(['id'=>$v['id']])->update(['time_out'=>1,'all_get'=>1]);
                             // 插入日志
                             $out_money_log = [
