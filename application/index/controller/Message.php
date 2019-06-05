@@ -252,11 +252,8 @@ class Message extends Base
         $this->assign('income_total', $income_total);
         $this->assign('expend_total', $expend_total);
         $this->assign('now_date', $now_date);
-        if($list){
-            $this->assign('list', $list);
-        }else{
-           $this->assign('list',[]); 
-        }
+        $this->assign('list', $list);
+
         return $this->fetch('transferList');
     }
 

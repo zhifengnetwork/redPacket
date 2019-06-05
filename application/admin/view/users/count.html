@@ -21,18 +21,22 @@
                     <table class="table table-hover table-bordered text-center">
                         <thead>
                             <tr>
-                                <th width="60">发包总额</th>
+                                <th width="100">发包总额</th>
                                 <th width="100">今天发包总额</th>
+                                <th width="100">本月发包总额</th>
                                 <th width="100">超时退回总额</th>
                                 <th width="100">今天超时退回总额</th>
+                                <th width="100">本月超时退回总额</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>{$send_red_total_money}</td>
                                 <td>{$today_send_red_money}</td>
+                                <td>{$month_send_red_money}</td>
                                 <td>{$out_time_money}</td>
                                 <td>{$today_out_time_money}</td>
+                                <td>{$month_out_time_money}</td>
                             </tr>
                             
                         </tbody>
@@ -41,18 +45,27 @@
                      <table class="table table-hover table-bordered text-center">
                         <thead>
                             <tr>
-                                <th width="60">ID</th>
-                                <th width="100">内容</th>
-                                <th width="100">操作</th>
+                                <th width="100">总发包返利</th>
+                                <th width="100">总发包返水</th>
+                                <th width="100">总抢包返利</th>
+                                <th width="100">总抢包返水</th>
+                                <th width="100">总抢包奖励</th>
+                                <th width="100">总发包奖励</th>
+                                <th width="100">总系统返利</th>
+                                <th width="100">总中雷(返)</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>111</td>
-                                <td>111</td>
-                                <td class="operation">
-                                   
-                                </td>
+                                <td>{$total_send_red_rebate}</td>
+                                <td>{$total_send_red_backwater}</td>
+                                <td>{$total_get_red_rebate}</td>
+                                <td>{$total_get_red_backwater}</td>
+                                <td>{$total_get_red_award}</td>
+                                <td>{$total_send_red_award}</td>
+                                <td>{$total_system_rebate}</td>
+                                <td>{$total_ray}</td>
+
                             </tr>
                         </tbody>
                     </table>
