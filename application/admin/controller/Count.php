@@ -34,20 +34,28 @@ class Count extends Common
 
         // 发包返利type=3
         $total_send_red_rebate = Db::name('chat_red_log')->where('type',3)->sum('money');
+        $today_total_send_red_rebate = Db::name('chat_red_log')->where('type',3)->whereTime('create_time', 'today')->sum('money');
         // 发包返水type=4
         $total_send_red_backwater = Db::name('chat_red_log')->where('type',4)->sum('money');
+        $today_total_send_red_backwater = Db::name('chat_red_log')->where('type',4)->whereTime('create_time', 'today')->sum('money');
         // 抢包返利type=5
         $total_get_red_rebate = Db::name('chat_red_log')->where('type',5)->sum('money');
+        $today_total_get_red_rebate = Db::name('chat_red_log')->where('type',5)->whereTime('create_time', 'today')->sum('money');
         // 抢包返水type=6
         $total_get_red_backwater = Db::name('chat_red_log')->where('type',6)->sum('money');
+        $today_total_get_red_backwater = Db::name('chat_red_log')->where('type',6)->whereTime('create_time', 'today')->sum('money');
         // 抢包奖励type=7
         $total_get_red_award = Db::name('chat_red_log')->where('type',7)->sum('money');
+        $today_total_get_red_award = Db::name('chat_red_log')->where('type',7)->whereTime('create_time', 'today')->sum('money');
         // 发包奖励type=8
         $total_send_red_award = Db::name('chat_red_log')->where('type',8)->sum('money');
+        $today_total_send_red_award = Db::name('chat_red_log')->where('type',8)->whereTime('create_time', 'today')->sum('money');
         // 系统返利type=9
         $total_system_rebate = Db::name('chat_red_log')->where('type',9)->sum('money');
+        $today_total_system_rebate = Db::name('chat_red_log')->where('type',9)->whereTime('create_time', 'today')->sum('money');
         // 中雷type=10
         $total_ray = Db::name('chat_red_log')->where('type',10)->sum('money');
+        $today_total_ray = Db::name('chat_red_log')->where('type',10)->whereTime('create_time', 'today')->sum('money');
 
         $this->assign('send_red_total_money', $send_red_total_money);
         $this->assign('today_send_red_money', $today_send_red_money);
@@ -61,13 +69,21 @@ class Count extends Common
         $this->assign('today_get_red_total_money', $today_get_red_total_money);
 
         $this->assign('total_send_red_rebate', $total_send_red_rebate);
+        $this->assign('today_total_send_red_rebate', $today_total_send_red_rebate);
         $this->assign('total_send_red_backwater', $total_send_red_backwater);
+        $this->assign('today_total_send_red_backwater', $today_total_send_red_backwater);
         $this->assign('total_get_red_rebate', $total_get_red_rebate);
+        $this->assign('today_total_get_red_rebate', $today_total_get_red_rebate);
         $this->assign('total_get_red_backwater', $total_get_red_backwater);
+        $this->assign('today_total_get_red_backwater', $today_total_get_red_backwater);
         $this->assign('total_get_red_award', $total_get_red_award);
+        $this->assign('today_total_get_red_award', $today_total_get_red_award);
         $this->assign('total_send_red_award', $total_send_red_award);
+        $this->assign('today_total_send_red_award', $today_total_send_red_award);
         $this->assign('total_system_rebate', $total_system_rebate);
+        $this->assign('today_total_system_rebate', $today_total_system_rebate);
         $this->assign('total_ray', abs($total_ray));
+        $this->assign('today_total_ray', abs($today_total_ray));
 
         return $this->fetch('users/count');
     }
