@@ -1,0 +1,90 @@
+{extend name="common:base" /}
+{block name="content"}
+<style>
+    .table thead tr th{
+        text-align: center;
+    }
+    .red{
+        color:red;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>级别统计</h5>
+                    <!-- <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a> -->
+                </div>
+                <div class="ibox-content" method="GET">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="exampleInputEmail2" class="sr-only"></label>
+                            <input type="text" placeholder="手机号" name="mobile" id="exampleInputEmail2"
+                                    class="form-control" value="" autocomplete="off" maxlength="11" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail2" class="sr-only"></label>
+                            <input type="text" placeholder="开始级别" name="begin_level" id="exampleInputEmail2"
+                                    class="form-control" value="" autocomplete="off" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        </div>
+                        -
+                        <div class="form-group">
+                            <label for="exampleInputPassword2" class="sr-only"></label>
+                            <input type="text" placeholder="结束级别" name="end_level" id="exampleInputPassword2"
+                                    class="form-control" value="" autocomplete="off" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                        </div>
+                        <button class="btn btn-white search" type="button" onclick="search();">搜索</button>
+                        <a class="btn btn-default" onclick="clear_search(this);">清空</a>
+                    </form>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th width="100">充值总额</th>
+                                <th width="100">提现总额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="recharge_money"></td>
+                                <td class="withdraw_money"></td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function clear_search(obj){
+        $(obj).parents('form').find('input').val('');
+        // $(obj).parents('form').find('button').click();
+    }
+
+    function search(){
+        var mobile = $("input[name='mobile']").val();
+        var begin_level = $("input[name='begin_level']").val();
+        var end_level = $("input[name='end_level']").val();
+        if(!mobile){
+            layer.msg('请输入手机号');
+        }
+        if(begin_level){
+            
+            if(!end_level){
+                layer.msg('请输入结束等级');
+            }
+        }else if(end_level){
+            if(!begin_level){
+               layer.msg('请输入开始等级');
+            }
+        }
+        
+    }
+</script>
+{/block}
+{block name="script"}

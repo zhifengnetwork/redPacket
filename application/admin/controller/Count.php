@@ -89,11 +89,17 @@ class Count extends Common
     }
 
     /**
-     * 级别查询统计充值以及提现
+     * 级别查询统计充值以及提现页面
      */
     public function levelCount(){
-
         return $this->fetch('users/level_count');
+    }
+
+    /**
+     * 级别查询统计充值以及提现
+     */
+    public function getLevelCount(){
+        
     }
 
 }
