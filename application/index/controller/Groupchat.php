@@ -734,6 +734,7 @@ class Groupchat extends Base
                         $where['is_die'] = ['=',0]; // 不包括免死1
                         $where['is_ray'] = ['=',1]; // 中雷
                         $where['is_die_flag'] = ['=',0]; // 没赔付
+                        $where['m_id'] = ['=',$red_one['id']]; // 当前订单
                         $die_ray_list = Db::name('chat_red_detail')->where($where)->select();
                         if($die_ray_list){
                             // 判断当前红包是否已经达到设置的雷点中雷赔付条件
@@ -757,7 +758,12 @@ class Groupchat extends Base
                                 $is_ray_flag = 1; //中雷标记
                                 foreach ($die_ray_list as $key => $value) {
                                     // 中雷者,如果是发红包本人中雷不操作,并且是没有赔付过的, 不包括发包者
-                                    if($value['get_uid'] != $red_one['uid'] && $value['is_die_flag']==0 && $red_one['uid'] != $value['get_uid']){
+                                    if($value['get_uid'] != $red_one['uid'] && $value['is_die_flag']==0){
+                                        // // 判断当前用户是否已经中雷赔付过
+                                        // $is_ray_is = Db::name('chat_red_log')->field('id,from_id')->where(['from_id'=>$value['get_uid'],'type'=>13,'m_id'=>$red_one['id']])->find();
+                                        // if($is_ray_is){
+                                        //     continue;
+                                        // }
                                         // 扣除中雷者金额=红包本金*赔率
                                         $dec_money2 = $red_one['money']*$red_one['mulriple'];
                                         $dec_res = Db::name('users')->where(['id'=>$value['get_uid']])->setDec('account', $dec_money2);
