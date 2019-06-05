@@ -88,4 +88,11 @@ class Count extends Common
         return $this->fetch('users/count');
     }
 
+    /**
+     * 级别查询统计充值以及提现
+     */
+    public function levelCount(){
+        
+    }
+
 }

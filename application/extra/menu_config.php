@@ -109,6 +109,14 @@ return [
                         'hide'  => 1,
                         'icon'  => 'fa-th-large',
                     ],
+                    [
+                        'id'    => 11107,
+                        'title' => '级别统计',
+                        'sort'  => 1,
+                        'url'   => 'Count/levelCount',
+                        'hide'  => 1,
+                        'icon'  => 'fa-th-large',
+                    ],
                     
                 ],
             ],
