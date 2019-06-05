@@ -650,11 +650,11 @@ class Groupchat extends Base
             $detail_update_res = true;
             // 中雷如果是发包者不操作, 并且是不赔付过的
             $is_ray_flag = 0;
-            if($red_detail['is_ray'] == 1 && $user['id'] != $red_one['uid']){
+            // if($red_detail['is_ray'] == 1 && $user['id'] != $red_one['uid']){
                 // 扣除中雷者金额=红包本金*赔率
                 $dec_money = $red_one['money']*$red_one['mulriple'];
                 // 雷点1个时
-                if($die_ray_point_num == 1 && $red_one['is_die_send_flag'] == 0 ){
+                if($die_ray_point_num == 1 && $red_one['is_die_send_flag'] == 0 && $red_detail['is_ray'] == 1 && $user['id'] != $red_one['uid']){
 
                     $is_ray_flag = 1; //中雷标记
                     $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
@@ -691,7 +691,7 @@ class Groupchat extends Base
                     $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['is_die_flag'=>1]);
                 }else{
                    
-                    if($red_one['is_die_send_flag']==1){// +获取主表中雷赔付标记,如果已赔付过,则判断当前红包记录是否需要赔付
+                    if($red_one['is_die_send_flag']==1 && $red_detail['is_ray'] == 1 && $user['id'] != $red_one['uid']){// +获取主表中雷赔付标记,如果已赔付过,则判断当前红包记录是否需要赔付
                         
                         $is_ray_flag = 1; //中雷标记
                         $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
@@ -735,7 +735,7 @@ class Groupchat extends Base
                         $where['is_ray'] = ['=',1]; // 中雷
                         $where['is_die_flag'] = ['=',0]; // 没赔付
                         $where['m_id'] = ['=',$red_one['id']]; // 当前订单
-                        $die_ray_list = Db::name('chat_red_detail')->where($where)->select();
+                        $die_ray_list = Db::name('chat_red_detail')->where($where)->lock(true)->select();
                         if($die_ray_list){
                             // 判断当前红包是否已经达到设置的雷点中雷赔付条件
                             // 循环把所有中雷红包金额尾数获取组装成数组
@@ -804,7 +804,7 @@ class Groupchat extends Base
                         }                       
                     }
                 }
-            }
+            // }
 
             
 
