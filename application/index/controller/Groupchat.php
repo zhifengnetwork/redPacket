@@ -650,7 +650,7 @@ class Groupchat extends Base
             $detail_update_res = true;
             // 中雷如果是发包者不操作, 并且是不赔付过的
             $is_ray_flag = 0;
-            if($red_detail['is_ray'] == 1 && $user['id'] != $red_one['uid'] && $red_detail['is_die_flag']==0){
+            if($red_detail['is_ray'] == 1 && $user['id'] != $red_one['uid']){
                 // 扣除中雷者金额=红包本金*赔率
                 $dec_money = $red_one['money']*$red_one['mulriple'];
                 // 雷点1个时
@@ -758,7 +758,7 @@ class Groupchat extends Base
                                 $is_ray_flag = 1; //中雷标记
                                 foreach ($die_ray_list as $key => $value) {
                                     // 中雷者,如果是发红包本人中雷不操作,并且是没有赔付过的, 不包括发包者
-                                    if($value['get_uid'] != $red_one['uid'] && $value['is_die_flag']==0){
+                                    if($value['get_uid'] != $red_one['uid']){
                                         // // 判断当前用户是否已经中雷赔付过
                                         // $is_ray_is = Db::name('chat_red_log')->field('id,from_id')->where(['from_id'=>$value['get_uid'],'type'=>13,'m_id'=>$red_one['id']])->find();
                                         // if($is_ray_is){
