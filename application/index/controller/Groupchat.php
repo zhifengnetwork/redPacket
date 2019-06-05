@@ -691,7 +691,7 @@ class Groupchat extends Base
                     $detail_update_res = Db::name('chat_red_detail')->where(['id'=>$red_detail['id']])->update(['is_die_flag'=>1]);
                 }else{
                    
-                    if($red_one['is_die_send_flag']==1 && $red_detail['is_die_flag']==0){// +获取主表中雷赔付标记,如果已赔付过,则判断当前红包记录是否需要赔付
+                    if($red_one['is_die_send_flag']==1){// +获取主表中雷赔付标记,如果已赔付过,则判断当前红包记录是否需要赔付
                         
                         $is_ray_flag = 1; //中雷标记
                         $dec_res = Db::name('users')->where(['id'=>$user['id']])->setDec('account', $dec_money);
