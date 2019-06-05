@@ -413,14 +413,15 @@ class My extends Base
                        $friend_data = [
                         'uid' => $userid,  // 用户id
                         'friend_uid' => $friends_id,    // 好友id      
-                        'create_time' => time()
+                        'create_time' => time(),
+                        'status' => 3
                         ];
-                        $friend_res = Db::table('chat_friends')->insertGetId($friend_data);
+                        $friend_res = Db::table('chat_friends_ask')->insertGetId($friend_data);
                         if($friend_res>0){
                             $flag = 1;
-                            $msg = '好友添加成功';
+                            $msg = '已发送';
                         }else{
-                            $msg = '好友添加失败';
+                            $msg = '发送失败';
 
                         }
                     }
@@ -436,5 +437,76 @@ class My extends Base
         $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
         echo $string;
     }
+
+
+    public function update_loginpw(){
+       
+        return $this->fetch();
+    }
+
+    //修改登录密码
+    public function reset_loginpw(){
+        $flag = 0;
+        $msg = '';
+        $userid =  session('user.id');
+        if (Request::instance()->isPost()){
+            $oldpwd = trim(input('post.oldpwd'));
+            $newpwd = trim(input('post.newpwd'));
+            if($newpwd =='' ){
+                $msg = '请输入新密码';
+            }elseif($oldpwd ==''){
+
+                $msg = '请输入旧密码';
+
+            }else{
+
+                //更新数据
+                $info = Db::table('users')->where('id',$userid)->field('salt,password')->find();
+                $old_pwd = minishop_md5($oldpwd,$info['salt']);
+
+                $new_pwd =  minishop_md5($newpwd,$info['salt']);
+
+                if($old_pwd != $info['password']){
+                    $msg ='原密码输入错误';
+
+                }else{
+                    $res = Db::table('users')->where('id',$userid)->update(['password' => $new_pwd]);
+                    if($res){
+
+                        $flag = 1;
+                        $msg = '登录密码重置成功';   
+                    }else{
+                        $msg = '登录密码重置失败';
+                    }
+
+                }
+
+            
+            }
+
+        }else{
+
+            $msg = '非法请求';
+
+
+        }
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
+
+    }
+
+    //好友申请列表
+    public function friends(){
+        $userid = session('user.id');
+        $info = Db::query("select u.nickname,u.head_imgurl,f.uid,f.status from chat_friends_ask as f left join users as u on u.id = f.uid where f.friend_uid = $userid");
+        $this->assign('info', $info);
+
+        return $this->fetch('new_friend');
+
+
+    }
+
+
+
 
 }

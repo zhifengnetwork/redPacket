@@ -95,6 +95,7 @@ class Recharge extends Base
         $info = Db::table('users')->where('id',$userid)->field('account')->find();    
         $time = time();   
         $orderNumber = createOrderNo();
+   
 
         if($method==1){
            $check = Db::table('alipay')->where('uid',$userid)->find();           

@@ -284,7 +284,8 @@ class Users extends Common
         $list = Db::table('recharge')->alias('r')
                 ->join('users u', 'u.id = r.uid', 'LEFT')
                 ->where($where)
-                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.proof,r.ordersn,r.time,r.status')->order('r.time desc')->paginate(10);               
+                ->field('u.nickname,u.mobile,r.id,r.uid,r.amount,r.type,r.proof,r.ordersn,r.time,r.status')->order('r.time desc')->paginate(10);
+
          // 获取分页显示
         $page = $list->render();
         // 模板变量赋值
@@ -685,7 +686,7 @@ class Users extends Common
         if($file_robot){
             $info_robot = $file_robot->move($path);
             $robot_path =  $info_robot->getSaveName();
-     
+          
             Db::table('users')->where('id', 113)->update(['head_imgurl' => $robot_path]);
             
 
@@ -698,23 +699,32 @@ class Users extends Common
      
      //机器人明细
     public function robot_detail(){
-        $where = 'c.get_uid = 113 ';
-
+        $where = 'c.get_uid = 113 and c.type = 1';
         $startdate = input('get.startdate');
         $enddate = input('get.enddate');
         if( $startdate !=''){
-           $where .= " and from_unixtime(c.get_time,'%Y-%m-%d') > {$startdate} ";
+           $where .= " and from_unixtime(c.get_time,'%Y-%m-%d') >  '{$startdate}' ";
         }
 
         if( $enddate!=''){
-           $where .= " and from_unixtime(c.get_time,'%Y-%m-%d') <  {$enddate} ";
+           $where .= " and from_unixtime(c.get_time,'%Y-%m-%d') <  '{$enddate}' ";
         }
          //累计抢红包总额总额
-        $total = Db::query("SELECT sum(money) as total FROM chat_red_detail WHERE status = 0 and get_uid =113");
+        $total = Db::query("SELECT sum(money) as total FROM chat_red_detail WHERE type = 1 and status = 0 and get_uid =113");
+        // 今日红包领取总额
+        $today = Db::query("SELECT sum(money) as total FROM chat_red_detail WHERE type = 1 and status = 0 and get_uid =113 and from_unixtime(get_time,'%Y-%m-%d') = CURDATE()");
+        $yesterday =  Db::query("SELECT sum(money) as total FROM chat_red_detail WHERE type = 1 and status = 0 and get_uid =113 and to_days(CURDATE()) - to_days(from_unixtime(get_time,'%Y-%m-%d')) = 1
+            "); 
+
+            
+        $month =  Db::query("SELECT sum(money) as total FROM chat_red_detail WHERE type = 1 and status = 0 and get_uid =113 and DATE_FORMAT( from_unixtime(get_time,'%Y-%m-%d'), '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+            ");
+
         // echo $where;exit;
         $list = Db::table('chat_red_detail')->alias('c')
                 ->join('users u', 'u.id = c.get_uid', 'LEFT')
                 ->where($where)
+                ->order('c.get_time desc')
                 ->field('u.nickname,u.id,c.money,c.get_time')->paginate(10);  
         // echo DB::table('chat_red_detail')->getlastsql();exit;        
          // 获取分页显示
@@ -723,6 +733,9 @@ class Users extends Common
         // 模板变量赋值
         $this->assign('list', $list);
         $this->assign('total', $total[0]['total']);
+        $this->assign('today', $today[0]['total']);
+        $this->assign('yesterday', $yesterday[0]['total']);
+        $this->assign('month', $month[0]['total']);
         $this->assign('page', $page);  
 
         return $this->fetch();
