@@ -756,8 +756,8 @@ class Groupchat extends Base
                             if($ray_die_num >= $die_ray_point_num){
                                 $is_ray_flag = 1; //中雷标记
                                 foreach ($die_ray_list as $key => $value) {
-                                    // 中雷者,如果是发红包本人中雷不操作,并且是没有赔付过的
-                                    if($value['get_uid'] != $red_one['uid'] && $value['is_die_flag']==0){
+                                    // 中雷者,如果是发红包本人中雷不操作,并且是没有赔付过的, 不包括发包者
+                                    if($value['get_uid'] != $red_one['uid'] && $value['is_die_flag']==0 && $red_one['uid'] != $value['get_uid']){
                                         // 扣除中雷者金额=红包本金*赔率
                                         $dec_money2 = $red_one['money']*$red_one['mulriple'];
                                         $dec_res = Db::name('users')->where(['id'=>$value['get_uid']])->setDec('account', $dec_money2);
