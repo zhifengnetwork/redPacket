@@ -464,9 +464,9 @@
                             + '未拆开'
                             + '</div></div></div></div>'
                         $('.group_content').append(str);
-                        $('html, body').animate({
-                            scrollTop: $('html, body').height()
-                        }, 'slow');
+                        // $('html, body').animate({
+                        //     scrollTop: $('html, body').height()
+                        // }, 'slow');
                         $('#audio')[0].play();
                         if (navigator.vibrate) {
                             navigator.vibrate([200,50,200]);
