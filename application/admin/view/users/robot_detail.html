@@ -16,7 +16,9 @@
                     <h5>机器人明细</h5>
                     <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
                     <h5 style="float:left; font-size:12px;padding-left: 20px;">累计领取红包总额：{$total}</h5>
-
+                     <h5 style="float:left; font-size:12px;padding-left: 20px;">今日领取红包总额：{$today}</h5>
+                     <h5 style="float:left; font-size:12px;padding-left: 20px;">昨日领取红包总额：{$yesterday}</h5>
+                     <h5 style="float:left; font-size:12px;padding-left: 20px;">本月领取红包总额：{$month}</h5>
                 </div>
                 <div class="ibox-content" method="GET">
                     <form role="form" class="form-inline" style="display: flex;" action="robot_detail" method="get">
@@ -47,7 +49,7 @@
                                 <th width="40">ID</th>
                                 <th width="40">会员昵称</th>
                                 <th width="60">金额</th>
-                                <th width="40">时间</th>
+                                <th width="40">抢包时间</th>
                                 <th width="40">类型</th>
                             </tr>
                         </thead>
