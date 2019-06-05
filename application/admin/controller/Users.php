@@ -686,7 +686,8 @@ class Users extends Common
         if($file_robot){
             $info_robot = $file_robot->move($path);
             $robot_path =  $info_robot->getSaveName();
-          
+            $robot_path = '/uploads/'.str_replace('\\','/', $robot_path);
+
             Db::table('users')->where('id', 113)->update(['head_imgurl' => $robot_path]);
             
 
