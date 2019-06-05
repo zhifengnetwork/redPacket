@@ -283,7 +283,7 @@ function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limi
         return false;
     }
     if($uid||true){
-        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,3000)->select();
+        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
         foreach($member_arr as $mb){
             if($mb['id']&&$mb['id']!=$uid){
                 if($need_all){

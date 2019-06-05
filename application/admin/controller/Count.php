@@ -99,7 +99,100 @@ class Count extends Common
      * 级别查询统计充值以及提现
      */
     public function getLevelCount(){
+
+        $mobile = input('mobile/s');
+        $begin_level = input('begin_level/d');
+        $end_level = input('end_level/d');
+
+        if(!$mobile){
+            return json(['code'=>0,'msg'=>'请输入手机号码']);
+        }
+        // if($begin_level){
+        //    if(!$level_end){
+        //         return json(['code'=>0,'msg'=>'请输入结束等级']);
+        //    } 
+        // }
+        // if($level_end){
+        //    if(!$begin_level){
+        //         return json(['code'=>0,'msg'=>'请输入开始等级']);
+        //    } 
+        // }
+        // 如果只有手机号则查询当前手机号下的30层
+        $user = Db::name('users')->field('id')->where(['mobile'=>$mobile])->find();
+        if(!$user){
+            return json(['code'=>0,'msg'=>'用户不存在']);
+        }
+        $dow_uid = '';
+        if($begin_level && $end_level){
+            // 如果存在等级条件
+            $dow_all_line = $this->getDownUids($user['id'],true,1,$end_level);
+            if($dow_all_line){
+                foreach ($dow_all_line['g_down_ids'] as $v) {
+                    $dow_uid .= $v['id'].',';
+                }
+            }
+        }else{
+            // 获取当前用户所有下线
+            $dow_all_line = $this->getDownUserUid($user['id']);
+            if($dow_all_line){
+                foreach ($dow_all_line as $v) {
+                    $dow_uid .= $v.',';
+                }
+            }
+        }
+        $dow_uid = rtrim($dow_uid, ','); // 最终所有1,2,3
+        $where['uid'] = ['in',$dow_uid];
+        $where['status'] = 1; // 充值完成 
+        // 充值总额统计
+        $recharge_money = Db::name('recharge')->where($where)->sum('money');
+
+        // 提现总额统计
+        $withdraw_money = Db::name('tixian')->where($where)->sum('amount');
         
+        $data = [
+            'recharge_money' => $recharge_money,
+            'withdraw_money' => $withdraw_money
+        ];
+        return json(['code'=>1,'msg'=>'ok','data'=>$data]);   
+    }
+
+    //递归获取用户下线(不包括自己) 以及等级
+    public function getDownUids($uid,$need_all=false,$agent_level=1,$agent_level_limit=0){
+        $g_down_ids = [];
+        if(!$uid){
+            return false;
+        }
+        if($uid||true){
+            $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
+            foreach($member_arr as $mb){
+                if($mb['id']&&$mb['id']!=$uid){
+                    if($need_all){
+                        $mb['agent_level'] = $agent_level;
+                        $g_down_ids['g_down_ids'][]=$mb;
+                    }else{
+                        $g_down_ids['g_down_ids'][]=$mb['id'];
+                    }
+                    getDownMemberIds2($mb['id'],$need_all,$agent_level+1,$agent_level_limit);
+                }   
+            }
+        }
+        return $g_down_ids;
+    }
+
+
+    // 获取当前用户的所有下线(不包括自己)
+    public function getDownUserUid($uid){
+        $g_down_Uids = '';
+        if($uid){
+            $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
+            foreach($member_arr as $mb){
+                if($mb['id'] && $mb['id'] != $uid){
+                    $g_down_Uids[] = $mb['id'];
+                    $this->getDownUserUid($mb['id']);
+                }
+            }
+        }
+        return $g_down_Uids;
     }
 
 }

@@ -25,18 +25,20 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail2" class="sr-only"></label>
-                            <input type="text" placeholder="开始级别" name="begin_level" id="exampleInputEmail2"
-                                    class="form-control" value="" autocomplete="off" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')">
+                            <input type="text" placeholder="" name="begin_level" style="width: 50px;" id="exampleInputEmail2"
+                                    class="form-control" readonly="readonly" value="1" autocomplete="off" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')">
                         </div>
-                        -
+                        至
                         <div class="form-group">
                             <label for="exampleInputPassword2" class="sr-only"></label>
-                            <input type="text" placeholder="结束级别" name="end_level" id="exampleInputPassword2"
+                            <input type="text" placeholder="几级别" name="end_level" id="exampleInputPassword2"
                                     class="form-control" value="" autocomplete="off" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')">
-                        </div>
+                        </div>级
                         <button class="btn btn-white search" type="button" onclick="search();">搜索</button>
                         <a class="btn btn-default" onclick="clear_search(this);">清空</a>
                     </form>
+                    <font color="red">注意: 统计不包括当前用户,如果不填等级,则统计当前用户所有下线.</font>
+
                 </div>
                 <div class="ibox-content">
                     <table class="table table-hover table-bordered text-center">
@@ -72,17 +74,39 @@
         var end_level = $("input[name='end_level']").val();
         if(!mobile){
             layer.msg('请输入手机号');
+            return false;
         }
-        if(begin_level){
+        // if(begin_level){
             
-            if(!end_level){
-                layer.msg('请输入结束等级');
-            }
-        }else if(end_level){
-            if(!begin_level){
-               layer.msg('请输入开始等级');
-            }
-        }
+        //     if(!end_level){
+        //         layer.msg('请输入结束等级');
+        //     }
+        // }
+        // if(end_level){
+        //     if(!begin_level){
+        //        layer.msg('请输入开始等级');
+        //     }
+        // }
+        //加载层-风格4
+        upload = layer.msg('加载中...', {
+            icon: 16,
+            shade: 0.2,
+            time: false
+        });
+        $.post(
+            "/admin/count/getLevelCount",
+            {"mobile":mobile,"begin_level":begin_level,"end_level":end_level},
+            function(msg){
+                if(msg.code==1){
+                    layer.close(upload);
+                    $('.recharge_money').html(msg.data.recharge_money);
+                    $('.withdraw_money').html(msg.data.withdraw_money);
+                }else{
+                    layer.msg(msg.msg);
+                    return false;
+                }
+            },'json'
+        )
         
     }
 </script>
