@@ -89,6 +89,7 @@
 }
 
 .active {
+	background: #5ecdf7;
 	border: 1px solid #d6daed;
 }
 
