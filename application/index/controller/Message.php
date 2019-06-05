@@ -29,7 +29,7 @@ class Message extends Base
     public function messageList()
     {
         // 获取平台群列表
-        $group_list = Db::name('chat_group')->select();
+        $group_list = Db::name('chat_group')->where(['status'=>0])->select();
         // var_dump($group_list);exit;
         // 返回绑定群url
         foreach($group_list as $k=>$v){
