@@ -382,7 +382,7 @@ class My extends Base
         echo $string;
     }
 
-    // 添加好友提交
+    // 添加好友申请提交
     public function sub_friend(){
 
         $flag=0;
@@ -498,11 +498,65 @@ class My extends Base
     //好友申请列表
     public function friends(){
         $userid = session('user.id');
-        $info = Db::query("select u.nickname,u.head_imgurl,f.uid,f.status from chat_friends_ask as f left join users as u on u.id = f.uid where f.friend_uid = $userid");
+        $info = Db::query("select u.nickname,u.head_imgurl,f.uid,f.status,f.id from chat_friends_ask as f left join users as u on u.id = f.uid where f.friend_uid = $userid and status =3");
         $this->assign('info', $info);
 
         return $this->fetch('new_friend');
 
+
+    }
+
+    //好友申请审核
+    public function sub_ckfriends(){
+
+        $flag=0;
+        $msg='';
+        $userid = session('user.id');
+        
+        if (Request::instance()->isPost()) {
+   
+            $id = input('post.id');
+            $type = input('post.type');
+
+            if($id==''){
+                $msg='参数错误！';
+        
+            }else{
+                $info = Db::query("select uid,friend_uid from chat_friends_ask where id = $id and status=3");
+                
+                Db::table('chat_friends_ask')->where('id', $id)->update(['status' =>$type]);
+                
+                $friend_data = [
+                    'uid' => $info[0]['uid'],  // 用户id
+                    'friend_uid' => $info[0]['friend_uid'],    // 好友id      
+                    'create_time' => time()
+   
+                ];
+                if($type ==1){
+                    $friend_res = Db::table('chat_friends')->insertGetId($friend_data);
+                    if($friend_res>0){
+                        $flag = 1;
+                        $msg = '已同意';
+                    }else{
+                        $msg = '操作失败';
+
+                    }    
+                }else{
+                    $flag = 1;
+                    $msg = '已拒绝';
+
+
+                }     
+            }
+
+        }else{
+            $msg='非法请求';
+
+
+        }   
+
+        $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));
+        echo $string;
 
     }
 
