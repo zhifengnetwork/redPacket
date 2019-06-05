@@ -28,7 +28,6 @@ class Message extends Base
      */
     public function messageList()
     {
-
         // 获取平台群列表
         $group_list = Db::name('chat_group')->select();
         // var_dump($group_list);exit;
