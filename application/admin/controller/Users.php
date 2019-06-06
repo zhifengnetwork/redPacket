@@ -598,6 +598,7 @@ class Users extends Common
           
              //更改提现记录表中交易状态
             $res = Db::table('tixian')->where('id',$id)->update(['status' => 1]);
+            $flag = 1;
             $msg = '操作成功';
 
 
