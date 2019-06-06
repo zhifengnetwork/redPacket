@@ -54,6 +54,7 @@ class Recharge extends Base
                         'time' => $time,
                         'status' => 3];
                 $res = Db::table('recharge')->insert($data);
+
                 if($res>0){
                     $flag = 1;
                     $msg = '提交成功！';
@@ -129,19 +130,35 @@ class Recharge extends Base
 
 
         }else{
-
-
+            //提现前账户余额
+            $before_money =  Db::name('users')->where('id',$userid)->value('account');
 
             $data = ['uid' => $userid, 'amount' => $money ,'type' => $method,'status' => 3,'time' => $time,'ordersn' => $orderNumber];
-            $res = db('tixian')->insert($data);
-            if( $res ){
-                $flag = 1;
-                $msg = '提现申请成功！等待审核';
-            }else{
 
+            // 启动事务
+            Db::startTrans();
+            try{
+
+                //提现记录表中添加记录
+                $tx_id = Db::name('tixian')->insertGetId($data);
+                //账户金额变更记录表中添加记录
+                $time = time();
+                $data = ['addtime' => $time,'user_id' => $userid,'account' => $before_money,'tx_id' => $tx_id,'money' => $money,'newaccount' => $before_money -$money,'action' => 1,'desc' => '默认通过，等待管理员进一步审核'];
+                db('account_log')->insert($data);
+
+                //更改用户表中余额
+                Db::table('users')->where('id',$userid)->setDec('account',$money);
+                Db::commit();
+                $flag = 1;
+                $msg = '提现申请成功！';
+            }catch (\Exception $e) {
+
+                // 回滚事务
+                Db::rollback();
                 $flag = 0;
                 $msg = '提现申请失败！';
-            } 
+
+            }    
 
         }    
         $string= json_encode(array ('msg'=>$msg,'flag'=>$flag));

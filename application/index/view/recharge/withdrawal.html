@@ -107,7 +107,9 @@
 
 	                    if(json.flag==1){
 	                        layer.msg(json.msg);
-	                        $("#money").val('');
+	                        setTimeout(function(){
+								 self.location="{:url('index/recharge/tixian')}";
+							},2000);
 	                       
 	                    }else if(json.flag==3){
 	                    	layer.msg(json.msg);

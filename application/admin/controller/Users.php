@@ -582,48 +582,17 @@ class Users extends Common
     //提现审核
     public function tixian(){
 
+
         $msg = '';
         $flag = 0;
         $id = input('post.id');
         $operate_name = session('admin_user_auth.username');
 
         if(Request::instance()->isPost()){
-           $info = Db::table('tixian')->where('id',$id)->find();
-           // var_dump($info);exit;
-           $before_money =  Db::name('users')->where('id',$info['uid'])->value('account');
-            // echo DB::table('users')->getlastsql();exit;
-            if($before_money < $info['amount']){
-                $msg = '提现金额大于余额';
-
-            }else{
-                // 启动事务
-                Db::startTrans();
-                try{
-                   
-                    //更改提现记录表中交易状态
-                    Db::table('tixian')->where('id',$id)->update(['status' => 1]);
-
-                    //账户金额变更记录表中添加记录
-                    $time = time();
-                    $data = ['admin' => $operate_name ,'addtime' => $time,'user_id' => $info['uid'],'account' => $before_money,'money' => $info['amount'],'newaccount' => $before_money -$info['amount'],'action' => 1,'desc' => '后台提现审核通过'];
-                    db('account_log')->insert($data);
-
-                    //更改用户表中余额
-                    Db::table('users')->where('id',$info['uid'])->setDec('account',$info['amount']);
-                        // 提交事务
-                    Db::commit();
-                    $flag = 1;
-                    $msg = '操作成功';
-    
-                } catch (\Exception $e) {
-
-                    // 回滚事务
-                    Db::rollback();
-                    $msg = '操作失败！';
-
-                }
-
-            } 
+          
+             //更改提现记录表中交易状态
+            $res = Db::table('tixian')->where('id',$id)->update(['status' => 1]);
+            $msg = '操作成功';
 
 
         }else{
@@ -645,17 +614,27 @@ class Users extends Common
         $flag = 0;
         $id = input('post.id');
         if(Request::instance()->isPost()){
-            //更改提现记录表中交易状态
-            $res = Db::table('tixian')->where('id',$id)->update(['status' => 2]);
-            if($res){
+            $info = Db::table('tixian')->where('id',$id)->field('amount,uid')->find();
 
+            // 启动事务
+            Db::startTrans();
+            try{
+                //更改用户表中余额
+                Db::table('users')->where('id',$info['uid'])->setInc('account', $info['amount']);
+                //更改提现记录表中交易状态
+                Db::table('tixian')->where('id',$id)->update(['status' => 2]);
+                Db::commit();
                 $flag = 1;
                 $msg = '操作成功';
-            }else{
 
+            }catch (\Exception $e) {
+
+                // 回滚事务
+                Db::rollback();
+                $flag = 0;
                 $msg = '操作失败！';
 
-            }
+            }           
 
         }else{
 
