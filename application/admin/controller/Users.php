@@ -314,34 +314,40 @@ class Users extends Common
 
         if(Request::instance()->isPost()){
             $info = Db::table('recharge')->where('id',$id)->find();
-           // var_dump($info);exit;
-           $before_money =  Db::name('users')->where('id',$info['uid'])->value('account');
-            // 启动事务
-            Db::startTrans();
-            try{
-               
-                //更改充值表中交易状态
-                Db::table('recharge')->where('id',$id)->update(['status' => 1,'money' => $info['amount']]);
+           if($info['status'] ==1){
+                $msg = '请勿重复操作';
 
-                //账户金额变更记录表中添加记录
-                $time = time();
-                $data = ['admin' => $operate_name ,'addtime' => $time,'user_id' => $info['uid'],'account' => $before_money,'money' => $info['amount'],'newaccount' => $before_money + $info['amount'],'action' => 0,'desc' => $desc];
-                db('account_log')->insert($data);
+           }else{
+                $before_money =  Db::name('users')->where('id',$info['uid'])->value('account');
+                // 启动事务
+                Db::startTrans();
+                try{
+                   
+                    //更改充值表中交易状态
+                    Db::table('recharge')->where('id',$id)->update(['status' => 1,'money' => $info['amount']]);
 
-                //更改用户表中余额
-                Db::table('users')->where('id',$info['uid'])->setInc('account',$info['amount']);
-                    // 提交事务
-                Db::commit();
-                $flag = 1;
-                $msg = '操作成功';
+                    //账户金额变更记录表中添加记录
+                    $time = time();
+                    $data = ['admin' => $operate_name ,'addtime' => $time,'user_id' => $info['uid'],'account' => $before_money,'money' => $info['amount'],'newaccount' => $before_money + $info['amount'],'action' => 0,'desc' => $desc];
+                    db('account_log')->insert($data);
 
-            } catch (\Exception $e) {
+                    //更改用户表中余额
+                    Db::table('users')->where('id',$info['uid'])->setInc('account',$info['amount']);
+                        // 提交事务
+                    Db::commit();
+                    $flag = 1;
+                    $msg = '操作成功';
 
-                // 回滚事务
-                Db::rollback();
-                $msg = '操作失败！';
+                } catch (\Exception $e) {
 
-            }
+                    // 回滚事务
+                    Db::rollback();
+                    $msg = '操作失败！';
+
+                }
+
+           }
+           
 
         }else{
 

@@ -71,6 +71,7 @@
                 if(json.flag==1){
                     layer.msg(json.msg);
                     setTimeout(function(){
+                        parent.location.reload(); // 父页面刷新
                         var index=parent.layer.getFrameIndex(window.name);
                         parent.layer.close(index);
                          
