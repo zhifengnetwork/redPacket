@@ -1008,8 +1008,9 @@ function uploadImg($base64){
             $file = \think\Image::open($image_url);
             
             $test = $file->thumb(400, 400)->save(ROOT_PATH . 'public' . DS . "./uploads/".date('Ymd',time()).'/'.time().'.png');
-            // dump($test);die;
-            return $res_url; 
+            $res_url_1 = "/uploads/".date('Ymd',time()).'/'.time().'.png';
+            // dump($res_url);die;
+            return $res_url_1; 
         }else{ 
             return '上传失败'; 
         } 
