@@ -1004,6 +1004,11 @@ function uploadImg($base64){
         $res_url = "/uploads/".date('Ymd',time()).'/'."{$image_name}"; 
         //服务器文件存储路径 
         if (file_put_contents($image_url, base64_decode(str_replace($result[1], '', $base64_image)))){ 
+            //生成缩略图
+            $file = \think\Image::open($image_url);
+            
+            $test = $file->thumb(400, 400)->save(ROOT_PATH . 'public' . DS . "./uploads/".date('Ymd',time()).'/'.time().'.png');
+            // dump($test);die;
             return $res_url; 
         }else{ 
             return '上传失败'; 
