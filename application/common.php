@@ -275,7 +275,6 @@ function getDownUserUids3($uid){
 	return $g_down_Uids;
 }
 
-
 //递归获取用户下线(不包括自己) 以及等级
 function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limit=0){
     global $g_down_ids;
@@ -283,7 +282,14 @@ function getDownMemberIds2($uid,$need_all=false,$agent_level=1,$agent_level_limi
         return false;
     }
     if($uid||true){
-        $member_arr = Db::name('users')->field('id,pid')->where(['pid'=>$uid])->limit(0,5000)->select();
+        $member_arr = Db::name('users')
+                        ->alias('u')
+                        ->join('users uu','u.pid = uu.id')
+                        ->field('u.id,u.pid,u.nickname,uu.nickname as up_nickname')
+                        ->where(['u.pid'=>$uid])
+                        ->limit(0,5000)
+                        ->select();
+                        
         foreach($member_arr as $mb){
             if($mb['id']&&$mb['id']!=$uid){
                 if($need_all){

@@ -171,8 +171,9 @@ class My extends Base
      * [我的团队页面]
      * @return [type] [description]
      */
-    public function myTeam()
+    public function myTeam111111()
     {
+       
         $userid = session('user.id');
         // 当前用户的30级下线 返回等级
         $team_list = getDownMemberIds2($userid,true,1,30);
@@ -222,8 +223,101 @@ class My extends Base
         // 按照level排序
         $list = array_sort($list,'level','asc');
         $this->assign('list', $list);
+        
         return $this->fetch('myTeam');
     }
+
+
+     /**
+     * [我的团队页面]
+     * 
+     *  优化后
+     * 
+     * @return [type] [description]
+     */
+    public function myTeam()
+    {
+      
+        $userid = session('user.id');
+       
+        
+        // 当前用户的30级下线 返回等级
+        $team_list = getDownMemberIds2($userid,true,1,30);
+      
+        $sort = array(
+            'direction' => 'SORT_ASC', //排序顺序标志 SORT_DESC 降序；SORT_ASC 升序
+            'field'     => 'agent_level',       //排序字段
+        );
+        $arrSort = array();
+        if($team_list){
+            foreach($team_list AS $uniqid => $row){
+                foreach($row AS $key=>$value){
+                    $arrSort[$key][$uniqid] = $value;
+                }
+            }
+            if($sort['direction']){
+                array_multisort($arrSort[$sort['field']], constant($sort['direction']), $team_list);
+            }
+        }
+        
+
+     
+        // unset($GLOBALS['g_down_ids']); // 清空上一次循环全局数据
+        // $team_list_in = '';
+        // $map['id'] = '';
+        // if($team_list){
+        //     foreach ($team_list as $v) {
+        //         $team_list_in .= $v['id'].',';
+        //     }
+        //     $team_list_in = rtrim($team_list_in, ','); // 最终1,2,3
+        //     $map['id'] = ['in',$team_list_in];
+        // }
+        // $list = Db::name('users')->field('id,pid,nickname,head_imgurl')->where($map)->select();
+
+        // // 获取下线的上级昵称
+        // if($list){
+        //     $where['id'] = '';
+        //     $up_list_in = '';
+        //     foreach ($list as $v) {
+        //         $up_list_in .= $v['pid'].',';
+        //     }
+        //     $up_list_in = rtrim($up_list_in, ','); // 最终1,2,3
+        //     $where['id'] = ['in',$up_list_in];
+        //     // 上级列表
+        //     $up_list = Db::name('users')->field('id,pid,nickname')->where($where)->select();
+        //     foreach($team_list  as $ks=>$vs){
+
+        //         foreach($list as $k=>$v){
+        //             // 判断当前list里面的数组和获取的下级比对
+        //             if($v['id']==$vs['id']){
+        //                 $list[$k]['level'] = $vs['agent_level'];  
+        //             }
+
+        //             if($up_list){
+        //                 foreach ($up_list as $vl) {
+        //                     if($v['pid']==$vl['id']){
+        //                         $list[$k]['up_nickname'] = $vl['nickname'];
+        //                     }
+        //                 }
+        //             }else{
+        //                 $list[$k]['up_nickname'] = '-';
+        //             }
+        //         }
+        //     }
+        // }
+        // // 按照level排序
+        // $list = array_sort($list,'level','asc');
+        $this->assign('list', $team_list);
+
+        // dump(count($list));
+        // dump(time());
+       
+
+        return $this->fetch('myTeamNew');
+    }
+
+
+
 
     public function activityCenter(){
         return $this->fetch('activity_center');

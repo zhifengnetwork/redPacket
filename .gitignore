@@ -5,3 +5,8 @@ runtime
 .htaccess
 upload
 /application/database.php
+public/uploads/ewm/*
+vendor/phpqrcode/cache/*
+vendor/phpqrcode/cache/
+/vendor/phpqrcode/cache/
+public/uploads/*
