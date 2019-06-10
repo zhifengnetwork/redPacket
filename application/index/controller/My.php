@@ -249,13 +249,15 @@ class My extends Base
             'field'     => 'agent_level',       //排序字段
         );
         $arrSort = array();
-        foreach($team_list AS $uniqid => $row){
-            foreach($row AS $key=>$value){
-                $arrSort[$key][$uniqid] = $value;
+        if($team_list){
+            foreach($team_list AS $uniqid => $row){
+                foreach($row AS $key=>$value){
+                    $arrSort[$key][$uniqid] = $value;
+                }
             }
-        }
-        if($sort['direction']){
-            array_multisort($arrSort[$sort['field']], constant($sort['direction']), $team_list);
+            if($sort['direction']){
+                array_multisort($arrSort[$sort['field']], constant($sort['direction']), $team_list);
+            }
         }
         
 
