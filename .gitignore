@@ -9,4 +9,5 @@ public/uploads/ewm/*
 vendor/phpqrcode/cache/*
 vendor/phpqrcode/cache/
 /vendor/phpqrcode/cache/
-public/uploads/*
+/public/uploads/*
+/public/upload/*
