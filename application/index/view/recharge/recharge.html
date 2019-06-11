@@ -57,7 +57,7 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type="number" onkeyup="value=value.replace(/^\d{1,8}.\d{5,6}$/g,'')" id="weixin" placeholder="转账金额" />
+            							<input class="inp" type="number" oninput='this.value=this.value.replace(/^(0|[1-9]\d{8})$/gi,"")' maxlength="5"  id="weixin" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -78,7 +78,7 @@
             						<div class="money"></div>
             						<div class="inp_wrap">
 										<!-- oninput="clearNoNum(this)" -->
-            							<input class="inp" type='number'  onkeyup="value=value.replace(/^\d{1,8}.\d{5,6}$/g,'')" id="zfb" placeholder="转账金额" />
+            							<input class="inp" type='text'  oninput='this.value=this.value.replace(/^(0|[1-9]\d{8})$/gi,"")' maxlength="5"  id="zfb" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -124,6 +124,19 @@
 		
 {include file="common/footer_js"}
 		<script>
+			function isNumber(s)
+			{   
+				var regu = "^[0-9]+$";
+				var re = new RegExp(regu);
+				if (s.search(re) != -1) 
+				{
+				return true;
+				} 
+				else 
+				{
+				return false;
+				}
+			}
 			function clearNoNum(obj) {
 				obj.value = obj.value.replace(/[\u4e00-\u9fa5]+/g, ""); //验证非汉字
 				obj.value = obj.value.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符  

@@ -76,7 +76,7 @@
                         请输入金额
                     </div>
                     <label class="dialog_transfer_num_label">￥
-                        <input class="dialog_transfer_num_input" type="number" maxlength="7" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")'>
+                        <input class="dialog_transfer_num_input" type="number" oninput='this.value=this.value.replace(/^(0|[1-9]\d{8})$/gi,"")' maxlength="7" onkeyup='this.value=this.value.replace(/[^0-9.]/g,"")'>
                     </label>
                 </div>
                 <span style="margin-left: 10px;">我的余额: <span class="account_now">{$user_arr['account']}</span></span>
