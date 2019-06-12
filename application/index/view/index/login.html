@@ -57,33 +57,51 @@
 		  	document.body.scrollTop = 0;
 			document.documentElement.scrollTop = 0;
 		});
+		$(document).ready(function () {
 
+			var username = window.localStorage.getItem('key_username');
+			var password = window.localStorage.getItem('key_password');
+			// console.log(username)
+			// console.log(password)
+			if((!username && typeof username != "undefined" && username != 0) && (!password && typeof password != "undefined" && password != 0)){
+
+			}else{
+				$(".last_btn").click();
+			}
+		})
             // 登录提交
             $(".last_btn").click(function(){
-                  var mobile = $("#mobile").val();
-                  var password = $(".password").val();
-                  if(!mobile){
-                        layer.msg('请输入手机号');
-                        return;
-                  }
-                  if(!password){
-                        layer.msg('请输入密码');
-                        return;
-                  }
-                  if(mobile&&password){
-                        $.post("{:url('index/login/userToLogin')}",{mobile:mobile,password:password},function(msg){
-                              if(msg.code==1){
-                                    console.log(msg);
-                                    layer.msg(msg.msg,function(){
-                                          window.location.href = "/index/message/messageList";
-                                    });
-                              }else{
-                                    layer.msg(msg.msg);
-                              }
-                        })
-                  }else{
-                        layer.msg('缺少参数');
-                  }
+				var mobile=window.localStorage.getItem('key_username');
+				var password=window.localStorage.getItem('key_password');
+				if((!mobile && typeof mobile != "undefined" && mobile != 0) || (!password && typeof password != "undefined" && password != 0)){
+					var mobile = $("#mobile").val();
+					var password = $(".password").val();
+					if(!mobile){
+						layer.msg('请输入手机号');
+						return;
+					}
+					if(!password){
+						layer.msg('请输入密码');
+						return;
+					}
+				}
+
+				  if(mobile&&password){
+						$.post("{:url('index/login/userToLogin')}",{mobile:mobile,password:password},function(msg){
+							  if(msg.code==1){
+									console.log(msg);
+								  window.localStorage.setItem('key_username', mobile);
+								  window.localStorage.setItem('key_password', password);
+									layer.msg(msg.msg,function(){
+										  window.location.href = "/index/message/messageList";
+									});
+							  }else{
+									layer.msg(msg.msg);
+							  }
+						})
+				  }else{
+						layer.msg('缺少参数');
+				  }
             });
 	</script>
 </body>
