@@ -50,7 +50,7 @@
                        </ul>
               </div>
               <div class="set-but">
-                  <a href="{:url('index/login/outLogin')}" class="quit-but">
+                  <a href="javascript:void(0);" id="logout" class="quit-but">
                       	退出登录 
                   </a>
               </div>
@@ -76,6 +76,10 @@
                       }
                 })
 
+            })
+            $("#logout").click(function () {
+                window.localStorage.clear();
+                window.location.href="{:url('index/login/outLogin')}";
             })
         
         </script>
