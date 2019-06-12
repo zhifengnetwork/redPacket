@@ -42,7 +42,7 @@
 	            			<div class="dl"></div>
 	            			
 	            			<div class="inp_wrap">
-	            				<input class="inp" type="number" placeholder="请输入提现金额" id="money"/>
+	            				<input class="inp" type="number" oninput='this.value=this.value.replace(/^(0|[1-9]\d{8})$/gi,"")' maxlength="5"  placeholder="请输入提现金额" id="money"/>
 	            			</div>
             			</div>
             		</div>

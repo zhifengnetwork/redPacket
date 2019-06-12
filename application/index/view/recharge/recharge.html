@@ -57,7 +57,7 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type="text" id="weixin" placeholder="转账金额" />
+            							<input class="inp" type="number" oninput='this.value=this.value.replace(/^(0|[1-9]\d{8})$/gi,"")' maxlength="5"  id="weixin" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -77,7 +77,8 @@
             					<div class="money_wrap">
             						<div class="money"></div>
             						<div class="inp_wrap">
-            							<input class="inp" type='number' oninput="clearNoNum(this)" id="zfb" placeholder="转账金额" />
+										<!-- oninput="clearNoNum(this)" -->
+            							<input class="inp" type='text'  oninput='this.value=this.value.replace(/^(0|[1-9]\d{8})$/gi,"")' maxlength="5"  id="zfb" placeholder="转账金额" />
             						</div>
             					</div>
             				</div>
@@ -123,13 +124,26 @@
 		
 {include file="common/footer_js"}
 		<script>
+			function isNumber(s)
+			{   
+				var regu = "^[0-9]+$";
+				var re = new RegExp(regu);
+				if (s.search(re) != -1) 
+				{
+				return true;
+				} 
+				else 
+				{
+				return false;
+				}
+			}
 			function clearNoNum(obj) {
 				obj.value = obj.value.replace(/[\u4e00-\u9fa5]+/g, ""); //验证非汉字
 				obj.value = obj.value.replace(/[^\d.]/g, ""); //清除"数字"和"."以外的字符  
 				obj.value = obj.value.replace(/^\./g, ""); //验证第一个字符是数字而不是  
 				obj.value = obj.value.replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的  
 				obj.value = obj.value.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
-				obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d{6}).*$/, '$1$2.$3'); //只能输入6个小数  
+				obj.value = obj.value.replace(/^(\-)*(\d+)\.(\d{2}).*$/, '$1$2.$3'); //只能输入2个小数  
 			}
 			$(function() {
 				//支付方式切换
