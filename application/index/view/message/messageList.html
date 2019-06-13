@@ -313,6 +313,9 @@
 				    async: true, /*是否异步请求，默认:异步*/
 				    data: {"id":fromid},   
 				    success:function(_data){
+					
+					console.log(_data)
+
 						/**拼接标签*/
 						var str = '';
 						/**把跳转路径 /index/ => '/index/' */
@@ -322,6 +325,7 @@
 							href_url =  "'" + _data[i].chat_page + "'";
 							console.log(_data[i]['countNoread']);
 							if(_data[i]['countNoread'] == 0){
+								
 								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
 										+ '<div class="chat_img">'
 										+ '<img src="'+ _data[i].head_url +'" />'
@@ -332,10 +336,12 @@
 										+ '</div>'
 										+ '<div class="chat_time">'
 										+ '<p class="chat_timer">'+ mydate(_data[i].last_message.time) +'</p>'
+										// + '<p class="chat_message gray">...</p>'//假的
 										+ '</div>'
 										+ '</div>'
 							} else {
 								// 有未读消息显示
+								
 								str += '<div class="chat chat3" onclick="window.location.href='+ href_url +'">'
 									+ '<div class="chat_img">'
 									+ '<img src="'+ _data[i].head_url +'" />'
