@@ -37,8 +37,10 @@ class Address extends Base
 */
         // 获取当前用户所有好友
         $list = getAllFriends($this->user['id']);
+       
         // 将数组按字母A-Z排序
         $list = $this->chartSort($list);
+      
         // pre($list);die;
         $this->assign('list', $list);
         return $this->fetch('addressList');
@@ -122,11 +124,22 @@ class Address extends Base
         }
         $data=[];
         foreach ($list as $ks => $vs) {
+
             if(empty($vs['head_imgurl'])){
                 $vs['head_imgurl'] = "/static/chatWeb/img/00avatar-01-zp.png";
+            }else{
+                //有数据
+                if( @getimagesize(ROOT_PATH.'/public'.$vs['head_imgurl']) == false ){
+                    //无头像文件
+                    $vs['head_imgurl'] = "/static/chatWeb/img/00avatar-01-zp.png";
+                }
+        
+            }
+
+            if(empty($vs['nickname'])){
                 $vs['nickname'] = "默认用户";
             }
-            
+           
             // if ( empty( $data[ $vs['chart'] ] ) ) {
             //     $data[ $vs['chart'] ]= [];
             // }else{
