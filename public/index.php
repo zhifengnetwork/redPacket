@@ -1,4 +1,8 @@
 <?php
+// date_default_timezone_set('PRC');
+// date_default_timezone_set("Etc/GMT-8");
+ini_set('date.timezone','Asia/Shanghai');
+// echo time();die;
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -9,6 +13,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 // [ 应用入口文件 ]
+
 define('HTTP_HOST', $_SERVER['HTTP_HOST']);
 define('EXTEND_PATH', '../extend/');
 
