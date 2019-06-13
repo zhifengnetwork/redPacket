@@ -732,7 +732,7 @@ class Groupchat extends Base
                         // 循环已经中雷但没赔付的红包记录进行赔付
                         $where['get_uid'] = ['>',0];
                         $where['type'] = ['=',1];   // 已领取
-                        // $where['is_die'] = ['=',0]; // 不包括免死1
+                        $where['is_die'] = ['=',0]; // 不包括免死1
                         $where['is_ray'] = ['=',1]; // 中雷
                         $where['is_die_flag'] = ['=',0]; // 没赔付
                         $where['m_id'] = ['=',$red_one['id']]; // 当前订单
