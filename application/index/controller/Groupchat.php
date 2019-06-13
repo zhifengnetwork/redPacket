@@ -732,7 +732,7 @@ class Groupchat extends Base
                         // 循环已经中雷但没赔付的红包记录进行赔付
                         $where['get_uid'] = ['>',0];
                         $where['type'] = ['=',1];   // 已领取
-                        $where['is_die'] = ['=',0]; // 不包括免死1
+                        // $where['is_die'] = ['=',0]; // 不包括免死1
                         $where['is_ray'] = ['=',1]; // 中雷
                         $where['is_die_flag'] = ['=',0]; // 没赔付
                         $where['m_id'] = ['=',$red_one['id']]; // 当前订单
@@ -823,7 +823,20 @@ class Groupchat extends Base
                 $from_user['nickname'] = '';
                 $from_user['head_imgurl'] = '';
             }
-
+            
+            $user_ = Db::name('chat_red_detail')->where(['get_uid'=>$user['id'],'m_id'=>$red_one['id']])->find();
+            if(!empty($user_)){
+                // $money = 5.01;
+                $money = bcadd($user_['money'],'0.00',2);
+                $result=substr($money,-1);
+                if($result==$red_one['ray_point']){//1修改为  埋点值
+                    $is_ray_flag = 1;
+                    Db::name('chat_red_detail')->where(['get_uid'=>$user['id'],'m_id'=>$red_one['id']])->update(['is_ray'=>1,'is_die_flag'=>1]);
+                }else{
+                    $is_ray_flag = 0;
+                }
+            
+            }
             // 中雷显示:
             $data = [
                 'get_red_money' => $red_detail['money'],
