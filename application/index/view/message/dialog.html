@@ -220,18 +220,26 @@
 
     var API_URL = "/index.php/api/chat/"; // 请求地址
     var domain = 'http://'+document.domain+'/upload/chat_img/'; // 图片路径
+
+    var connet_time = 0;
     // 连接服务端
     function connect() {
        // 创建全局websocket
-       ws =  new WebSocket("ws://103.80.135.117:8282");
+       connet_time++;
+       ws =  new WebSocket("{$websocket_url}");
        // 当socket连接打开时
        ws.onopen = login;
        // 当有消息时根据消息类型显示不同信息
        ws.onmessage = onmessage; 
       
        ws.onclose = function() {
-          console.log("连接关闭，定时重连...");
-          connect();
+            //10次
+            if(connet_time > 10){
+                alert('消息服务器繁忙...');
+            }else{
+                console.log("连接关闭，定时重连...第"+connet_time+"次");
+                connect();
+            }
        };
        ws.onerror = function() {
           console.log("出现错误");

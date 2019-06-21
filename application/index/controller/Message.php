@@ -75,6 +75,10 @@ class Message extends Base
         $this->assign('user_arr', $user_arr);
         $this->assign('key', $this->key);
         $this->assign('send_key',$this->send_key);
+
+        //websocket_url
+        $this->assign('websocket_url','ws://'.$_SERVER['SERVER_ADDR'].':8282');
+
         return $this->fetch('dialog');
     }
 
