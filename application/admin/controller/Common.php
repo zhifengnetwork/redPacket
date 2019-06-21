@@ -183,7 +183,8 @@ class Common extends Controller
         //获取当前登录用户所在的用户组(可以是多组)
         $groups = Db::table('auth_group_access')->where('mgid', UID)->column('group_id');
         if (!$groups) {
-            return $this->error("没有权限");
+            session(null);
+            return $this->redirect("没有权限");
         }
 
         //所有权限数组
@@ -201,6 +202,7 @@ class Common extends Controller
         $rules_array = array_unique($rules_array);
         // //权限判断
         // if (!in_array($rule_id, $rules_array)) {
+          //  session(null);
         //     return $this->error("没有权限");
         // }
 
