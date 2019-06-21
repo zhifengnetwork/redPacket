@@ -169,9 +169,9 @@ class Address extends Base
         $s0 = mb_substr($str,0,3); //获取名字的姓
         // dump($s0);
         // $s1 = iconv('UTF-8','gb2312//IGNORE',$str);
-        // $s2 = iconv('gb2312','UTF-8',$str);
+        // $s2 = iconv('gb2312','UTF-8',$s1);
         // $s = $s2 == $str?$s1:$str;
-        
+       // $s = $s0;
         // if($str=='嗯'){
         //     echo $s;die;
         // }
