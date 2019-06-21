@@ -51,6 +51,10 @@ class Message extends Base
         $this->assign('group_list', $group_list);
         $this->assign('user', session('user'));
         $this->assign('fromid', session('user.id'));
+
+        //websocket_url
+        $this->assign('websocket_url','ws://'.request()->ip().':8282');
+
         return $this->fetch('messageList');
     }
 
@@ -81,6 +85,8 @@ class Message extends Base
         $roomid = 4;
         $room_id = Db::name('chat_group')->field('id,name')->where(['id'=>$roomid])->find();
         $this->assign('room_id', $room_id['id']);
+        //websocket_url
+        $this->assign('websocket_url','ws://'.request()->ip().':8282');
         return $this->fetch('notice');
     }
 
@@ -296,6 +302,10 @@ class Message extends Base
         $this->assign('fromid', $fromid);
         $this->assign('key', $this->key);
         $this->assign('send_key',$this->send_key);
+
+        //websocket_url
+        $this->assign('websocket_url','ws://'.request()->ip().':8282');
+
         return $this->fetch('groupChat');
     }
 

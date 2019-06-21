@@ -88,7 +88,7 @@
     var domain = 'http://'+document.domain+'/upload/chat_img/'; // 图片路径
 
     // 连接服务端
-    var ws =  new WebSocket("ws://47.107.185.253:8282");
+    var ws =  new WebSocket("{$websocket_url}");
     ws.onopen = function() {
         // var msg_obj = { "type": "send_system_notice", "content": 1222,};
         // var msg = JSON.stringify(msg_obj);

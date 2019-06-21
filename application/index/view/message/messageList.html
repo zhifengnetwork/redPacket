@@ -186,6 +186,7 @@
 		<audio id="audio">
 			<source src="__STATIC__/chatWeb/img/news/tips.mp3">
 		</audio>
+
 		<script src="__STATIC__/chatWeb/js/public/jquery-1.8.3.js"></script>
 		<!-- 删除 插件 STATIC__/chatWeb/js/public/public.js"></script> -->
 		<!--公共底部导航栏-->
@@ -196,24 +197,34 @@
 			var fromid ={$fromid};
 			 getLastNotice();
 
+			var connet_time = 0;
 			// // 连接服务端
 			function connect() {
 				console.log('连接服务端1');
 				// 创建全局websocket
-				ws =  new WebSocket("ws://47.107.185.253:8282");
+				connet_time++;
+				ws =  new WebSocket("{$websocket_url}");
+
 				// 当socket连接打开时
 				ws.onopen = login;
 				// 当有消息时根据消息类型显示不同信息
 				ws.onmessage = onmessage;
 				ws.onclose = function() {
-					console.log("连接关闭，定时重连...");
-					connect();
+					//10次
+					if(connet_time > 10){
+						alert('消息服务器繁忙...');
+					}else{
+						console.log("连接关闭，定时重连...第"+connet_time+"次");
+						connect();
+					}
 				};
 				ws.onerror = function() {
 					console.log("出现错误");
+					
 				};
 			}
-		
+			
+
 			function login(){
 				console.log('发送登录到ws');
 				// 登录
