@@ -53,7 +53,7 @@ class Message extends Base
         $this->assign('fromid', session('user.id'));
 
         //websocket_url
-        $this->assign('websocket_url','ws://'.$_SERVER['SERVER_ADDR'].':8282');
+        $this->assign('websocket_url','ws://'.serverIp().':8282');
 
         return $this->fetch('messageList');
     }
@@ -77,7 +77,7 @@ class Message extends Base
         $this->assign('send_key',$this->send_key);
 
         //websocket_url
-        $this->assign('websocket_url','ws://'.$_SERVER['SERVER_ADDR'].':8282');
+        $this->assign('websocket_url','ws://'.serverIp().':8282');
 
         return $this->fetch('dialog');
     }
@@ -90,7 +90,7 @@ class Message extends Base
         $room_id = Db::name('chat_group')->field('id,name')->where(['id'=>$roomid])->find();
         $this->assign('room_id', $room_id['id']);
         //websocket_url
-        $this->assign('websocket_url','ws://'.$_SERVER['SERVER_ADDR'].':8282');
+        $this->assign('websocket_url','ws://'.serverIp().':8282');
         return $this->fetch('notice');
     }
 
@@ -308,7 +308,7 @@ class Message extends Base
         $this->assign('send_key',$this->send_key);
 
         //websocket_url
-        $this->assign('websocket_url','ws://'.$_SERVER['SERVER_ADDR'].':8282');
+        $this->assign('websocket_url','ws://'.serverIp().':8282');
 
         return $this->fetch('groupChat');
     }

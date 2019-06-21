@@ -652,6 +652,21 @@ function get_real_ip()
     return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
 }
 
+
+function serverIp(){    
+    if(isset($_SERVER)){    
+        if($_SERVER['SERVER_ADDR']){    
+            $server_ip=$_SERVER['SERVER_ADDR'];    
+            }else{    
+               $server_ip=$_SERVER['LOCAL_ADDR'];    
+           }    
+      }else{    
+          $server_ip = getenv('SERVER_ADDR');    
+    }    
+      return $server_ip;    
+}    
+   
+
 /**
  * 系统加密方法
  * @param string $data 要加密的字符串
