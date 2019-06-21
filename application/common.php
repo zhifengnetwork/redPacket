@@ -653,19 +653,27 @@ function get_real_ip()
 }
 
 
-function serverIp(){    
-    if(isset($_SERVER)){    
-        if($_SERVER['SERVER_ADDR']){    
-            $server_ip=$_SERVER['SERVER_ADDR'];    
-            }else{    
-               $server_ip=$_SERVER['LOCAL_ADDR'];    
-           }    
-      }else{    
-          $server_ip = getenv('SERVER_ADDR');    
-    }    
-      return $server_ip;    
-}    
+// function serverIp2(){    
+
+//     if(isset($_SERVER)){    
+//         if($_SERVER['SERVER_ADDR']){    
+//             $server_ip=$_SERVER['SERVER_ADDR'];    
+//             }else{    
+//                $server_ip=$_SERVER['LOCAL_ADDR'];    
+//            }    
+//       }else{    
+//           $server_ip = getenv('SERVER_ADDR');    
+//     }    
+//       return $server_ip;    
+
+// }    
    
+/**
+ * 代替ip
+ */
+function serverIp(){
+    return $_SERVER['HTTP_HOST'];
+}
 
 /**
  * 系统加密方法
