@@ -168,16 +168,16 @@ class Address extends Base
         } 
         $s0 = mb_substr($str,0,3); //获取名字的姓
         // dump($s0);
-        $s1 = iconv('UTF-8','gb2312//IGNORE',$str);
-        $s2 = iconv('gb2312','UTF-8',$s1);
-        $s = $s2 == $str?$s1:$str;
+        // $s1 = iconv('UTF-8','gb2312//IGNORE',$str);
+        // $s2 = iconv('gb2312','UTF-8',$str);
+        // $s = $s2 == $str?$s1:$str;
         
         // if($str=='嗯'){
         //     echo $s;die;
         // }
         // $s = iconv("utf-8","gb2312//IGNORE",$str);
         // // $s = iconv('UTF-8','gb2312', $s0); //将UTF-8转换成GB2312编码
-        // $s = $str;
+        $s = $str;
         // dump($s);
         if (ord($s0)>128) { //汉字开头，汉字没有以U、V开头的
         $asc=ord($s{0})*256+ord($s{1})-65536;
@@ -208,16 +208,16 @@ class Address extends Base
         }else if(ord($s)>=48 and ord($s)<=57)
         { //数字开头
             switch(iconv_substr($s,0,1,'utf-8')){
-                case 1:return "Y";
-                case 2:return "E";
-                case 3:return "S";
-                case 4:return "S";
-                case 5:return "W";
-                case 6:return "L";
-                case 7:return "Q";
-                case 8:return "B";
-                case 9:return "J";
-                case 0:return "L";
+                case 1:return "#";
+                case 2:return "#";
+                case 3:return "#";
+                case 4:return "#";
+                case 5:return "#";
+                case 6:return "#";
+                case 7:return "#";
+                case 8:return "#";
+                case 9:return "#";
+                case 0:return "#";
             }
         }else if(ord($s)>=65 and ord($s)<=90){//大写英文开头
             return substr($s,0,1);
