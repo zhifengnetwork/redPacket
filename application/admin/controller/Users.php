@@ -164,72 +164,78 @@ class Users extends Common
 
     # 添加 | 编辑客服
     public function edit_service(){
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        $info = Db::name('users')->find($id);
+        $this->assign('info',$info);
+        return $this->fetch();
+    }
 
-        if($_POST){
-            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-            $nickname = isset($_POST['nickname']) ? trim($_POST['nickname']) : '';
-            $mobile = isset($_POST['mobile']) ? trim($_POST['mobile']) : '';
-            $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-            $is_lock = isset($_POST['is_lock']) ? intval($_POST['is_lock']) : 0;
+
+    public function edit_account_ajax(){
+     
+            $id = I('id');
+            $nickname = I('nickname');
+            $mobile = I('mobile');
+            $password = I('password');
+            $is_lock = I('is_lock');
+
             if(!$nickname){
-                echo "<script>parent.error('请输入客服名称！')</script>";
+                $this->ajaxReturn(['status'=>0,'msg'=>'请输入客服名称！']);
                 exit;
             }
-
+           
             if( !isMobile($mobile) ){
-                echo "<script>parent.error('请输入正确的手机号！')</script>";
+                $this->ajaxReturn(['status'=>0,'msg'=>'请输入正确的手机号！']);
                 exit;
             }
 
             if( !$id && isMobileRegister($mobile) ){
-                echo "<script>parent.error('该手机号已被使用！')</script>";
+                $this->ajaxReturn(['status'=>0,'msg'=>'该手机号已被使用！']);
                 exit;
             }
-
+           
             if( !$id && !$password ){
-                echo "<script>parent.error('请输入6位数字登陆密码！')</script>";
+                $this->ajaxReturn(['status'=>0,'msg'=>'请输入6位数字登陆密码！']);
                 exit;
             }
 
             $data['nickname'] = $nickname;
             $data['mobile'] = $mobile;
             $data['is_lock'] = $is_lock;
-
+          
             if($password){
-                if(!preg_match("/^[\d]{6}$/",$password)){
-                    echo "<script>parent.error('请输入6位数字登陆密码！')</script>";
-                    exit;
-                }
+                // if(!preg_match("/^[\d]{6}$/",$password)){
+                //     echo "<script>parent.error('请输入6位数字登陆密码！')</script>";
+                //     exit;
+                // }
                 $salt = create_salt();
                 $password = minishop_md5($password, $salt);
 
                 $data['salt'] = $salt;
                 $data['password'] = $password;
             }
-
+           
             if(!$id){
                 $data['type'] = 400;
                 $data['addtime'] = time();
             }
-
+          
             if($id){
                 $res = Db::name('users')->where('id',$id)->update($data);
             }else{
+                $data['invite_code'] = 0;
                 $res = Db::name('users')->insert($data);
             }
-
+           
             if($res){
-                echo "<script>parent.success()</script>";
+                $this->ajaxReturn(['status'=>1,'msg'=>'操作成功']);
+                exit;
+                
             }else{
-                echo "<script>parent.error('操作失败，请重试！')</script>";
+                $this->ajaxReturn(['status'=>0,'msg'=>'操作失败，请重试！']);
+                exit;
             }
-            exit;
-        }
-
-        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-        $info = Db::name('users')->find($id);
-        $this->assign('info',$info);
-        return $this->fetch();
+        
     }
 
     # 余额记录

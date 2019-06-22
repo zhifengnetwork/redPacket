@@ -227,4 +227,9 @@ class Common extends Controller
         return $name.$saveName;
     }
 
+
+    public function ajaxReturn($data){
+        exit(json_encode($data));
+    }
+
 }
