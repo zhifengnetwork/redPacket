@@ -40,7 +40,11 @@ class Notice extends Common
                 return json(['status'=>0,'msg'=>'操作失败']);
             }
         }
-        return $this->fetch('users/add_notice');
+
+        //websocket_url
+        $this->assign('websocket_url','ws://'.serverIp().':8282');
+
+        return $this->fetch();
     }
 
     // 删除公告
@@ -56,7 +60,7 @@ class Notice extends Common
             }
             return json(['status'=>1,'msg'=>'发布成功']);
         }
-        return $this->fetch('users/notice');
+        return $this->fetch('index');
     }
 
 }
