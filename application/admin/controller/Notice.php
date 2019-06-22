@@ -15,7 +15,11 @@ class Notice extends Common
 
         $list = Db::name('chat_system_notice')->order('create_time desc')->paginate(15);
         $this->assign('list', $list);
-        return $this->fetch('users/notice');
+
+        //websocket_url
+        $this->assign('websocket_url','ws://'.serverIp().':8282');
+
+        return $this->fetch();
     }
 
      # 添加 | 公告
