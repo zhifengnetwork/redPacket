@@ -73,7 +73,8 @@ class Register extends Controller
     	$password = minishop_md5($password,$salt);
     	
     	$insert_data = [
-    		'pid' => $pid_invite_code['id'],
+            'pid' => $pid_invite_code['id'],
+            'nickname' => '会员'.substr($param['mobile'],-4),
     		'mobile' => $param['mobile'],
     		'password' => $password,
     		'salt' => $salt,
@@ -81,6 +82,7 @@ class Register extends Controller
     		'addtime' => time()
     	];
 
+       
  	   	// 启动事务
 		Db::startTrans();
 		try{
