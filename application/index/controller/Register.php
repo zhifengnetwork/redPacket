@@ -15,7 +15,13 @@ class Register extends Controller
     public function register()
     {
     	// 接收invite_code到注册页面
-    	$invite_code = input('get.invite_code');
+        $invite_code = input('get.invite_code');
+        
+        $pid_invite_code = Db::table('users')->where('invite_code', $invite_code)->field('id,invite_code')->find();
+    	if(!$pid_invite_code){
+            $this->error('注册码无效');
+        }
+
         $this->assign('invite_code',$invite_code);
         return $this->fetch();
     }
