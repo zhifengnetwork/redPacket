@@ -137,13 +137,13 @@ class Recharge extends Base
 
             // 启动事务
             Db::startTrans();
-            try{
+           try{
 
                 //提现记录表中添加记录
                 $tx_id = Db::name('tixian')->insertGetId($data);
                 //账户金额变更记录表中添加记录
                 $time = time();
-                $data = ['addtime' => $time,'user_id' => $userid,'account' => $before_money,'tx_id' => $tx_id,'money' => $money,'newaccount' => $before_money -$money,'action' => 1,'desc' => '默认通过，等待管理员进一步审核'];
+                $data = ['admin'=>'无','addtime' => $time,'user_id' => $userid,'account' => $before_money,'tx_id' => $tx_id,'money' => $money,'newaccount' => $before_money -$money,'action' => 1,'desc' => '默认通过，等待管理员进一步审核'];
                 db('account_log')->insert($data);
 
                 //更改用户表中余额
