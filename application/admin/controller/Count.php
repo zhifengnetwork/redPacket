@@ -40,11 +40,11 @@ class Count extends Common
         $today_total_send_red_backwater = Db::name('chat_red_log')->where('type',4)->whereTime('create_time', 'today')->sum('money');
         
         // 抢包返利type=5 【 抢完包 的 数量  乘以  0.05  】
-        $total_get_red_rebate = Db::name('chat_red_master')->where('all_get',1)->field('id')->count();
-        $total_get_red_rebate = $total_get_red_rebate * 0.05;
+        $total_get_red_rebate = Db::name('chat_red_detail')->where('type',1)->field('id')->count();
+        $total_get_red_rebate = round($total_get_red_rebate * 0.05);
 
-        $today_total_get_red_rebate = Db::name('chat_red_master')->where('all_get',1)->whereTime('create_time', 'today')->field('id')->count();
-        $today_total_get_red_rebate = $today_total_get_red_rebate * 0.05;
+        $today_total_get_red_rebate = Db::name('chat_red_detail')->where('type',1)->whereTime('get_time', 'today')->field('id')->count();
+        $today_total_get_red_rebate = round($today_total_get_red_rebate * 0.05);
 
         // 抢包返水type=6
         $total_get_red_backwater = Db::name('chat_red_log')->where('type',6)->sum('money');
@@ -62,10 +62,12 @@ class Count extends Common
         $total_ray = Db::name('chat_red_log')->where('type',10)->sum('money');
         $today_total_ray = Db::name('chat_red_log')->where('type',10)->whereTime('create_time', 'today')->sum('money');
 
-        // 今日总免死金额
+        // 今日总免死金额返利
         $today_miansi = Db::name('chat_red_detail')->where('is_die',1)->whereTime('get_time', 'today')->sum('money');
-        // 总免死金额
+        $today_miansi = round($today_miansi * 0.05,2);
+        // 总免死金额返利
         $total_miansi = Db::name('chat_red_detail')->where('is_die',1)->sum('money');
+        $total_miansi = round($total_miansi * 0.05,2);
 
         $this->assign('today_miansi', $today_miansi);
         $this->assign('total_miansi', $total_miansi);
