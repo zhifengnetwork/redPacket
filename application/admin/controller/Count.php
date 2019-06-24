@@ -109,11 +109,11 @@ class Count extends Common
         // $total_fanli = 555555;
         // $this->assign('total_fanli', $total_fanli);
 
-        // if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
+        if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
             $this->assign('is_show', 0);
-        // }else{           
-          //  $this->assign('is_show', 1);
-        // }
+        }else{           
+           $this->assign('is_show', 1);
+        }
 
         return $this->fetch('count');
     }
