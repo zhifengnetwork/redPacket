@@ -19,6 +19,14 @@ class Index extends Controller
     // 登录页面
     public function index()
     {    
+
+       $logo = 'logo.jpg';
+       if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
+            $logo = 'sao.png';
+       }
+
+        $this->assign('logo', $logo);
+
         return $this->fetch('login');
     }
 

@@ -119,6 +119,14 @@ class My extends Base
         // echo $img;exit;
         $this->assign('img', $img);
         
+        $logo = 'qq.png';
+        if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
+            $logo = 'saolei.png';
+        }
+
+        $this->assign('logo', $logo);
+
+
         return $this->fetch('myQrCode');
     }
 
