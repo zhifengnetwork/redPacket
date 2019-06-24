@@ -106,15 +106,21 @@ class Count extends Common
 
 
         //总返利金额
-        // $total_fanli = 555555;
-        // $this->assign('total_fanli', $total_fanli);
+        $total_fanli = 'XXX';
+        $total_fanshui = 'PPP';
+        $total_jiangli = 'HHHH';
+        
+        $this->assign('total_fanli', $total_fanli);
+        $this->assign('total_fanshui', $total_fanshui);
+        $this->assign('total_jiangli', $total_jiangli);
+
 
         if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
             $this->assign('is_show', 0);
-            dump(0);
+            
         }else{           
            $this->assign('is_show', 1);
-           dump(1);
+           
         }
 
         
