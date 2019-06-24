@@ -66,11 +66,15 @@ class Count extends Common
         $today_miansi = Db::name('chat_red_detail')->where('is_die',1)->whereTime('get_time', 'today')->sum('money');
         $today_miansi = round($today_miansi * 0.05,2);
         // 总免死金额返利
-        $total_miansi = Db::name('chat_red_detail')->where('is_die',1)->sum('money');
-        $total_miansi = round($total_miansi * 0.05,2);
+        $total_miansi_all = Db::name('chat_red_detail')->where('is_die',1)->sum('money');
+
+        $total_miansi = round($total_miansi_all * 0.05,2);
 
         $this->assign('today_miansi', $today_miansi);
         $this->assign('total_miansi', $total_miansi);
+
+        $this->assign('total_miansi_all', $total_miansi_all);
+
 
         $this->assign('send_red_total_money', $send_red_total_money);
         $this->assign('today_send_red_money', $today_send_red_money);
@@ -101,6 +105,15 @@ class Count extends Common
         $this->assign('today_total_ray', abs($today_total_ray));
 
 
+        //总返利金额
+        // $total_fanli = 555555;
+        // $this->assign('total_fanli', $total_fanli);
+
+        // if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
+            $this->assign('is_show', 0);
+        // }else{           
+          //  $this->assign('is_show', 1);
+        // }
 
         return $this->fetch('count');
     }

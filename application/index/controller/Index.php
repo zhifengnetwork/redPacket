@@ -21,6 +21,7 @@ class Index extends Controller
     {    
 
        $logo = 'logo.jpg';
+     
        if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
             $logo = 'sao.png';
        }
