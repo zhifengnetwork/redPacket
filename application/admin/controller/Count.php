@@ -111,10 +111,13 @@ class Count extends Common
 
         if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
             $this->assign('is_show', 0);
+            dump(0);
         }else{           
            $this->assign('is_show', 1);
+           dump(1);
         }
 
+        
         return $this->fetch('count');
     }
 
