@@ -85,14 +85,14 @@ class Count extends Common
         $this->assign('total_ray', abs($total_ray));
         $this->assign('today_total_ray', abs($today_total_ray));
 
-        return $this->fetch('users/count');
+        return $this->fetch('count');
     }
 
     /**
      * 级别查询统计充值以及提现页面
      */
     public function levelCount(){
-        return $this->fetch('users/level_count');
+        return $this->fetch('level_count');
     }
 
     /**
