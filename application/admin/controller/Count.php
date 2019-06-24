@@ -106,10 +106,10 @@ class Count extends Common
 
 
         //总返利金额
-        $total_fanli = 'XXX';
-        $total_fanshui = 'PPP';
-        $total_jiangli = 'HHHH';
-        
+        $total_fanli = $total_send_red_rebate + $total_get_red_rebate;
+        $total_fanshui = $total_send_red_backwater + $total_get_red_backwater;
+        $total_jiangli =  $total_get_red_award + $total_send_red_award;
+
         $this->assign('total_fanli', $total_fanli);
         $this->assign('total_fanshui', $total_fanshui);
         $this->assign('total_jiangli', $total_jiangli);
