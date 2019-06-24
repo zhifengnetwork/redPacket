@@ -38,9 +38,14 @@ class Count extends Common
         // 发包返水type=4
         $total_send_red_backwater = Db::name('chat_red_log')->where('type',4)->sum('money');
         $today_total_send_red_backwater = Db::name('chat_red_log')->where('type',4)->whereTime('create_time', 'today')->sum('money');
-        // 抢包返利type=5
-        $total_get_red_rebate = Db::name('chat_red_log')->where('type',5)->sum('money');
-        $today_total_get_red_rebate = Db::name('chat_red_log')->where('type',5)->whereTime('create_time', 'today')->sum('money');
+        
+        // 抢包返利type=5 【 抢完包 的 数量  乘以  0.05  】
+        $total_get_red_rebate = Db::name('chat_red_master')->where('all_get',1)->field('id')->count();
+        $total_get_red_rebate = $total_get_red_rebate * 0.05;
+
+        $today_total_get_red_rebate = Db::name('chat_red_master')->where('all_get',1)->whereTime('create_time', 'today')->field('id')->count();
+        $today_total_get_red_rebate = $today_total_get_red_rebate * 0.05;
+
         // 抢包返水type=6
         $total_get_red_backwater = Db::name('chat_red_log')->where('type',6)->sum('money');
         $today_total_get_red_backwater = Db::name('chat_red_log')->where('type',6)->whereTime('create_time', 'today')->sum('money');
@@ -56,6 +61,14 @@ class Count extends Common
         // 中雷type=10
         $total_ray = Db::name('chat_red_log')->where('type',10)->sum('money');
         $today_total_ray = Db::name('chat_red_log')->where('type',10)->whereTime('create_time', 'today')->sum('money');
+
+        // 今日总免死金额
+        $today_miansi = Db::name('chat_red_detail')->where('is_die',1)->whereTime('get_time', 'today')->sum('money');
+        // 总免死金额
+        $total_miansi = Db::name('chat_red_detail')->where('is_die',1)->sum('money');
+
+        $this->assign('today_miansi', $today_miansi);
+        $this->assign('total_miansi', $total_miansi);
 
         $this->assign('send_red_total_money', $send_red_total_money);
         $this->assign('today_send_red_money', $today_send_red_money);
@@ -84,6 +97,8 @@ class Count extends Common
         $this->assign('today_total_system_rebate', $today_total_system_rebate);
         $this->assign('total_ray', abs($total_ray));
         $this->assign('today_total_ray', abs($today_total_ray));
+
+
 
         return $this->fetch('count');
     }
