@@ -459,9 +459,9 @@ class Groupchat extends Base
                 foreach($upAll_arr as $k=>$v){
                     $keys = $k+1;
                     // 给上级返水金额
-                    if($keys >= 1 && $keys <= 6){
+                    if($keys >= 1 && $keys <= 4){
                         $superior_rebate_money = $rule_set['rob_between_1_6']['value'];
-                    }else if($keys >= 7 && $keys <= 10){
+                    }else if($keys >= 5 && $keys <= 10){
                         $superior_rebate_money = $rule_set['rob_between_7_10']['value'];
                     }else if($keys >= 11 && $keys <= 15){
                         $superior_rebate_money = $rule_set['rob_between_11_15']['value'];
