@@ -23,34 +23,34 @@
                             <tr>
                                 <th width="100">发包总额</th>
 
-                                {if condition="$is_show == 1 "}
+                               
                                 <th width="100">今天发包总额</th>
                                 <th width="100">本月发包总额</th>
-                                {/if}
+                              
 
                                 <th width="100">超时退回总额</th>
                               
-                                {if condition="$is_show == 1 "}
+                              
                                 <th width="100">今天超时退回总额</th>
                                 <th width="100">本月超时退回总额</th>
-                                {/if}
+                              
 
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>{$send_red_total_money}</td>
-                                {if condition="$is_show == 1 "}    
+                               
                                 <td>{$today_send_red_money}</td>
                                 <td>{$month_send_red_money}</td>
-                                {/if}
+                               
 
                                 <td>{$out_time_money}</td>
 
-                                {if condition="$is_show == 1 "}
+                              
                                 <td>{$today_out_time_money}</td>
                                 <td>{$month_out_time_money}</td>
-                                {/if}
+                               
 
                             </tr>
                             
@@ -68,11 +68,11 @@
                                 <th width="100">总发包奖励</th>
                                
 
-                                {if condition="$is_show == 1 "}
+                                
                                 <th width="100">总系统返利</th>
                                 <th width="100">总中雷(返)</th>
                                 <th width="100">总免死金额返利</th>
-                                {/if}
+                               
 
                                 
 
@@ -88,11 +88,11 @@
                                 <td>{$total_send_red_award}</td>
                                 
 
-                                {if condition="$is_show == 1 "}
+                               
                                 <td>{$total_system_rebate}</td>
                                 <td>{$total_ray}</td>
                                 <td>{$total_miansi}</td>
-                                {/if}
+                                
 
                                 
 
@@ -135,7 +135,7 @@
                   
 
 
-                    {if condition="$is_show == 0 "}
+                  
                     <table class="table table-hover table-bordered text-center">
                         <thead>
                             <tr>
@@ -155,7 +155,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    {/if}
+                   
 
 
                 </div>

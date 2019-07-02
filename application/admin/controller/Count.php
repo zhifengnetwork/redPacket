@@ -12,7 +12,126 @@ class Count extends Common
 {
     # 统计列表
     public function countList(){
+    
+        //if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
+            $this->saolei();
+            return $this->fetch('saolei');
+          
+       // }else{
+          
+           // $this->qba();
+        //    return $this->fetch('qba');
 
+       // }
+ 
+    }
+
+    /**
+     * 扫雷页面专用
+     */
+    private function saolei(){
+
+
+        // 抢包总金额
+        $get_red_total_money = Db::name('chat_red_detail')->where('type',1)->sum('money');
+        // 今天抢包总金额
+        $today_get_red_total_money = Db::name('chat_red_detail')->where('type',1)->whereTime('get_time', 'today')->sum('money');
+
+        // 发包返利type=3
+        $total_send_red_rebate = Db::name('chat_red_log')->where('type',3)->sum('money');
+        $today_total_send_red_rebate = Db::name('chat_red_log')->where('type',3)->whereTime('create_time', 'today')->sum('money');
+        // 发包返水type=4
+        $total_send_red_backwater = Db::name('chat_red_log')->where('type',4)->sum('money');
+        $today_total_send_red_backwater = Db::name('chat_red_log')->where('type',4)->whereTime('create_time', 'today')->sum('money');
+        
+        // 抢包返利type=5 【 抢完包 的 数量  乘以  0.05  】
+        $total_get_red_rebate = Db::name('chat_red_detail')->where('type',1)->field('id')->count();
+        $total_get_red_rebate = round($total_get_red_rebate * 0.05);
+
+        $today_total_get_red_rebate = Db::name('chat_red_detail')->where('type',1)->whereTime('get_time', 'today')->field('id')->count();
+        $today_total_get_red_rebate = round($today_total_get_red_rebate * 0.05);
+
+        // 抢包返水type=6
+        $total_get_red_backwater = Db::name('chat_red_log')->where('type',6)->sum('money');
+        $today_total_get_red_backwater = Db::name('chat_red_log')->where('type',6)->whereTime('create_time', 'today')->sum('money');
+        // 抢包奖励type=7
+        $total_get_red_award = Db::name('chat_red_log')->where('type',7)->sum('money');
+        $today_total_get_red_award = Db::name('chat_red_log')->where('type',7)->whereTime('create_time', 'today')->sum('money');
+        // 发包奖励type=8
+        $total_send_red_award = Db::name('chat_red_log')->where('type',8)->sum('money');
+        $today_total_send_red_award = Db::name('chat_red_log')->where('type',8)->whereTime('create_time', 'today')->sum('money');
+        // 系统返利type=9
+    
+        $today_total_system_rebate = Db::name('chat_red_log')->where('type',9)->whereTime('create_time', 'today')->sum('money');
+      
+        $today_total_ray = Db::name('chat_red_log')->where('type',10)->whereTime('create_time', 'today')->sum('money');
+
+        // 今日总免死金额返利
+        $today_miansi = Db::name('chat_red_detail')->where('is_die',1)->whereTime('get_time', 'today')->sum('money');
+        $today_miansi = round($today_miansi * 0.05,2);
+     
+
+        $this->assign('today_miansi', $today_miansi);
+   
+
+
+
+        $this->assign('get_red_total_money', $get_red_total_money);
+        $this->assign('today_get_red_total_money', $today_get_red_total_money);
+
+        $this->assign('total_send_red_rebate', $total_send_red_rebate);
+        $this->assign('today_total_send_red_rebate', $today_total_send_red_rebate);
+        $this->assign('total_send_red_backwater', $total_send_red_backwater);
+        $this->assign('today_total_send_red_backwater', $today_total_send_red_backwater);
+        $this->assign('total_get_red_rebate', $total_get_red_rebate);
+        $this->assign('today_total_get_red_rebate', $today_total_get_red_rebate);
+        $this->assign('total_get_red_backwater', $total_get_red_backwater);
+        $this->assign('today_total_get_red_backwater', $today_total_get_red_backwater);
+        $this->assign('total_get_red_award', $total_get_red_award);
+        $this->assign('today_total_get_red_award', $today_total_get_red_award);
+        $this->assign('total_send_red_award', $total_send_red_award);
+        $this->assign('today_total_send_red_award', $today_total_send_red_award);
+      
+        $this->assign('today_total_system_rebate', $today_total_system_rebate);
+ 
+        $this->assign('today_total_ray', abs($today_total_ray));
+
+
+        //今日总返利金额
+        $today_fanli = $today_total_send_red_rebate + $today_total_get_red_rebate;
+        $today_fanshui = $today_total_send_red_backwater + $today_total_get_red_backwater;
+        $today_jiangli =  $today_total_send_red_award + $today_total_send_red_award;
+
+        $this->assign('today_fanli', $today_fanli);
+        $this->assign('today_fanshui', $today_fanshui);
+        $this->assign('today_jiangli', $today_jiangli);
+
+
+        //总返利金额
+        $total_fanli = $total_send_red_rebate + $total_get_red_rebate;
+        $total_fanshui = $total_send_red_backwater + $total_get_red_backwater;
+        $total_jiangli =  $total_get_red_award + $total_send_red_award;
+
+        $this->assign('total_fanli', $total_fanli);
+        $this->assign('total_fanshui', $total_fanshui);
+        $this->assign('total_jiangli', $total_jiangli);
+
+
+        // 总免死金额返利
+        $total_miansi_all = Db::name('chat_red_detail')->where('is_die',1)->sum('money');
+        $total_miansi = round($total_miansi_all * 0.05,2);
+        $this->assign('total_miansi_all', $total_miansi_all);
+
+
+        // 今日免死 余额 返利
+        $today_miansi_all = Db::name('chat_red_detail')->where('is_die',1)->whereTime('get_time', 'today')->sum('money');
+        $today_miansi_all = round($today_miansi_all,2);
+        $this->assign('today_miansi_all', $today_miansi_all);
+       
+    }
+
+
+    private function qba(){
         // 发包总金额
         $send_red_total_money = Db::name('chat_red_master')->sum('money');
         // 今天发包总金额
@@ -113,19 +232,9 @@ class Count extends Common
         $this->assign('total_fanli', $total_fanli);
         $this->assign('total_fanshui', $total_fanshui);
         $this->assign('total_jiangli', $total_jiangli);
-
-
-        if($_SERVER['HTTP_HOST'] == 'www.zxxhrj.cn'){
-            $this->assign('is_show', 0);
-            
-        }else{           
-           $this->assign('is_show', 1);
-           
-        }
-
-        
-        return $this->fetch('count');
+      
     }
+
 
     /**
      * 级别查询统计充值以及提现页面

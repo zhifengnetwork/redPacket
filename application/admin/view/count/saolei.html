@@ -1,0 +1,136 @@
+{extend name="common:base" /}
+{block name="content"}
+<style>
+    .table thead tr th{
+        text-align: center;
+    }
+    .red{
+        color:red;
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>统计详情 (总抢包返利：只统计抢完的包)</h5>
+                    <a style="float:right; font-size:12px;padding-right: 20px;" href="javascript:void(0);" onclick="javascript:window.location.replace(location.href);"><i class="glyphicon glyphicon-refresh"></i></a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="ibox-content">
+                   
+
+                     <table class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th width="100">总发包返利</th>
+                                <th width="100">总发包返水</th>
+                                <th width="100">总抢包返利</th>
+                                <th width="100">总抢包返水</th>
+                                <th width="100">总抢包奖励</th>
+                                <th width="100">总发包奖励</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{$total_send_red_rebate}</td>
+                                <td>{$total_send_red_backwater}</td>
+                                <td>{$total_get_red_rebate}</td>
+                                <td>{$total_get_red_backwater}</td>
+                                <td>{$total_get_red_award}</td>
+                                <td>{$total_send_red_award}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+               
+
+                  
+                 
+                  
+
+
+                  
+                    <table class="table table-hover table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th width="100">今日总返利金额</th>
+
+                                <th width="100">总返利金额</th>
+
+                                <th width="100">今日返水金额</th>
+                                <th width="100">总返水金额</th>
+
+                                <th width="100">今日奖励金额</th>
+                                <th width="100">总奖励金额</th>
+
+                                <th width="100">今日抢免死金额</th>
+
+                                <th width="100">总抢免死金额</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{$today_fanli}</td>
+                                <td>{$total_fanli}</td>
+
+                                <td>{$today_fanshui}</td>
+                                <td>{$total_fanshui}</td>
+
+                                <td>{$today_jiangli}</td>
+                                <td>{$total_jiangli}</td>
+
+                                <td>{$today_miansi_all}</td>
+                                <td>{$total_miansi_all}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                   
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    
+   
+    function edit_service(id){
+        var title = '发布公告';
+        if(id > 0){
+            title = '公告';
+        }
+        layer.open({
+            type:2,
+            title:title,
+            content:'/admin/notice/add_notice',
+            area:['600px','500px'],
+        });
+    }
+
+    function openClose(){
+        layer.closeAll();
+        window.location.replace(location.href);
+    }
+
+    // 删除公告
+    function del_notice(obj){
+        layer.confirm('确定要删除么?', {icon: 3, title:'敏感操作提醒'}, function(index){
+            //do something
+            var id = $(obj).parents('tr').find('.operation').attr('item');
+            $.post('/admin/notice/del_notice',{id:id},function(res){
+                if(res.status == 1){
+                    layer.msg('操作成功！',{icon:6});
+                    $(obj).parent().parent().remove();
+                }else{
+                    layer.msg('操作失败，请重试！',{icon:5});
+                }
+            });
+            layer.close(index);
+        });
+    }
+</script>
+{/block}
+{block name="script"}
