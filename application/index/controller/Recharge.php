@@ -92,9 +92,6 @@ class Recharge extends Base
         $userid = session('user.id');
         $money = input('post.money');
 
-        //提现手续费1%
-        $money = round($money * 0.99,2);
-
         $method = input('post.method');
         // $method = 3;    
         $info = Db::table('users')->where('id',$userid)->field('account')->find();    
@@ -137,17 +134,25 @@ class Recharge extends Base
             //提现前账户余额
             $before_money =  Db::name('users')->where('id',$userid)->value('account');
 
-            $data = ['uid' => $userid, 'amount' => $money ,'type' => $method,'status' => 3,'time' => $time,'ordersn' => $orderNumber];
+            //提现手续费1%
+            $data = ['uid' => $userid, 'amount' => round($money * 0.99,2) ,'type' => $method,'status' => 3,'time' => $time,'ordersn' => $orderNumber];
 
             // 启动事务
             Db::startTrans();
            try{
 
+
                 //提现记录表中添加记录
                 $tx_id = Db::name('tixian')->insertGetId($data);
                 //账户金额变更记录表中添加记录
+
+                
+
                 $time = time();
-                $data = ['admin'=>'无','addtime' => $time,'user_id' => $userid,'account' => $before_money,'tx_id' => $tx_id,'money' => $money,'newaccount' => $before_money -$money,'action' => 1,'desc' => '默认通过，等待管理员进一步审核'];
+                $data = ['admin'=>'无','addtime' => $time,'user_id' => $userid,'account' => $before_money,
+                'tx_id' => $tx_id,'money' => $money,
+                'newaccount' => $before_money -$money,
+                'action' => 1,'desc' => '默认通过，等待管理员进一步审核'];
                 db('account_log')->insert($data);
 
                 //更改用户表中余额
