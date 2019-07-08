@@ -91,6 +91,10 @@ class Recharge extends Base
         $msg = '';
         $userid = session('user.id');
         $money = input('post.money');
+
+        //提现手续费1%
+        $money = round($money * 0.99,2);
+
         $method = input('post.method');
         // $method = 3;    
         $info = Db::table('users')->where('id',$userid)->field('account')->find();    
