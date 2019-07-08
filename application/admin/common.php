@@ -56,6 +56,7 @@ function get_menu_auth()
     if (UID == IS_ROOT) {
         return 1;
     }
+    
     //获取当前登录用户所在的用户组(可以是多组)
     $groups = Db::table('auth_group_access')->where('mgid', UID)->column('group_id');
     if (!$groups) {
@@ -64,8 +65,15 @@ function get_menu_auth()
     //所有权限数组
     $rules_array = [];
     $arr         = [];
+    
     foreach ($groups as $v) {
-        $rules = Db::table('auth_group')->where('id', $v)->where('status', 1)->value('rules');
+        
+        if($v==1){
+            $rules = Db::table('auth_group')->where(['id'=> $v])->value('rules');
+        }else{
+            $rules = Db::table('auth_group')->where(['id'=> $v,'status'=> 1])->value('rules');
+        }
+
         if ($rules) {
             $arr = explode(',', $rules);
         }
