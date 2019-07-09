@@ -21,6 +21,17 @@ class Register extends Controller
     	if(!$pid_invite_code){
             $this->error('注册码无效');
         }
+        
+        $type = get_device_type();
+        if($type =='android'){
+            $down_url = 'https://aifabu.com/Y3uM';
+        }elseif($type == 'ios'){
+            $down_url = 'https://aifabu.com/fQFv';
+        }else{
+            $down_url = '/index/index';
+        }
+
+        $this->assign('down_url',$down_url);
 
         $this->assign('invite_code',$invite_code);
         return $this->fetch();

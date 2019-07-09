@@ -162,7 +162,9 @@
                         function(msg){
                         if(msg.code==1){
                               layer.msg(msg.msg,function(){
-                                    self.location="{:url('/index/index')}"
+
+                                    //self.location="{:url('/index/index')}"
+									self.location = "{$down_url}";
                                     // window.location.href = "https://fir.im/nkxj";
                               });
                         }else{
