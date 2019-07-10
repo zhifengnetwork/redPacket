@@ -86,7 +86,7 @@ function getPhoneCode($data){
         return array('code' => 0, 'msg' => '获取验证码过于频繁，请稍后再试');
     }
     $code = rand(123456,999999);
-    $tpl = '【Q霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
+    $tpl = '【玩扫雷】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
     if($data['sms_type']==1){  //忘记密码  
 
         Session::set('smscode',$code);
@@ -98,7 +98,7 @@ function getPhoneCode($data){
         Session::set('pwd_code',$code); //忘记支付密码
     }
     
-    $tpl = '【QQ争霸】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
+    $tpl = '【玩扫雷】您的手机验证码：'.$code.' 若非您本人操作，请忽略本短信。';
     // $content=str_replace('{$code}',$code,$tpl);
     $content = $tpl;
     $result=sendSms($data['phone'],$content);
