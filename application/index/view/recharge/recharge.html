@@ -106,7 +106,7 @@
 	            		</div>
             		</div>
             		<!--提交按钮-->
-            		<div class="refer_btn" onclick="submits()">确认充值</div>
+            		<div class="refer_btn" id="submitbutton" onclick="submits()">确认充值</div>
             	</div>
             </div>
             <!--提交弹框-->
@@ -201,6 +201,9 @@
 
      
                 if(file.indexOf('data:image')>-1){
+					
+					$("#submitbutton").removeAttr("onclick");
+
                     $.ajax({
                         url: '/index/recharge/subrecharge',//
                         dataType:'json',  
