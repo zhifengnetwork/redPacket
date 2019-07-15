@@ -74,8 +74,6 @@ class Count extends Common
         $this->assign('today_miansi', $today_miansi);
    
 
-
-
         $this->assign('get_red_total_money', $get_red_total_money);
         $this->assign('today_get_red_total_money', $today_get_red_total_money);
 
@@ -100,7 +98,7 @@ class Count extends Common
         //今日总返利金额
         $today_fanli = $today_total_send_red_rebate + $today_total_get_red_rebate;
         $today_fanshui = $today_total_send_red_backwater + $today_total_get_red_backwater;
-        $today_jiangli =  $today_total_send_red_award + $today_total_send_red_award;
+        $today_jiangli =  $today_total_send_red_award;
 
         $this->assign('today_fanli', $today_fanli);
         $this->assign('today_fanshui', $today_fanshui);
